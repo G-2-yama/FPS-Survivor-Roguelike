@@ -33,7 +33,5 @@ public class PlayerAirState : PlayerMoveState
         }
 
         controller.ConsumeJumpRequest();
-
-        controller.Move();
     }
 }

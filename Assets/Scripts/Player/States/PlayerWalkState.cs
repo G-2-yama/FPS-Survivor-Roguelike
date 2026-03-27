@@ -37,8 +37,6 @@ public class PlayerWalkState : PlayerMoveState
             controller.StateMachine.ChangeState(new PlayerSprintState(controller));
             return;
         }
-
-        controller.Move();
     }
 
 }

@@ -108,10 +108,10 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// ジャンプ時の初速
     /// </summary>
-    [SerializeField] private float jumpSpeed = 8f;
+    [SerializeField] private float jumpForce = 8f;
 
     /// <summary>
     /// ジャンプ時の初速
     /// </summary>
-    public float JumpSpeed => jumpSpeed;
+    public float JumpForce => jumpForce;
 }

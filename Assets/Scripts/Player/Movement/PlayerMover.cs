@@ -1,72 +1,89 @@
 using UnityEngine;
 
 /// <summary>
-/// プレイヤー移動処理を統合し、各移動コンポーネントを仲介するクラス
+/// Rigidbodyを使ったFPSプレイヤー移動処理
+/// 設定値は PlayerConfig から取得する
 /// </summary>
 public class PlayerMover
 {
-    private readonly Transform playerTransform;
-    private readonly PlayerGroundProbe groundProbe;
-    private readonly PlayerHorizontalMover horizontalMover;
-    private readonly PlayerVerticalMover verticalMover;
+    private Rigidbody rb;
+    private Transform playerTransform;
+    private PlayerConfig config;
 
-    /// <summary>
-    /// PlayerMoverを初期化する
-    /// </summary>
-    /// <param name="playerTransform">移動対象となるプレイヤーのTransform</param>
-    /// <param name="config">移動・重力に関する設定</param>
-    public PlayerMover(Transform playerTransform, PlayerConfig config)
+    private bool jumpRequest;
+
+    public PlayerMover(Transform playerTransform, Rigidbody rb,  PlayerConfig config)
     {
+        this.rb = rb;
         this.playerTransform = playerTransform;
-        groundProbe = new PlayerGroundProbe(playerTransform, config);
-        horizontalMover = new PlayerHorizontalMover(playerTransform, config);
-        verticalMover = new PlayerVerticalMover(config);
+        this.config = config;
+
+        rb.freezeRotation = true;
     }
 
     /// <summary>
-    /// プレイヤーの移動を処理する
+    /// 移動処理（コントローラー呼び出し用）
     /// </summary>
-    /// <param name="moveInput">移動入力</param>
-    /// <param name="isRunning">走行状態</param>
-    public void Move(Vector2 moveInput, bool isRunning)
+    public void Move(Vector2 moveInput, bool run)
     {
-        bool isGrounded = groundProbe.IsGrounded();
-        verticalMover.UpdateVerticalVelocity(isGrounded);
-
-        Vector3 groundNormal = Vector3.up;
-        if (isGrounded && groundProbe.TryGetGroundNormal(out Vector3 hitNormal))
-        {
-            groundNormal = hitNormal;
-        }
-
-        Vector3 frameMove = horizontalMover.CalculateHorizontalVelocity(moveInput, isRunning, groundNormal);
-        frameMove.y = verticalMover.VerticalVelocity;
-
-        Vector3 nextPosition = playerTransform.position + frameMove * Time.deltaTime;
-
-        if (groundProbe.TryGetGroundHit(nextPosition, out RaycastHit groundHit) && verticalMover.VerticalVelocity <= 0f)
-        {
-            nextPosition.y = groundHit.point.y;
-            verticalMover.ResetGroundedVelocity();
-        }
-
-        playerTransform.position = nextPosition;
+        Move(moveInput.x, moveInput.y, run);
     }
 
     /// <summary>
-    /// 現在フレームで接地しているかを判定する
-    /// </summary>
-    /// <returns>接地していればtrue、空中であればfalse</returns>
-    public bool IsGrounded()
-    {
-        return groundProbe.IsGrounded();
-    }
-
-    /// <summary>
-    /// ジャンプを開始する
+    /// ジャンプ処理（コントローラー呼び出し用）
     /// </summary>
     public void Jump()
     {
-        verticalMover.Jump();
+        jumpRequest = true;
+        Jump(IsGrounded());
+    }
+
+    /// <summary>
+    /// 地面判定
+    /// </summary>
+    public bool IsGrounded()
+    {
+        Vector3 rayOrigin = playerTransform.position + Vector3.up * config.GroundRayStartOffset;
+
+        return Physics.Raycast(
+            rayOrigin,
+            Vector3.down,
+            config.GroundCheckDistance,
+            config.GroundLayers,
+            QueryTriggerInteraction.Ignore
+        );
+    }
+
+    /// <summary>
+    /// 移動処理
+    /// </summary>
+    private void Move(float moveX, float moveZ, bool run)
+    {
+        float speed = run ? config.RunSpeed : config.WalkSpeed;
+
+        Vector3 move = playerTransform.right * moveX + playerTransform.forward * moveZ;
+
+        Vector3 velocity = move * speed;
+
+        // 落下速度は保持
+        velocity.y = rb.linearVelocity.y;
+
+        rb.linearVelocity = velocity;
+    }
+
+    /// <summary>
+    /// ジャンプ処理
+    /// </summary>
+    private void Jump(bool isGrounded)
+    {
+        if (!jumpRequest) return;
+
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            rb.AddForce(Vector3.up * config.JumpForce, ForceMode.Impulse);
+        }
+
+        jumpRequest = false;
     }
 }

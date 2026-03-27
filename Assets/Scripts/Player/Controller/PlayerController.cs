@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Rigidbody playerRigidbody;
+
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
@@ -67,9 +69,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
         stateMachine = new StateMachine();
 
-        mover = new PlayerMover(transform, config);
+        mover = new PlayerMover(transform, playerRigidbody, config);
         look = new PlayerLook(transform, cameraPitchTransform, config);
     }
 
@@ -87,18 +91,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         look.ApplyLook(lookInput);
+        mover.Move(moveInput, isSprinting);
 
         isGrounded = mover.IsGrounded();
 
         stateMachine.Update();
-    }
-
-    /// <summary>
-    /// 移動処理
-    /// </summary>
-    public void Move()
-    {
-        mover.Move(moveInput, isSprinting);
     }
 
     /// <summary>

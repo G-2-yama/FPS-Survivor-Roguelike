@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 275487185}
   - component: {fileID: 275487191}
   - component: {fileID: 275487190}
+  - component: {fileID: 275487192}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -153,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b54046d2b4765459cf415f1a63c5d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  playerRigidbody: {fileID: 275487192}
   cameraPitchTransform: {fileID: 330585546}
   config: {fileID: 275487191}
 --- !u!136 &275487186
@@ -430,6 +432,33 @@ MonoBehaviour:
   gravity: -20
   groundedVerticalVelocity: -2
   jumpSpeed: 8
+--- !u!54 &275487192
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
