@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// プレイヤーの各種パラメータを保持するモデル
     /// </summary>
-    [SerializeField] private PlayerModel model;
-    public PlayerModel Model => model;
+    [SerializeField] private PlayerConfig config;
+    public PlayerConfig Model => config;
 
     /// <summary>
     /// プレイヤーの移動状態を管理するステートマシン
@@ -24,37 +24,42 @@ public class PlayerController : MonoBehaviour
     public StateMachine StateMachine => stateMachine;
 
     /// <summary>
+    /// 移動処理
+    /// </summary>
+    private PlayerMover mover;
+
+    /// <summary>
+    /// 視点処理
+    /// </summary>
+    private PlayerLook look;
+
+    /// <summary>
     /// 移動入力値を保持
     /// </summary>
     private Vector2 moveInput;
+    public Vector2 MoveInput => moveInput;
 
     /// <summary>
     /// 視点入力値を保持
     /// </summary>
     private Vector2 lookInput;
+    public Vector2 LookInput => lookInput;
 
     /// <summary>
-    /// 走行入力状態を保持
+    /// スプリント入力状態を保持
     /// </summary>
-    private bool isRunning;
+    private bool isSprinting;
+    public bool IsSprinting => isSprinting;
 
     /// <summary>
-    /// カメラの現在ピッチ角を保持
-    /// </summary>
-    private float pitch;
-
-    /// <summary>
-    /// ステートマシンを初期化し、現在のピッチ角を設定
+    /// 初期化
     /// </summary>
     void Awake()
     {
         stateMachine = new StateMachine();
 
-        if (cameraPitchTransform != null)
-        {
-            float x = cameraPitchTransform.localEulerAngles.x;
-            pitch = x > 180f ? x - 360f : x;
-        }
+        mover = new PlayerMover(transform, config);
+        look = new PlayerLook(transform, cameraPitchTransform, config);
     }
 
     /// <summary>
@@ -70,56 +75,40 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        model.moveInput = moveInput;
-        model.lookInput = lookInput;
-        model.isRunning = isRunning;
-
-        ApplyLook();
+        look.ApplyLook(lookInput);
 
         stateMachine.Update();
     }
 
     /// <summary>
-    /// 視点入力を適用してプレイヤーのヨー回転とカメラのピッチ回転を更新
+    /// 移動処理
     /// </summary>
-    private void ApplyLook()
+    public void Move()
     {
-        float yawDelta = model.lookInput.x * model.LookSensitivity;
-        float pitchDelta = model.lookInput.y * model.LookSensitivity;
-
-        model.transform.Rotate(Vector3.up, yawDelta, Space.World);
-
-        pitch = Mathf.Clamp(pitch - pitchDelta, model.MinPitch, model.MaxPitch);
-        Vector3 localEuler = cameraPitchTransform.localEulerAngles;
-        localEuler.x = pitch;
-        cameraPitchTransform.localEulerAngles = localEuler;
+        mover.Move(moveInput, isSprinting);
     }
 
     /// <summary>
     /// 移動入力を受け取り、移動状態を更新
     /// </summary>
-    /// <param name="context">Input System のコールバックコンテキスト</param>
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
     }
 
     /// <summary>
-    /// 走行入力を受け取り、走行状態を更新
+    /// スプリント入力を受け取り、スプリント状態を更新
     /// </summary>
-    /// <param name="context">Input System のコールバックコンテキスト</param>
-    public void OnRun(InputAction.CallbackContext context)
+    public void OnSprint(InputAction.CallbackContext context)
     {
-        isRunning = context.ReadValueAsButton();
+        isSprinting = context.ReadValueAsButton();
     }
 
     /// <summary>
     /// 視点入力を受け取り、マウスによる視点移動に利用
     /// </summary>
-    /// <param name="context">Input System のコールバックコンテキスト</param>
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
     }
-
 }

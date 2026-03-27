@@ -3,9 +3,8 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの移動・視点に関する設定値と入力状態を保持するモデル
 /// </summary>
-public class PlayerModel : MonoBehaviour
+public class PlayerConfig : MonoBehaviour
 {
-
     /// <summary>
     /// 通常移動速度の設定値
     /// </summary>
@@ -25,16 +24,6 @@ public class PlayerModel : MonoBehaviour
     /// 走行時の速度
     /// </summary>
     public float RunSpeed => runSpeed;
-
-    /// <summary>
-    /// 移動入力ベクトル（X: 左右, Y: 前後）
-    /// </summary>
-    public Vector2 moveInput;
-
-    /// <summary>
-    /// 視点入力ベクトル（X: ヨー, Y: ピッチ）
-    /// </summary>
-    public Vector2 lookInput;
 
     /// <summary>
     /// 視点感度の設定値
@@ -65,9 +54,4 @@ public class PlayerModel : MonoBehaviour
     /// 上下視点の最大角度
     /// </summary>
     public float MaxPitch => maxPitch;
-
-    /// <summary>
-    /// 走行入力が有効かどうか
-    /// </summary>
-    public bool isRunning;
 }

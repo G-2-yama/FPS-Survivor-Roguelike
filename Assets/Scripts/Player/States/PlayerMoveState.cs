@@ -1,12 +1,10 @@
 public abstract class PlayerMoveState : IState
 {
     protected PlayerController controller;
-    protected PlayerModel model;
 
     public PlayerMoveState(PlayerController controller)
     {
         this.controller = controller;
-        this.model = controller.Model;
     }
 
     /// <summary>

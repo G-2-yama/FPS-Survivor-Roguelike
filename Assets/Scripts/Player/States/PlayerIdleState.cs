@@ -14,7 +14,16 @@ public class PlayerIdleState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
-        if (model.moveInput != Vector2.zero)
+        if (controller.MoveInput == Vector2.zero)
+        {
+            return;
+        } 
+
+        if (controller.IsSprinting)
+        {
+            controller.StateMachine.ChangeState(new PlayerSprintState(controller));
+        }
+        else
         {
             controller.StateMachine.ChangeState(new PlayerWalkState(controller));
         }
