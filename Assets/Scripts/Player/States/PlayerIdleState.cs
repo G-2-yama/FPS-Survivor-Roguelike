@@ -20,6 +20,13 @@ public class PlayerIdleState : PlayerMoveState
             return;
         }
 
+        if (controller.ConsumeJumpRequest())
+        {
+            controller.Jump();
+            controller.StateMachine.ChangeState(new PlayerAirState(controller));
+            return;
+        }
+
         if (controller.MoveInput == Vector2.zero)
         {
             return;

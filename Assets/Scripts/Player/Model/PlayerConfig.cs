@@ -104,4 +104,14 @@ public class PlayerConfig : MonoBehaviour
     /// 接地中に維持する下向き速度
     /// </summary>
     public float GroundedVerticalVelocity => groundedVerticalVelocity;
+
+    /// <summary>
+    /// ジャンプ時の初速
+    /// </summary>
+    [SerializeField] private float jumpSpeed = 8f;
+
+    /// <summary>
+    /// ジャンプ時の初速
+    /// </summary>
+    public float JumpSpeed => jumpSpeed;
 }

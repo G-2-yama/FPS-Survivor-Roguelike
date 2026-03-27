@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded => isGrounded;
 
     /// <summary>
+    /// ジャンプ入力要求を保持
+    /// </summary>
+    private bool jumpRequested;
+
+    /// <summary>
     /// 初期化
     /// </summary>
     void Awake()
@@ -97,6 +102,29 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// ジャンプ処理
+    /// </summary>
+    public void Jump()
+    {
+        mover.Jump();
+    }
+
+    /// <summary>
+    /// ジャンプ入力要求を1回だけ取り出す
+    /// </summary>
+    /// <returns>ジャンプ入力要求があった場合はtrue</returns>
+    public bool ConsumeJumpRequest()
+    {
+        if (!jumpRequested)
+        {
+            return false;
+        }
+
+        jumpRequested = false;
+        return true;
+    }
+
+    /// <summary>
     /// 移動入力を受け取り、移動状態を更新
     /// </summary>
     public void OnMove(InputAction.CallbackContext context)
@@ -118,5 +146,16 @@ public class PlayerController : MonoBehaviour
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
+    }
+
+    /// <summary>
+    /// ジャンプ入力を受け取る
+    /// </summary>
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            jumpRequested = true;
+        }
     }
 }
