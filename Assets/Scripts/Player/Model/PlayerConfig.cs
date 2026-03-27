@@ -86,26 +86,6 @@ public class PlayerConfig : MonoBehaviour
     public LayerMask GroundLayers => groundLayers;
 
     /// <summary>
-    /// 重力加速度
-    /// </summary>
-    [SerializeField] private float gravity = -20f;
-
-    /// <summary>
-    /// 重力加速度
-    /// </summary>
-    public float Gravity => gravity;
-
-    /// <summary>
-    /// 接地中に維持する下向き速度
-    /// </summary>
-    [SerializeField] private float groundedVerticalVelocity = -2f;
-
-    /// <summary>
-    /// 接地中に維持する下向き速度
-    /// </summary>
-    public float GroundedVerticalVelocity => groundedVerticalVelocity;
-
-    /// <summary>
     /// ジャンプ時の初速
     /// </summary>
     [SerializeField] private float jumpForce = 8f;
