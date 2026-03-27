@@ -52,6 +52,12 @@ public class PlayerController : MonoBehaviour
     public bool IsSprinting => isSprinting;
 
     /// <summary>
+    /// 接地状態を保持
+    /// </summary>
+    private bool isGrounded;
+    public bool IsGrounded => isGrounded;
+
+    /// <summary>
     /// 初期化
     /// </summary>
     void Awake()
@@ -76,6 +82,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         look.ApplyLook(lookInput);
+
+        isGrounded = mover.IsGrounded();
 
         stateMachine.Update();
     }

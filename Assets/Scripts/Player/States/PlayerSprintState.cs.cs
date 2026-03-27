@@ -14,6 +14,12 @@ public class PlayerSprintState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
+        if (!controller.IsGrounded)
+        {
+            controller.StateMachine.ChangeState(new PlayerAirState(controller));
+            return;
+        }
+
         if (controller.MoveInput == Vector2.zero)
         {
             controller.StateMachine.ChangeState(new PlayerIdleState(controller));
