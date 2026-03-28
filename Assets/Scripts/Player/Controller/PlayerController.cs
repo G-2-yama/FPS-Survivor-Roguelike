@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
+    /// 武器の入力・攻撃処理を管理するコントローラー
+    /// </summary>
+    [SerializeField] private WeaponController weaponController;
+
+    /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
@@ -154,5 +159,21 @@ public class PlayerController : MonoBehaviour
         {
             jumpRequested = true;
         }
+    }
+
+    /// <summary>
+    /// 射撃入力を武器コントローラーへ中継
+    /// </summary>
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        weaponController.OnFire(context);
+    }
+
+    /// <summary>
+    /// リロード入力を武器コントローラーへ中継
+    /// </summary>
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        weaponController.OnReload(context);
     }
 }
