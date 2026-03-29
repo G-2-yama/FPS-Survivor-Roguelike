@@ -2,23 +2,27 @@ using UnityEngine;
 
 public class WeaponReloadingState : WeaponState
 {
+    /// <summary>
+    /// リロードのタイマー
+    /// </summary>
     private float timer;
 
     public WeaponReloadingState(WeaponController controller) : base(controller) { }
 
     public override void Enter()
     {
-        Debug.Log("Weapon Idle Stateに入りました");
+        Debug.Log("Weapon Reloading Stateに入りました");
 
         Reload();
 
-        timer = controller.WeaponData.ReloadTime;   // ← WeaponDataの値を使う
+        timer = controller.WeaponData.ReloadTime;
     }
 
     public override void Update()
     {
         timer -= Time.deltaTime;
 
+        // リロードが完了したらクールダウン状態へ
         if (timer <= 0f)
         {
             controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
@@ -27,7 +31,7 @@ public class WeaponReloadingState : WeaponState
 
     public override void Exit()
     {
-        Debug.Log("Weapon Idle Stateから退出します");
+        Debug.Log("Weapon Reloading Stateから退出します");
     }
 
     /// <summary>

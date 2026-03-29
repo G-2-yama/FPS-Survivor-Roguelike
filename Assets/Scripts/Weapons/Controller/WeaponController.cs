@@ -36,7 +36,10 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        weaponStateMachine.OnFire();
+        if (context.phase == InputActionPhase.Performed)
+        {
+            weaponStateMachine.OnFire();
+        }
     }
 
     /// <summary>
@@ -44,6 +47,9 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        weaponStateMachine.OnReload();
+        if (context.phase == InputActionPhase.Performed)
+        {
+            weaponStateMachine.OnReload();
+        }
     }
 }
