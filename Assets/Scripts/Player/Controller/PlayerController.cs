@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// プレイヤーの移動状態を管理するステートマシン
     /// </summary>
-    private StateMachine stateMachine;
-    public StateMachine StateMachine => stateMachine;
+    private StateMachine<PlayerMoveState> stateMachine;
+    public StateMachine<PlayerMoveState> StateMachine => stateMachine;
 
     /// <summary>
     /// 移動処理
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        stateMachine = new StateMachine();
+        stateMachine = new StateMachine<PlayerMoveState>();
 
         mover = new PlayerMover(transform, playerRigidbody, config);
         look = new PlayerLook(transform, cameraPitchTransform, config);

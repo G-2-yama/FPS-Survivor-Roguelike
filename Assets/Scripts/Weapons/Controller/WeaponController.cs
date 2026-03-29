@@ -5,11 +5,30 @@ public class WeaponController : MonoBehaviour
 {
     [SerializeField] private WeaponData weaponData;
 
-    public WeaponData Model => weaponData;
+    public WeaponData WeaponData => weaponData;
 
-    private void Start()
+    private WeaponStateMachine weaponStateMachine;
+    public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    void Awake()
     {
+        weaponStateMachine = new WeaponStateMachine();
+    }
 
+    /// <summary>
+    /// 初期状態として待機状態に遷移
+    /// </summary>
+    void Start()
+    {
+        weaponStateMachine.ChangeState(new WeaponIdleState(this));
+    }
+
+    public void Update()
+    {
+        weaponStateMachine.Update();
     }
 
     /// <summary>
@@ -17,8 +36,7 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        // ここで攻撃処理を実装
-        Debug.Log($"Firing weapon: {weaponData.DisplayName}");
+        weaponStateMachine.OnFire();
     }
 
     /// <summary>
@@ -26,7 +44,6 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        // ここでリロード処理を実装
-        Debug.Log($"Reloading weapon: {weaponData.DisplayName}");
+        weaponStateMachine.OnReload();
     }
 }
