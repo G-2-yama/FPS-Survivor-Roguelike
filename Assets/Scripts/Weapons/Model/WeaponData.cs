@@ -9,56 +9,165 @@ public class WeaponData : ScriptableObject
 {
     [Header("Identity")]
     [SerializeField] private string weaponId = "weapon_default";
+    public string WeaponId => weaponId;
+    
     [SerializeField] private string displayName = "New Weapon";
+    public string DisplayName => displayName;
+    
 
     [Header("Attack")]
     [SerializeField] private WeaponAttackType attackType = WeaponAttackType.HitScan;
+    public WeaponAttackType AttackType => attackType;
+
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
+    public WeaponTriggerType TriggerType => triggerType;
+
     [SerializeField, Min(0f)] private float damage = 10f;
+    public float Damage => damage;
+
     [SerializeField, Min(0.01f)] private float fireInterval = 0.12f;
+    public float FireInterval => fireInterval;
+
     [SerializeField, Min(1)] private int projectilesPerShot = 1;
+    public int ProjectilesPerShot => projectilesPerShot;
+
     [SerializeField, Range(0f, 45f)] private float spreadAngle = 0.5f;
+    public float SpreadAngle => spreadAngle;
+
     [SerializeField, Min(0f)] private float maxRange = 60f;
+    public float MaxRange => maxRange;
+
+
+    [Header("Recoil")]
+    [SerializeField] private float recoilX = 1.2f;
+    public float RecoilX => recoilX;
+
+    [SerializeField] private float recoilY = 0.4f;
+    public float RecoilY => recoilY;
+
+    [SerializeField] private float recoilRecoverySpeed = 8f;
+    public float RecoilRecoverySpeed => recoilRecoverySpeed;
+
+
+    [Header("ADS")]
+    [SerializeField] private float adsZoom = 60f;
+    public float AdsZoom => adsZoom;
+
+    [SerializeField] private float adsSpreadMultiplier = 0.4f;
+    public float AdsSpreadMultiplier => adsSpreadMultiplier;
+
+    [SerializeField] private float adsRecoilMultiplier = 0.6f;
+    public float AdsRecoilMultiplier => adsRecoilMultiplier;
+
 
     [Header("Projectile")]
     [SerializeField, Min(0f)] private float projectileSpeed = 80f;
+    public float ProjectileSpeed => projectileSpeed;
+
     [SerializeField, Min(0f)] private float projectileLifetime = 2f;
+    public float ProjectileLifetime => projectileLifetime;
+
 
     [Header("Burst")]
     [SerializeField] private bool useBurst;
+    public bool UseBurst => useBurst;
+
     [SerializeField, Min(1)] private int burstCount = 3;
+    public int BurstCount => burstCount;
+
     [SerializeField, Min(0f)] private float burstInterval = 0.05f;
+    public float BurstInterval => burstInterval;
+
 
     [Header("Ammo")]
     [SerializeField] private bool useMagazine = true;
-    [SerializeField, Min(1)] private int magazineSize = 30;
-    [SerializeField, Min(0f)] private float reloadTime = 1.6f;
-    [SerializeField, Min(0)] private int maxReserveAmmo = 120;
-
-    public string WeaponId => weaponId;
-    public string DisplayName => displayName;
-
-    public WeaponAttackType AttackType => attackType;
-    public WeaponTriggerType TriggerType => triggerType;
-    public float Damage => damage;
-    public float FireInterval => fireInterval;
-    public int ProjectilesPerShot => projectilesPerShot;
-    public float SpreadAngle => spreadAngle;
-    public float MaxRange => maxRange;
-
-    public float ProjectileSpeed => projectileSpeed;
-    public float ProjectileLifetime => projectileLifetime;
-
-    public bool UseBurst => useBurst;
-    public int BurstCount => burstCount;
-    public float BurstInterval => burstInterval;
-
     public bool UseMagazine => useMagazine;
+
+    [SerializeField, Min(1)] private int magazineSize = 30;
     public int MagazineSize => magazineSize;
+
+    [SerializeField, Min(0f)] private float reloadTime = 1.6f;
     public float ReloadTime => reloadTime;
+
+    [SerializeField, Min(0)] private int maxReserveAmmo = 120;
     public int MaxReserveAmmo => maxReserveAmmo;
 
+
+    [Header("Level")]
+    [SerializeField] private WeaponLevelData[] levelData;
+    public WeaponLevelData[] LevelData => levelData;
+
     public bool IsProjectileWeapon => attackType == WeaponAttackType.Projectile;
+
+    /// <summary>
+    /// レベルに応じたダメージを取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味したダメージ</returns>
+    public float GetDamage(int level)
+    {
+        return damage + levelData[level].damageBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じた射撃間隔を取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味した射撃間隔</returns>
+    public float GetFireInterval(int level)
+    {
+        return fireInterval + levelData[level].fireIntervalBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じた拡散角を取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味した拡散角</returns>
+    public float GetSpread(int level)
+    {
+        return spreadAngle + levelData[level].spreadBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じたX反動を取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味したX反動</returns>
+    public float GetRecoilX(int level)
+    {
+        return recoilX + levelData[level].recoilXBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じたY反動を取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味したY反動</returns>
+    public float GetRecoilY(int level)
+    {
+        return recoilY + levelData[level].recoilYBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じたマガジンサイズを取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味したマガジンサイズ</returns>
+    public int GetMagazineSize(int level)
+    {
+        return magazineSize + levelData[level].magazineSizeBonus;
+    }
+
+    /// <summary>
+    /// レベルに応じたリロード時間を取得する
+    /// </summary>
+    /// <param name="level">武器レベル</param>
+    /// <returns>レベル補正を加味したリロード時間</returns>
+    public float GetReloadTime(int level)
+    {
+        return reloadTime + levelData[level].reloadTimeBonus;
+    }
 }
 
 public enum WeaponAttackType
