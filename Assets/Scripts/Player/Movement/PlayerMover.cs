@@ -10,8 +10,6 @@ public class PlayerMover
     private Transform playerTransform;
     private PlayerConfig config;
 
-    private bool jumpRequest;
-
     public PlayerMover(Transform playerTransform, Rigidbody rb,  PlayerConfig config)
     {
         this.rb = rb;
@@ -22,7 +20,7 @@ public class PlayerMover
     }
 
     /// <summary>
-    /// 移動処理（コントローラー呼び出し用）
+    /// 移動処理
     /// </summary>
     public void Move(Vector2 moveInput, bool run)
     {
@@ -30,12 +28,12 @@ public class PlayerMover
     }
 
     /// <summary>
-    /// ジャンプ処理（コントローラー呼び出し用）
+    /// ジャンプ処理
     /// </summary>
     public void Jump()
     {
-        jumpRequest = true;
-        Jump(IsGrounded());
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        rb.AddForce(Vector3.up * config.JumpForce, ForceMode.Impulse);
     }
 
     /// <summary>
@@ -45,13 +43,22 @@ public class PlayerMover
     {
         Vector3 rayOrigin = playerTransform.position + Vector3.up * config.GroundRayStartOffset;
 
-        return Physics.Raycast(
+        bool isGrounded = Physics.Raycast(
             rayOrigin,
             Vector3.down,
             config.GroundCheckDistance,
             config.GroundLayers,
             QueryTriggerInteraction.Ignore
         );
+
+        // Sceneビュー上で地面判定レイを可視化
+        Debug.DrawRay(
+            rayOrigin,
+            Vector3.down * config.GroundCheckDistance,
+            isGrounded ? Color.green : Color.red
+        );
+
+        return isGrounded;
     }
 
     /// <summary>
@@ -69,21 +76,5 @@ public class PlayerMover
         velocity.y = rb.linearVelocity.y;
 
         rb.linearVelocity = velocity;
-    }
-
-    /// <summary>
-    /// ジャンプ処理
-    /// </summary>
-    private void Jump(bool isGrounded)
-    {
-        if (!jumpRequest) return;
-
-        if (isGrounded)
-        {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            rb.AddForce(Vector3.up * config.JumpForce, ForceMode.Impulse);
-        }
-
-        jumpRequest = false;
     }
 }
