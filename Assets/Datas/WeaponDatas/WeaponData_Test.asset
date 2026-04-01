@@ -21,6 +21,12 @@ MonoBehaviour:
   projectilesPerShot: 1
   spreadAngle: 0.5
   maxRange: 60
+  recoilX: 1.2
+  recoilY: 0.4
+  recoilRecoverySpeed: 8
+  adsZoom: 60
+  adsSpreadMultiplier: 0.4
+  adsRecoilMultiplier: 0.6
   projectileSpeed: 80
   projectileLifetime: 2
   useBurst: 0
@@ -30,3 +36,11 @@ MonoBehaviour:
   magazineSize: 30
   reloadTime: 1.6
   maxReserveAmmo: 120
+  levelData:
+  - damageBonus: 0
+    fireIntervalBonus: 0
+    spreadBonus: 0
+    recoilXBonus: 0
+    recoilYBonus: 0
+    magazineSizeBonus: 0
+    reloadTimeBonus: 0
