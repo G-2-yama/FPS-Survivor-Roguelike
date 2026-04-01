@@ -13,25 +13,24 @@ public class WeaponReloadingState : WeaponState
     {
         Debug.Log("Weapon Reloading Stateに入りました");
 
-        Reload();
-
-        timer = controller.WeaponData.ReloadTime;
+        timer = controller.Weapon.WeaponData.ReloadTime;
     }
 
     public override void Update()
     {
         timer -= Time.deltaTime;
 
-        // リロードが完了したらクールダウン状態へ
+        // リロードの完了
         if (timer <= 0f)
         {
-            controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
+            controller.Weapon.Reload();
+            controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
         }
     }
 
     public override void Exit()
     {
-        Debug.Log("Weapon Reloading Stateから退出します");
+        // Debug.Log("Weapon Reloading Stateから退出します");
     }
 
     /// <summary>
@@ -48,11 +47,5 @@ public class WeaponReloadingState : WeaponState
 	public override void OnReload()
     {
         Debug.Log("リロード中には再度リロードできません");
-    }
-
-    private void Reload()
-    {
-        // ここでリロード処理を実装
-        Debug.Log($"Reloading weapon: {controller.WeaponData.DisplayName}");
     }
 }

@@ -16,7 +16,7 @@ public class WeaponIdleState : WeaponState
 
     public override void Exit()
     {
-        Debug.Log("Weapon Idle Stateから退出します");
+        // Debug.Log("Weapon Idle Stateから退出します");
     }
 
     /// <summary>

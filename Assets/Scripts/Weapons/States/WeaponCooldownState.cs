@@ -9,7 +9,7 @@ public class WeaponCooldownState : WeaponState
     public override void Enter()
     {
         Debug.Log("Weapon Cooldown Stateに入りました");
-        timer = controller.WeaponData.FireInterval;
+        timer = controller.Weapon.WeaponData.FireInterval;
     }
 
     public override void Update()
@@ -26,7 +26,7 @@ public class WeaponCooldownState : WeaponState
 
     public override void Exit()
     {
-        Debug.Log("Weapon Cooldown Stateから退出します");
+        // Debug.Log("Weapon Cooldown Stateから退出します");
     }
 
     /// <summary>

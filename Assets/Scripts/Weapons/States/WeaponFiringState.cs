@@ -8,7 +8,7 @@ public class WeaponFiringState : WeaponState
     {
         Debug.Log("Weapon Firing Stateに入りました");
 
-        Fire();
+        controller.Weapon.Fire();
 
         // 発射後はクールタイムへ
         controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
@@ -21,7 +21,7 @@ public class WeaponFiringState : WeaponState
 
     public override void Exit()
     {
-        Debug.Log("Weapon Firing Stateから退出します");
+        // Debug.Log("Weapon Firing Stateから退出します");
     }
 
     /// <summary>
@@ -38,14 +38,5 @@ public class WeaponFiringState : WeaponState
 	public override void OnReload()
     {
         Debug.Log($"銃撃中にリロードはできません");
-    }
-
-    /// <summary>
-    /// 攻撃処理を実装するメソッド
-    /// </summary>
-    private void Fire()
-    {
-        // ここで攻撃処理を実装
-        Debug.Log($"Firing weapon: {controller.WeaponData.DisplayName}");
     }
 }

@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private WeaponData weaponData;
+    [SerializeField] private Weapon weapon;
 
-    public WeaponData WeaponData => weaponData;
+    public Weapon Weapon => weapon;
 
     private WeaponStateMachine weaponStateMachine;
     public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
