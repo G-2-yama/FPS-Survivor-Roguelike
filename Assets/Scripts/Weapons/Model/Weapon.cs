@@ -23,18 +23,20 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 攻撃処理を実装するメソッド
     /// </summary>
-    public void Fire()
+    /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
+    public bool Fire()
     {
         if (currentAmmo <= 0)
         {
             Debug.Log($"{weaponData.DisplayName} is out of ammo!");
-            return;
+            return false;
         }
 
         currentAmmo--;
         NotifyAmmoChanged();
 
         ExecuteFire();
+        return true;
     }
 
     /// <summary>

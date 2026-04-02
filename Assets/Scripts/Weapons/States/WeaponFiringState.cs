@@ -8,11 +8,16 @@ public class WeaponFiringState : WeaponState
     {
         Debug.Log("Weapon Firing Stateに入りました");
 
-        controller.Weapon.Fire();
-        controller.WeaponRecoil.AddRecoil();
+        if (controller.Weapon.Fire())
+        {
+            // 発射成功
+            controller.WeaponRecoil.AddRecoil();
+            controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
+            return;
+        }
 
-        // 発射後はクールタイムへ
-        controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
+        // 発射失敗
+        controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
     }
 
     public override void Update()
