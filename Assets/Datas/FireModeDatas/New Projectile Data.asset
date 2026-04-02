@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e9cef17cdaffe4e89207bc592f288a, type: 3}
   m_Name: New Projectile Data
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileData
-  modeName: Fire Mode
-  speed: 80
+  speed: 50
   lifetime: 2
   prefab: {fileID: 6556299627688077866, guid: 5ec9dd94aad773540b462f94e239cfeb, type: 3}
