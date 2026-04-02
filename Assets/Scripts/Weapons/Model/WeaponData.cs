@@ -13,11 +13,13 @@ public class WeaponData : ScriptableObject
     
     [SerializeField] private string displayName = "New Weapon";
     public string DisplayName => displayName;
+
+    [Header("Fire Mode")]
+    [SerializeField] private FireModeData fireModeData;
+    public FireModeData FireModeData => fireModeData;
     
 
     [Header("Attack")]
-    [SerializeField] private WeaponAttackType attackType = WeaponAttackType.HitScan;
-    public WeaponAttackType AttackType => attackType;
 
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
     public WeaponTriggerType TriggerType => triggerType;
@@ -28,14 +30,8 @@ public class WeaponData : ScriptableObject
     [SerializeField, Min(0.01f)] private float fireInterval = 0.12f;
     public float FireInterval => fireInterval;
 
-    [SerializeField, Min(1)] private int projectilesPerShot = 1;
-    public int ProjectilesPerShot => projectilesPerShot;
-
     [SerializeField, Range(0f, 45f)] private float spreadAngle = 0.5f;
     public float SpreadAngle => spreadAngle;
-
-    [SerializeField, Min(0f)] private float maxRange = 60f;
-    public float MaxRange => maxRange;
 
 
     [Header("Recoil")]
@@ -58,14 +54,6 @@ public class WeaponData : ScriptableObject
 
     [SerializeField] private float adsRecoilMultiplier = 0.6f;
     public float AdsRecoilMultiplier => adsRecoilMultiplier;
-
-
-    [Header("Projectile")]
-    [SerializeField, Min(0f)] private float projectileSpeed = 80f;
-    public float ProjectileSpeed => projectileSpeed;
-
-    [SerializeField, Min(0f)] private float projectileLifetime = 2f;
-    public float ProjectileLifetime => projectileLifetime;
 
 
     [Header("Burst")]
@@ -97,7 +85,6 @@ public class WeaponData : ScriptableObject
     [SerializeField] private WeaponLevelData[] levelData;
     public WeaponLevelData[] LevelData => levelData;
 
-    public bool IsProjectileWeapon => attackType == WeaponAttackType.Projectile;
 
     /// <summary>
     /// レベルに応じたダメージを取得する
@@ -168,12 +155,6 @@ public class WeaponData : ScriptableObject
     {
         return reloadTime + levelData[level].reloadTimeBonus;
     }
-}
-
-public enum WeaponAttackType
-{
-    HitScan = 0,
-    Projectile = 1,
 }
 
 public enum WeaponTriggerType

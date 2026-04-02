@@ -25,15 +25,16 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Fire()
     {
-        if (currentAmmo > 0)
-        {
-            currentAmmo--;
-            NotifyAmmoChanged();
-        }
-        else
+        if (currentAmmo <= 0)
         {
             Debug.Log($"{weaponData.DisplayName} is out of ammo!");
+            return;
         }
+
+        currentAmmo--;
+        NotifyAmmoChanged();
+
+        ExecuteFire();
     }
 
     /// <summary>
@@ -52,4 +53,35 @@ public class Weapon : MonoBehaviour
     {
         OnAmmoChanged?.Invoke(currentAmmo, weaponData.MagazineSize);
     }
+
+    /// <summary>
+    /// 攻撃処理を実装するメソッド
+    /// </summary>
+    private void ExecuteFire()
+    {
+        var fireMode = weaponData.FireModeData;
+
+        Vector3 direction = GetFireDirection();
+
+        fireMode.Fire(this, direction);
+    }
+
+    /// <summary>
+    /// 発射方向をスプレッド角度に基づいてランダムに決定するメソッド
+    /// </summary>
+    /// <returns>発射方向</returns>
+    private Vector3 GetFireDirection()
+    {
+        float spread = weaponData.SpreadAngle;
+
+        float x = UnityEngine.Random.Range(-spread, spread);
+        float y = UnityEngine.Random.Range(-spread, spread);
+
+        Vector3 direction = Camera.main.transform.forward;
+        direction = Quaternion.Euler(y, x, 0) * direction;
+
+        return direction;
+    }
+
+
 }
