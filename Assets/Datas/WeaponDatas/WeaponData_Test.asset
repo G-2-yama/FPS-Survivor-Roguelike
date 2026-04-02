@@ -21,9 +21,9 @@ MonoBehaviour:
   projectilesPerShot: 1
   spreadAngle: 0.5
   maxRange: 60
-  recoilX: 1.2
-  recoilY: 0.4
-  recoilRecoverySpeed: 8
+  recoilX: 0.012
+  recoilY: 0.004
+  recoilRecoverySpeed: 40
   adsZoom: 60
   adsSpreadMultiplier: 0.4
   adsRecoilMultiplier: 0.6

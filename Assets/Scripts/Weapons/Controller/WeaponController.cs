@@ -11,6 +11,12 @@ public class WeaponController : MonoBehaviour
     public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
 
     /// <summary>
+    /// 武器の反動を管理するクラス
+    /// </summary>
+    private WeaponRecoil weaponRecoil;
+    public WeaponRecoil WeaponRecoil => weaponRecoil;
+
+    /// <summary>
     /// 攻撃入力が押されているかどうかを管理するフラグ
     /// </summary>
     private bool isFirePressed;
@@ -23,6 +29,7 @@ public class WeaponController : MonoBehaviour
     void Awake()
     {
         weaponStateMachine = new WeaponStateMachine();
+        weaponRecoil = new WeaponRecoil(weapon.WeaponData);
     }
 
     /// <summary>

@@ -96,6 +96,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         look.ApplyLook(lookInput);
+
+        Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
+        look.AddRecoil(recoil);
+
         mover.Move(moveInput, isSprinting);
 
         isGrounded = mover.IsGrounded();
