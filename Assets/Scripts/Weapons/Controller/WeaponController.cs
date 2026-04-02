@@ -11,6 +11,13 @@ public class WeaponController : MonoBehaviour
     public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
 
     /// <summary>
+    /// 攻撃入力が押されているかどうかを管理するフラグ
+    /// </summary>
+    private bool isFirePressed;
+
+    public bool IsFirePressed => isFirePressed;
+
+    /// <summary>
     /// 初期化
     /// </summary>
     void Awake()
@@ -36,9 +43,14 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Started)
         {
+            isFirePressed = true;
             weaponStateMachine.OnFire();
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            isFirePressed = false;
         }
     }
 

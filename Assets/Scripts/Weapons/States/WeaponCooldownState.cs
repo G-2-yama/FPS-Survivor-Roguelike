@@ -18,9 +18,15 @@ public class WeaponCooldownState : WeaponState
 
         if (timer <= 0f)
         {
-            controller.WeaponStateMachine.ChangeState(
-                new WeaponIdleState(controller)
-            );
+            if (controller.Weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto
+                && controller.IsFirePressed)
+            {
+                controller.WeaponStateMachine.ChangeState(new WeaponFiringState(controller));
+            }
+            else
+            {
+                controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
+            }
         }
     }
 
