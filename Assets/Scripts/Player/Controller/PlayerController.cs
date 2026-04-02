@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
+    /// 武器の入力・攻撃処理を管理するコントローラー
+    /// </summary>
+    [SerializeField] private WeaponController weaponController;
+
+    /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
@@ -22,8 +27,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// プレイヤーの移動状態を管理するステートマシン
     /// </summary>
-    private StateMachine stateMachine;
-    public StateMachine StateMachine => stateMachine;
+    private StateMachine<PlayerMoveState> stateMachine;
+    public StateMachine<PlayerMoveState> StateMachine => stateMachine;
 
     /// <summary>
     /// 移動処理
@@ -71,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        stateMachine = new StateMachine();
+        stateMachine = new StateMachine<PlayerMoveState>();
 
         mover = new PlayerMover(transform, playerRigidbody, config);
         look = new PlayerLook(transform, cameraPitchTransform, config);
@@ -91,6 +96,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         look.ApplyLook(lookInput);
+
+        Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
+        look.AddRecoil(recoil);
+
         mover.Move(moveInput, isSprinting);
 
         isGrounded = mover.IsGrounded();
@@ -154,5 +163,21 @@ public class PlayerController : MonoBehaviour
         {
             jumpRequested = true;
         }
+    }
+
+    /// <summary>
+    /// 射撃入力を武器コントローラーへ中継
+    /// </summary>
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        weaponController.OnFire(context);
+    }
+
+    /// <summary>
+    /// リロード入力を武器コントローラーへ中継
+    /// </summary>
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        weaponController.OnReload(context);
     }
 }
