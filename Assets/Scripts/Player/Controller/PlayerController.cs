@@ -93,16 +93,24 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        look.ApplyLook(lookInput);
-
-        Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
-        look.AddRecoil(recoil);
-
-        mover.Move(moveInput, isSprinting);
-
         isGrounded = mover.IsGrounded();
 
         stateMachine.Update();
+
+        PlayerMoveState currentState = stateMachine.CurrentState;
+
+        if (currentState.AllowLook)
+        {
+            look.ApplyLook(lookInput);
+
+            Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
+            look.AddRecoil(recoil);
+        }
+
+        if (currentState.AllowMove)
+        {
+            mover.Move(moveInput, isSprinting);
+        }
     }
 
     /// <summary>
@@ -134,6 +142,13 @@ public class PlayerController : MonoBehaviour
     public void OnPlayerDeath()
     {
         Debug.Log("Playerが死亡しました");
+
+        moveInput = Vector2.zero;
+        lookInput = Vector2.zero;
+        isSprinting = false;
+        jumpRequested = false;
+        playerRigidbody.linearVelocity = Vector3.zero;
+
         stateMachine.ChangeState(new PlayerDeathState(this));
     }
 
