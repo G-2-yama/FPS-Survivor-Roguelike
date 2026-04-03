@@ -36,7 +36,6 @@ public class DamageArea : MonoBehaviour
         {
             damageable.TakeDamage(damage);
             timers[damageable] = 0f;
-            Debug.Log($"DamageArea: {damage}ダメージを与えました。");
         }
     }
 
