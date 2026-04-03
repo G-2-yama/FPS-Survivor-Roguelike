@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Player player;
+    public Player Player => player;
+
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
@@ -17,12 +20,6 @@ public class PlayerController : MonoBehaviour
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
-
-    /// <summary>
-    /// プレイヤーの各種パラメータを保持するモデル
-    /// </summary>
-    [SerializeField] private PlayerConfig config;
-    public PlayerConfig Model => config;
 
     /// <summary>
     /// プレイヤーの移動状態を管理するステートマシン
@@ -78,8 +75,8 @@ public class PlayerController : MonoBehaviour
 
         stateMachine = new StateMachine<PlayerMoveState>();
 
-        mover = new PlayerMover(transform, playerRigidbody, config);
-        look = new PlayerLook(transform, cameraPitchTransform, config);
+        mover = new PlayerMover(transform, playerRigidbody, player.Config);
+        look = new PlayerLook(transform, cameraPitchTransform, player.Config);
     }
 
     /// <summary>
@@ -87,6 +84,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
+        player.OnDeath += OnPlayerDeath;
         stateMachine.ChangeState(new PlayerIdleState(this));
     }
 
@@ -128,6 +126,15 @@ public class PlayerController : MonoBehaviour
 
         jumpRequested = false;
         return true;
+    }
+
+    /// <summary>
+    /// プレイヤーを死亡状態にさせる
+    /// </summary>
+    public void OnPlayerDeath()
+    {
+        Debug.Log("Playerが死亡しました");
+        stateMachine.ChangeState(new PlayerDeathState(this));
     }
 
     /// <summary>
