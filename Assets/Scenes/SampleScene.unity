@@ -1154,7 +1154,7 @@ GameObject:
   - component: {fileID: 1023013651}
   - component: {fileID: 1023013650}
   m_Layer: 0
-  m_Name: Ground (3)
+  m_Name: DamageGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1175,6 +1175,7 @@ MonoBehaviour:
   areaCollider: {fileID: 1023013651}
   damage: 10
   interval: 0.2
+  targetTeam: 1
 --- !u!65 &1023013651
 BoxCollider:
   m_ObjectHideFlags: 0

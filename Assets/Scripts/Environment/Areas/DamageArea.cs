@@ -7,6 +7,8 @@ public class DamageArea : MonoBehaviour
 
     [SerializeField] private int damage = 10;
     [SerializeField] private float interval = 1f;
+    [SerializeField] private TeamType targetTeam;
+
 
     /// <summary>
     /// 各対象ごとのダメージタイマーを管理する辞書
@@ -21,6 +23,8 @@ public class DamageArea : MonoBehaviour
     {
         var damageable = other.GetComponent<IDamageable>();
         if (damageable == null) return;
+
+        if (damageable.TeamType != targetTeam) return;
 
         // 初回登録
         if (!timers.ContainsKey(damageable))
