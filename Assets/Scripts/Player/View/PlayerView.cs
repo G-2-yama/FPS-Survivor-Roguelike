@@ -18,4 +18,9 @@ public class PlayerView : MonoBehaviour
         currentHealthText.text = $"{current} / {max}";
     }
 
+    private void OnDestroy()
+    {
+        player.Health.OnHealthChanged -= UpdateHealthText;
+    }
+
 }
