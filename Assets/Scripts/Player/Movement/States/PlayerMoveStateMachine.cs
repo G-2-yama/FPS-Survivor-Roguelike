@@ -2,26 +2,28 @@ using Unity.VisualScripting;
 
 public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
 {
-    private PlayerMoveState IdleState;
-    public PlayerMoveState AirState => airState;
+    private PlayerMoveState idleState;
+    public PlayerMoveState IdleStatePublic => idleState;
 
     private PlayerMoveState airState;
-    public PlayerMoveState WalkState => walkState;
+    public PlayerMoveState AirState => airState;
 
     private PlayerMoveState walkState;
-    public PlayerMoveState SprintState => sprintState;
+    public PlayerMoveState WalkState => walkState;
 
     private PlayerMoveState sprintState;
+    public PlayerMoveState SprintState => sprintState;
+    
     public PlayerMoveState CurrentMoveState => currentState;
 
     public PlayerMoveStateMachine(PlayerController controller)
     {
-        IdleState = new PlayerIdleState(controller, this);
+        idleState = new PlayerIdleState(controller, this);
         airState = new PlayerAirState(controller, this);
         walkState = new PlayerWalkState(controller, this);
         sprintState = new PlayerSprintState(controller, this);
 
-        ChangeState(IdleState);
+        ChangeState(idleState);
     }
 
     /// <summary>
@@ -53,6 +55,6 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
     /// </summary>
     public void ChangeIdleState()
     {
-        ChangeState(IdleState);
+        ChangeState(idleState);
     }
 }
