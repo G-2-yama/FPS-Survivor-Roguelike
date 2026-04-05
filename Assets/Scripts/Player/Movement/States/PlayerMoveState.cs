@@ -1,8 +1,20 @@
+/// <summary>
+/// プレイヤー移動サブステートの基底クラス。
+/// 共通の入力判定と遷移ヘルパーを提供する。
+/// </summary>
 public abstract class PlayerMoveState : IState
 {
     protected PlayerController controller;
     protected StateMachine<PlayerMoveState> moveStateMachine;
 
+
+    private const float MoveInputDeadzoneSqr = 0.0001f;
+
+    /// <summary>
+    /// 基底移動ステートを初期化する。
+    /// </summary>
+    /// <param name="controller">プレイヤー制御本体。</param>
+    /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerMoveState(PlayerController controller,
                            StateMachine<PlayerMoveState> moveStateMachine)
     {
@@ -24,4 +36,64 @@ public abstract class PlayerMoveState : IState
     /// 状態終了時の後処理
     /// </summary>
     public virtual void Exit() { }
+
+    /// <summary>
+    /// 移動入力がデッドゾーンを超えているか判定する。
+    /// </summary>
+    /// <returns>移動入力が有効な場合はtrue。</returns>
+    protected bool HasMoveInput()
+    {
+        return controller.MoveInput.sqrMagnitude > MoveInputDeadzoneSqr;
+    }
+
+    /// <summary>
+    /// 非接地なら空中ステートへ遷移する
+    /// </summary>
+    /// <returns>遷移した場合はtrue。</returns>
+    protected bool TryTransitionToAirState()
+    {
+        if (!controller.IsGrounded)
+        {
+            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ジャンプ要求があればジャンプを実行し空中ステートへ遷移する
+    /// </summary>
+    /// <returns>遷移した場合はtrue。</returns>
+    protected bool TryTransitionByJumpRequest()
+    {
+        if (!controller.ConsumeJumpRequest())
+        {
+            return false;
+        }
+
+        controller.Jump();
+        moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
+        return true;
+    }
+
+    /// <summary>
+    /// 地上時の入力状態に応じてIdle/Walk/Sprintへ遷移する
+    /// </summary>
+    protected void TransitionToGroundMoveStateByInput()
+    {
+        if (!HasMoveInput())
+        {
+            moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
+            return;
+        }
+
+        if (controller.IsSprinting)
+        {
+            moveStateMachine.ChangeState(new PlayerSprintState(controller, moveStateMachine));
+            return;
+        }
+
+        moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
+    }
 }

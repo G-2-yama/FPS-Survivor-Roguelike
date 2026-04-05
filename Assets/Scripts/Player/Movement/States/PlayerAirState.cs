@@ -1,7 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// 空中にいる間の移動ステート。
+/// </summary>
 public class PlayerAirState : PlayerMoveState
 {
+    /// <summary>
+    /// 空中ステートを初期化する。
+    /// </summary>
+    /// <param name="controller">プレイヤー制御本体。</param>
+    /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerAirState(PlayerController controller,
                           StateMachine<PlayerMoveState> moveStateMachine)
         : base(controller, moveStateMachine) { }
@@ -18,19 +26,7 @@ public class PlayerAirState : PlayerMoveState
     {
         if (controller.IsGrounded)
         {
-            if (controller.MoveInput == Vector2.zero)
-            {
-                moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
-            }
-            else if (controller.IsSprinting)
-            {
-                moveStateMachine.ChangeState(new PlayerSprintState(controller, moveStateMachine));
-            }
-            else
-            {
-                moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
-            }
-
+            TransitionToGroundMoveStateByInput();
             return;
         }
 

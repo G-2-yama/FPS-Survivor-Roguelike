@@ -1,7 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// スプリント中の移動ステート。
+/// </summary>
 public class PlayerSprintState : PlayerMoveState
 {
+    /// <summary>
+    /// スプリントステートを初期化する。
+    /// </summary>
+    /// <param name="controller">プレイヤー制御本体。</param>
+    /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerSprintState(PlayerController controller,
                              StateMachine<PlayerMoveState> moveStateMachine)
         : base(controller, moveStateMachine) { }
@@ -16,25 +24,23 @@ public class PlayerSprintState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
-        if (!controller.IsGrounded)
+        if (TryTransitionToAirState())
         {
-            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
             return;
         }
 
-        if (controller.ConsumeJumpRequest())
+        if (TryTransitionByJumpRequest())
         {
-            controller.Jump();
-            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
             return;
         }
 
-        if (controller.MoveInput == Vector2.zero)
+        if (!HasMoveInput())
         {
             moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
             return;
         }
-        else if (!controller.IsSprinting)
+
+        if (!controller.IsSprinting)
         {
             moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
             return;

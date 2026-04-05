@@ -1,7 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// 入力待機中の移動ステート。
+/// </summary>
 public class PlayerIdleState : PlayerMoveState
 {
+    /// <summary>
+    /// 待機ステートを初期化する。
+    /// </summary>
+    /// <param name="controller">プレイヤー制御本体。</param>
+    /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerIdleState(PlayerController controller,
                            StateMachine<PlayerMoveState> moveStateMachine)
         : base(controller, moveStateMachine) { }
@@ -16,31 +24,21 @@ public class PlayerIdleState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
-        if (!controller.IsGrounded)
+        if (TryTransitionToAirState())
         {
-            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
             return;
         }
 
-        if (controller.ConsumeJumpRequest())
+        if (TryTransitionByJumpRequest())
         {
-            controller.Jump();
-            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine    ));
             return;
         }
 
-        if (controller.MoveInput == Vector2.zero)
+        if (!HasMoveInput())
         {
             return;
-        } 
+        }
 
-        if (controller.IsSprinting)
-        {
-            moveStateMachine.ChangeState(new PlayerSprintState(controller, moveStateMachine));
-        }
-        else
-        {
-            moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
-        }
+        TransitionToGroundMoveStateByInput();
     }
 }
