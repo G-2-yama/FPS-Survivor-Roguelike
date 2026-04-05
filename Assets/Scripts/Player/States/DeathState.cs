@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class PlayerDeathState : PlayerMoveState
+public class DeathState : PlayerState
 {
-    public PlayerDeathState(PlayerController controller) : base(controller) { }
-
-    public override bool AllowLook => false;
-    public override bool AllowMove => false;
+    public DeathState(PlayerController controller) : base(controller) { }
 
     public override void Enter()
     {

@@ -15,27 +15,27 @@ public class PlayerController : MonoBehaviour
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
     [SerializeField] private WeaponController weaponController;
+    public WeaponController WeaponController => weaponController;
 
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
 
-    /// <summary>
-    /// プレイヤーの移動状態を管理するステートマシン
-    /// </summary>
-    private StateMachine<PlayerMoveState> stateMachine;
-    public StateMachine<PlayerMoveState> StateMachine => stateMachine;
+    private StateMachine<PlayerState> stateMachine;
+    public StateMachine<PlayerState> StateMachine => stateMachine;
 
     /// <summary>
     /// 移動処理
     /// </summary>
     private PlayerMover mover;
+    public PlayerMover Mover => mover;
 
     /// <summary>
     /// 視点処理
     /// </summary>
     private PlayerLook look;
+    public PlayerLook Look => look;
 
     /// <summary>
     /// 移動入力値を保持
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        stateMachine = new StateMachine<PlayerMoveState>();
+        stateMachine = new StateMachine<PlayerState>();
 
         mover = new PlayerMover(transform, playerRigidbody, player.Config);
         look = new PlayerLook(transform, cameraPitchTransform, player.Config);
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player.OnDeath += OnPlayerDeath;
-        stateMachine.ChangeState(new PlayerIdleState(this));
+        stateMachine.ChangeState(new AliveState(this));
     }
 
     /// <summary>
@@ -96,21 +96,11 @@ public class PlayerController : MonoBehaviour
         isGrounded = mover.IsGrounded();
 
         stateMachine.Update();
+    }
 
-        PlayerMoveState currentState = stateMachine.CurrentState;
-
-        if (currentState.AllowLook)
-        {
-            look.ApplyLook(lookInput);
-
-            Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
-            look.AddRecoil(recoil);
-        }
-
-        if (currentState.AllowMove)
-        {
-            mover.Move(moveInput, isSprinting);
-        }
+    void OnDestroy()
+    {
+        player.OnDeath -= OnPlayerDeath;
     }
 
     /// <summary>
@@ -149,7 +139,7 @@ public class PlayerController : MonoBehaviour
         jumpRequested = false;
         playerRigidbody.linearVelocity = Vector3.zero;
 
-        stateMachine.ChangeState(new PlayerDeathState(this));
+        stateMachine.ChangeState(new DeathState(this));
     }
 
     /// <summary>
@@ -192,7 +182,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        weaponController.OnFire(context);
+        if(stateMachine.CurrentState is AliveState)
+        {
+            weaponController.OnFire(context);
+        }
     }
 
     /// <summary>
@@ -200,6 +193,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        weaponController.OnReload(context);
+        if(stateMachine.CurrentState is AliveState)
+        {
+            weaponController.OnReload(context);
+        }
     }
 }

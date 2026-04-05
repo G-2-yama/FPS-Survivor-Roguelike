@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class PlayerSprintState : PlayerMoveState
 {
-    public PlayerSprintState(PlayerController controller) : base(controller) { }
+    public PlayerSprintState(PlayerController controller,
+                             StateMachine<PlayerMoveState> moveStateMachine)
+        : base(controller, moveStateMachine) { }
 
     public override void Enter()
     {
@@ -16,25 +18,25 @@ public class PlayerSprintState : PlayerMoveState
     {
         if (!controller.IsGrounded)
         {
-            controller.StateMachine.ChangeState(new PlayerAirState(controller));
+            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
             return;
         }
 
         if (controller.ConsumeJumpRequest())
         {
             controller.Jump();
-            controller.StateMachine.ChangeState(new PlayerAirState(controller));
+            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
             return;
         }
 
         if (controller.MoveInput == Vector2.zero)
         {
-            controller.StateMachine.ChangeState(new PlayerIdleState(controller));
+            moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
             return;
         }
         else if (!controller.IsSprinting)
         {
-            controller.StateMachine.ChangeState(new PlayerWalkState(controller));
+            moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
             return;
         }
     }
