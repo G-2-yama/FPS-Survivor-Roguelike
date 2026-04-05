@@ -5,7 +5,7 @@
 public abstract class PlayerMoveState : IState
 {
     protected PlayerController controller;
-    protected StateMachine<PlayerMoveState> moveStateMachine;
+    protected PlayerMoveStateMachine moveStateMachine;
 
 
     private const float MoveInputDeadzoneSqr = 0.0001f;
@@ -16,7 +16,7 @@ public abstract class PlayerMoveState : IState
     /// <param name="controller">プレイヤー制御本体。</param>
     /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerMoveState(PlayerController controller,
-                           StateMachine<PlayerMoveState> moveStateMachine)
+                           PlayerMoveStateMachine moveStateMachine)
     {
         this.controller = controller;
         this.moveStateMachine = moveStateMachine;
@@ -54,7 +54,7 @@ public abstract class PlayerMoveState : IState
     {
         if (!controller.IsGrounded)
         {
-            moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
+            moveStateMachine.ChangeAirState();
             return true;
         }
 
@@ -73,7 +73,7 @@ public abstract class PlayerMoveState : IState
         }
 
         controller.Jump();
-        moveStateMachine.ChangeState(new PlayerAirState(controller, moveStateMachine));
+        moveStateMachine.ChangeAirState();
         return true;
     }
 
@@ -84,16 +84,16 @@ public abstract class PlayerMoveState : IState
     {
         if (!HasMoveInput())
         {
-            moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
+            moveStateMachine.ChangeIdleState();
             return;
         }
 
         if (controller.IsSprinting)
         {
-            moveStateMachine.ChangeState(new PlayerSprintState(controller, moveStateMachine));
+            moveStateMachine.ChangeSprintState();
             return;
         }
 
-        moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
+        moveStateMachine.ChangeWalkState();
     }
 }

@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class AliveState : PlayerState
 {
-    private StateMachine<PlayerMoveState> moveStateMachine;
+    private PlayerMoveStateMachine moveStateMachine;
 
     public AliveState(PlayerController controller) : base(controller) { }
+
 
     public override void Enter()
     {
         Debug.Log("Alive Stateに入りました");
 
-        moveStateMachine = new StateMachine<PlayerMoveState>();
-        moveStateMachine.ChangeState(
-            new PlayerIdleState(controller, moveStateMachine)
-        );
+        moveStateMachine = new PlayerMoveStateMachine(controller);
     }
 
     public override void Update()

@@ -11,7 +11,7 @@ public class PlayerSprintState : PlayerMoveState
     /// <param name="controller">プレイヤー制御本体。</param>
     /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerSprintState(PlayerController controller,
-                             StateMachine<PlayerMoveState> moveStateMachine)
+                             PlayerMoveStateMachine moveStateMachine)
         : base(controller, moveStateMachine) { }
 
     public override void Enter()
@@ -36,13 +36,13 @@ public class PlayerSprintState : PlayerMoveState
 
         if (!HasMoveInput())
         {
-            moveStateMachine.ChangeState(new PlayerIdleState(controller, moveStateMachine));
+            moveStateMachine.ChangeIdleState();
             return;
         }
 
         if (!controller.IsSprinting)
         {
-            moveStateMachine.ChangeState(new PlayerWalkState(controller, moveStateMachine));
+            moveStateMachine.ChangeWalkState();
             return;
         }
     }

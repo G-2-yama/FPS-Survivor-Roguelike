@@ -11,7 +11,7 @@ public class PlayerAirState : PlayerMoveState
     /// <param name="controller">プレイヤー制御本体。</param>
     /// <param name="moveStateMachine">移動サブステートマシン。</param>
     public PlayerAirState(PlayerController controller,
-                          StateMachine<PlayerMoveState> moveStateMachine)
+                          PlayerMoveStateMachine moveStateMachine)
         : base(controller, moveStateMachine) { }
 
     public override void Enter()

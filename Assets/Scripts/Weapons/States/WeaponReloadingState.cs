@@ -24,7 +24,7 @@ public class WeaponReloadingState : WeaponState
         if (timer <= 0f)
         {
             controller.Weapon.Reload();
-            controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
+            controller.WeaponStateMachine.ChangeIdleState();
         }
     }
 
