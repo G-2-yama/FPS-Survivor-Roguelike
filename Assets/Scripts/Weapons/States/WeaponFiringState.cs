@@ -12,12 +12,12 @@ public class WeaponFiringState : WeaponState
         {
             // 発射成功
             controller.WeaponRecoil.AddRecoil();
-            controller.WeaponStateMachine.ChangeState(new WeaponCooldownState(controller));
+            controller.WeaponStateMachine.ChangeCooldownState();
             return;
         }
 
         // 発射失敗
-        controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
+        controller.WeaponStateMachine.ChangeIdleState();
     }
 
     public override void Update()

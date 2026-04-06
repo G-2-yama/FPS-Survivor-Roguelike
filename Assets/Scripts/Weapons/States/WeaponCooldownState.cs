@@ -21,11 +21,11 @@ public class WeaponCooldownState : WeaponState
             if (controller.Weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto
                 && controller.IsFirePressed)
             {
-                controller.WeaponStateMachine.ChangeState(new WeaponFiringState(controller));
+                controller.WeaponStateMachine.ChangeFiringState();
             }
             else
             {
-                controller.WeaponStateMachine.ChangeState(new WeaponIdleState(controller));
+                controller.WeaponStateMachine.ChangeIdleState();
             }
         }
     }

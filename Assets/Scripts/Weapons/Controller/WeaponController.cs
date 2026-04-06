@@ -28,16 +28,8 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        weaponStateMachine = new WeaponStateMachine();
+        weaponStateMachine = new WeaponStateMachine(this);
         weaponRecoil = new WeaponRecoil(weapon.WeaponData);
-    }
-
-    /// <summary>
-    /// 初期状態として待機状態に遷移
-    /// </summary>
-    void Start()
-    {
-        weaponStateMachine.ChangeState(new WeaponIdleState(this));
     }
 
     public void Update()

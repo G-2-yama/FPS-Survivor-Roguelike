@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -94,4 +95,12 @@ public class PlayerConfig : MonoBehaviour
     /// ジャンプ時の初速
     /// </summary>
     public float JumpForce => jumpForce;
+
+    /// <summary>
+    /// プレイヤーの初期HP
+    /// </summary>
+    [SerializeField] private int initialHP = 100;
+
+    public int InitialHP => initialHP;
+
 }

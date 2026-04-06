@@ -6,39 +6,36 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Player player;
+    public Player Player => player;
+
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
     [SerializeField] private WeaponController weaponController;
+    public WeaponController WeaponController => weaponController;
 
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
 
-    /// <summary>
-    /// プレイヤーの各種パラメータを保持するモデル
-    /// </summary>
-    [SerializeField] private PlayerConfig config;
-    public PlayerConfig Model => config;
-
-    /// <summary>
-    /// プレイヤーの移動状態を管理するステートマシン
-    /// </summary>
-    private StateMachine<PlayerMoveState> stateMachine;
-    public StateMachine<PlayerMoveState> StateMachine => stateMachine;
+    private StateMachine<PlayerState> stateMachine;
+    public StateMachine<PlayerState> StateMachine => stateMachine;
 
     /// <summary>
     /// 移動処理
     /// </summary>
     private PlayerMover mover;
+    public PlayerMover Mover => mover;
 
     /// <summary>
     /// 視点処理
     /// </summary>
     private PlayerLook look;
+    public PlayerLook Look => look;
 
     /// <summary>
     /// 移動入力値を保持
@@ -76,10 +73,10 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        stateMachine = new StateMachine<PlayerMoveState>();
+        stateMachine = new StateMachine<PlayerState>();
 
-        mover = new PlayerMover(transform, playerRigidbody, config);
-        look = new PlayerLook(transform, cameraPitchTransform, config);
+        mover = new PlayerMover(transform, playerRigidbody, player.Config);
+        look = new PlayerLook(transform, cameraPitchTransform, player.Config);
     }
 
     /// <summary>
@@ -87,7 +84,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        stateMachine.ChangeState(new PlayerIdleState(this));
+        player.OnDeath += OnPlayerDeath;
+        stateMachine.ChangeState(new AliveState(this));
     }
 
     /// <summary>
@@ -95,16 +93,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        look.ApplyLook(lookInput);
-
-        Vector2 recoil = weaponController.WeaponRecoil.Update(Time.deltaTime);
-        look.AddRecoil(recoil);
-
-        mover.Move(moveInput, isSprinting);
-
         isGrounded = mover.IsGrounded();
 
         stateMachine.Update();
+    }
+
+    void OnDestroy()
+    {
+        player.OnDeath -= OnPlayerDeath;
     }
 
     /// <summary>
@@ -128,6 +124,22 @@ public class PlayerController : MonoBehaviour
 
         jumpRequested = false;
         return true;
+    }
+
+    /// <summary>
+    /// プレイヤーを死亡状態にさせる
+    /// </summary>
+    public void OnPlayerDeath()
+    {
+        Debug.Log("Playerが死亡しました");
+
+        moveInput = Vector2.zero;
+        lookInput = Vector2.zero;
+        isSprinting = false;
+        jumpRequested = false;
+        playerRigidbody.linearVelocity = Vector3.zero;
+
+        stateMachine.ChangeState(new DeathState(this));
     }
 
     /// <summary>
@@ -170,7 +182,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        weaponController.OnFire(context);
+        if(stateMachine.CurrentState is AliveState)
+        {
+            weaponController.OnFire(context);
+        }
     }
 
     /// <summary>
@@ -178,6 +193,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        weaponController.OnReload(context);
+        if(stateMachine.CurrentState is AliveState)
+        {
+            weaponController.OnReload(context);
+        }
     }
 }

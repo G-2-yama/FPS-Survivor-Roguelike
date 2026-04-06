@@ -4,7 +4,8 @@ public class StateMachine<T> where T : IState
     /// 現在アクティブな状態を保持
     /// </summary>
     protected T currentState;
-
+    public T CurrentState => currentState;
+    
     /// <summary>
     /// 現在の状態を終了し、新しい状態へ切り替え
     /// </summary>

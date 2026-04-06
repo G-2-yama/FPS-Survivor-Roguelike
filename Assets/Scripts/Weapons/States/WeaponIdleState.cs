@@ -24,7 +24,7 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        controller.WeaponStateMachine.ChangeState(new WeaponFiringState(controller));
+        controller.WeaponStateMachine.ChangeFiringState();
     }
 
 	/// <summary>
@@ -32,6 +32,6 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        controller.WeaponStateMachine.ChangeState(new WeaponReloadingState(controller));
+        controller.WeaponStateMachine.ChangeReloadingState();
     }
 }

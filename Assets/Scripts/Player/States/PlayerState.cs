@@ -1,8 +1,8 @@
-public abstract class PlayerMoveState : IState
+public abstract class PlayerState : IState
 {
     protected PlayerController controller;
 
-    public PlayerMoveState(PlayerController controller)
+    public PlayerState(PlayerController controller)
     {
         this.controller = controller;
     }
