@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 public class TrainingDummy : MonoBehaviour, IDamageable
 {
     [SerializeField] private int initialHP = 100;
-    public TeamType TeamType => TeamType.Player;
+    public TeamType TeamType => TeamType.Enemy;
 
     /// <summary>
     /// 体力を管理するモデル

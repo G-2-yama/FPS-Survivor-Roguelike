@@ -21,6 +21,9 @@ public class ProjectileData : FireModeData
             Quaternion.LookRotation(direction)
         );
 
+        var projectile = bullet.GetComponent<ProjectileObject>();
+        projectile.Initialize(weapon, this, lifetime);
+
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = direction * speed;
     }
