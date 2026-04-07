@@ -17,12 +17,12 @@ public class ProjectileData : FireModeData
     {
         GameObject bullet = Instantiate(
             prefab,
-            Camera.main.transform.position,
+            weapon.Muzzle.position,
             Quaternion.LookRotation(direction)
         );
 
         var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize(weapon, this, lifetime);
+        projectile.Initialize((col) => TryApplyDamage(weapon, col),lifetime);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = direction * speed;

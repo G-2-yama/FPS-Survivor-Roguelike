@@ -7,6 +7,9 @@ public class Weapon : MonoBehaviour
 
     public WeaponData WeaponData => weaponData;
 
+    [SerializeField] private Transform muzzle;
+    public Transform Muzzle => muzzle;
+
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
 

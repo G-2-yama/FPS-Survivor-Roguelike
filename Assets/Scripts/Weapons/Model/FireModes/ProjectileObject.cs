@@ -1,62 +1,50 @@
 using UnityEngine;
 
 /// <summary>
-/// 発射されたProjectileの衝突判定とダメージ適用を担当するコンポーネント。
+/// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
 /// </summary>
 public class ProjectileObject : MonoBehaviour
 {
-    private Weapon ownerWeapon;
-    private FireModeData fireModeData;
-    private bool isInitialized;
-    private bool hasHit;
+    private System.Action<Collider> onHit;
 
     /// <summary>
-    /// Projectileのダメージ量と寿命を初期化する。
+    /// ヒット時に呼び出す処理と生存時間を初期化する
     /// </summary>
-    /// <param name="weapon">Projectileを発射した武器。</param>
-    /// <param name="modeData">ダメージ適用に使用するFireModeデータ。</param>
-    /// <param name="lifeTime">自動破棄までの秒数。</param>
-    public void Initialize(Weapon weapon, FireModeData modeData, float lifeTime)
+    /// <param name="onHitAction">衝突したColliderを受け取るヒット時コールバック</param>
+    /// <param name="lifeTime">自動破棄までの秒数</param>
+    public void Initialize(System.Action<Collider> onHitAction, float lifeTime)
     {
-        ownerWeapon = weapon;
-        fireModeData = modeData;
-        isInitialized = true;
-
+        onHit = onHitAction;
         Destroy(gameObject, lifeTime);
     }
 
     /// <summary>
-    /// 物理衝突時にヒット判定を処理する
+    /// 物理衝突時にヒット処理を行う
     /// </summary>
-    /// <param name="collision">衝突情報。</param>
+    /// <param name="collision">衝突情報</param>
     private void OnCollisionEnter(Collision collision)
     {
         HandleHit(collision.collider);
     }
 
     /// <summary>
-    /// Trigger侵入時にヒット判定を処理する
+    /// Trigger侵入時にヒット処理を行う
     /// </summary>
-    /// <param name="other">接触したコライダー。</param>
+    /// <param name="other">接触したCollider</param>
     private void OnTriggerEnter(Collider other)
     {
         HandleHit(other);
     }
 
     /// <summary>
-    /// ダメージ対象を探索してダメージを適用し、Projectileを破棄する
+    /// ヒットコールバックを実行し、Projectileを破棄する
     /// </summary>
-    /// <param name="hitCollider">ヒットしたコライダー。</param>
-    private void HandleHit(Collider hitCollider)
+    /// <param name="col">ヒットしたCollider</param>
+    private void HandleHit(Collider col)
     {
-        if (hasHit || !isInitialized || hitCollider == null)
-        {
-            return;
-        }
+        if (onHit == null) return;
 
-        hasHit = true;
-
-        fireModeData.TryApplyDamage(ownerWeapon, hitCollider);
+        onHit.Invoke(col);
 
         Destroy(gameObject);
     }

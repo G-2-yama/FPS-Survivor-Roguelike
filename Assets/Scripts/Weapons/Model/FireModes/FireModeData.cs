@@ -16,7 +16,7 @@ public abstract class FireModeData : ScriptableObject
     /// <returns>ダメージを与えた場合はtrue</returns>
     public bool TryApplyDamage(Weapon weapon, Collider hitCollider)
     {
-        var damageable = hitCollider.GetComponentInParent<IDamageable>();
+        var damageable = hitCollider.GetComponent<IDamageable>();
         if (damageable == null) return false;
         
         if (damageable.TeamType != TeamType.Enemy 
