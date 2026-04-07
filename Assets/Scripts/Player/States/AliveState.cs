@@ -31,7 +31,8 @@ public class AliveState : PlayerState
         // 移動処理
         controller.Mover.Move(
             controller.MoveInput,
-            controller.IsSprinting
+            controller.IsSprinting,
+            Time.deltaTime
         );
 
     }

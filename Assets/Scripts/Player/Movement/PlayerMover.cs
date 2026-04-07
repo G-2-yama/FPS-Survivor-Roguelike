@@ -1,80 +1,90 @@
 using UnityEngine;
 
-/// <summary>
-/// Rigidbodyを使ったFPSプレイヤー移動処理
-/// 設定値は PlayerConfig から取得する
-/// </summary>
 public class PlayerMover
 {
-    private Rigidbody rb;
+    private const float StopInputDeadzoneSqr = 0.0001f;
+    private const float GroundedVerticalVelocity = -2f;
+
+    private CharacterController characterController;
     private Transform playerTransform;
     private PlayerConfig config;
+    private Vector3 horizontalVelocity;
+    private float verticalVelocity;
 
-    public PlayerMover(Transform playerTransform, Rigidbody rb,  PlayerConfig config)
+    public PlayerMover(
+        Transform playerTransform,
+        CharacterController characterController,
+        PlayerConfig config)
     {
-        this.rb = rb;
         this.playerTransform = playerTransform;
+        this.characterController = characterController;
         this.config = config;
-
-        rb.freezeRotation = true;
     }
 
-    /// <summary>
-    /// 移動処理
-    /// </summary>
-    public void Move(Vector2 moveInput, bool run)
-    {
-        Move(moveInput.x, moveInput.y, run);
-    }
-
-    /// <summary>
-    /// ジャンプ処理
-    /// </summary>
-    public void Jump()
-    {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        rb.AddForce(Vector3.up * config.JumpForce, ForceMode.Impulse);
-    }
-
-    /// <summary>
-    /// 地面判定
-    /// </summary>
-    public bool IsGrounded()
-    {
-        Vector3 rayOrigin = playerTransform.position + Vector3.up * config.GroundRayStartOffset;
-
-        bool isGrounded = Physics.Raycast(
-            rayOrigin,
-            Vector3.down,
-            config.GroundCheckDistance,
-            config.GroundLayers,
-            QueryTriggerInteraction.Ignore
-        );
-
-        // Sceneビュー上で地面判定レイを可視化
-        Debug.DrawRay(
-            rayOrigin,
-            Vector3.down * config.GroundCheckDistance,
-            isGrounded ? Color.green : Color.red
-        );
-
-        return isGrounded;
-    }
-
-    /// <summary>
-    /// 移動処理
-    /// </summary>
-    private void Move(float moveX, float moveZ, bool run)
+    public void Move(Vector2 moveInput, bool run, float deltaTime)
     {
         float speed = run ? config.RunSpeed : config.WalkSpeed;
+        Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
 
-        Vector3 move = playerTransform.right * moveX + playerTransform.forward * moveZ;
+        if (move.sqrMagnitude > 1f)
+        {
+            move.Normalize();
+        }
 
-        Vector3 velocity = move * speed;
+        Vector3 targetHorizontalVelocity = move * speed;
 
-        // 落下速度は保持
-        velocity.y = rb.linearVelocity.y;
+        if (move.sqrMagnitude <= StopInputDeadzoneSqr)
+        {
+            horizontalVelocity = Vector3.zero;
+        }
+        else
+        {
+            horizontalVelocity = Vector3.MoveTowards(
+                horizontalVelocity,
+                targetHorizontalVelocity,
+                config.GroundAcceleration * deltaTime
+            );
+        }
 
-        rb.linearVelocity = velocity;
+        if (characterController.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = GroundedVerticalVelocity;
+        }
+
+        verticalVelocity += config.Gravity * deltaTime;
+
+        Vector3 velocity = horizontalVelocity + Vector3.up * verticalVelocity;
+        characterController.Move(velocity * deltaTime);
+
+        if (characterController.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = GroundedVerticalVelocity;
+        }
+    }
+
+    public void Jump()
+    {
+        verticalVelocity = config.JumpForce;
+    }
+
+    public bool IsGrounded()
+    {
+        return characterController.isGrounded;
+    }
+
+    public void ResolveWallHit(Vector3 wallNormal)
+    {
+        if (wallNormal.y > 0.1f)
+        {
+            return;
+        }
+
+        horizontalVelocity = Vector3.ProjectOnPlane(horizontalVelocity, wallNormal);
+    }
+
+    public void Stop()
+    {
+        horizontalVelocity = Vector3.zero;
+        verticalVelocity = 0f;
     }
 }

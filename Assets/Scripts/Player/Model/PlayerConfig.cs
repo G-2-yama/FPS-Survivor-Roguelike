@@ -27,6 +27,25 @@ public class PlayerConfig : MonoBehaviour
     public float RunSpeed => runSpeed;
 
     /// <summary>
+    /// 地上で入力を離した時の減速量
+    /// </summary>
+    [SerializeField] private float groundDeceleration = 30f;
+
+    /// <summary>
+    /// 地上で入力を離した時の減速量
+    /// </summary>
+    public float GroundDeceleration => groundDeceleration;
+
+    [SerializeField] private float groundAcceleration = 24f;
+
+    public float GroundAcceleration => groundAcceleration;
+
+    [SerializeField] private float gravity = -14f;
+
+    public float Gravity => gravity;
+
+
+    /// <summary>
     /// 視点感度の設定値
     /// </summary>
     [SerializeField] private float lookSensitivity = 0.08f;

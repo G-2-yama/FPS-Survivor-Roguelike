@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// プレイヤー入力を受け取り、モデル反映と状態更新を行うコントローラー
 /// </summary>
+ [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Player player;
     public Player Player => player;
 
     [SerializeField] private Rigidbody playerRigidbody;
+    private CharacterController playerCharacterController;
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
@@ -71,11 +73,18 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        playerCharacterController = GetComponent<CharacterController>();
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.linearVelocity = Vector3.zero;
+            playerRigidbody.isKinematic = true;
+            playerRigidbody.useGravity = false;
+        }
 
         stateMachine = new StateMachine<PlayerState>();
 
-        mover = new PlayerMover(transform, playerRigidbody, player.Config);
+        mover = new PlayerMover(transform, playerCharacterController, player.Config);
         look = new PlayerLook(transform, cameraPitchTransform, player.Config);
     }
 
@@ -101,6 +110,11 @@ public class PlayerController : MonoBehaviour
     void OnDestroy()
     {
         player.OnDeath -= OnPlayerDeath;
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        mover.ResolveWallHit(hit.normal);
     }
 
     /// <summary>
@@ -137,7 +151,7 @@ public class PlayerController : MonoBehaviour
         lookInput = Vector2.zero;
         isSprinting = false;
         jumpRequested = false;
-        playerRigidbody.linearVelocity = Vector3.zero;
+        mover.Stop();
 
         stateMachine.ChangeState(new DeathState(this));
     }
