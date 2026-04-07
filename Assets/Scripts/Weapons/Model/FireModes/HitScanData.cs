@@ -15,7 +15,7 @@ public class HitScanData : FireModeData
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxRange))
         {
-            Debug.Log("Hit: " + hit.collider.name);
+            TryApplyDamage(weapon, hit.collider);
         }
     }
 }
