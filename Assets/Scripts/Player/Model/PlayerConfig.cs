@@ -40,7 +40,15 @@ public class PlayerConfig : MonoBehaviour
 
     public float GroundAcceleration => groundAcceleration;
 
-    [SerializeField] private float gravity = -15f;
+    [SerializeField] private float jumpHoldDuration = 0.14f;
+
+    public float JumpHoldDuration => jumpHoldDuration;
+
+    [SerializeField] private float jumpHoldMaxMultiplier = 1.2f;
+
+    public float JumpHoldMaxMultiplier => jumpHoldMaxMultiplier;
+
+    [SerializeField] private float gravity = -18f;
 
     public float Gravity => gravity;
 
@@ -108,7 +116,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// ジャンプ時の初速
     /// </summary>
-    [SerializeField] private float jumpForce = 9f;
+    [SerializeField] private float jumpForce = 8f;
 
     /// <summary>
     /// ジャンプ時の初速

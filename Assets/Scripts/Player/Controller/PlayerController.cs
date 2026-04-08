@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
     /// ジャンプ入力要求を保持
     /// </summary>
     private bool jumpRequested;
+    private bool jumpHeld;
+    public bool IsJumpHeld => jumpHeld;
 
     /// <summary>
     /// 初期化
@@ -151,6 +153,7 @@ public class PlayerController : MonoBehaviour
         lookInput = Vector2.zero;
         isSprinting = false;
         jumpRequested = false;
+        jumpHeld = false;
         mover.Stop();
 
         stateMachine.ChangeState(new DeathState(this));
@@ -188,6 +191,12 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             jumpRequested = true;
+            jumpHeld = true;
+        }
+
+        if (context.canceled)
+        {
+            jumpHeld = false;
         }
     }
 

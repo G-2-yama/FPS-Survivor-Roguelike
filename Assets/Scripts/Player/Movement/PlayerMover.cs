@@ -11,6 +11,8 @@ public class PlayerMover
     private Vector3 horizontalVelocity;
     private float verticalVelocity;
     private bool wasGrounded;
+    private float remainingJumpHoldBonus;
+    private float jumpHoldTimer;
 
     public PlayerMover(
         Transform playerTransform,
@@ -22,13 +24,15 @@ public class PlayerMover
         this.config = config;
     }
 
-    public void Move(Vector2 moveInput, bool run, float deltaTime)
+    public void Move(Vector2 moveInput, bool run, bool jumpHeld, float deltaTime)
     {
         bool isGrounded = characterController.isGrounded;
 
         if (isGrounded && !wasGrounded)
         {
             horizontalVelocity = Vector3.zero;
+            remainingJumpHoldBonus = 0f;
+            jumpHoldTimer = 0f;
         }
 
         float speed = run ? config.RunSpeed : config.WalkSpeed;
@@ -62,6 +66,16 @@ public class PlayerMover
             verticalVelocity = GroundedVerticalVelocity;
         }
 
+        if (!isGrounded && jumpHeld && verticalVelocity > 0f && jumpHoldTimer > 0f && remainingJumpHoldBonus > 0f)
+        {
+            float holdBonusPerSecond = config.JumpForce * (config.JumpHoldMaxMultiplier - 1f)
+                / config.JumpHoldDuration;
+            float appliedBonus = Mathf.Min(holdBonusPerSecond * deltaTime, remainingJumpHoldBonus);
+            verticalVelocity += appliedBonus;
+            remainingJumpHoldBonus -= appliedBonus;
+            jumpHoldTimer = Mathf.Max(0f, jumpHoldTimer - deltaTime);
+        }
+
         verticalVelocity += config.Gravity * deltaTime;
 
         Vector3 velocity = horizontalVelocity + Vector3.up * verticalVelocity;
@@ -78,6 +92,8 @@ public class PlayerMover
     public void Jump()
     {
         verticalVelocity = config.JumpForce;
+        remainingJumpHoldBonus = config.JumpForce * (config.JumpHoldMaxMultiplier - 1f);
+        jumpHoldTimer = config.JumpHoldDuration;
     }
 
     public bool IsGrounded()
@@ -100,5 +116,7 @@ public class PlayerMover
         horizontalVelocity = Vector3.zero;
         verticalVelocity = 0f;
         wasGrounded = false;
+        remainingJumpHoldBonus = 0f;
+        jumpHoldTimer = 0f;
     }
 }
