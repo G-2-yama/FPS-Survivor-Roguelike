@@ -9,7 +9,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 通常移動速度の設定値
     /// </summary>
-    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float walkSpeed = 14f;
 
     /// <summary>
     /// 通常移動時の速度
@@ -108,7 +108,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// ジャンプ時の初速
     /// </summary>
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 9f;
 
     /// <summary>
     /// ジャンプ時の初速

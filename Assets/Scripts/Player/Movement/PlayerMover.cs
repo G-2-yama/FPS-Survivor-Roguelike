@@ -10,6 +10,7 @@ public class PlayerMover
     private PlayerConfig config;
     private Vector3 horizontalVelocity;
     private float verticalVelocity;
+    private bool wasGrounded;
 
     public PlayerMover(
         Transform playerTransform,
@@ -23,6 +24,13 @@ public class PlayerMover
 
     public void Move(Vector2 moveInput, bool run, float deltaTime)
     {
+        bool isGrounded = characterController.isGrounded;
+
+        if (isGrounded && !wasGrounded)
+        {
+            horizontalVelocity = Vector3.zero;
+        }
+
         float speed = run ? config.RunSpeed : config.WalkSpeed;
         Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
 
@@ -35,7 +43,10 @@ public class PlayerMover
 
         if (move.sqrMagnitude <= StopInputDeadzoneSqr)
         {
-            horizontalVelocity = Vector3.zero;
+            if (isGrounded)
+            {
+                horizontalVelocity = Vector3.zero;
+            }
         }
         else
         {
@@ -46,7 +57,7 @@ public class PlayerMover
             );
         }
 
-        if (characterController.isGrounded && verticalVelocity < 0f)
+        if (isGrounded && verticalVelocity < 0f)
         {
             verticalVelocity = GroundedVerticalVelocity;
         }
@@ -60,6 +71,8 @@ public class PlayerMover
         {
             verticalVelocity = GroundedVerticalVelocity;
         }
+
+        wasGrounded = characterController.isGrounded;
     }
 
     public void Jump()
@@ -86,5 +99,6 @@ public class PlayerMover
     {
         horizontalVelocity = Vector3.zero;
         verticalVelocity = 0f;
+        wasGrounded = false;
     }
 }
