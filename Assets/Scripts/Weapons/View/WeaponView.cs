@@ -11,7 +11,7 @@ public class WeaponView : MonoBehaviour
     private void Start()
     {
         weapon.OnAmmoChanged += UpdateAmmo;
-        UpdateAmmo(weapon.CurrentAmmo, weapon.WeaponData.MagazineSize);
+        UpdateAmmo(weapon.CurrentAmmo, weapon.WeaponStats.MagazineSize);
     }
 
     private void UpdateAmmo(int current, int max)

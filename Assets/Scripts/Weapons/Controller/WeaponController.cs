@@ -29,7 +29,7 @@ public class WeaponController : MonoBehaviour
     void Awake()
     {
         weaponStateMachine = new WeaponStateMachine(this);
-        weaponRecoil = new WeaponRecoil(weapon.WeaponData);
+        weaponRecoil = new WeaponRecoil(weapon);
     }
 
     public void Update()

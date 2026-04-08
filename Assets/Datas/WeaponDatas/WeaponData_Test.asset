@@ -32,11 +32,20 @@ MonoBehaviour:
   magazineSize: 30
   reloadTime: 1.6
   maxReserveAmmo: 120
-  levelData:
-  - damageBonus: 0
-    fireIntervalBonus: 0
-    spreadBonus: 0
-    recoilXBonus: 0
-    recoilYBonus: 0
-    magazineSizeBonus: 0
-    reloadTimeBonus: 0
+  levelBonusData:
+  - Damage: 0
+    FireInterval: 0
+    SpreadAngle: 0
+    RecoilX: 0
+    RecoilY: 0
+    MagazineSize: 0
+    ReloadTime: 0
+    RecoilRecoverySpeed: 0
+  - Damage: 10
+    FireInterval: 0
+    SpreadAngle: 0
+    RecoilX: 0
+    RecoilY: 0
+    MagazineSize: 0
+    ReloadTime: 0
+    RecoilRecoverySpeed: 0

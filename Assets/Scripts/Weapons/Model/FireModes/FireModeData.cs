@@ -31,6 +31,6 @@ public abstract class FireModeData : ScriptableObject
     /// </summary>
     protected int GetDamageAmount(Weapon weapon)
     {
-        return Mathf.RoundToInt(weapon.WeaponData.Damage);
+        return Mathf.RoundToInt(weapon.WeaponStats.Damage);
     }
 }

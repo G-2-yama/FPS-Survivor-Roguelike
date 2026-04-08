@@ -1,11 +1,17 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponData weaponData;
-
     public WeaponData WeaponData => weaponData;
+
+    [SerializeField] private int level = 0;
+    public int Level => level;
+
+    private WeaponStats weaponStats;
+    public WeaponStats WeaponStats => weaponStats;
 
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
@@ -21,6 +27,16 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         currentAmmo = weaponData.MagazineSize;
+        weaponStats = weaponData.CreateBonusStats(level);
+    }
+
+    /// <summary>
+    /// 武器レベルを上げるメソッド
+    /// </summary>
+    public void LevelUp()
+    {
+        level++;
+        weaponStats = weaponData.CreateBonusStats(level);
     }
 
     /// <summary>
@@ -87,6 +103,5 @@ public class Weapon : MonoBehaviour
 
         return direction;
     }
-
 
 }
