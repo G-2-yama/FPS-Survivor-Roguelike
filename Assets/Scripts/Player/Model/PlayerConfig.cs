@@ -40,7 +40,7 @@ public class PlayerConfig : MonoBehaviour
 
     public float GroundAcceleration => groundAcceleration;
 
-    [SerializeField] private float gravity = -14f;
+    [SerializeField] private float gravity = -15f;
 
     public float Gravity => gravity;
 
