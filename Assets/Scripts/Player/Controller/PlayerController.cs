@@ -67,7 +67,15 @@ public class PlayerController : MonoBehaviour
     /// ジャンプ入力要求を保持
     /// </summary>
     private bool jumpRequested;
+
+    /// <summary>
+    /// ジャンプボタンの押下継続状態
+    /// </summary>
     private bool jumpHeld;
+
+    /// <summary>
+    /// ジャンプボタンを押し続けているかどうか
+    /// </summary>
     public bool IsJumpHeld => jumpHeld;
 
     /// <summary>

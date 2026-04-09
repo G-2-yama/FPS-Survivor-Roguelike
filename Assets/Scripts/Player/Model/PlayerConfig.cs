@@ -9,7 +9,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 通常移動速度の設定値
     /// </summary>
-    [SerializeField] private float walkSpeed = 14f;
+    [SerializeField] private float walkSpeed = 10f;
 
     /// <summary>
     /// 通常移動時の速度
@@ -40,12 +40,34 @@ public class PlayerConfig : MonoBehaviour
 
     public float GroundAcceleration => groundAcceleration;
 
-    [SerializeField] private float jumpHoldDuration = 0.14f;
+    /// <summary>
+    /// 空中で入力を離した後も慣性を残したまま減衰させる強さ
+    /// </summary>
+    [SerializeField] private float airDeceleration = 45f;
 
+    /// <summary>
+    /// 空中で入力を離した後も慣性を残したまま減衰させる強さ
+    /// </summary>
+    public float AirDeceleration => airDeceleration;
+
+    /// <summary>
+    /// ジャンプ長押し補正を受け付ける時間
+    /// </summary>
+    [SerializeField] private float jumpHoldDuration = 0.20f;
+
+    /// <summary>
+    /// ジャンプ長押し補正を受け付ける時間
+    /// </summary>
     public float JumpHoldDuration => jumpHoldDuration;
 
+    /// <summary>
+    /// ジャンプ長押し時に適用する最大倍率
+    /// </summary>
     [SerializeField] private float jumpHoldMaxMultiplier = 1.2f;
 
+    /// <summary>
+    /// ジャンプ長押し時に適用する最大倍率
+    /// </summary>
     public float JumpHoldMaxMultiplier => jumpHoldMaxMultiplier;
 
     [SerializeField] private float gravity = -18f;
