@@ -1,16 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
-    [SerializeField] private Canvas upgradeCanvas;
     [SerializeField] private Weapon weapon;
-    [SerializeField] private Button[] upgradeButtons;
 
+    [SerializeField] private UpgradeView upgradeView;
+
+    private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
+    private List<UpgradeBase> currentChoices = new List<UpgradeBase>();
+
+    void Start()
+    {
+        UpgradeBase levelUpUpgrade = new LevelUp();
+        upgradePool.Add(levelUpUpgrade);
+    }
+
+    /// <summary>
+    /// アップグレードの選択肢がクリックされたときの処理
+    /// </summary>
+    /// <param name="upgradeIndex">選択されたアップグレードのインデックス</param>
     public void OnUpgradeButtonClicked(int upgradeIndex)
     {
-        Debug.Log($"武器レベルがアップグレードされました");
-        weapon.LevelUp();
+        var selectedUpgrade = currentChoices[upgradeIndex];
+        selectedUpgrade.Apply(weapon.gameObject);
 
         // アップグレードUIを閉じる
         HideUpgradeUI();
@@ -21,8 +35,10 @@ public class UpgradeManager : MonoBehaviour
     /// </summary>
     public void ShowUpgradeUI()
     {
-        upgradeCanvas.gameObject.SetActive(true);
-        Time.timeScale = 0f; // ゲームを一時停止
+        Time.timeScale = 0f;
+        GenerateChoices();
+        upgradeView.Setup(currentChoices);
+        upgradeView.Show();
     }
 
     /// <summary>
@@ -30,7 +46,26 @@ public class UpgradeManager : MonoBehaviour
     /// </summary>
     public void HideUpgradeUI()
     {
-        upgradeCanvas.gameObject.SetActive(false);
-        Time.timeScale = 1f; // ゲームを再開
+        Time.timeScale = 1f;
+        upgradeView.Hide();
+    }
+
+    /// <summary>
+    /// ランダムで強化項目を3つ選ぶ
+    /// </summary>
+    private void GenerateChoices()
+    {
+        currentChoices.Clear();
+
+        List<UpgradeBase> poolCopy = new List<UpgradeBase>(upgradePool);
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (poolCopy.Count == 0) break;
+
+            int index = Random.Range(0, poolCopy.Count);
+            currentChoices.Add(poolCopy[index]);
+            poolCopy.RemoveAt(index);
+        }
     }
 }
