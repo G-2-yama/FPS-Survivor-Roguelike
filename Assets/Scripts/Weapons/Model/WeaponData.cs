@@ -57,10 +57,8 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Burst")]
-    [SerializeField] private bool useBurst;
-    public bool UseBurst => useBurst;
 
-    [SerializeField, Min(1)] private int burstCount = 3;
+    [SerializeField, Min(1)] private int burstCount = 1;
     public int BurstCount => burstCount;
 
     [SerializeField, Min(0f)] private float burstInterval = 0.05f;
@@ -96,7 +94,9 @@ public class WeaponData : ScriptableObject
             RecoilY = recoilY,
             MagazineSize = magazineSize,
             ReloadTime = reloadTime,
-            RecoilRecoverySpeed = recoilRecoverySpeed
+            RecoilRecoverySpeed = recoilRecoverySpeed,
+            BurstCount = burstCount,
+            BurstInterval = burstInterval
         };
 
         if (level < levelBonusData.Length)

@@ -9,6 +9,9 @@ public class WeaponStats
     public int MagazineSize;
     public float ReloadTime;
     public float RecoilRecoverySpeed;
+    public int BurstCount;
+    public float BurstInterval;
+  
 
     public void Add(WeaponStats bonusStats)
     {
@@ -20,5 +23,7 @@ public class WeaponStats
         MagazineSize += bonusStats.MagazineSize;
         ReloadTime += bonusStats.ReloadTime;
         RecoilRecoverySpeed += bonusStats.RecoilRecoverySpeed;
+        BurstCount += bonusStats.BurstCount;
+        BurstInterval += bonusStats.BurstInterval;
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: WeaponData_Test
+  m_Name: HandGunData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponId: weapon_default
   displayName: New Weapon
@@ -25,8 +25,7 @@ MonoBehaviour:
   adsZoom: 60
   adsSpreadMultiplier: 0.4
   adsRecoilMultiplier: 0.6
-  useBurst: 0
-  burstCount: 3
+  burstCount: 1
   burstInterval: 0.05
   useMagazine: 1
   magazineSize: 30
@@ -41,6 +40,8 @@ MonoBehaviour:
     MagazineSize: 0
     ReloadTime: 0
     RecoilRecoverySpeed: 0
+    BurstCount: 0
+    BurstInterval: 0
   - Damage: 10
     FireInterval: 0
     SpreadAngle: 0
@@ -49,3 +50,5 @@ MonoBehaviour:
     MagazineSize: 0
     ReloadTime: 0
     RecoilRecoverySpeed: 0
+    BurstCount: 0
+    BurstInterval: 0
