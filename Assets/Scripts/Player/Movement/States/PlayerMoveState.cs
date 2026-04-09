@@ -72,7 +72,11 @@ public abstract class PlayerMoveState : IState
             return false;
         }
 
-        controller.Jump();
+        if (!controller.TryJump())
+        {
+            return false;
+        }
+
         moveStateMachine.ChangeAirState();
         return true;
     }

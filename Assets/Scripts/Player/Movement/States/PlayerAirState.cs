@@ -24,12 +24,15 @@ public class PlayerAirState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
+        if (TryTransitionByJumpRequest())
+        {
+            return;
+        }
+
         if (controller.IsGrounded)
         {
             TransitionToGroundMoveStateByInput();
             return;
         }
-
-        controller.ConsumeJumpRequest();
     }
 }
