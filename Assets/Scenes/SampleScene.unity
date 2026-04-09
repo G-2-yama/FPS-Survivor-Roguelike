@@ -997,9 +997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  enemy: {fileID: 6612751096261697461, guid: 4477b3735be13d94d9da0ce6dd0ef1b1, type: 3}
+  enemyPrefab: {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
   defaultpos: {x: 0, y: 0, z: 0}
-  enemycount: 0
   moverange: 5
   capenemy: 5
   mintime: 4

@@ -1,44 +1,60 @@
 using UnityEngine;
+using UnityEngine.Pool;
 using System.Collections;
-public class enemygenelate : MonoBehaviour
+
+public class EnemyGenerator : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public GameObject enemy;
+    public GameObject enemyPrefab;
+
+   
+
     public Vector3 defaultpos;
-    public int enemycount = 0;
     float time = 0f;
+
     public float moverange = 5;
     public int capenemy = 5;
-    public float mintime = 4;
-    public float maxtime = 7;
+    public float mintime = 2;
+    public float maxtime = 4;
+
+    int enemycount = 0;
+
     void Start()
     {
-        StartCoroutine(gene());
         defaultpos = transform.position;
 
+
+        StartCoroutine(Generate());
     }
 
-    // Update is called once per frame
+   
+
     void Update()
     {
         time += Time.deltaTime * 2;
-        transform.position = new Vector3(Mathf.Sin(time), 0, 0) * moverange + defaultpos;
+        transform.position =
+            new Vector3(Mathf.Sin(time), 0, 0) * moverange + defaultpos;
     }
-    IEnumerator gene()
+
+    IEnumerator Generate()
     {
         while (true)
         {
-            enemycount++;
-            GameObject newenemy = Instantiate(enemy, transform.position, transform.rotation);
             if (enemycount < capenemy)
             {
+               
+
+                GameObject obj = Instantiate(enemyPrefab);
+                obj.transform.position = transform.position;
+                obj.transform.rotation = transform.rotation;
+
+                enemycount++;
+
                 yield return new WaitForSeconds(Random.Range(mintime, maxtime));
             }
             else
             {
-                yield break;
+                yield return null;
             }
-
         }
     }
 }
