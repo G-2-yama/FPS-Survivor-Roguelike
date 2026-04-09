@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moveenemy
   enemyDatas: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
-  radius: 3
-  length: 5
+  radius: 6
+  length: 6
 --- !u!54 &5154964929320662522
 Rigidbody:
   m_ObjectHideFlags: 0

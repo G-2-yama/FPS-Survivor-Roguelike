@@ -6,8 +6,6 @@ public class EnemyGenerator : MonoBehaviour
 {
     public GameObject enemyPrefab;
 
-   
-
     public Vector3 defaultpos;
     float time = 0f;
 
@@ -16,17 +14,24 @@ public class EnemyGenerator : MonoBehaviour
     public float mintime = 2;
     public float maxtime = 4;
 
-    int enemycount = 0;
+    ObjectPool<GameObject> pool;
 
     void Start()
     {
         defaultpos = transform.position;
 
+        pool = new ObjectPool<GameObject>(
+            CreateEnemy,
+            OnGetEnemy,
+            OnReleaseEnemy,
+            OnDestroyEnemy,
+            true,
+            10,
+            20
+        );
 
         StartCoroutine(Generate());
     }
-
-   
 
     void Update()
     {
@@ -35,19 +40,43 @@ public class EnemyGenerator : MonoBehaviour
             new Vector3(Mathf.Sin(time), 0, 0) * moverange + defaultpos;
     }
 
+    GameObject CreateEnemy()
+    {
+        return Instantiate(enemyPrefab);
+    }
+
+    void OnGetEnemy(GameObject obj)
+    {
+        obj.SetActive(true);
+    }
+
+    void OnReleaseEnemy(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
+
+    void OnDestroyEnemy(GameObject obj)
+    {
+        Destroy(obj);
+    }
+
     IEnumerator Generate()
     {
         while (true)
         {
-            if (enemycount < capenemy)
+            if (pool.CountActive < capenemy)
             {
-               
+                GameObject obj = pool.Get();
 
-                GameObject obj = Instantiate(enemyPrefab);
+                Enemycondition enemy = obj.GetComponent<Enemycondition>();
+
+                enemy.Init(() =>
+                {
+                    pool.Release(obj);
+                });
+
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;
-
-                enemycount++;
 
                 yield return new WaitForSeconds(Random.Range(mintime, maxtime));
             }

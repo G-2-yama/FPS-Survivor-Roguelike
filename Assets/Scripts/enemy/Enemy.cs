@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Pool;
+using System;
 using System.Collections;
-using static UnityEngine.GraphicsBuffer;
 
 public class Enemycondition : MonoBehaviour, IDamageable
 {
@@ -9,44 +8,54 @@ public class Enemycondition : MonoBehaviour, IDamageable
     [SerializeField] private enemybulletData enemybulletdata;
     [SerializeField] private Transform shotpoint;
 
+    private Transform player;
     private Vector3 playerposition;
+
     public TeamType TeamType => TeamType.Enemy;
 
-    /// <summary>
-    /// 体力を管理するモデル
-    /// </summary>
     public Health Health { get; private set; }
 
-    private void Awake()
+    Action onDeathReturn;
+
+    Coroutine shotCoroutine;
+
+    // 初期化（プールから取り出されたときに呼ばれる）
+    public void Init(Action returnAction)
     {
+        onDeathReturn = returnAction;
+
+        // HPリセット
         Health = new Health(enemydata.Hp);
         Health.OnDeath += HandleDeath;
-       
     }
-    
-    /// <summary>
-    /// ダメージを受ける処理
-    /// </summary>
-    /// <param name="damage">受けるダメージ量</param>
+
+    private void HandleDeath()
+    {
+        onDeathReturn?.Invoke();
+    }
+
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);
     }
 
-    /// <summary>
-    /// 死亡したときに呼び出される処理
-    /// </summary>
-    private void HandleDeath()
+    void OnEnable()
     {
-        Destroy(this.gameObject);
+        if (player == null)
+        {
+            GameObject p = GameObject.Find("Player");
+            if (p != null) player = p.transform;
+        }
+
+        shotCoroutine = StartCoroutine(shot());
     }
 
-    private Transform player;
-
-    void Start()
+    void OnDisable()
     {
-        player = GameObject.Find("Player").transform;
-        StartCoroutine(shot());
+        if (shotCoroutine != null)
+        {
+            StopCoroutine(shotCoroutine);
+        }
     }
 
     void Update()
@@ -71,4 +80,3 @@ public class Enemycondition : MonoBehaviour, IDamageable
         }
     }
 }
-
