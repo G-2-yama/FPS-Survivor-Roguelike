@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
  [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    private const int MaxJumpCount = 2;
 
     [SerializeField] private Player player;
     public Player Player => player;
@@ -74,7 +73,6 @@ public class PlayerController : MonoBehaviour
     /// ジャンプボタンの押下継続状態
     /// </summary>
     private bool jumpHeld;
-    private int remainingJumpCount;
 
     /// <summary>
     /// ジャンプボタンを押し続けているかどうか
@@ -107,7 +105,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player.OnDeath += OnPlayerDeath;
-        remainingJumpCount = MaxJumpCount;
         stateMachine.ChangeState(new AliveState(this));
     }
 
@@ -116,17 +113,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        bool wasGrounded = isGrounded;
+        mover.RefreshGroundState();
         isGrounded = mover.IsGrounded();
-
-        if (isGrounded && !wasGrounded)
-        {
-            remainingJumpCount = MaxJumpCount;
-        }
-        else if (!isGrounded && wasGrounded && remainingJumpCount == MaxJumpCount)
-        {
-            remainingJumpCount = MaxJumpCount - 1;
-        }
 
         stateMachine.Update();
     }
@@ -151,14 +139,7 @@ public class PlayerController : MonoBehaviour
 
     public bool TryJump()
     {
-        if (remainingJumpCount <= 0)
-        {
-            return false;
-        }
-
-        remainingJumpCount--;
-        Jump();
-        return true;
+        return mover.TryJump();
     }
 
     /// <summary>
@@ -188,7 +169,6 @@ public class PlayerController : MonoBehaviour
         isSprinting = false;
         jumpRequested = false;
         jumpHeld = false;
-        remainingJumpCount = 0;
         mover.Stop();
 
         stateMachine.ChangeState(new DeathState(this));

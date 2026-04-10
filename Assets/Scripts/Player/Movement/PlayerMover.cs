@@ -6,6 +6,7 @@ public class PlayerMover
     /// 停止入力とみなす最小入力値の二乗
     /// </summary>
     private const float StopInputDeadzoneSqr = 0.0001f;
+    private const int MaxJumpCount = 2;
 
     /// <summary>
     /// 接地中に地面へ吸い付けるための下向き速度
@@ -51,6 +52,8 @@ public class PlayerMover
     /// 長押しジャンプ補正を適用できる残り時間
     /// </summary>
     private float jumpHoldTimer;
+    private bool wasGrounded;
+    private int remainingJumpCount = MaxJumpCount;
 
     public PlayerMover(
         Transform playerTransform,
@@ -67,7 +70,7 @@ public class PlayerMover
     /// </summary>
     public void Move(Vector2 moveInput, bool run, bool jumpHeld, float deltaTime)
     {
-        bool isGrounded = characterController.isGrounded;
+        bool isGrounded = IsGrounded();
 
         float speed = run ? config.RunSpeed : config.WalkSpeed;
         Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
@@ -129,7 +132,7 @@ public class PlayerMover
         Vector3 velocity = horizontalVelocity + Vector3.up * verticalVelocity;
         characterController.Move(velocity * deltaTime);
 
-        if (characterController.isGrounded && verticalVelocity < 0f)
+        if (IsGrounded() && verticalVelocity < 0f)
         {
             verticalVelocity = GroundedVerticalVelocity;
         }
@@ -143,6 +146,34 @@ public class PlayerMover
         verticalVelocity = config.JumpForce;
         remainingJumpHoldBonus = config.JumpForce * (config.JumpHoldMaxMultiplier - 1f);
         jumpHoldTimer = config.JumpHoldDuration;
+    }
+
+    public void RefreshGroundState()
+    {
+        bool isGrounded = IsGrounded();
+
+        if (isGrounded && !wasGrounded)
+        {
+            remainingJumpCount = MaxJumpCount;
+        }
+        else if (!isGrounded && wasGrounded && remainingJumpCount == MaxJumpCount)
+        {
+            remainingJumpCount = MaxJumpCount - 1;
+        }
+
+        wasGrounded = isGrounded;
+    }
+
+    public bool TryJump()
+    {
+        if (remainingJumpCount <= 0)
+        {
+            return false;
+        }
+
+        remainingJumpCount--;
+        Jump();
+        return true;
     }
 
     public bool IsGrounded()
@@ -166,5 +197,7 @@ public class PlayerMover
         verticalVelocity = 0f;
         remainingJumpHoldBonus = 0f;
         jumpHoldTimer = 0f;
+        wasGrounded = false;
+        remainingJumpCount = 0;
     }
 }
