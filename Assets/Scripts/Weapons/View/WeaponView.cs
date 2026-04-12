@@ -11,7 +11,7 @@ public class WeaponView : MonoBehaviour
     {
         weapon.OnAmmoChanged += UpdateAmmo;
 
-        if (weapon.WeaponData == null)
+        if (!weapon.HasWeapon)
         {
             currentAmmoText.gameObject.SetActive(false);
             return;

@@ -17,10 +17,22 @@ public class WeaponUnlock : UpgradeBase
     {
         if(isRightHand)
         {
+            if (player.RightWeapon.HasWeapon)
+            {
+                Debug.Log($"Right hand weapon is already unlocked.");
+                return;
+            }
+
             player.EquipRightWeapon(target);
         }
         else
         {
+            if (player.LeftWeapon.HasWeapon)
+            {
+                Debug.Log($"Left hand weapon is already unlocked.");
+                return;
+            }
+
             player.EquipLeftWeapon(target);
         }
 

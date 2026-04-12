@@ -32,7 +32,7 @@ public class WeaponRecoil
     /// </summary>
     public Vector2 Update(float deltaTime)
     {
-        if (weapon.WeaponData == null)
+        if (!weapon.HasWeapon)
         {
             return Vector2.zero;
         }

@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnLeftFire(InputAction.CallbackContext context)
     {
-        if (player.LeftWeapon.WeaponData == null)
+        if (!player.LeftWeapon.HasWeapon)
         {
             return;
         }
@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnRightFire(InputAction.CallbackContext context)
     {
-        if (player.RightWeapon.WeaponData == null)
+        if (!player.RightWeapon.HasWeapon)
         {
             return;
         }
@@ -220,7 +220,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnLeftReload(InputAction.CallbackContext context)
     {
-        if (player.LeftWeapon.WeaponData == null)
+        if (!player.LeftWeapon.HasWeapon)
         {
             return;
         }
@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnRightReload(InputAction.CallbackContext context)
     {
-        if (player.RightWeapon.WeaponData == null)
+        if (!player.RightWeapon.HasWeapon)
         {
             return;
         }
