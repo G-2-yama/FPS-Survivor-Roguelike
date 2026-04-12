@@ -158,6 +158,10 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// ダッシュ入力要求を1回だけ消費する
+    /// </summary>
+    /// <returns>ダッシュ入力要求があった場合はtrue</returns>
     public bool ConsumeDashRequest()
     {
         if (!dashRequested)

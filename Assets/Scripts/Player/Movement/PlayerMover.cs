@@ -138,6 +138,12 @@ public class PlayerMover
         }
     }
 
+    /// <summary>
+    /// 移動入力をワールド座標系の移動方向へ変換する
+    /// </summary>
+    /// <param name="moveInput">移動入力値</param>
+    /// <param name="direction">正規化されたワールド座標系の移動方向</param>
+    /// <returns>有効な移動方向を取得できた場合はtrue</returns>
     public bool TryGetMoveDirection(Vector2 moveInput, out Vector3 direction)
     {
         Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
@@ -151,6 +157,11 @@ public class PlayerMover
         return true;
     }
 
+    /// <summary>
+    /// 指定された方向へ1フレーム分のダッシュ移動を行う
+    /// </summary>
+    /// <param name="direction">正規化されたワールド座標系のダッシュ方向</param>
+    /// <param name="deltaTime">ダッシュ移動を適用する時間</param>
     public void MoveDash(Vector3 direction, float deltaTime)
     {
         float dashSpeed = config.DashDistance / config.DashDuration;
@@ -168,6 +179,9 @@ public class PlayerMover
         characterController.Move(velocity * deltaTime);
     }
 
+    /// <summary>
+    /// 強制移動状態へ入る前に水平方向の速度を初期化する
+    /// </summary>
     public void ClearHorizontalVelocity()
     {
         horizontalVelocity = Vector3.zero;

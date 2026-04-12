@@ -61,6 +61,10 @@ public abstract class PlayerMoveState : IState
         return false;
     }
 
+    /// <summary>
+    /// ダッシュ要求を消費し、開始可能であればダッシュ状態へ遷移する
+    /// </summary>
+    /// <returns>ダッシュ状態へ遷移した場合はtrue</returns>
     protected bool TryTransitionByDashRequest()
     {
         if (!controller.ConsumeDashRequest())

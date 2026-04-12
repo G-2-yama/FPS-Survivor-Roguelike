@@ -30,6 +30,9 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
         ChangeState(idleState);
     }
 
+    /// <summary>
+    /// 現在の移動状態を更新する前にダッシュのクールタイムを更新する
+    /// </summary>
     public new void Update()
     {
         dashState.UpdateCooldown(UnityEngine.Time.deltaTime);
@@ -60,6 +63,10 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
         ChangeState(sprintState);
     }
 
+    /// <summary>
+    /// ダッシュ開始条件を満たしている場合にダッシュ状態へ遷移する
+    /// </summary>
+    /// <returns>ダッシュ状態へ遷移した場合はtrue</returns>
     public bool TryChangeDashState()
     {
         if (!dashState.CanEnter())
