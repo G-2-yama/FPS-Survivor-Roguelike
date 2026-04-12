@@ -19,6 +19,11 @@ public class AliveState : PlayerState
         // MoveState更新
         moveStateMachine.Update();
 
+        if (controller.ConsumeDashRequest())
+        {
+            controller.Mover.TryStartDash(controller.MoveInput);
+        }
+
         // 視点処理
         controller.Look.ApplyLook(controller.LookInput);
 
@@ -31,7 +36,6 @@ public class AliveState : PlayerState
         // 移動処理
         controller.Mover.Move(
             controller.MoveInput,
-            controller.IsSprinting,
             controller.IsJumpHeld,
             Time.deltaTime
         );

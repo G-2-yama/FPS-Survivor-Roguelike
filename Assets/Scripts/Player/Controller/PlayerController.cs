@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
     /// ジャンプ入力要求を保持
     /// </summary>
     private bool jumpRequested;
+    private bool dashRequested;
 
     /// <summary>
     /// ジャンプボタンの押下継続状態
@@ -157,6 +158,17 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
+    public bool ConsumeDashRequest()
+    {
+        if (!dashRequested)
+        {
+            return false;
+        }
+
+        dashRequested = false;
+        return true;
+    }
+
     /// <summary>
     /// プレイヤーを死亡状態にさせる
     /// </summary>
@@ -167,6 +179,7 @@ public class PlayerController : MonoBehaviour
         moveInput = Vector2.zero;
         lookInput = Vector2.zero;
         isSprinting = false;
+        dashRequested = false;
         jumpRequested = false;
         jumpHeld = false;
         mover.Stop();
@@ -187,7 +200,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnSprint(InputAction.CallbackContext context)
     {
-        isSprinting = context.ReadValueAsButton();
+        if (context.performed)
+        {
+            dashRequested = true;
+        }
     }
 
     /// <summary>
