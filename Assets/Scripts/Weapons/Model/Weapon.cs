@@ -24,7 +24,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public event Action<int, int> OnAmmoChanged;
 
-    private void Start()
+    private void Awake()
     {
         currentAmmo = weaponData.MagazineSize;
         weaponStats = weaponData.CreateBonusStats(level);

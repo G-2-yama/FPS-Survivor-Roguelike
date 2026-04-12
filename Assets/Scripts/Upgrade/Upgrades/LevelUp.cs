@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class LevelUp : UpgradeBase
 {
-    public override string DisplayName => "レベルアップ";
-    public override string Description => "武器のレベルを上げます";
+    private GameObject target;
 
-    public override void Apply(GameObject target)
+    public LevelUp(string displayName, string description, GameObject target) : base(displayName, description)
+    {
+        this.target = target;
+    }
+
+    public override void Apply()
     {
         var weapon = target.GetComponent<Weapon>();
         weapon.LevelUp();

@@ -10,6 +10,12 @@ public class Player : MonoBehaviour, IDamageable
 
     public event Action OnDeath;
 
+    [SerializeField] public Weapon leftWeapon;
+    public Weapon LeftWeapon => leftWeapon;
+
+    [SerializeField] public Weapon rightWeapon;
+    public Weapon RightWeapon => rightWeapon;
+
     /// <summary>
     /// プレイヤーの体力を管理するモデル
     /// </summary>

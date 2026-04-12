@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
-    [SerializeField] private Weapon weapon;
+    [SerializeField] private Player player;
 
     [SerializeField] private UpgradeView upgradeView;
 
@@ -13,8 +13,7 @@ public class UpgradeManager : MonoBehaviour
 
     void Start()
     {
-        UpgradeBase levelUpUpgrade = new LevelUp();
-        upgradePool.Add(levelUpUpgrade);
+        SetUpgradePool();
     }
 
     /// <summary>
@@ -24,7 +23,7 @@ public class UpgradeManager : MonoBehaviour
     public void OnUpgradeButtonClicked(int upgradeIndex)
     {
         var selectedUpgrade = currentChoices[upgradeIndex];
-        selectedUpgrade.Apply(weapon.gameObject);
+        selectedUpgrade.Apply();
 
         // アップグレードUIを閉じる
         HideUpgradeUI();
@@ -67,5 +66,13 @@ public class UpgradeManager : MonoBehaviour
             currentChoices.Add(poolCopy[index]);
             poolCopy.RemoveAt(index);
         }
+    }
+
+    private void SetUpgradePool()
+    {   
+        UpgradeBase LeftWeaponLevelUpUpgrade = new LevelUp("左武器レベルアップ", "武器のレベルを上げます",player.LeftWeapon.gameObject);
+        upgradePool.Add(LeftWeaponLevelUpUpgrade);
+        UpgradeBase RightWeaponLevelUpUpgrade = new LevelUp("右武器レベルアップ", "武器のレベルを上げます",player.RightWeapon.gameObject);
+        upgradePool.Add(RightWeaponLevelUpUpgrade);
     }
 }

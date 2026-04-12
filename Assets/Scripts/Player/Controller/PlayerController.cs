@@ -12,10 +12,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
-    /// 武器の入力・攻撃処理を管理するコントローラー
+    /// 左武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    [SerializeField] private WeaponController weaponController;
-    public WeaponController WeaponController => weaponController;
+    [SerializeField] private WeaponController leftWeaponController;
+    public WeaponController LeftWeaponController => leftWeaponController;
+
+    /// <summary>
+    /// 右武器の入力・攻撃処理を管理するコントローラー
+    /// </summary>
+    [SerializeField] private WeaponController rightWeaponController;
+    public WeaponController RightWeaponController => rightWeaponController;
 
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
@@ -178,24 +184,46 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 射撃入力を武器コントローラーへ中継
+    /// 射撃入力を左武器コントローラーへ中継
     /// </summary>
-    public void OnFire(InputAction.CallbackContext context)
+    public void OnLeftFire(InputAction.CallbackContext context)
     {
         if(stateMachine.CurrentState is AliveState)
         {
-            weaponController.OnFire(context);
+            leftWeaponController?.OnFire(context);
         }
     }
 
     /// <summary>
-    /// リロード入力を武器コントローラーへ中継
+    /// 射撃入力を右武器コントローラーへ中継
     /// </summary>
-    public void OnReload(InputAction.CallbackContext context)
+    public void OnRightFire(InputAction.CallbackContext context)
     {
         if(stateMachine.CurrentState is AliveState)
         {
-            weaponController.OnReload(context);
+            rightWeaponController?.OnFire(context);
+        }
+    }
+
+    /// <summary>
+    /// リロード入力を左武器コントローラーへ中継
+    /// </summary>
+    public void OnLeftReload(InputAction.CallbackContext context)
+    {
+        if(stateMachine.CurrentState is AliveState)
+        {
+            leftWeaponController?.OnReload(context);
+        }
+    }
+
+    /// <summary>
+    /// リロード入力を右武器コントローラーへ中継
+    /// </summary>
+    public void OnRightReload(InputAction.CallbackContext context)
+    {
+        if(stateMachine.CurrentState is AliveState)
+        {
+            rightWeaponController?.OnReload(context);
         }
     }
 }

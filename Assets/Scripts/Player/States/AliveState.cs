@@ -22,11 +22,11 @@ public class AliveState : PlayerState
         // 視点処理
         controller.Look.ApplyLook(controller.LookInput);
 
-        Vector2 recoil = controller.WeaponController
-            .WeaponRecoil.Update(Time.deltaTime);
-
+        // 反動処理
+        Vector2 recoil = Vector2.zero;
+        recoil += controller.LeftWeaponController.WeaponRecoil.Update(Time.deltaTime);
+        recoil += controller.RightWeaponController.WeaponRecoil.Update(Time.deltaTime);
         controller.Look.AddRecoil(recoil);
-    
 
         // 移動処理
         controller.Mover.Move(
