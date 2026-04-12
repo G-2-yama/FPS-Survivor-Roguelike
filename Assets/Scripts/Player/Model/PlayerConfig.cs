@@ -152,12 +152,12 @@ public class PlayerConfig : MonoBehaviour
 
     public int InitialHP => initialHP;
 
-    [SerializeField] private float dashDistance = 6f;
+    [SerializeField, Min(0f)] private float dashDistance = 6f;
     public float DashDistance => dashDistance;
 
-    [SerializeField] private float dashDuration = 0.12f;
+    [SerializeField, Min(0.01f)] private float dashDuration = 0.12f;
     public float DashDuration => dashDuration;
 
-    [SerializeField] private float dashCooldown = 0.5f;
+    [SerializeField, Min(0f)] private float dashCooldown = 0.5f;
     public float DashCooldown => dashCooldown;
 }

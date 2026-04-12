@@ -61,6 +61,16 @@ public abstract class PlayerMoveState : IState
         return false;
     }
 
+    protected bool TryTransitionByDashRequest()
+    {
+        if (!controller.ConsumeDashRequest())
+        {
+            return false;
+        }
+
+        return moveStateMachine.TryChangeDashState();
+    }
+
     /// <summary>
     /// ジャンプ要求があればジャンプを実行し空中ステートへ遷移する
     /// </summary>

@@ -13,6 +13,9 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
 
     private PlayerMoveState sprintState;
     public PlayerMoveState SprintState => sprintState;
+
+    private PlayerDashState dashState;
+    public PlayerDashState DashState => dashState;
     
     public PlayerMoveState CurrentMoveState => currentState;
 
@@ -22,8 +25,15 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
         airState = new PlayerAirState(controller, this);
         walkState = new PlayerWalkState(controller, this);
         sprintState = new PlayerSprintState(controller, this);
+        dashState = new PlayerDashState(controller, this);
 
         ChangeState(idleState);
+    }
+
+    public new void Update()
+    {
+        dashState.UpdateCooldown(UnityEngine.Time.deltaTime);
+        base.Update();
     }
 
     /// <summary>
@@ -48,6 +58,17 @@ public class PlayerMoveStateMachine : StateMachine<PlayerMoveState>
     public void ChangeSprintState()
     {
         ChangeState(sprintState);
+    }
+
+    public bool TryChangeDashState()
+    {
+        if (!dashState.CanEnter())
+        {
+            return false;
+        }
+
+        ChangeState(dashState);
+        return true;
     }
 
     /// <summary>

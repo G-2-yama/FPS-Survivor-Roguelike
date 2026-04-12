@@ -6,40 +6,33 @@ public class AliveState : PlayerState
 
     public AliveState(PlayerController controller) : base(controller) { }
 
-
     public override void Enter()
     {
-        Debug.Log("Alive Stateに入りました");
-
+        Debug.Log("Enter Alive State");
         moveStateMachine = new PlayerMoveStateMachine(controller);
     }
 
     public override void Update()
     {
-        // MoveState更新
         moveStateMachine.Update();
 
-        if (controller.ConsumeDashRequest())
-        {
-            controller.Mover.TryStartDash(controller.MoveInput);
-        }
-
-        // 視点処理
         controller.Look.ApplyLook(controller.LookInput);
 
         Vector2 recoil = controller.WeaponController
             .WeaponRecoil.Update(Time.deltaTime);
 
         controller.Look.AddRecoil(recoil);
-    
 
-        // 移動処理
+        if (moveStateMachine.CurrentMoveState is PlayerDashState)
+        {
+            return;
+        }
+
         controller.Mover.Move(
             controller.MoveInput,
             controller.IsJumpHeld,
             Time.deltaTime
         );
-
     }
 
     public override void Exit()

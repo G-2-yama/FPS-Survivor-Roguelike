@@ -52,9 +52,6 @@ public class PlayerMover
     /// 長押しジャンプ補正を適用できる残り時間
     /// </summary>
     private float jumpHoldTimer;
-    private Vector3 dashDirection;
-    private float dashTimer;
-    private float dashCooldownTimer;
     private bool wasGrounded;
     private int remainingJumpCount = MaxJumpCount;
 
@@ -73,17 +70,6 @@ public class PlayerMover
     /// </summary>
     public void Move(Vector2 moveInput, bool jumpHeld, float deltaTime)
     {
-        if (dashCooldownTimer > 0f)
-        {
-            dashCooldownTimer = Mathf.Max(0f, dashCooldownTimer - deltaTime);
-        }
-
-        if (dashTimer > 0f)
-        {
-            MoveDash(deltaTime);
-            return;
-        }
-
         bool isGrounded = IsGrounded();
 
         float speed = config.WalkSpeed;
@@ -152,24 +138,39 @@ public class PlayerMover
         }
     }
 
-    public bool TryStartDash(Vector2 moveInput)
+    public bool TryGetMoveDirection(Vector2 moveInput, out Vector3 direction)
     {
-        if (dashTimer > 0f || dashCooldownTimer > 0f)
-        {
-            return false;
-        }
-
         Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
         if (move.sqrMagnitude <= StopInputDeadzoneSqr)
         {
+            direction = Vector3.zero;
             return false;
         }
 
-        dashDirection = move.normalized;
-        dashTimer = config.DashDuration;
-        dashCooldownTimer = config.DashCooldown;
-        horizontalVelocity = Vector3.zero;
+        direction = move.normalized;
         return true;
+    }
+
+    public void MoveDash(Vector3 direction, float deltaTime)
+    {
+        float dashSpeed = config.DashDistance / config.DashDuration;
+
+        if (IsGrounded() && verticalVelocity < 0f)
+        {
+            verticalVelocity = GroundedVerticalVelocity;
+        }
+        else
+        {
+            verticalVelocity += config.Gravity * deltaTime;
+        }
+
+        Vector3 velocity = direction * dashSpeed + Vector3.up * verticalVelocity;
+        characterController.Move(velocity * deltaTime);
+    }
+
+    public void ClearHorizontalVelocity()
+    {
+        horizontalVelocity = Vector3.zero;
     }
 
     /// <summary>
@@ -231,35 +232,7 @@ public class PlayerMover
         verticalVelocity = 0f;
         remainingJumpHoldBonus = 0f;
         jumpHoldTimer = 0f;
-        dashDirection = Vector3.zero;
-        dashTimer = 0f;
-        dashCooldownTimer = 0f;
         wasGrounded = false;
         remainingJumpCount = 0;
-    }
-
-    private void MoveDash(float deltaTime)
-    {
-        float dashStep = Mathf.Min(deltaTime, dashTimer);
-        float dashSpeed = config.DashDistance / config.DashDuration;
-
-        if (IsGrounded() && verticalVelocity < 0f)
-        {
-            verticalVelocity = GroundedVerticalVelocity;
-        }
-        else
-        {
-            verticalVelocity += config.Gravity * dashStep;
-        }
-
-        Vector3 velocity = dashDirection * dashSpeed + Vector3.up * verticalVelocity;
-        characterController.Move(velocity * dashStep);
-
-        dashTimer -= dashStep;
-
-        if (dashTimer <= 0f && IsGrounded() && verticalVelocity < 0f)
-        {
-            verticalVelocity = GroundedVerticalVelocity;
-        }
     }
 }

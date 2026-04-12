@@ -24,6 +24,11 @@ public class PlayerSprintState : PlayerMoveState
     /// </summary>
     public override void Update()
     {
+        if (TryTransitionByDashRequest())
+        {
+            return;
+        }
+
         if (TryTransitionToAirState())
         {
             return;
