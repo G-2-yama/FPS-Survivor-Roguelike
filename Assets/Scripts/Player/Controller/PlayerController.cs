@@ -188,6 +188,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnLeftFire(InputAction.CallbackContext context)
     {
+        if (player.LeftWeapon.WeaponData == null)
+        {
+            return;
+        }
+
         if(stateMachine.CurrentState is AliveState)
         {
             leftWeaponController?.OnFire(context);
@@ -199,6 +204,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnRightFire(InputAction.CallbackContext context)
     {
+        if (player.RightWeapon.WeaponData == null)
+        {
+            return;
+        }
+
         if(stateMachine.CurrentState is AliveState)
         {
             rightWeaponController?.OnFire(context);
@@ -210,6 +220,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnLeftReload(InputAction.CallbackContext context)
     {
+        if (player.LeftWeapon.WeaponData == null)
+        {
+            return;
+        }
+
         if(stateMachine.CurrentState is AliveState)
         {
             leftWeaponController?.OnReload(context);
@@ -221,6 +236,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnRightReload(InputAction.CallbackContext context)
     {
+        if (player.RightWeapon.WeaponData == null)
+        {
+            return;
+        }
         if(stateMachine.CurrentState is AliveState)
         {
             rightWeaponController?.OnReload(context);

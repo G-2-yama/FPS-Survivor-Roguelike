@@ -6,6 +6,9 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Weapon weapon;
 
     public Weapon Weapon => weapon;
+    
+    [SerializeField] private WeaponView weaponView;
+    public WeaponView WeaponView => weaponView;
 
     private WeaponStateMachine weaponStateMachine;
     public WeaponStateMachine WeaponStateMachine => weaponStateMachine;

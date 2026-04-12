@@ -637,6 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 240814479}
+  weaponView: {fileID: 240814480}
 --- !u!114 &240814479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,6 +653,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponModel: {fileID: 8554760074884639008}
 --- !u!114 &240814480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2940,6 +2942,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
   player: {fileID: 275487193}
   upgradeView: {fileID: 1653113033}
+  weaponDatas:
+  - {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  - {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -3540,6 +3545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 2022669244}
+  weaponView: {fileID: 2022669242}
 --- !u!114 &2022669244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3552,9 +3558,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponModel: {fileID: 919132148506111977}
 --- !u!1 &2039875444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4402,3 +4409,5 @@ SceneRoots:
   - {fileID: 1763007387}
   - {fileID: 1281606283}
   - {fileID: 1499916844}
+  - {fileID: 902955989}
+  - {fileID: 1653113032}

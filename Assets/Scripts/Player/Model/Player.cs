@@ -37,6 +37,24 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     /// <summary>
+    /// 左手の装備武器を変更する
+    /// </summary>
+    /// <param name="weapon">装備する武器</param>
+    public void EquipLeftWeapon(WeaponData weapon)
+    {
+        leftWeapon.Equip(weapon);
+    }
+
+    /// <summary>
+    /// 右手の装備武器を変更する
+    /// </summary>
+    /// <param name="weapon">装備する武器</param>
+    public void EquipRightWeapon(WeaponData weapon)
+    {
+        rightWeapon.Equip(weapon);
+    }
+
+    /// <summary>
     /// 死亡したときに呼び出される処理
     /// </summary>
     private void HandleDeath()

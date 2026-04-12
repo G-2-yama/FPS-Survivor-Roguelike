@@ -8,6 +8,8 @@ public class UpgradeManager : MonoBehaviour
 
     [SerializeField] private UpgradeView upgradeView;
 
+    [SerializeField] private List<WeaponData> weaponDatas;
+
     private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
     private List<UpgradeBase> currentChoices = new List<UpgradeBase>();
 
@@ -74,5 +76,9 @@ public class UpgradeManager : MonoBehaviour
         upgradePool.Add(LeftWeaponLevelUpUpgrade);
         UpgradeBase RightWeaponLevelUpUpgrade = new LevelUp("右武器レベルアップ", "武器のレベルを上げます", player.RightWeapon);
         upgradePool.Add(RightWeaponLevelUpUpgrade);
+        UpgradeBase ShotgunUnlockUpgrade = new WeaponUnlock("ショットガンアンロック", "ショットガンをアンロックします", weaponDatas[1], player, true);
+        upgradePool.Add(ShotgunUnlockUpgrade);
+        UpgradeBase HandgunUnlockUpgrade = new WeaponUnlock("ハンドガンアンロック", "ハンドガンをアンロックします", weaponDatas[0], player, false);
+        upgradePool.Add(HandgunUnlockUpgrade);
     }
 }

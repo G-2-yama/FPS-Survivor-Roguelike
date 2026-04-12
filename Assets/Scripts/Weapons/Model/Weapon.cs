@@ -16,6 +16,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
 
+    [SerializeField] private GameObject weaponModel;
+    public GameObject WeaponModel=> weaponModel;
+
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
 
@@ -26,8 +29,29 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        if(weaponData == null)
+        {
+            weaponModel.SetActive(false);
+            return;
+        }
+
         currentAmmo = weaponData.MagazineSize;
         weaponStats = weaponData.CreateBonusStats(level);
+    }
+
+    /// <summary>
+    /// 新しい武器を装備するメソッド
+    /// </summary>
+    /// <param name="newData">新しい武器データ</param>
+    /// <param name="startLevel">開始レベル</param>
+    public void Equip(WeaponData newData, int startLevel = 0)
+    {
+        weaponData = newData;
+        weaponModel.SetActive(true);
+        level = Mathf.Max(0, startLevel);
+        weaponStats = weaponData.CreateBonusStats(level);
+        currentAmmo = weaponStats.MagazineSize;
+        NotifyAmmoChanged();
     }
 
     /// <summary>

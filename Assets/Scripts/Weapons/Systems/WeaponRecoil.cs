@@ -32,6 +32,11 @@ public class WeaponRecoil
     /// </summary>
     public Vector2 Update(float deltaTime)
     {
+        if (weapon.WeaponData == null)
+        {
+            return Vector2.zero;
+        }
+
         // 現在値をターゲットに近づける
         currentRecoil = Vector2.Lerp(currentRecoil, targetRecoil, deltaTime * 10f);
 
