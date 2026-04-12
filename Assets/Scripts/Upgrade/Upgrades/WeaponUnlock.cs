@@ -6,6 +6,12 @@ public class WeaponUnlock : UpgradeBase
     private Player player;
     private bool isRightHand;
 
+    public override bool IsAvailable()
+    {
+        return isRightHand ? !player.RightWeapon.HasWeapon 
+                        : !player.LeftWeapon.HasWeapon;
+    }
+
     public WeaponUnlock(string displayName, string description, WeaponData target, Player player, bool isRightHand) : base(displayName, description)
     {
         this.target = target;

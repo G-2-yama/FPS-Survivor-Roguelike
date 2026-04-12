@@ -7,7 +7,6 @@ public class WeaponView : MonoBehaviour
 
     [SerializeField] private Text currentAmmoText;
 
-    [SerializeField] private Transform weaponModelRoot;
 
     private GameObject weaponModelInstance;
 
@@ -61,10 +60,7 @@ public class WeaponView : MonoBehaviour
     /// <param name="max">最大弾数</param>
     private void UpdateAmmo(int current, int max)
     {
-        if (!currentAmmoText.gameObject.activeSelf)
-        {
-            currentAmmoText.gameObject.SetActive(true);
-        }
+
 
         currentAmmoText.text = $"{current} / {max}";
     }
@@ -76,8 +72,8 @@ public class WeaponView : MonoBehaviour
     private void SetWeaponModel(WeaponData data)
     {
         ClearWeaponModel();
-        Transform parent = weaponModelRoot != null ? weaponModelRoot : transform;
-        weaponModelInstance = Instantiate(data.WeaponModelPrefab, parent);
+        currentAmmoText.gameObject.SetActive(true);
+        weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
     }
 
     /// <summary>

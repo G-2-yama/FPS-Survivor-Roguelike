@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,7 +59,9 @@ public class UpgradeManager : MonoBehaviour
     {
         currentChoices.Clear();
 
-        List<UpgradeBase> poolCopy = new List<UpgradeBase>(upgradePool);
+        // 利用可能なアップグレードのプールからランダムに3つ選ぶ
+        List<UpgradeBase> poolCopy = upgradePool
+            .Where(u => u.IsAvailable()).ToList();
 
         for (int i = 0; i < 3; i++)
         {

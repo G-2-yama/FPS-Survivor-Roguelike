@@ -9,6 +9,7 @@ public abstract class UpgradeBase
     private string description;
     public virtual string Description => description;
 
+    public virtual bool IsAvailable() => true;
     public UpgradeBase(string displayName, string description)
     {
         this.displayName = displayName;
