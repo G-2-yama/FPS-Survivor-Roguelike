@@ -654,7 +654,6 @@ MonoBehaviour:
   hasWeapon: 0
   level: 0
   muzzle: {fileID: 83808289}
-  weaponModelRoot: {fileID: 0}
 --- !u!114 &240814480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -959,9 +958,9 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 275487185}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnLeftReload
+      - m_Target: {fileID: 2022669243}
+        m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
+        m_MethodName: OnReload
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -975,9 +974,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Reload[/Keyboard/r]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 275487185}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnLeftFire
+      - m_Target: {fileID: 2022669243}
+        m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
+        m_MethodName: OnFire
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -991,9 +990,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Fire[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 275487185}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnRightFire
+      - m_Target: {fileID: 240814478}
+        m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
+        m_MethodName: OnFire
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1007,9 +1006,9 @@ MonoBehaviour:
     m_ActionName: 'Player/RightFire[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 275487185}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnRightReload
+      - m_Target: {fileID: 240814478}
+        m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
+        m_MethodName: OnReload
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3561,7 +3560,6 @@ MonoBehaviour:
   hasWeapon: 0
   level: 0
   muzzle: {fileID: 83808289}
-  weaponModelRoot: {fileID: 0}
 --- !u!1 &2039875444
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ public class AliveState : PlayerState
         Debug.Log("Alive Stateに入りました");
 
         moveStateMachine = new PlayerMoveStateMachine(controller);
+        controller.LeftWeaponController.EnableInput();
+        controller.RightWeaponController.EnableInput();
     }
 
     public override void Update()
@@ -39,5 +41,7 @@ public class AliveState : PlayerState
     public override void Exit()
     {
         moveStateMachine.ChangeState(null);
+        controller.LeftWeaponController.DisableInput();
+        controller.RightWeaponController.DisableInput();
     }
 }
