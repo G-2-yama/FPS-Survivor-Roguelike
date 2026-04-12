@@ -1,8 +1,7 @@
 using UnityEngine;
-using System;
 using System.Collections;
 
-public class Enemycondition : MonoBehaviour, IDamageable
+public class Enemycondition : PoolableObject, IDamageable
 {
     [SerializeField] private enemyDatas enemydata;
     [SerializeField] private enemybulletData enemybulletdata;
@@ -12,26 +11,20 @@ public class Enemycondition : MonoBehaviour, IDamageable
     private Vector3 playerposition;
 
     public TeamType TeamType => TeamType.Enemy;
-
     public Health Health { get; private set; }
-
-    Action onDeathReturn;
 
     Coroutine shotCoroutine;
 
-    // 初期化（プールから取り出されたときに呼ばれる）
-    public void Init(Action returnAction)
-    {
-        onDeathReturn = returnAction;
 
-        // HPリセット
+    public void Init()
+    {
         Health = new Health(enemydata.Hp);
         Health.OnDeath += HandleDeath;
     }
 
-    private void HandleDeath()
+    void HandleDeath()
     {
-        onDeathReturn?.Invoke();
+        Release(); // ← 自分で帰る
     }
 
     public void TakeDamage(int damage)
@@ -39,22 +32,35 @@ public class Enemycondition : MonoBehaviour, IDamageable
         Health.TakeDamage(damage);
     }
 
-    void OnEnable()
+    public override void OnGet()
     {
+        // プレイヤー取得（初回だけ）
         if (player == null)
         {
             GameObject p = GameObject.Find("Player");
             if (p != null) player = p.transform;
         }
 
-        shotCoroutine = StartCoroutine(shot());
+        // HP初期化
+        Init();
+
+        // コルーチン開始
+        shotCoroutine = StartCoroutine(Shot());
     }
 
-    void OnDisable()
+    public override void OnRelease()
     {
+        
         if (shotCoroutine != null)
         {
             StopCoroutine(shotCoroutine);
+            shotCoroutine = null;
+        }
+
+      
+        if (Health != null)
+        {
+            Health.OnDeath -= HandleDeath;
         }
     }
 
@@ -64,7 +70,7 @@ public class Enemycondition : MonoBehaviour, IDamageable
         playerposition = player.position - transform.position;
     }
 
-    IEnumerator shot()
+    IEnumerator Shot()
     {
         yield return null;
 

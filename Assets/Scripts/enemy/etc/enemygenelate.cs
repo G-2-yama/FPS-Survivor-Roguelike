@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Pool;
 using System.Collections;
 
 public class EnemyGenerator : MonoBehaviour
@@ -14,22 +13,11 @@ public class EnemyGenerator : MonoBehaviour
     public float mintime = 2;
     public float maxtime = 4;
 
-    ObjectPool<GameObject> pool;
+    int currentEnemyCount = 0;
 
     void Start()
     {
         defaultpos = transform.position;
-
-        pool = new ObjectPool<GameObject>(
-            CreateEnemy,
-            OnGetEnemy,
-            OnReleaseEnemy,
-            OnDestroyEnemy,
-            true,
-            10,
-            20
-        );
-
         StartCoroutine(Generate());
     }
 
@@ -40,40 +28,19 @@ public class EnemyGenerator : MonoBehaviour
             new Vector3(Mathf.Sin(time), 0, 0) * moverange + defaultpos;
     }
 
-    GameObject CreateEnemy()
-    {
-        return Instantiate(enemyPrefab);
-    }
-
-    void OnGetEnemy(GameObject obj)
-    {
-        obj.SetActive(true);
-    }
-
-    void OnReleaseEnemy(GameObject obj)
-    {
-        obj.SetActive(false);
-    }
-
-    void OnDestroyEnemy(GameObject obj)
-    {
-        Destroy(obj);
-    }
-
     IEnumerator Generate()
     {
         while (true)
         {
-            if (pool.CountActive < capenemy)
+            if (currentEnemyCount < capenemy)
             {
-                GameObject obj = pool.Get();
+                var obj = PoolManager.Instance.Get(enemyPrefab);
+                var enemy = obj.GetComponent<Enemycondition>();
 
-                Enemycondition enemy = obj.GetComponent<Enemycondition>();
+                currentEnemyCount++;
 
-                enemy.Init(() =>
-                {
-                    pool.Release(obj);
-                });
+                
+                enemy.Init();
 
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;
