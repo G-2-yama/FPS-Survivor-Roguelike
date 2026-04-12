@@ -33,12 +33,10 @@ public class enemybulletData:ScriptableObject
     }
     public void Shot(Transform shotpoint, Vector3 direction)
     {
-       
-        GameObject bullet = Instantiate(
-            prefab,
-            shotpoint.position,
-            Quaternion.LookRotation(direction)
-        );
+
+        GameObject bullet = PoolManager.Instance.Get(prefab);
+        bullet.transform.position = shotpoint.position;
+        bullet.transform.rotation = Quaternion.LookRotation(direction);
         Debug.Log(bullet);
         var projectile = bullet.GetComponent<ProjectileObject>();
         projectile.Initialize((col) => TryApplyDamage(col), lifetime);

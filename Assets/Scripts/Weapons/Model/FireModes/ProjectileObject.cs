@@ -1,12 +1,20 @@
 using UnityEngine;
-
+using System.Collections;
 /// <summary>
 /// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
 /// </summary>
-public class ProjectileObject : MonoBehaviour
+public class ProjectileObject : PoolableObject
 {
     private System.Action<Collider> onHit;
+    Coroutine lifeRoutine;
+    Rigidbody rb;
 
+
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
     /// <summary>
     /// ヒット時に呼び出す処理と生存時間を初期化する
     /// </summary>
@@ -15,7 +23,12 @@ public class ProjectileObject : MonoBehaviour
     public void Initialize(System.Action<Collider> onHitAction, float lifeTime)
     {
         onHit = onHitAction;
-        Destroy(gameObject, lifeTime);
+        lifeRoutine = StartCoroutine(LifeTimer(lifeTime));
+    }
+    IEnumerator LifeTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Release(); 
     }
 
     /// <summary>
@@ -46,6 +59,22 @@ public class ProjectileObject : MonoBehaviour
 
         onHit.Invoke(col);
 
-        Destroy(gameObject);
+        Release();
+    }
+    public override void OnGet()
+    {
+        rb.linearVelocity = Vector3.zero;
+    }
+
+    public override void OnRelease()
+    {
+        if (lifeRoutine != null)
+        {
+            StopCoroutine(lifeRoutine);
+            lifeRoutine = null;
+        }
+
+        rb.linearVelocity = Vector3.zero;
+        onHit = null;
     }
 }
