@@ -47,7 +47,7 @@ MonoBehaviour:
     SpreadAngle: 0
     RecoilX: 0
     RecoilY: 0
-    MagazineSize: 0
+    MagazineSize: 10
     ReloadTime: 0
     RecoilRecoverySpeed: 0
     BurstCount: 0

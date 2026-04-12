@@ -63,16 +63,16 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        currentAmmo = weaponData.MagazineSize;
+        currentAmmo = weaponStats.MagazineSize;
         NotifyAmmoChanged();
     }
 
     /// <summary>
     /// 弾薬数の変化を通知するメソッド
     /// </summary>
-    private void NotifyAmmoChanged()
+    public void NotifyAmmoChanged()
     {
-        OnAmmoChanged?.Invoke(currentAmmo, weaponData.MagazineSize);
+        OnAmmoChanged?.Invoke(currentAmmo, weaponStats.MagazineSize);
     }
 
     /// <summary>

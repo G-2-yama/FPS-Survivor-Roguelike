@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class LevelUp : UpgradeBase
 {
-    private GameObject target;
+    private Weapon target;
 
-    public LevelUp(string displayName, string description, GameObject target) : base(displayName, description)
+    public LevelUp(string displayName, string description, Weapon target) : base(displayName, description)
     {
         this.target = target;
     }
 
     public override void Apply()
     {
-        var weapon = target.GetComponent<Weapon>();
-        weapon.LevelUp();
-        Debug.Log($"{weapon.WeaponData.DisplayName} leveled up to {weapon.Level}!");
+        target.LevelUp();
+        target.NotifyAmmoChanged();
+        Debug.Log($"{target.WeaponData.DisplayName} leveled up to {target.Level}!");
     }
 }
