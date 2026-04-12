@@ -14,6 +14,10 @@ public class WeaponData : ScriptableObject
     [SerializeField] private string displayName = "New Weapon";
     public string DisplayName => displayName;
 
+    [Header("Visual")]
+    [SerializeField] private GameObject weaponModelPrefab;
+    public GameObject WeaponModelPrefab => weaponModelPrefab;
+
     [Header("Fire Mode")]
     [SerializeField] private FireModeData fireModeData;
     public FireModeData FireModeData => fireModeData;

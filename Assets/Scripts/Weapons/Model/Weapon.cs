@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 public class Weapon : MonoBehaviour
 {
@@ -19,9 +18,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
 
-    [SerializeField] private GameObject weaponModel;
-    public GameObject WeaponModel=> weaponModel;
-
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
 
@@ -30,13 +26,17 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public event Action<int, int> OnAmmoChanged;
 
+    /// <summary>
+    /// 武器が装備されたときに通知するイベント
+    /// </summary>
+    public event Action<WeaponData> OnWeaponEquipped;
+
     private void Awake()
     {
         hasWeapon = weaponData != null;
 
         if(!hasWeapon)
         {
-            weaponModel.SetActive(false);
             return;
         }
 
@@ -58,10 +58,10 @@ public class Weapon : MonoBehaviour
 
         weaponData = newData;
         hasWeapon = true;
-        weaponModel.SetActive(true);
         level = Mathf.Max(0, startLevel);
         weaponStats = weaponData.CreateBonusStats(level);
         currentAmmo = weaponStats.MagazineSize;
+        OnWeaponEquipped?.Invoke(weaponData);
         NotifyAmmoChanged();
     }
 
