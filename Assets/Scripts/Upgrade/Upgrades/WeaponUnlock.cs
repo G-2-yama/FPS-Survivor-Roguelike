@@ -8,8 +8,7 @@ public class WeaponUnlock : UpgradeBase
 
     public override bool IsAvailable()
     {
-        return isRightHand ? !player.RightWeapon.HasWeapon 
-                        : !player.LeftWeapon.HasWeapon;
+        return isRightHand ? !player.HasRightWeapon : !player.HasLeftWeapon;
     }
 
     public WeaponUnlock(string displayName, string description, WeaponData target, Player player, bool isRightHand) : base(displayName, description)
@@ -23,7 +22,7 @@ public class WeaponUnlock : UpgradeBase
     {
         if(isRightHand)
         {
-            if (player.RightWeapon.HasWeapon)
+            if (player.HasRightWeapon)
             {
                 Debug.Log($"Right hand weapon is already unlocked.");
                 return;
@@ -33,7 +32,7 @@ public class WeaponUnlock : UpgradeBase
         }
         else
         {
-            if (player.LeftWeapon.HasWeapon)
+            if (player.HasLeftWeapon)
             {
                 Debug.Log($"Left hand weapon is already unlocked.");
                 return;

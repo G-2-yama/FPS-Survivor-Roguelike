@@ -58,7 +58,7 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !IsInputEnabled)
+        if (weapon.WeaponData == null || !IsInputEnabled)
         {
             return;
         }
@@ -79,7 +79,7 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !IsInputEnabled)
+        if (weapon.WeaponData == null || !IsInputEnabled)
         {
             return;
         }

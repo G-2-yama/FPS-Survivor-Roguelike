@@ -75,9 +75,9 @@ public class UpgradeManager : MonoBehaviour
 
     private void SetUpgradePool()
     {   
-        UpgradeBase LeftWeaponLevelUpUpgrade = new LevelUp("左武器レベルアップ", "武器のレベルを上げます", player.LeftWeapon);
+        UpgradeBase LeftWeaponLevelUpUpgrade = new LevelUp("左武器レベルアップ", "武器のレベルを上げます", player, false);
         upgradePool.Add(LeftWeaponLevelUpUpgrade);
-        UpgradeBase RightWeaponLevelUpUpgrade = new LevelUp("右武器レベルアップ", "武器のレベルを上げます", player.RightWeapon);
+        UpgradeBase RightWeaponLevelUpUpgrade = new LevelUp("右武器レベルアップ", "武器のレベルを上げます", player, true);
         upgradePool.Add(RightWeaponLevelUpUpgrade);
         UpgradeBase ShotgunUnlockUpgrade = new WeaponUnlock("ショットガンアンロック", "ショットガンをアンロックします", weaponDatas[1], player, true);
         upgradePool.Add(ShotgunUnlockUpgrade);

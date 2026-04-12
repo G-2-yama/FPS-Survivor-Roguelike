@@ -12,9 +12,11 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] public Weapon leftWeapon;
     public Weapon LeftWeapon => leftWeapon;
+    public bool HasLeftWeapon => leftWeapon != null && leftWeapon.WeaponData != null;
 
     [SerializeField] public Weapon rightWeapon;
     public Weapon RightWeapon => rightWeapon;
+    public bool HasRightWeapon => rightWeapon != null && rightWeapon.WeaponData != null;
 
     /// <summary>
     /// プレイヤーの体力を管理するモデル
@@ -42,6 +44,11 @@ public class Player : MonoBehaviour, IDamageable
     /// <param name="weapon">装備する武器</param>
     public void EquipLeftWeapon(WeaponData weapon)
     {
+        if (leftWeapon == null)
+        {
+            return;
+        }
+
         leftWeapon.Equip(weapon);
     }
 
@@ -51,6 +58,11 @@ public class Player : MonoBehaviour, IDamageable
     /// <param name="weapon">装備する武器</param>
     public void EquipRightWeapon(WeaponData weapon)
     {
+        if (rightWeapon == null)
+        {
+            return;
+        }
+
         rightWeapon.Equip(weapon);
     }
 

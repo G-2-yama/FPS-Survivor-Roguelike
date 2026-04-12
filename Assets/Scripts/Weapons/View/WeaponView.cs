@@ -18,7 +18,7 @@ public class WeaponView : MonoBehaviour
         weapon.OnAmmoChanged += UpdateAmmo;
         weapon.OnWeaponEquipped += HandleWeaponEquipped;
 
-        if (!weapon.HasWeapon)
+        if (weapon.WeaponData == null)
         {
             currentAmmoText.gameObject.SetActive(false);
             ClearWeaponModel();
