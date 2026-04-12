@@ -1,12 +1,9 @@
 using UnityEngine;
-using UnityEngine.Pool;
 using System.Collections;
 
 public class EnemyGenerator : MonoBehaviour
 {
     public GameObject enemyPrefab;
-
-   
 
     public Vector3 defaultpos;
     float time = 0f;
@@ -16,17 +13,13 @@ public class EnemyGenerator : MonoBehaviour
     public float mintime = 2;
     public float maxtime = 4;
 
-    int enemycount = 0;
+    int currentEnemyCount = 0;
 
     void Start()
     {
         defaultpos = transform.position;
-
-
         StartCoroutine(Generate());
     }
-
-   
 
     void Update()
     {
@@ -39,15 +32,18 @@ public class EnemyGenerator : MonoBehaviour
     {
         while (true)
         {
-            if (enemycount < capenemy)
+            if (currentEnemyCount < capenemy)
             {
-               
+                var obj = PoolManager.Instance.Get(enemyPrefab);
+                var enemy = obj.GetComponent<Enemycondition>();
 
-                GameObject obj = Instantiate(enemyPrefab);
+                currentEnemyCount++;
+
+                
+                enemy.Init();
+
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;
-
-                enemycount++;
 
                 yield return new WaitForSeconds(Random.Range(mintime, maxtime));
             }

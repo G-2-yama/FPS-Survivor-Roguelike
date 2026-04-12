@@ -1,52 +1,67 @@
 using UnityEngine;
-using UnityEngine.Pool;
 using System.Collections;
-using static UnityEngine.GraphicsBuffer;
 
-public class Enemycondition : MonoBehaviour, IDamageable
+public class Enemycondition : PoolableObject, IDamageable
 {
     [SerializeField] private enemyDatas enemydata;
     [SerializeField] private enemybulletData enemybulletdata;
     [SerializeField] private Transform shotpoint;
 
+    private Transform player;
     private Vector3 playerposition;
-    public TeamType TeamType => TeamType.Enemy;
 
-    /// <summary>
-    /// 体力を管理するモデル
-    /// </summary>
+    public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
-    private void Awake()
+    Coroutine shotCoroutine;
+
+
+    public void Init()
     {
         Health = new Health(enemydata.Hp);
         Health.OnDeath += HandleDeath;
-       
     }
-    
-    /// <summary>
-    /// ダメージを受ける処理
-    /// </summary>
-    /// <param name="damage">受けるダメージ量</param>
+
+    void HandleDeath()
+    {
+        Release(); // ← 自分で帰る
+    }
+
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);
     }
 
-    /// <summary>
-    /// 死亡したときに呼び出される処理
-    /// </summary>
-    private void HandleDeath()
+    public override void OnGet()
     {
-        Destroy(this.gameObject);
+        // プレイヤー取得（初回だけ）
+        if (player == null)
+        {
+            GameObject p = GameObject.Find("Player");
+            if (p != null) player = p.transform;
+        }
+
+        // HP初期化
+        Init();
+
+        // コルーチン開始
+        shotCoroutine = StartCoroutine(Shot());
     }
 
-    private Transform player;
-
-    void Start()
+    public override void OnRelease()
     {
-        player = GameObject.Find("Player").transform;
-        StartCoroutine(shot());
+        
+        if (shotCoroutine != null)
+        {
+            StopCoroutine(shotCoroutine);
+            shotCoroutine = null;
+        }
+
+      
+        if (Health != null)
+        {
+            Health.OnDeath -= HandleDeath;
+        }
     }
 
     void Update()
@@ -55,7 +70,7 @@ public class Enemycondition : MonoBehaviour, IDamageable
         playerposition = player.position - transform.position;
     }
 
-    IEnumerator shot()
+    IEnumerator Shot()
     {
         yield return null;
 
@@ -71,4 +86,3 @@ public class Enemycondition : MonoBehaviour, IDamageable
         }
     }
 }
-
