@@ -1,87 +1,70 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// プレイヤー入力を受け取り、モデル反映と状態更新を行うコントローラー
+/// プレイヤーに必要な依存参照を組み立て、入力受付と状態更新を中継するコントローラー
 /// </summary>
- [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField] private Player player;
-    public Player Player => player;
+    /// <summary>
+    /// 体力と移動設定を保持するプレイヤーモデル
+    /// </summary>
+    [SerializeField] private PlayerHealth player;
 
+    /// <summary>
+    /// 物理挙動を無効化してCharacterController移動へ寄せるためのRigidbody
+    /// </summary>
     [SerializeField] private Rigidbody playerRigidbody;
+
+    /// <summary>
+    /// プレイヤー移動に使用するCharacterController
+    /// </summary>
     private CharacterController playerCharacterController;
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
     [SerializeField] private WeaponController weaponController;
-    public WeaponController WeaponController => weaponController;
 
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
     /// </summary>
     [SerializeField] private Transform cameraPitchTransform;
 
-    private StateMachine<PlayerState> stateMachine;
-    public StateMachine<PlayerState> StateMachine => stateMachine;
-
     /// <summary>
-    /// 移動処理
+    /// 状態属性ステートと動作ステートをまとめて更新する管理クラス
     /// </summary>
-    private PlayerMover mover;
-    public PlayerMover Mover => mover;
+    private PlayerStateCoordinator stateController;
 
     /// <summary>
-    /// 視点処理
+    /// プレイヤー制御に必要な参照をまとめたコンテキスト
     /// </summary>
-    private PlayerLook look;
-    public PlayerLook Look => look;
+    private PlayerContext context;
 
     /// <summary>
-    /// 移動入力値を保持
+    /// CharacterControllerを使った移動計算
     /// </summary>
-    private Vector2 moveInput;
-    public Vector2 MoveInput => moveInput;
+    private PlayerMotor motor;
 
     /// <summary>
-    /// 視点入力値を保持
+    /// プレイヤー本体とカメラピッチの視点制御
     /// </summary>
-    private Vector2 lookInput;
-    public Vector2 LookInput => lookInput;
+    private PlayerLookController look;
 
     /// <summary>
-    /// スプリント入力状態を保持
+    /// 入力状態を保持するモデル
     /// </summary>
-    private bool isSprinting;
-    public bool IsSprinting => isSprinting;
+    private PlayerInputState inputState;
 
     /// <summary>
-    /// 接地状態を保持
+    /// Input Systemのコールバックを処理するハンドラー
     /// </summary>
-    private bool isGrounded;
-    public bool IsGrounded => isGrounded;
+    private PlayerInputHandler inputHandler;
 
     /// <summary>
-    /// ジャンプ入力要求を保持
-    /// </summary>
-    private bool jumpRequested;
-    private bool dashRequested;
-
-    /// <summary>
-    /// ジャンプボタンの押下継続状態
-    /// </summary>
-    private bool jumpHeld;
-
-    /// <summary>
-    /// ジャンプボタンを押し続けているかどうか
-    /// </summary>
-    public bool IsJumpHeld => jumpHeld;
-
-    /// <summary>
-    /// 初期化
+    /// 必要なコンポーネントとプレイヤー制御クラスを初期化する
     /// </summary>
     void Awake()
     {
@@ -94,83 +77,48 @@ public class PlayerController : MonoBehaviour
             playerRigidbody.useGravity = false;
         }
 
-        stateMachine = new StateMachine<PlayerState>();
-
-        mover = new PlayerMover(transform, playerCharacterController, player.Config);
-        look = new PlayerLook(transform, cameraPitchTransform, player.Config);
+        motor = new PlayerMotor(transform, playerCharacterController, player.Config);
+        look = new PlayerLookController(transform, cameraPitchTransform, player.Config);
+        inputState = new PlayerInputState();
+        context = new PlayerContext(player, weaponController, motor, look, inputState);
+        stateController = new PlayerStateCoordinator(context);
+        inputHandler = new PlayerInputHandler(inputState, weaponController, () => !stateController.IsDead);
     }
 
     /// <summary>
-    /// 初期状態として待機状態に遷移
+    /// 死亡通知を購読する
     /// </summary>
     void Start()
     {
         player.OnDeath += OnPlayerDeath;
-        stateMachine.ChangeState(new AliveState(this));
     }
 
     /// <summary>
-    /// 入力値をモデルへ反映し、視点処理と状態更新を実行
+    /// 接地状態を更新し、プレイヤー状態を1フレーム分進める
     /// </summary>
     void Update()
     {
-        mover.RefreshGroundState();
-        isGrounded = mover.IsGrounded();
+        motor.RefreshGroundState();
+        context.SetGrounded(motor.IsGrounded());
 
-        stateMachine.Update();
+        stateController.Update();
     }
 
+    /// <summary>
+    /// 死亡通知の購読を解除する
+    /// </summary>
     void OnDestroy()
     {
         player.OnDeath -= OnPlayerDeath;
     }
 
+    /// <summary>
+    /// CharacterControllerが壁に当たったときに水平速度を壁面へ沿わせる
+    /// </summary>
+    /// <param name="hit">CharacterControllerの接触情報</param>
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        mover.ResolveWallHit(hit.normal);
-    }
-
-    /// <summary>
-    /// ジャンプ処理
-    /// </summary>
-    public void Jump()
-    {
-        mover.Jump();
-    }
-
-    public bool TryJump()
-    {
-        return mover.TryJump();
-    }
-
-    /// <summary>
-    /// ジャンプ入力要求を1回だけ取り出す
-    /// </summary>
-    /// <returns>ジャンプ入力要求があった場合はtrue</returns>
-    public bool ConsumeJumpRequest()
-    {
-        if (!jumpRequested)
-        {
-            return false;
-        }
-
-        jumpRequested = false;
-        return true;
-    }
-
-    /// <summary>
-    /// ダッシュ入力要求を1回だけ消費する
-    /// </summary>
-    /// <returns>ダッシュ入力要求があった場合はtrue</returns>
-    public bool ConsumeDashRequest()
-    {
-        if (!dashRequested)
-        {
-            return false;
-        }
-
-        dashRequested = false;
-        return true;
+        motor.ResolveWallHit(hit.normal);
     }
 
     /// <summary>
@@ -180,15 +128,10 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Playerが死亡しました");
 
-        moveInput = Vector2.zero;
-        lookInput = Vector2.zero;
-        isSprinting = false;
-        dashRequested = false;
-        jumpRequested = false;
-        jumpHeld = false;
-        mover.Stop();
+        inputState.Reset();
+        motor.Stop();
 
-        stateMachine.ChangeState(new DeathState(this));
+        stateController.ChangeDeadStatusState();
     }
 
     /// <summary>
@@ -196,18 +139,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
+        inputHandler.OnMove(context);
     }
 
     /// <summary>
-    /// スプリント入力を受け取り、スプリント状態を更新
+    /// ダッシュ入力を受け取り、ダッシュ要求を更新
     /// </summary>
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            dashRequested = true;
-        }
+        inputHandler.OnSprint(context);
     }
 
     /// <summary>
@@ -215,7 +155,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnLook(InputAction.CallbackContext context)
     {
-        lookInput = context.ReadValue<Vector2>();
+        inputHandler.OnLook(context);
     }
 
     /// <summary>
@@ -223,16 +163,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            jumpRequested = true;
-            jumpHeld = true;
-        }
-
-        if (context.canceled)
-        {
-            jumpHeld = false;
-        }
+        inputHandler.OnJump(context);
     }
 
     /// <summary>
@@ -240,10 +171,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if(stateMachine.CurrentState is AliveState)
-        {
-            weaponController.OnFire(context);
-        }
+        inputHandler.OnFire(context);
     }
 
     /// <summary>
@@ -251,9 +179,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        if(stateMachine.CurrentState is AliveState)
-        {
-            weaponController.OnReload(context);
-        }
+        inputHandler.OnReload(context);
     }
 }

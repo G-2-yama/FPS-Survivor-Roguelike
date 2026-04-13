@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 275487194}
   - component: {fileID: 275487191}
   - component: {fileID: 275487190}
+  - component: {fileID: 275487195}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -561,9 +562,15 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f01b959c56312064aa8208e7523a91b4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerModel
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
   walkSpeed: 10
   runSpeed: 8
+  groundDeceleration: 30
+  groundAcceleration: 24
+  airDeceleration: 45
+  jumpHoldDuration: 0.2
+  jumpHoldMaxMultiplier: 1.2
+  gravity: -18
   lookSensitivity: 0.08
   minPitch: -80
   maxPitch: 80
@@ -574,6 +581,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   jumpForce: 8
   initialHP: 100
+  dashDistance: 6
+  dashDuration: 0.12
+  dashCooldown: 0.5
 --- !u!54 &275487192
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -612,7 +622,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cae42e02257d79f4bb0ec5ab323c17a1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   config: {fileID: 275487191}
 --- !u!114 &275487194
 MonoBehaviour:
@@ -625,9 +635,34 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac729216c714d1b4ca88606dc9c98f8c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerView
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthTextView
   player: {fileID: 275487193}
   currentHealthText: {fileID: 2087485765}
+--- !u!143 &275487195
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &296001861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,7 +2048,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

@@ -1,11 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMover
+/// <summary>
+/// CharacterControllerを使ってプレイヤーの移動速度とジャンプ挙動を適用するクラス
+/// </summary>
+public class PlayerMotor
 {
     /// <summary>
     /// 停止入力とみなす最小入力値の二乗
     /// </summary>
     private const float StopInputDeadzoneSqr = 0.0001f;
+
+    /// <summary>
+    /// 地上接地で回復する最大ジャンプ回数
+    /// </summary>
     private const int MaxJumpCount = 2;
 
     /// <summary>
@@ -31,7 +38,7 @@ public class PlayerMover
     /// <summary>
     /// プレイヤー移動設定
     /// </summary>
-    private PlayerConfig config;
+    private PlayerConfig settings;
 
     /// <summary>
     /// 水平方向の現在速度
@@ -52,17 +59,31 @@ public class PlayerMover
     /// 長押しジャンプ補正を適用できる残り時間
     /// </summary>
     private float jumpHoldTimer;
+
+    /// <summary>
+    /// 前フレーム時点で接地していたかどうか
+    /// </summary>
     private bool wasGrounded;
+
+    /// <summary>
+    /// 現在残っているジャンプ可能回数
+    /// </summary>
     private int remainingJumpCount = MaxJumpCount;
 
-    public PlayerMover(
+    /// <summary>
+    /// プレイヤー移動処理に必要な参照を初期化する
+    /// </summary>
+    /// <param name="playerTransform">移動方向の基準になるプレイヤーTransform</param>
+    /// <param name="characterController">移動を適用するCharacterController</param>
+    /// <param name="settings">移動・ジャンプ設定</param>
+    public PlayerMotor(
         Transform playerTransform,
         CharacterController characterController,
-        PlayerConfig config)
+        PlayerConfig settings)
     {
         this.playerTransform = playerTransform;
         this.characterController = characterController;
-        this.config = config;
+        this.settings = settings;
     }
 
     /// <summary>
@@ -72,7 +93,7 @@ public class PlayerMover
     {
         bool isGrounded = IsGrounded();
 
-        float speed = config.WalkSpeed;
+        float speed = settings.WalkSpeed;
         Vector3 move = playerTransform.right * moveInput.x + playerTransform.forward * moveInput.y;
 
         if (move.sqrMagnitude > 1f)
@@ -90,6 +111,7 @@ public class PlayerMover
             }
             else
             {
+                // 空中では入力方向へ即時反転せず、一定時間で近づける
                 float airAcceleration = speed / AirReverseToZeroTime;
                 horizontalVelocity = Vector3.MoveTowards(
                     horizontalVelocity,
@@ -105,7 +127,7 @@ public class PlayerMover
                 horizontalVelocity = Vector3.MoveTowards(
                     horizontalVelocity,
                     Vector3.zero,
-                    config.GroundDeceleration * deltaTime
+                    settings.GroundDeceleration * deltaTime
                 );
             }
         }
@@ -119,15 +141,16 @@ public class PlayerMover
 
         if (!isGrounded && jumpHeld && verticalVelocity > 0f && jumpHoldTimer > 0f && remainingJumpHoldBonus > 0f)
         {
-            float holdBonusPerSecond = config.JumpForce * (config.JumpHoldMaxMultiplier - 1f)
-                / config.JumpHoldDuration;
+            // ボタン長押し中だけ残り補正量を少しずつ上向き速度へ足す
+            float holdBonusPerSecond = settings.JumpForce * (settings.JumpHoldMaxMultiplier - 1f)
+                / settings.JumpHoldDuration;
             float appliedBonus = Mathf.Min(holdBonusPerSecond * deltaTime, remainingJumpHoldBonus);
             verticalVelocity += appliedBonus;
             remainingJumpHoldBonus -= appliedBonus;
             jumpHoldTimer = Mathf.Max(0f, jumpHoldTimer - deltaTime);
         }
 
-        verticalVelocity += config.Gravity * deltaTime;
+        verticalVelocity += settings.Gravity * deltaTime;
 
         Vector3 velocity = horizontalVelocity + Vector3.up * verticalVelocity;
         characterController.Move(velocity * deltaTime);
@@ -164,7 +187,7 @@ public class PlayerMover
     /// <param name="deltaTime">ダッシュ移動を適用する時間</param>
     public void MoveDash(Vector3 direction, float deltaTime)
     {
-        float dashSpeed = config.DashDistance / config.DashDuration;
+        float dashSpeed = settings.DashDistance / settings.DashDuration;
 
         if (IsGrounded() && verticalVelocity < 0f)
         {
@@ -172,7 +195,7 @@ public class PlayerMover
         }
         else
         {
-            verticalVelocity += config.Gravity * deltaTime;
+            verticalVelocity += settings.Gravity * deltaTime;
         }
 
         Vector3 velocity = direction * dashSpeed + Vector3.up * verticalVelocity;
@@ -192,11 +215,14 @@ public class PlayerMover
     /// </summary>
     public void Jump()
     {
-        verticalVelocity = config.JumpForce;
-        remainingJumpHoldBonus = config.JumpForce * (config.JumpHoldMaxMultiplier - 1f);
-        jumpHoldTimer = config.JumpHoldDuration;
+        verticalVelocity = settings.JumpForce;
+        remainingJumpHoldBonus = settings.JumpForce * (settings.JumpHoldMaxMultiplier - 1f);
+        jumpHoldTimer = settings.JumpHoldDuration;
     }
 
+    /// <summary>
+    /// 接地遷移に応じてジャンプ回数を回復・消費する
+    /// </summary>
     public void RefreshGroundState()
     {
         bool isGrounded = IsGrounded();
@@ -213,6 +239,10 @@ public class PlayerMover
         wasGrounded = isGrounded;
     }
 
+    /// <summary>
+    /// 残りジャンプ回数があればジャンプを開始する
+    /// </summary>
+    /// <returns>ジャンプを開始できた場合はtrue</returns>
     public bool TryJump()
     {
         if (remainingJumpCount <= 0)
@@ -225,11 +255,19 @@ public class PlayerMover
         return true;
     }
 
+    /// <summary>
+    /// CharacterControllerの接地状態を取得する
+    /// </summary>
+    /// <returns>接地している場合はtrue</returns>
     public bool IsGrounded()
     {
         return characterController.isGrounded;
     }
 
+    /// <summary>
+    /// 壁面へ向かう水平速度を壁に沿う方向へ補正する
+    /// </summary>
+    /// <param name="wallNormal">接触した壁の法線</param>
     public void ResolveWallHit(Vector3 wallNormal)
     {
         if (wallNormal.y > 0.1f)
@@ -240,6 +278,9 @@ public class PlayerMover
         horizontalVelocity = Vector3.ProjectOnPlane(horizontalVelocity, wallNormal);
     }
 
+    /// <summary>
+    /// 移動速度とジャンプ関連の実行時状態を停止状態へ戻す
+    /// </summary>
     public void Stop()
     {
         horizontalVelocity = Vector3.zero;
