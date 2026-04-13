@@ -13,7 +13,7 @@ public class WeaponReloadingState : WeaponState
     {
         Debug.Log("Weapon Reloading Stateに入りました");
 
-        timer = controller.Weapon.WeaponData.ReloadTime;
+        timer = controller.Weapon.WeaponStats.ReloadTime;
     }
 
     public override void Update()

@@ -6,6 +6,9 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Weapon weapon;
 
     public Weapon Weapon => weapon;
+    
+    [SerializeField] private WeaponView weaponView;
+    public WeaponView WeaponView => weaponView;
 
     private WeaponStateMachine weaponStateMachine;
     public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
@@ -23,13 +26,16 @@ public class WeaponController : MonoBehaviour
 
     public bool IsFirePressed => isFirePressed;
 
+    private bool isInputEnabled = true;
+    public bool IsInputEnabled => isInputEnabled;
+
     /// <summary>
     /// 初期化
     /// </summary>
     void Awake()
     {
         weaponStateMachine = new WeaponStateMachine(this);
-        weaponRecoil = new WeaponRecoil(weapon.WeaponData);
+        weaponRecoil = new WeaponRecoil(weapon);
     }
 
     public void Update()
@@ -37,11 +43,26 @@ public class WeaponController : MonoBehaviour
         weaponStateMachine.Update();
     }
 
+    public void EnableInput()
+    {
+        isInputEnabled = true;
+    }
+
+    public void DisableInput()
+    {
+        isInputEnabled = false;
+    }
+
     /// <summary>
     /// 攻撃入力を処理するメソッド
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
+        if (weapon.WeaponData == null || !IsInputEnabled)
+        {
+            return;
+        }
+
         if (context.phase == InputActionPhase.Started)
         {
             isFirePressed = true;
@@ -58,6 +79,11 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
+        if (weapon.WeaponData == null || !IsInputEnabled)
+        {
+            return;
+        }
+
         if (context.phase == InputActionPhase.Performed)
         {
             weaponStateMachine.OnReload();

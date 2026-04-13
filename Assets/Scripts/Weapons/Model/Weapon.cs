@@ -4,8 +4,13 @@ using System;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponData weaponData;
-
     public WeaponData WeaponData => weaponData;
+
+    [SerializeField] private int level = 0;
+    public int Level => level;
+
+    private WeaponStats weaponStats;
+    public WeaponStats WeaponStats => weaponStats;
 
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
@@ -18,9 +23,49 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public event Action<int, int> OnAmmoChanged;
 
-    private void Start()
+    /// <summary>
+    /// 武器が装備されたときに通知するイベント
+    /// </summary>
+    public event Action<WeaponData> OnWeaponEquipped;
+
+    private void Awake()
     {
+        if (weaponData == null)
+        {
+            return;
+        }
+
         currentAmmo = weaponData.MagazineSize;
+        weaponStats = weaponData.CreateBonusStats(level);
+    }
+
+    /// <summary>
+    /// 新しい武器を装備するメソッド
+    /// </summary>
+    /// <param name="newData">新しい武器データ</param>
+    /// <param name="startLevel">開始レベル</param>
+    public void Equip(WeaponData newData, int startLevel = 0)
+    {
+        weaponData = newData;
+        level = Mathf.Max(0, startLevel);
+        weaponStats = weaponData.CreateBonusStats(level);
+        currentAmmo = weaponStats.MagazineSize;
+        OnWeaponEquipped?.Invoke(weaponData);
+        NotifyAmmoChanged();
+    }
+
+    /// <summary>
+    /// 武器レベルを上げるメソッド
+    /// </summary>
+    public void LevelUp()
+    {
+        if (weaponData == null)
+        {
+            return;
+        }
+
+        level++;
+        weaponStats = weaponData.CreateBonusStats(level);
     }
 
     /// <summary>
@@ -47,16 +92,16 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        currentAmmo = weaponData.MagazineSize;
+        currentAmmo = weaponStats.MagazineSize;
         NotifyAmmoChanged();
     }
 
     /// <summary>
     /// 弾薬数の変化を通知するメソッド
     /// </summary>
-    private void NotifyAmmoChanged()
+    public void NotifyAmmoChanged()
     {
-        OnAmmoChanged?.Invoke(currentAmmo, weaponData.MagazineSize);
+        OnAmmoChanged?.Invoke(currentAmmo, weaponStats.MagazineSize);
     }
 
     /// <summary>
@@ -77,6 +122,11 @@ public class Weapon : MonoBehaviour
     /// <returns>発射方向</returns>
     private Vector3 GetFireDirection()
     {
+        if (weaponData == null)
+        {
+            return Vector3.zero;
+        }
+
         float spread = weaponData.SpreadAngle;
 
         float x = UnityEngine.Random.Range(-spread, spread);
@@ -87,6 +137,5 @@ public class Weapon : MonoBehaviour
 
         return direction;
     }
-
 
 }

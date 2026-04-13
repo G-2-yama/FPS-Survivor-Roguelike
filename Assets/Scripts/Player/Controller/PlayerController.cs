@@ -12,10 +12,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
-    /// 武器の入力・攻撃処理を管理するコントローラー
+    /// 左武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    [SerializeField] private WeaponController weaponController;
-    public WeaponController WeaponController => weaponController;
+    [SerializeField] private WeaponController leftWeaponController;
+    public WeaponController LeftWeaponController => leftWeaponController;
+
+    /// <summary>
+    /// 右武器の入力・攻撃処理を管理するコントローラー
+    /// </summary>
+    [SerializeField] private WeaponController rightWeaponController;
+    public WeaponController RightWeaponController => rightWeaponController;
 
     /// <summary>
     /// カメラのピッチ回転を制御するためのTransform
@@ -174,28 +180,6 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             jumpRequested = true;
-        }
-    }
-
-    /// <summary>
-    /// 射撃入力を武器コントローラーへ中継
-    /// </summary>
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        if(stateMachine.CurrentState is AliveState)
-        {
-            weaponController.OnFire(context);
-        }
-    }
-
-    /// <summary>
-    /// リロード入力を武器コントローラーへ中継
-    /// </summary>
-    public void OnReload(InputAction.CallbackContext context)
-    {
-        if(stateMachine.CurrentState is AliveState)
-        {
-            weaponController.OnReload(context);
         }
     }
 }

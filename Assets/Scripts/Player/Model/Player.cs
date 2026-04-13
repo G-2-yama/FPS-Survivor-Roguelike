@@ -10,6 +10,14 @@ public class Player : MonoBehaviour, IDamageable
 
     public event Action OnDeath;
 
+    [SerializeField] public Weapon leftWeapon;
+    public Weapon LeftWeapon => leftWeapon;
+    public bool HasLeftWeapon => leftWeapon != null && leftWeapon.WeaponData != null;
+
+    [SerializeField] public Weapon rightWeapon;
+    public Weapon RightWeapon => rightWeapon;
+    public bool HasRightWeapon => rightWeapon != null && rightWeapon.WeaponData != null;
+
     /// <summary>
     /// プレイヤーの体力を管理するモデル
     /// </summary>
@@ -28,6 +36,34 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);
+    }
+
+    /// <summary>
+    /// 左手の装備武器を変更する
+    /// </summary>
+    /// <param name="weapon">装備する武器</param>
+    public void EquipLeftWeapon(WeaponData weapon)
+    {
+        if (leftWeapon == null)
+        {
+            return;
+        }
+
+        leftWeapon.Equip(weapon);
+    }
+
+    /// <summary>
+    /// 右手の装備武器を変更する
+    /// </summary>
+    /// <param name="weapon">装備する武器</param>
+    public void EquipRightWeapon(WeaponData weapon)
+    {
+        if (rightWeapon == null)
+        {
+            return;
+        }
+
+        rightWeapon.Equip(weapon);
     }
 
     /// <summary>
