@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: HandGunData
+  m_Name: AssaultRifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponId: weapon_default
   displayName: New Weapon
-  weaponModelPrefab: {fileID: 7974870550914696341, guid: 76cb5043f84c3014194b61cea5c3be16, type: 3}
-  fireModeData: {fileID: 11400000, guid: b4102ea5d3f41ed4a96b95a0900c1bc1, type: 2}
-  triggerType: 0
-  damage: 20
-  fireInterval: 0.15
+  weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
+  fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
+  triggerType: 1
+  damage: 10
+  fireInterval: 0.08
   spreadAngle: 0.5
-  recoilX: 0.012
-  recoilY: 0.004
+  recoilX: 0.02
+  recoilY: 0.015
   recoilRecoverySpeed: 40
   adsZoom: 60
   adsSpreadMultiplier: 0.4
@@ -29,7 +29,7 @@ MonoBehaviour:
   burstCount: 1
   burstInterval: 0.05
   useMagazine: 1
-  magazineSize: 16
+  magazineSize: 30
   reloadTime: 1.6
   maxReserveAmmo: 120
   levelBonusData:
@@ -43,12 +43,12 @@ MonoBehaviour:
     RecoilRecoverySpeed: 0
     BurstCount: 0
     BurstInterval: 0
-  - Damage: 10
+  - Damage: 1
     FireInterval: 0
     SpreadAngle: 0
     RecoilX: 0
     RecoilY: 0
-    MagazineSize: 2
+    MagazineSize: 15
     ReloadTime: 0
     RecoilRecoverySpeed: 0
     BurstCount: 0
