@@ -67,6 +67,21 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     /// <summary>
+    /// 左右の武器の装備状態を入れ替える
+    /// </summary>
+    /// <returns>入れ替えに成功した場合はtrue</returns>
+    public bool SwapWeapons()
+    {
+        if (!HasLeftWeapon && !HasRightWeapon)
+        {
+            return false;
+        }
+
+        leftWeapon.SwapLoadoutWith(rightWeapon);
+        return true;
+    }
+
+    /// <summary>
     /// 死亡したときに呼び出される処理
     /// </summary>
     private void HandleDeath()

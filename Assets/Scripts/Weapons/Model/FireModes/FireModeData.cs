@@ -7,8 +7,7 @@ public abstract class FireModeData : ScriptableObject
     /// 攻撃処理を実装するメソッド
     /// </summary>
     /// <param name="weapon">攻撃を行う武器</param>
-    /// <param name="direction">攻撃方向</param>
-    public abstract void Fire(Weapon weapon, Vector3 direction);
+    public abstract void Fire(Weapon weapon);
 
     /// <summary>
     /// 当たったコライダーからダメージ対象を取得し、必要ならダメージを適用する
@@ -32,5 +31,28 @@ public abstract class FireModeData : ScriptableObject
     protected int GetDamageAmount(Weapon weapon)
     {
         return Mathf.RoundToInt(weapon.WeaponStats.Damage);
+    }
+
+    /// <summary>
+    /// 発射方向をスプレッド角度に基づいてランダムに決定するメソッド
+    /// </summary>
+    /// <param name="weapon">攻撃を行う武器</param>
+    /// <returns>発射方向</returns>
+    protected Vector3 GetFireDirection(Weapon weapon)
+    {
+        if (weapon.WeaponData == null)
+        {
+            return Vector3.zero;
+        }
+
+        float spread = weapon.WeaponData.SpreadAngle;
+
+        float x = UnityEngine.Random.Range(-spread, spread);
+        float y = UnityEngine.Random.Range(-spread, spread);
+
+        Vector3 direction = Camera.main.transform.forward;
+        direction = Quaternion.Euler(y, x, 0) * direction;
+
+        return direction;
     }
 }

@@ -50,6 +50,13 @@ public class WeaponView : MonoBehaviour
     /// <param name="data">装備された武器データ</param>
     private void HandleWeaponEquipped(WeaponData data)
     {
+        if (data == null)
+        {
+            currentAmmoText.gameObject.SetActive(false);
+            ClearWeaponModel();
+            return;
+        }
+
         SetWeaponModel(data);
     }
 
@@ -71,6 +78,13 @@ public class WeaponView : MonoBehaviour
     /// <param name="data">表示対象の武器データ</param>
     private void SetWeaponModel(WeaponData data)
     {
+        if (data == null || data.WeaponModelPrefab == null)
+        {
+            currentAmmoText.gameObject.SetActive(false);
+            ClearWeaponModel();
+            return;
+        }
+
         ClearWeaponModel();
         currentAmmoText.gameObject.SetActive(true);
         weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
