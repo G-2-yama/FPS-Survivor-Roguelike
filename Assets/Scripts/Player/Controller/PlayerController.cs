@@ -194,5 +194,7 @@ public class PlayerController : MonoBehaviour
         }
 
         player.SwapWeapons();
+        leftWeaponController.WeaponStateMachine.ChangeIdleState();
+        rightWeaponController.WeaponStateMachine.ChangeIdleState();
     }
 }
