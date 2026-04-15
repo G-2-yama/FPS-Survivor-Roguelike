@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// プレイヤーの状態属性ステートと動作ステートをまとめて更新する管理クラス
+/// プレイヤーの基底ステートと動作ステートをまとめて更新する管理クラス
 /// </summary>
 public class PlayerStateCoordinator
 {
@@ -11,10 +11,10 @@ public class PlayerStateCoordinator
     private PlayerContext context;
 
     /// <summary>
-    /// Idle/Walking/Airborne/Deadを管理する状態属性ステートマシン
+    /// Idle/Walking/Ungrounded/Deadを管理する基底ステートマシン
     /// </summary>
-    private PlayerStatusStateMachine statusStateMachine;
-    public PlayerStatusStateMachine StatusStateMachine => statusStateMachine;
+    private PlayerBaseStateMachine baseStateMachine;
+    public PlayerBaseStateMachine BaseStateMachine => baseStateMachine;
 
     /// <summary>
     /// NoAction/Dashなどの一時動作を管理する動作ステートマシン
@@ -23,9 +23,9 @@ public class PlayerStateCoordinator
     public PlayerActionStateMachine ActionStateMachine => actionStateMachine;
 
     /// <summary>
-    /// 現在の状態属性が死亡状態かどうか
+    /// 現在の基底ステートが死亡状態かどうか
     /// </summary>
-    public bool IsDead => statusStateMachine.IsDead;
+    public bool IsDead => baseStateMachine.IsDead;
 
     /// <summary>
     /// 2種類のプレイヤーステートマシンを初期化する
@@ -35,7 +35,7 @@ public class PlayerStateCoordinator
     {
         this.context = context;
         actionStateMachine = new PlayerActionStateMachine(context);
-        statusStateMachine = new PlayerStatusStateMachine(context, actionStateMachine);
+        baseStateMachine = new PlayerBaseStateMachine(context, actionStateMachine);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class PlayerStateCoordinator
     {
         if (IsDead)
         {
-            statusStateMachine.Update();
+            baseStateMachine.Update();
             return;
         }
 
@@ -53,7 +53,7 @@ public class PlayerStateCoordinator
 
         if (!actionStateMachine.IsBlockingNormalMovement)
         {
-            statusStateMachine.Update();
+            baseStateMachine.Update();
         }
 
         context.Look.ApplyLook(context.Input.LookInput);
@@ -68,7 +68,7 @@ public class PlayerStateCoordinator
             return;
         }
 
-        context.Motor.Move(
+        context.Locomotion.Move(
             context.Input.MoveInput,
             context.Input.IsJumpHeld,
             Time.deltaTime
@@ -78,9 +78,9 @@ public class PlayerStateCoordinator
     /// <summary>
     /// 死亡状態へ遷移する
     /// </summary>
-    public void ChangeDeadStatusState()
+    public void ChangeDeadBaseState()
     {
         actionStateMachine.ChangeNoActionState();
-        statusStateMachine.ChangeDeadState();
+        baseStateMachine.ChangeDeadState();
     }
 }

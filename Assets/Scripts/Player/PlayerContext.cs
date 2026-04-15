@@ -21,6 +21,16 @@ public class PlayerContext
     public PlayerMotor Motor { get; }
 
     /// <summary>
+    /// 通常移動とダッシュ移動の速度計算
+    /// </summary>
+    public PlayerLocomotion Locomotion { get; }
+
+    /// <summary>
+    /// ジャンプ回数とジャンプ補正
+    /// </summary>
+    public PlayerJumpController JumpController { get; }
+
+    /// <summary>
     /// プレイヤー本体とカメラピッチの視点制御
     /// </summary>
     public PlayerLookController Look { get; }
@@ -35,19 +45,25 @@ public class PlayerContext
     /// </summary>
     /// <param name="player">プレイヤーモデル</param>
     /// <param name="weaponController">武器コントローラー</param>
-    /// <param name="motor">移動処理</param>
+    /// <param name="motor">速度適用処理</param>
+    /// <param name="locomotion">移動速度計算</param>
+    /// <param name="jumpController">ジャンプ処理</param>
     /// <param name="look">視点処理</param>
     /// <param name="input">入力状態</param>
     public PlayerContext(
         PlayerHealth player,
         WeaponController weaponController,
         PlayerMotor motor,
+        PlayerLocomotion locomotion,
+        PlayerJumpController jumpController,
         PlayerLookController look,
         PlayerInputState input)
     {
         Player = player;
         WeaponController = weaponController;
         Motor = motor;
+        Locomotion = locomotion;
+        JumpController = jumpController;
         Look = look;
         Input = input;
     }
@@ -58,6 +74,6 @@ public class PlayerContext
     /// <returns>ジャンプを開始できた場合はtrue</returns>
     public bool TryJump()
     {
-        return Motor.TryJump();
+        return JumpController.TryJump();
     }
 }

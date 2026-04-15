@@ -1,28 +1,28 @@
-﻿/// <summary>
-/// プレイヤーの状態属性ステートの基底クラス。
+/// <summary>
+/// プレイヤーの基底ステートの基底クラス。
 /// 共通の入力判定と遷移ヘルパーを提供する。
 /// </summary>
-public abstract class PlayerStatusState : IState
+public abstract class PlayerBaseState : IState
 {
     /// <summary>
-    /// この状態属性ステートが空中状態かどうか
+    /// この基底ステートが非接地状態かどうか
     /// </summary>
-    public virtual bool IsAirborne => false;
+    public virtual bool IsUngrounded => false;
 
     /// <summary>
-    /// この状態属性ステートが死亡状態かどうか
+    /// この基底ステートが死亡状態かどうか
     /// </summary>
     public virtual bool IsDead => false;
 
     /// <summary>
-    /// 状態属性ステートが参照するプレイヤー制御コンテキスト
+    /// 基底ステートが参照するプレイヤー制御コンテキスト
     /// </summary>
     protected PlayerContext context;
 
     /// <summary>
-    /// 状態属性ステートの遷移を行うステートマシン
+    /// 基底ステートの遷移を行うステートマシン
     /// </summary>
-    protected PlayerStatusStateMachine statusStateMachine;
+    protected PlayerBaseStateMachine baseStateMachine;
 
     /// <summary>
     /// 動作ステートへの遷移を行うステートマシン
@@ -35,18 +35,18 @@ public abstract class PlayerStatusState : IState
     private const float MoveInputDeadzoneSqr = 0.0001f;
 
     /// <summary>
-    /// 基底状態属性ステートを初期化する。
+    /// 基底ステートを初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>
-    /// <param name="statusStateMachine">状態属性ステートマシン。</param>
+    /// <param name="baseStateMachine">基底ステートマシン。</param>
     /// <param name="actionStateMachine">動作ステートマシン。</param>
-    public PlayerStatusState(
+    public PlayerBaseState(
         PlayerContext context,
-        PlayerStatusStateMachine statusStateMachine,
+        PlayerBaseStateMachine baseStateMachine,
         PlayerActionStateMachine actionStateMachine)
     {
         this.context = context;
-        this.statusStateMachine = statusStateMachine;
+        this.baseStateMachine = baseStateMachine;
         this.actionStateMachine = actionStateMachine;
     }
 
@@ -75,14 +75,14 @@ public abstract class PlayerStatusState : IState
     }
 
     /// <summary>
-    /// 非接地なら空中ステートへ遷移する
+    /// 非接地なら非接地ステートへ遷移する
     /// </summary>
     /// <returns>遷移した場合はtrue。</returns>
-    protected bool TryTransitionToAirborneState()
+    protected bool TryTransitionToUngroundedState()
     {
         if (!context.Motor.IsGrounded())
         {
-            statusStateMachine.ChangeAirborneState();
+            baseStateMachine.ChangeUngroundedState();
             return true;
         }
 
@@ -104,7 +104,7 @@ public abstract class PlayerStatusState : IState
     }
 
     /// <summary>
-    /// ジャンプ要求があればジャンプを実行し空中ステートへ遷移する
+    /// ジャンプ要求があればジャンプを実行し非接地ステートへ遷移する
     /// </summary>
     /// <returns>遷移した場合はtrue。</returns>
     protected bool TryTransitionByJumpRequest()
@@ -119,7 +119,7 @@ public abstract class PlayerStatusState : IState
             return false;
         }
 
-        statusStateMachine.ChangeAirborneState();
+        baseStateMachine.ChangeUngroundedState();
         return true;
     }
 
@@ -130,10 +130,10 @@ public abstract class PlayerStatusState : IState
     {
         if (!HasMoveInput())
         {
-            statusStateMachine.ChangeIdleState();
+            baseStateMachine.ChangeIdleState();
             return;
         }
 
-        statusStateMachine.ChangeWalkingState();
+        baseStateMachine.ChangeWalkingState();
     }
 }

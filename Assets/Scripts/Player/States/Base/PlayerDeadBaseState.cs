@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
-/// プレイヤーが死亡している状態属性ステート。
+/// プレイヤーが死亡している基底ステート。
 /// </summary>
-public class PlayerDeadStatusState : PlayerStatusState
+public class PlayerDeadBaseState : PlayerBaseState
 {
     /// <summary>
-    /// この状態属性ステートは死亡状態を表す
+    /// この基底ステートは死亡状態を表す
     /// </summary>
     public override bool IsDead => true;
 
@@ -14,13 +14,13 @@ public class PlayerDeadStatusState : PlayerStatusState
     /// 死亡状態を初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>
-    /// <param name="statusStateMachine">状態属性ステートマシン。</param>
+    /// <param name="baseStateMachine">基底ステートマシン。</param>
     /// <param name="actionStateMachine">動作ステートマシン。</param>
-    public PlayerDeadStatusState(
+    public PlayerDeadBaseState(
         PlayerContext context,
-        PlayerStatusStateMachine statusStateMachine,
+        PlayerBaseStateMachine baseStateMachine,
         PlayerActionStateMachine actionStateMachine)
-        : base(context, statusStateMachine, actionStateMachine) { }
+        : base(context, baseStateMachine, actionStateMachine) { }
 
     /// <summary>
     /// 死亡状態に入ったことをログ出力する

@@ -1,32 +1,32 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
-/// 地上で移動入力がある状態属性ステート。
+/// 地上で移動入力がない基底ステート。
 /// </summary>
-public class PlayerWalkingStatusState : PlayerStatusState
+public class PlayerIdleBaseState : PlayerBaseState
 {
     /// <summary>
-    /// 歩行状態を初期化する。
+    /// 待機状態を初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>
-    /// <param name="statusStateMachine">状態属性ステートマシン。</param>
+    /// <param name="baseStateMachine">基底ステートマシン。</param>
     /// <param name="actionStateMachine">動作ステートマシン。</param>
-    public PlayerWalkingStatusState(
+    public PlayerIdleBaseState(
         PlayerContext context,
-        PlayerStatusStateMachine statusStateMachine,
+        PlayerBaseStateMachine baseStateMachine,
         PlayerActionStateMachine actionStateMachine)
-        : base(context, statusStateMachine, actionStateMachine) { }
+        : base(context, baseStateMachine, actionStateMachine) { }
 
     /// <summary>
-    /// 歩行状態に入ったことをログ出力する
+    /// 待機状態に入ったことをログ出力する
     /// </summary>
     public override void Enter()
     {
-        Debug.Log("Walk Stateに入りました");
+        Debug.Log("Idle Stateに入りました");
     }
 
     /// <summary>
-    /// 歩行状態の更新を行い、入力がない場合は待機状態へ遷移
+    /// 入力が発生したら歩行状態へ遷移
     /// </summary>
     public override void Update()
     {
@@ -35,7 +35,7 @@ public class PlayerWalkingStatusState : PlayerStatusState
             return;
         }
 
-        if (TryTransitionToAirborneState())
+        if (TryTransitionToUngroundedState())
         {
             return;
         }
@@ -47,8 +47,9 @@ public class PlayerWalkingStatusState : PlayerStatusState
 
         if (!HasMoveInput())
         {
-            statusStateMachine.ChangeIdleState();
             return;
         }
+
+        TransitionToGroundStatusByInput();
     }
 }

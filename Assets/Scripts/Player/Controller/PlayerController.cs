@@ -44,9 +44,19 @@ public class PlayerController : MonoBehaviour
     private PlayerContext context;
 
     /// <summary>
-    /// CharacterControllerを使った移動計算
+    /// CharacterControllerを使った速度適用
     /// </summary>
     private PlayerMotor motor;
+
+    /// <summary>
+    /// 通常移動とダッシュ移動の速度計算
+    /// </summary>
+    private PlayerLocomotion locomotion;
+
+    /// <summary>
+    /// ジャンプ回数とジャンプ補正
+    /// </summary>
+    private PlayerJumpController jumpController;
 
     /// <summary>
     /// プレイヤー本体とカメラピッチの視点制御
@@ -77,10 +87,12 @@ public class PlayerController : MonoBehaviour
             playerRigidbody.useGravity = false;
         }
 
-        motor = new PlayerMotor(transform, playerCharacterController, player.Config);
+        motor = new PlayerMotor(playerCharacterController);
+        jumpController = new PlayerJumpController(motor, player.Config);
+        locomotion = new PlayerLocomotion(transform, motor, jumpController, player.Config);
         look = new PlayerLookController(transform, cameraPitchTransform, player.Config);
         inputState = new PlayerInputState();
-        context = new PlayerContext(player, weaponController, motor, look, inputState);
+        context = new PlayerContext(player, weaponController, motor, locomotion, jumpController, look, inputState);
         stateController = new PlayerStateCoordinator(context);
         inputHandler = new PlayerInputHandler(inputState, weaponController, () => !stateController.IsDead);
     }
@@ -98,7 +110,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        motor.RefreshGroundState();
+        jumpController.RefreshGroundState();
 
         stateController.Update();
     }
@@ -129,8 +141,9 @@ public class PlayerController : MonoBehaviour
 
         inputState.Reset();
         motor.Stop();
+        jumpController.Stop();
 
-        stateController.ChangeDeadStatusState();
+        stateController.ChangeDeadBaseState();
     }
 
     /// <summary>

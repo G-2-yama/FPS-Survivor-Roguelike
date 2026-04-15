@@ -1,37 +1,37 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
-/// 空中にいる状態属性ステート。
+/// 接地していない基底ステート。
 /// </summary>
-public class PlayerAirborneStatusState : PlayerStatusState
+public class PlayerUngroundedBaseState : PlayerBaseState
 {
     /// <summary>
-    /// この状態属性ステートは空中状態を表す
+    /// この基底ステートは非接地状態を表す
     /// </summary>
-    public override bool IsAirborne => true;
+    public override bool IsUngrounded => true;
 
     /// <summary>
-    /// 空中状態を初期化する。
+    /// 非接地状態を初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>
-    /// <param name="statusStateMachine">状態属性ステートマシン。</param>
+    /// <param name="baseStateMachine">基底ステートマシン。</param>
     /// <param name="actionStateMachine">動作ステートマシン。</param>
-    public PlayerAirborneStatusState(
+    public PlayerUngroundedBaseState(
         PlayerContext context,
-        PlayerStatusStateMachine statusStateMachine,
+        PlayerBaseStateMachine baseStateMachine,
         PlayerActionStateMachine actionStateMachine)
-        : base(context, statusStateMachine, actionStateMachine) { }
+        : base(context, baseStateMachine, actionStateMachine) { }
 
     /// <summary>
-    /// 空中状態に入ったことをログ出力する
+    /// 非接地状態に入ったことをログ出力する
     /// </summary>
     public override void Enter()
     {
-        Debug.Log("Air Stateに入りました");
+        Debug.Log("Ungrounded Stateに入りました");
     }
 
     /// <summary>
-    /// 空中状態では接地したら入力に応じて地上状態へ遷移
+    /// 非接地状態では接地したら入力に応じて地上状態へ遷移
     /// </summary>
     public override void Update()
     {

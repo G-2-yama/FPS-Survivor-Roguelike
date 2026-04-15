@@ -42,7 +42,7 @@ public class PlayerDashActionState : PlayerActionState
     public bool CanEnter()
     {
         return cooldownTimer <= 0f
-            && context.Motor.TryGetMoveDirection(context.Input.MoveInput, out _);
+            && context.Locomotion.TryGetMoveDirection(context.Input.MoveInput, out _);
     }
 
     /// <summary>
@@ -64,14 +64,14 @@ public class PlayerDashActionState : PlayerActionState
     /// </summary>
     public override void Enter()
     {
-        if (!context.Motor.TryGetMoveDirection(context.Input.MoveInput, out dashDirection))
+        if (!context.Locomotion.TryGetMoveDirection(context.Input.MoveInput, out dashDirection))
         {
             actionStateMachine.ChangeNoActionState();
             return;
         }
 
         dashTimer = context.Player.Config.DashDuration;
-        context.Motor.ClearHorizontalVelocity();
+        context.Locomotion.ClearHorizontalVelocity();
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class PlayerDashActionState : PlayerActionState
     public override void Update()
     {
         float dashStep = Mathf.Min(Time.deltaTime, dashTimer);
-        context.Motor.MoveDash(dashDirection, dashStep);
+        context.Locomotion.MoveDash(dashDirection, dashStep);
         dashTimer -= dashStep;
 
         if (dashTimer > 0f)
