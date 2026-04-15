@@ -25,7 +25,7 @@ public class PlayerStateCoordinator
     /// <summary>
     /// 現在の状態属性が死亡状態かどうか
     /// </summary>
-    public bool IsDead => statusStateMachine.CurrentStatusState is PlayerDeadStatusState;
+    public bool IsDead => statusStateMachine.IsDead;
 
     /// <summary>
     /// 2種類のプレイヤーステートマシンを初期化する

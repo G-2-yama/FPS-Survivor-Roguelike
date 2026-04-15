@@ -31,11 +31,6 @@ public class PlayerContext
     public PlayerInputState Input { get; }
 
     /// <summary>
-    /// 接地状態を保持
-    /// </summary>
-    public bool IsGrounded { get; private set; }
-
-    /// <summary>
     /// プレイヤー制御に必要な参照を初期化する
     /// </summary>
     /// <param name="player">プレイヤーモデル</param>
@@ -55,15 +50,6 @@ public class PlayerContext
         Motor = motor;
         Look = look;
         Input = input;
-    }
-
-    /// <summary>
-    /// 接地状態を更新する
-    /// </summary>
-    /// <param name="isGrounded">現在接地している場合はtrue</param>
-    public void SetGrounded(bool isGrounded)
-    {
-        IsGrounded = isGrounded;
     }
 
     /// <summary>

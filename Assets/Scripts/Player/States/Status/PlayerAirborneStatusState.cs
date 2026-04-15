@@ -6,6 +6,11 @@
 public class PlayerAirborneStatusState : PlayerStatusState
 {
     /// <summary>
+    /// この状態属性ステートは空中状態を表す
+    /// </summary>
+    public override bool IsAirborne => true;
+
+    /// <summary>
     /// 空中状態を初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>
@@ -40,7 +45,7 @@ public class PlayerAirborneStatusState : PlayerStatusState
             return;
         }
 
-        if (context.IsGrounded)
+        if (context.Motor.IsGrounded())
         {
             TransitionToGroundStatusByInput();
             return;

@@ -5,6 +5,16 @@
 public abstract class PlayerStatusState : IState
 {
     /// <summary>
+    /// この状態属性ステートが空中状態かどうか
+    /// </summary>
+    public virtual bool IsAirborne => false;
+
+    /// <summary>
+    /// この状態属性ステートが死亡状態かどうか
+    /// </summary>
+    public virtual bool IsDead => false;
+
+    /// <summary>
     /// 状態属性ステートが参照するプレイヤー制御コンテキスト
     /// </summary>
     protected PlayerContext context;
@@ -70,7 +80,7 @@ public abstract class PlayerStatusState : IState
     /// <returns>遷移した場合はtrue。</returns>
     protected bool TryTransitionToAirborneState()
     {
-        if (!context.IsGrounded)
+        if (!context.Motor.IsGrounded())
         {
             statusStateMachine.ChangeAirborneState();
             return true;

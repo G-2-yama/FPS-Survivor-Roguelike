@@ -6,6 +6,11 @@
 public class PlayerDeadStatusState : PlayerStatusState
 {
     /// <summary>
+    /// この状態属性ステートは死亡状態を表す
+    /// </summary>
+    public override bool IsDead => true;
+
+    /// <summary>
     /// 死亡状態を初期化する。
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト。</param>

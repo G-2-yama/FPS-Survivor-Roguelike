@@ -99,7 +99,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         motor.RefreshGroundState();
-        context.SetGrounded(motor.IsGrounded());
 
         stateController.Update();
     }

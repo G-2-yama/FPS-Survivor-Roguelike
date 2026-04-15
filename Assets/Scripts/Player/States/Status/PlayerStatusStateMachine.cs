@@ -33,6 +33,21 @@ public class PlayerStatusStateMachine : StateMachine<PlayerStatusState>
     public PlayerStatusState CurrentStatusState => currentState;
 
     /// <summary>
+    /// 現在の状態属性が空中状態かどうか
+    /// </summary>
+    public bool IsAirborne => currentState?.IsAirborne ?? false;
+
+    /// <summary>
+    /// 現在の状態属性が地上状態かどうか
+    /// </summary>
+    public bool IsGrounded => !IsAirborne && !IsDead;
+
+    /// <summary>
+    /// 現在の状態属性が死亡状態かどうか
+    /// </summary>
+    public bool IsDead => currentState?.IsDead ?? false;
+
+    /// <summary>
     /// 状態属性ステートを生成し、待機状態へ遷移する
     /// </summary>
     /// <param name="context">プレイヤー制御コンテキスト</param>
