@@ -141,9 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e827c71607bd264ca4d74611d72a0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemycondition
-  enemydata: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
-  enemybulletdata: {fileID: 11400000, guid: f1257f913ac4f4a4185b948c0fa4a29a, type: 2}
-  shotpoint: {fileID: 3914232940092951721}
+  enemyData: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
+  moveEnemy: {fileID: 6515575751581878923}
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,8 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moveenemy
   enemyDatas: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
-  radius: 6
-  length: 6
+  shotPoint: {fileID: 3914232940092951721}
+  Radius: 3
+  Length: 5
 --- !u!54 &5154964929320662522
 Rigidbody:
   m_ObjectHideFlags: 0

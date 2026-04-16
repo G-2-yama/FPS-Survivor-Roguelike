@@ -1,23 +1,23 @@
 using UnityEngine;
-[CreateAssetMenu(menuName = "enemy/attack")]
-public class enemybulletData:ScriptableObject
+
+[CreateAssetMenu(menuName = "enemy/BulletData")]
+public class enemybulletData : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private float speed = 10f;
-    public float Speed => speed;
+    public float Speed = 10f;
+    public float Lifetime = 2f;
+    public GameObject Prefab;
 
-    [SerializeField] private float lifetime = 2f;
-    public float Lifetime => lifetime;
-
-    [SerializeField] private GameObject prefab;
-    public GameObject Prefab => prefab;
-    [SerializeField] private enemyDatas enemydata;
-    public enemyDatas EnemyData => enemydata;
-  
-    
-    protected int GetDamageAmount(enemyDatas enemydata)
+    public void Shot(Transform shotPoint, Vector3 direction)
     {
-        return Mathf.RoundToInt(enemydata.Atk);
+        GameObject bullet = PoolManager.Instance.Get(Prefab);
+        bullet.transform.position = shotPoint.position;
+        bullet.transform.rotation = Quaternion.LookRotation(direction);
+
+        var projectile = bullet.GetComponent<ProjectileObject>();
+        projectile.Initialize((col) => TryApplyDamage(col), Lifetime);
+
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        rb.linearVelocity = direction * Speed;
     }
 
     public bool TryApplyDamage(Collider hitCollider)
@@ -25,25 +25,10 @@ public class enemybulletData:ScriptableObject
         var damageable = hitCollider.GetComponent<IDamageable>();
         if (damageable == null) return false;
 
-        if (damageable.TeamType != TeamType.Player
-            && damageable.TeamType != TeamType.Boss) return false;
+        // É`Å[ÉÄîªíË
+        if (damageable.TeamType == TeamType.Enemy) return false;
 
-        damageable.TakeDamage(GetDamageAmount(enemydata));
+        damageable.TakeDamage(1); // à–óÕÇÕÇ±Ç±Ç©enemyDataÇ©ÇÁéÊìæ
         return true;
     }
-    public void Shot(Transform shotpoint, Vector3 direction)
-    {
-
-        GameObject bullet = PoolManager.Instance.Get(prefab);
-        bullet.transform.position = shotpoint.position;
-        bullet.transform.rotation = Quaternion.LookRotation(direction);
-        Debug.Log(bullet);
-        var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize((col) => TryApplyDamage(col), lifetime);
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = direction * speed;
-    }
-
 }
-

@@ -1,13 +1,11 @@
 using UnityEngine;
-[CreateAssetMenu(menuName = "enemy/Data")]
 
+[CreateAssetMenu(menuName = "enemy/Data")]
 public class enemyDatas : ScriptableObject
 {
-    [SerializeField] private int hp = 5;
-    public int Hp => hp;
-    [SerializeField] private float speed = 8f;
-    public float Speed => speed;
-    [SerializeField] int atk = 1;
-    public int Atk => atk;
-
+    public int Hp = 5;
+    public float Speed = 8f;
+    public int Atk = 1;
+    public float ShotInterval = 3f;
+    public EnemyAttackBase AttackLogic; // ‚±‚±‚ÉBurstShotLogic‚È‚Ç‚ð“ü‚ê‚é
 }
