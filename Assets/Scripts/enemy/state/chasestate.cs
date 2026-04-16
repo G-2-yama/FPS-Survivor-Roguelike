@@ -2,30 +2,34 @@ using UnityEngine;
 
 public class ChaseState : IState
 {
-    private moveenemy enemy;
-    private StateMachine<IState> stateMachine;
+    private readonly EnemyBrain enemy;
+    private readonly StateMachine<IState> stateMachine;
 
-    public ChaseState(moveenemy enemy, StateMachine<IState> sm)
+    public ChaseState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
-        this.stateMachine = sm;
+        this.stateMachine = stateMachine;
     }
 
     public void Enter() { }
 
     public void Update()
     {
-        Vector3 toTarget = enemy.Target.position - enemy.transform.position;
-        float distance = toTarget.magnitude;
+        if (enemy.Target == null)
+            return;
 
-        if (distance <= enemy.Length)
+        float distance = Vector3.Distance(enemy.transform.position, enemy.Target.position);
+
+        if (distance <= enemy.Config.EngageDistance)
         {
             stateMachine.ChangeState(new CircleState(enemy, stateMachine));
             return;
         }
 
-        enemy.transform.position += toTarget.normalized * enemy.EnemyDatas.Speed / 3 * Time.deltaTime;
-        enemy.transform.rotation = Quaternion.LookRotation(-toTarget);
+        enemy.Movement.MoveTowards(
+            enemy.transform,
+            enemy.Target.position,
+            enemy.Config.ChaseSpeed);
     }
 
     public void Exit() { }

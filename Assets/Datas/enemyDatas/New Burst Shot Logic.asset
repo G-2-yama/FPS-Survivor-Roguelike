@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441a14227bfdde1418d3c28223f1b123, type: 3}
   m_Name: New Burst Shot Logic
   m_EditorClassIdentifier: Assembly-CSharp::BurstShotLogic
-  bulletData: {fileID: 0}
+  bulletData: {fileID: 11400000, guid: f1257f913ac4f4a4185b948c0fa4a29a, type: 2}
   shotCount: 3
   interval: 0.2

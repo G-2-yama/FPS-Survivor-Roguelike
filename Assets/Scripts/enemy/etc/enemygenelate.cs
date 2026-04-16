@@ -35,12 +35,11 @@ public class EnemyGenerator : MonoBehaviour
             if (currentEnemyCount < capenemy)
             {
                 var obj = PoolManager.Instance.Get(enemyPrefab);
-                var enemy = obj.GetComponent<Enemycondition>();
-
+            
                 currentEnemyCount++;
 
                 
-                enemy.Init();
+             
 
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;

@@ -1,34 +1,24 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "enemy/BulletData")]
-public class enemybulletData : ScriptableObject
+[CreateAssetMenu(menuName = "Enemy/BulletData")]
+public class BulletData : ScriptableObject
 {
-    public float Speed = 10f;
-    public float Lifetime = 2f;
+    [Min(0f)] public float Speed = 10f;
+    [Min(0f)] public float Lifetime = 2f;
     public GameObject Prefab;
 
-    public void Shot(Transform shotPoint, Vector3 direction)
+    public GameObject Spawn(Transform shotPoint, Vector3 direction)
     {
         GameObject bullet = PoolManager.Instance.Get(Prefab);
-        bullet.transform.position = shotPoint.position;
-        bullet.transform.rotation = Quaternion.LookRotation(direction);
+        bullet.transform.SetPositionAndRotation(
+            shotPoint.position,
+            Quaternion.LookRotation(direction));
 
-        var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize((col) => TryApplyDamage(col), Lifetime);
+        if (bullet.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.linearVelocity = direction * Speed;
+        }
 
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = direction * Speed;
-    }
-
-    public bool TryApplyDamage(Collider hitCollider)
-    {
-        var damageable = hitCollider.GetComponent<IDamageable>();
-        if (damageable == null) return false;
-
-        // É`Å[ÉÄîªíË
-        if (damageable.TeamType == TeamType.Enemy) return false;
-
-        damageable.TakeDamage(1); // à–óÕÇÕÇ±Ç±Ç©enemyDataÇ©ÇÁéÊìæ
-        return true;
+        return bullet;
     }
 }

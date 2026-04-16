@@ -2,52 +2,41 @@ using UnityEngine;
 
 public class CircleState : IState
 {
-    private moveenemy enemy;
-    private StateMachine<IState> stateMachine;
-    private float shotTimer;
+    private readonly EnemyBrain enemy;
+    private readonly StateMachine<IState> stateMachine;
 
-    public CircleState(moveenemy enemy, StateMachine<IState> sm)
+    public CircleState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
-        this.stateMachine = sm;
+        this.stateMachine = stateMachine;
     }
 
-    public void Enter() => shotTimer = 0;
+    public void Enter() { }
 
     public void Update()
     {
-        if (enemy.Target == null) return;
+        if (enemy.Target == null)
+            return;
 
-        Vector3 toTarget = enemy.Target.position - enemy.transform.position;
-        if (toTarget.magnitude > enemy.Length)
+        float distance = Vector3.Distance(enemy.transform.position, enemy.Target.position);
+
+        if (distance > enemy.Config.EngageDistance)
         {
             stateMachine.ChangeState(new ChaseState(enemy, stateMachine));
             return;
         }
 
-        // --- 円移動ロジック ---
-        Vector3 offset = enemy.transform.position - enemy.Target.position;
-        offset = offset.normalized * enemy.Radius;
-        offset = Quaternion.AngleAxis(enemy.EnemyDatas.Speed * 3 * Time.deltaTime, Vector3.up) * offset;
+        enemy.Movement.OrbitAround(
+            enemy.transform,
+            enemy.Target,
+            enemy.Config.OrbitRadius,
+            enemy.Config.OrbitAngularSpeed);
 
-        Vector3 nextPos = enemy.Target.position + offset;
-        nextPos.y = Mathf.Lerp(enemy.transform.position.y, enemy.Target.position.y, Time.deltaTime * 2f);
-
-        enemy.transform.position = nextPos;
-        enemy.transform.rotation = Quaternion.LookRotation(-1*(enemy.Target.position - enemy.transform.position));
-
-        // --- 攻撃ロジック ---
-        shotTimer += Time.deltaTime;
-        if (shotTimer >= enemy.EnemyDatas.ShotInterval)
-        {
-            enemy.EnemyDatas.AttackLogic?.Execute(enemy, enemy.ShotPoint);
-            shotTimer = 0;
-        }
+        enemy.Attack.TryAttack();
     }
 
     public void Exit()
     {
-        // 状態を抜けるときに攻撃をキャンセル（必要に応じて）
-        enemy.EnemyDatas.AttackLogic?.Cancel(enemy);
+        enemy.Attack.CancelAttack();
     }
 }

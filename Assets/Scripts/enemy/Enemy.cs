@@ -1,35 +1,38 @@
 using UnityEngine;
 
-public class Enemycondition : PoolableObject, IDamageable
+public class EnemyHealth : PoolableObject, IDamageable
 {
-    [SerializeField] private enemyDatas enemyData;
-    [SerializeField] private moveenemy moveEnemy; // 本体への参照
+    [SerializeField] private EnemyConfig config;
+    [SerializeField] private EnemyAttackController attackController;
 
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
-    public void Init()
+    public void TakeDamage(int damage)
     {
-        Health = new Health(enemyData.Hp);
-        Health.OnDeath += HandleDeath;
+        Health?.TakeDamage(damage);
     }
-
-    void HandleDeath() => Release();
-
-    public void TakeDamage(int damage) => Health.TakeDamage(damage);
 
     public override void OnGet()
     {
-        Init();
-        // 必要に応じてここで初期ステートをセットし直すなどの処理
+        Health = new Health(config.MaxHp);
+        Health.OnDeath += HandleDeath;
     }
 
     public override void OnRelease()
     {
-        // 重要：プールに戻る際、進行中の攻撃を完全に止める
-        moveEnemy.EnemyDatas.AttackLogic?.Cancel(moveEnemy);
+        attackController?.CancelAttack();
 
         if (Health != null)
+        {
             Health.OnDeath -= HandleDeath;
+            Health = null;
+        }
+    }
+
+    private void HandleDeath()
+    {
+        Release();
     }
 }
+
