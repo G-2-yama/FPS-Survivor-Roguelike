@@ -124,10 +124,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwapWeapons",
+                    "name": "Inventory",
                     "type": "Button",
-                    "id": "6f4269ff-7c93-4ca9-9c08-1514564c71de",
-                    "expectedControlType": "Button",
+                    "id": "6f254fd3-23de-4941-b4a0-6ac7b381fdf7",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -565,12 +565,12 @@
                 },
                 {
                     "name": "",
-                    "id": "59a75f7e-8fd5-43f5-a9d6-c66162572d7f",
+                    "id": "1983f61d-5f5e-40c1-8aa1-9f77fcdce669",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SwapWeapons",
+                    "groups": "",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

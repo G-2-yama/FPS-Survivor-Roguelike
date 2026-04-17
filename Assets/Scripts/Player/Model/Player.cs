@@ -6,6 +6,9 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private PlayerConfig config;
     public PlayerConfig Config => config;
 
+    [SerializeField] private PlayerInventory inventory;
+    public PlayerInventory Inventory => inventory;
+
     public TeamType TeamType => TeamType.Player;
 
     public event Action OnDeath;
@@ -64,21 +67,6 @@ public class Player : MonoBehaviour, IDamageable
         }
 
         rightWeapon.Equip(weapon);
-    }
-
-    /// <summary>
-    /// 左右の武器の装備状態を入れ替える
-    /// </summary>
-    /// <returns>入れ替えに成功した場合はtrue</returns>
-    public bool SwapWeapons()
-    {
-        if (!HasLeftWeapon && !HasRightWeapon)
-        {
-            return false;
-        }
-
-        leftWeapon.SwapLoadoutWith(rightWeapon);
-        return true;
     }
 
     /// <summary>

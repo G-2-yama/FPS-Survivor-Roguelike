@@ -182,19 +182,4 @@ public class PlayerController : MonoBehaviour
             jumpRequested = true;
         }
     }
-
-    /// <summary>
-    /// 武器入れ替え入力を受け取り、左右武器を交換する
-    /// </summary>
-    public void OnSwapWeapons(InputAction.CallbackContext context)
-    {
-        if (!context.performed)
-        {
-            return;
-        }
-
-        player.SwapWeapons();
-        leftWeaponController.WeaponStateMachine.ChangeIdleState();
-        rightWeaponController.WeaponStateMachine.ChangeIdleState();
-    }
 }

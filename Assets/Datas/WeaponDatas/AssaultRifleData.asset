@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: AssaultRifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponId: weapon_default
-  displayName: New Weapon
+  displayName: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
+  icon: {fileID: 0}
   weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
   fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
   triggerType: 1
