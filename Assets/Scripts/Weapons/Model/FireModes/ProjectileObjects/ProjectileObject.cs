@@ -3,11 +3,11 @@ using System.Collections;
 /// <summary>
 /// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
 /// </summary>
-public class ProjectileObject : PoolableObject
+public abstract class ProjectileObject : PoolableObject
 {
-    private System.Action<Collider> onHit;
-    Coroutine lifeRoutine;
-    Rigidbody rb;
+    protected System.Action<Collider> onHit;
+    private Coroutine lifeRoutine;
+    protected Rigidbody rb;
 
 
 
@@ -53,14 +53,8 @@ public class ProjectileObject : PoolableObject
     /// ヒットコールバックを実行し、Projectileを破棄する
     /// </summary>
     /// <param name="col">ヒットしたCollider</param>
-    private void HandleHit(Collider col)
-    {
-        if (onHit == null) return;
+    protected abstract void HandleHit(Collider col);
 
-        onHit.Invoke(col);
-
-        Release();
-    }
     public override void OnGet()
     {
         rb.linearVelocity = Vector3.zero;

@@ -2055,6 +2055,7 @@ MonoBehaviour:
   areaCollider: {fileID: 1023013651}
   damage: 10
   interval: 0.2
+  lifetime: 0
   targetTeam: 1
 --- !u!65 &1023013651
 BoxCollider:
@@ -3406,7 +3407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388b6ab7df742cc45b8b51b7bbe80ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryController
-  inventory: {fileID: 1569679481}
   inventoryUI: {fileID: 1562638436}
 --- !u!114 &1569679481
 MonoBehaviour:
