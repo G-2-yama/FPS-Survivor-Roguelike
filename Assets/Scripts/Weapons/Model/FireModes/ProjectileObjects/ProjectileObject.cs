@@ -9,7 +9,10 @@ public abstract class ProjectileObject : PoolableObject
     private Coroutine lifeRoutine;
     protected Rigidbody rb;
 
-
+    /// <summary>
+    /// 二重ヒット防止フラグ
+    /// </summary>
+    private bool hasHit = false;
 
     void Awake()
     {
@@ -37,6 +40,9 @@ public abstract class ProjectileObject : PoolableObject
     /// <param name="collision">衝突情報</param>
     private void OnCollisionEnter(Collision collision)
     {
+        if (hasHit) return;
+        hasHit = true;
+
         HandleHit(collision.collider);
     }
 
@@ -46,6 +52,9 @@ public abstract class ProjectileObject : PoolableObject
     /// <param name="other">接触したCollider</param>
     private void OnTriggerEnter(Collider other)
     {
+        if (hasHit) return;
+        hasHit = true;
+
         HandleHit(other);
     }
 
@@ -57,6 +66,7 @@ public abstract class ProjectileObject : PoolableObject
 
     public override void OnGet()
     {
+        hasHit = false;
         rb.linearVelocity = Vector3.zero;
     }
 
