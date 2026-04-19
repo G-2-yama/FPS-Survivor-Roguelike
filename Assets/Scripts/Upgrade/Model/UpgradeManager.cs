@@ -83,5 +83,7 @@ public class UpgradeManager : MonoBehaviour
         upgradePool.Add(ShotgunUnlockUpgrade);
         UpgradeBase HandgunUnlockUpgrade = new WeaponUnlock("ハンドガンアンロック", "ハンドガンをアンロックします", weaponDatas[0], player, false);
         upgradePool.Add(HandgunUnlockUpgrade);
+        UpgradeBase RifleUnlockUpgrade = new WeaponUnlock("ライフルアンロック", "ライフルをアンロックします", weaponDatas[2], player, true);
+        upgradePool.Add(RifleUnlockUpgrade);
     }
 }

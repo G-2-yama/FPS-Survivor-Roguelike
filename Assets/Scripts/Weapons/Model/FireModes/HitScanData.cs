@@ -7,8 +7,9 @@ public class HitScanData : FireModeData
     public float MaxRange => maxRange;
 
     /// <inheritdoc />
-    public override void Fire(Weapon weapon, Vector3 direction)
+    public override void Fire(Weapon weapon)
     {
+        Vector3 direction = GetFireDirection(weapon);
         Ray ray = new Ray(Camera.main.transform.position, direction);
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
