@@ -15,11 +15,19 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] public Weapon leftWeapon;
     public Weapon LeftWeapon => leftWeapon;
-    public bool HasLeftWeapon => leftWeapon != null && leftWeapon.WeaponData != null;
+    public bool HasLeftWeapon => leftWeapon.WeaponData != null;
 
     [SerializeField] public Weapon rightWeapon;
     public Weapon RightWeapon => rightWeapon;
-    public bool HasRightWeapon => rightWeapon != null && rightWeapon.WeaponData != null;
+    public bool HasRightWeapon => rightWeapon.WeaponData != null;
+
+    [SerializeField] private Weapon leftAbility;
+    public Weapon LeftAbility => leftAbility;
+    public bool HasLeftAbility => leftAbility.WeaponData != null;
+
+    [SerializeField] private Weapon rightAbility;
+    public Weapon RightAbility => rightAbility;
+    public bool HasRightAbility => rightAbility.WeaponData != null; 
 
     /// <summary>
     /// プレイヤーの体力を管理するモデル
@@ -45,29 +53,17 @@ public class Player : MonoBehaviour, IDamageable
     /// 左手の装備武器を変更する
     /// </summary>
     /// <param name="weapon">装備する武器</param>
-    public void EquipLeftWeapon(WeaponData weapon)
-    {
-        if (leftWeapon == null)
-        {
-            return;
-        }
-
-        leftWeapon.Equip(weapon);
-    }
+    public void EquipLeftWeapon(WeaponData weapon) => leftWeapon.Equip(weapon);
 
     /// <summary>
     /// 右手の装備武器を変更する
     /// </summary>
     /// <param name="weapon">装備する武器</param>
-    public void EquipRightWeapon(WeaponData weapon)
-    {
-        if (rightWeapon == null)
-        {
-            return;
-        }
+    public void EquipRightWeapon(WeaponData weapon) => rightWeapon.Equip(weapon);
+    
+    public void EquipLeftAbility(WeaponData ability) => leftAbility.Equip(ability);
 
-        rightWeapon.Equip(weapon);
-    }
+    public void EquipRightAbility(WeaponData ability) => rightAbility.Equip(ability);
 
     /// <summary>
     /// 死亡したときに呼び出される処理

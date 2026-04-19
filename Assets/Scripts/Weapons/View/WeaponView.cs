@@ -7,6 +7,7 @@ public class WeaponView : MonoBehaviour
 
     [SerializeField] private Text currentAmmoText;
 
+    [SerializeField] private Image reloadIndicator;
 
     private GameObject weaponModelInstance;
 
@@ -21,12 +22,14 @@ public class WeaponView : MonoBehaviour
         if (weapon.WeaponData == null)
         {
             currentAmmoText.gameObject.SetActive(false);
+            reloadIndicator.gameObject.SetActive(false);
             ClearWeaponModel();
             return;
         }
 
         SetWeaponModel(weapon.WeaponData);
         currentAmmoText.gameObject.SetActive(true);
+        reloadIndicator.gameObject.SetActive(true);
         UpdateAmmo(weapon.CurrentAmmo, weapon.WeaponStats.MagazineSize);
     }
 
@@ -44,6 +47,11 @@ public class WeaponView : MonoBehaviour
         ClearWeaponModel();
     }
 
+    public void SetReloadProgress(float progress)
+    {
+        reloadIndicator.fillAmount = progress;
+    }
+
     /// <summary>
     /// 武器装備イベントを受け取り、表示モデルを切り替える
     /// </summary>
@@ -53,10 +61,12 @@ public class WeaponView : MonoBehaviour
         if (data == null)
         {
             currentAmmoText.gameObject.SetActive(false);
+            reloadIndicator.gameObject.SetActive(false);
             ClearWeaponModel();
             return;
         }
-
+        currentAmmoText.gameObject.SetActive(true);
+        reloadIndicator.gameObject.SetActive(true);
         SetWeaponModel(data);
     }
 
@@ -67,8 +77,6 @@ public class WeaponView : MonoBehaviour
     /// <param name="max">最大弾数</param>
     private void UpdateAmmo(int current, int max)
     {
-
-
         currentAmmoText.text = $"{current} / {max}";
     }
 
@@ -78,15 +86,12 @@ public class WeaponView : MonoBehaviour
     /// <param name="data">表示対象の武器データ</param>
     private void SetWeaponModel(WeaponData data)
     {
-        if (data == null || data.WeaponModelPrefab == null)
+        ClearWeaponModel();
+        if (data.WeaponModelPrefab == null)
         {
-            currentAmmoText.gameObject.SetActive(false);
-            ClearWeaponModel();
             return;
         }
 
-        ClearWeaponModel();
-        currentAmmoText.gameObject.SetActive(true);
         weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
     }
 

@@ -52,17 +52,6 @@ public class WeaponData : ScriptableObject
     public float RecoilRecoverySpeed => recoilRecoverySpeed;
 
 
-    [Header("ADS")]
-    [SerializeField] private float adsZoom = 60f;
-    public float AdsZoom => adsZoom;
-
-    [SerializeField] private float adsSpreadMultiplier = 0.4f;
-    public float AdsSpreadMultiplier => adsSpreadMultiplier;
-
-    [SerializeField] private float adsRecoilMultiplier = 0.6f;
-    public float AdsRecoilMultiplier => adsRecoilMultiplier;
-
-
     [Header("Burst")]
 
     [SerializeField, Min(1)] private int burstCount = 1;
@@ -73,8 +62,8 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Ammo")]
-    [SerializeField] private bool useMagazine = true;
-    public bool UseMagazine => useMagazine;
+    [SerializeField] private bool autoReload = false;
+    public bool AutoReload => autoReload;
 
     [SerializeField, Min(1)] private int magazineSize = 30;
     public int MagazineSize => magazineSize;

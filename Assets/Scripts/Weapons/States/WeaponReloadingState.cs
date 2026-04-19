@@ -20,9 +20,11 @@ public class WeaponReloadingState : WeaponState
     {
         timer -= Time.deltaTime;
 
+        controller.WeaponView.SetReloadProgress(1f - timer / controller.Weapon.WeaponStats.ReloadTime);
         // リロードの完了
         if (timer <= 0f)
         {
+            controller.WeaponView.SetReloadProgress(0f);
             controller.Weapon.Reload();
             controller.WeaponStateMachine.ChangeIdleState();
         }

@@ -4,8 +4,7 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private Weapon mainLeftWeapon;
-    [SerializeField] private Weapon mainRightWeapon;
+    [SerializeField] private Player player;
 
     private Dictionary<SlotType, Weapon> slots;
 
@@ -15,8 +14,10 @@ public class PlayerInventory : MonoBehaviour
     {
         slots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.MainLeft,  mainLeftWeapon  },
-            { SlotType.MainRight, mainRightWeapon },
+            { SlotType.MainLeft,  player.LeftWeapon  },
+            { SlotType.MainRight, player.RightWeapon },
+            { SlotType.LeftAbility, player.LeftAbility },   
+            { SlotType.RightAbility, player.RightAbility } 
         };
     }
 
@@ -29,21 +30,6 @@ public class PlayerInventory : MonoBehaviour
     {
         if (slots.TryGetValue(slot, out var weapon))
             weapon.Equip(data, level, ammo);
-    }
-
-    /// <summary>
-    /// メイン左右の入れ替え
-    /// </summary>
-    public bool SwapMainWeapons()
-    {
-        if (!HasWeapon(SlotType.MainLeft) && !HasWeapon(SlotType.MainRight))
-            return false;
-
-        mainLeftWeapon.SwapLoadoutWith(mainRightWeapon);
-
-        OnSlotChanged?.Invoke(SlotType.MainLeft, mainLeftWeapon.WeaponData);
-        OnSlotChanged?.Invoke(SlotType.MainRight, mainRightWeapon.WeaponData);
-        return true;
     }
 
     /// <summary>
