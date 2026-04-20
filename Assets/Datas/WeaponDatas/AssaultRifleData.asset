@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: ShotGunData
+  m_Name: AssaultRifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponId: weapon_default
-  displayName: "\u30B7\u30E7\u30C3\u30C8\u30AC\u30F3"
+  displayName: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
   icon: {fileID: 0}
-  weaponModelPrefab: {fileID: 2231289778767898452, guid: b123c7c2715a42e48b2e1568aa76357b, type: 3}
-  fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
-  triggerType: 0
-  damage: 7
-  fireInterval: 0.25
-  spreadAngle: 5
-  recoilX: 0.012
-  recoilY: 0.01
+  weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
+  fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
+  triggerType: 1
+  damage: 10
+  fireInterval: 0.08
+  spreadAngle: 0.5
+  recoilX: 0.02
+  recoilY: 0.015
   recoilRecoverySpeed: 40
   adsZoom: 60
   adsSpreadMultiplier: 0.4
   adsRecoilMultiplier: 0.6
-  burstCount: 10
-  burstInterval: 0.005
+  burstCount: 1
+  burstInterval: 0.05
   useMagazine: 1
   magazineSize: 30
-  reloadTime: 2
+  reloadTime: 1.6
   maxReserveAmmo: 120
   levelBonusData:
   - Damage: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
     SpreadAngle: 0
     RecoilX: 0
     RecoilY: 0
-    MagazineSize: 10
+    MagazineSize: 15
     ReloadTime: 0
     RecoilRecoverySpeed: 0
     BurstCount: 0

@@ -6,6 +6,9 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private PlayerConfig config;
     public PlayerConfig Config => config;
 
+    [SerializeField] private PlayerInventory inventory;
+    public PlayerInventory Inventory => inventory;
+
     public TeamType TeamType => TeamType.Player;
 
     public event Action OnDeath;

@@ -14,8 +14,10 @@ public class ProjectileData : FireModeData
 
 
     /// <inheritdoc />
-    public override void Fire(Weapon weapon, Vector3 direction)
+    public override void Fire(Weapon weapon)
     {
+        Vector3 direction = GetFireDirection(weapon);
+
         GameObject bullet = PoolManager.Instance.Get(prefab);
 
         bullet.transform.position = weapon.Muzzle.position;

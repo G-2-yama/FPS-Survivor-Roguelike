@@ -3,13 +3,16 @@ using System.Collections;
 /// <summary>
 /// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
 /// </summary>
-public class ProjectileObject : PoolableObject
+public abstract class ProjectileObject : PoolableObject
 {
-    private System.Action<Collider> onHit;
-    Coroutine lifeRoutine;
-    Rigidbody rb;
+    protected System.Action<Collider> onHit;
+    private Coroutine lifeRoutine;
+    protected Rigidbody rb;
 
-
+    /// <summary>
+    /// 二重ヒット防止フラグ
+    /// </summary>
+    private bool hasHit = false;
 
     void Awake()
     {
@@ -37,6 +40,9 @@ public class ProjectileObject : PoolableObject
     /// <param name="collision">衝突情報</param>
     private void OnCollisionEnter(Collision collision)
     {
+        if (hasHit) return;
+        hasHit = true;
+
         HandleHit(collision.collider);
     }
 
@@ -46,6 +52,9 @@ public class ProjectileObject : PoolableObject
     /// <param name="other">接触したCollider</param>
     private void OnTriggerEnter(Collider other)
     {
+        if (hasHit) return;
+        hasHit = true;
+
         HandleHit(other);
     }
 
@@ -53,16 +62,11 @@ public class ProjectileObject : PoolableObject
     /// ヒットコールバックを実行し、Projectileを破棄する
     /// </summary>
     /// <param name="col">ヒットしたCollider</param>
-    private void HandleHit(Collider col)
-    {
-        if (onHit == null) return;
+    protected abstract void HandleHit(Collider col);
 
-        onHit.Invoke(col);
-
-        Release();
-    }
     public override void OnGet()
     {
+        hasHit = false;
         rb.linearVelocity = Vector3.zero;
     }
 
