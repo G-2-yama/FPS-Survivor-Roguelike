@@ -50,10 +50,4 @@ public class WeaponReloadingState : WeaponState
     {
         Debug.Log("リロード中には再度リロードできません");
     }
-
-    public override void OnChangeWeapon(WeaponData data)
-    {
-        controller.WeaponView.SetReloadProgress(0f);
-        controller.WeaponStateMachine.ChangeIdleState();
-    }
 }

@@ -51,10 +51,4 @@ public class WeaponCooldownState : WeaponState
         Debug.Log($"クールダウン中にはリロードはできません");
     }
 
-    public override void OnChangeWeapon(WeaponData data)
-    {
-        controller.WeaponView.SetReloadProgress(0f);
-        controller.WeaponStateMachine.ChangeIdleState();
-    }
-
 }

@@ -37,7 +37,7 @@ public class WeaponStateMachine : StateMachine<WeaponState>
 
     public void OnChangeWeapon(WeaponData data)
     {
-        currentState?.OnChangeWeapon(data);
+        ChangeIdleState();
     }
 
     /// <summary>

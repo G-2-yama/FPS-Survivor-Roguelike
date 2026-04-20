@@ -31,9 +31,4 @@ public abstract class WeaponState : IState
 	/// リロード入力を受け取る
 	/// </summary>
 	public virtual void OnReload() { }
-
-	/// <summary>
-	/// 武器装備が変更されたときに呼ばれる
-	/// </summary>
-	public virtual void OnChangeWeapon(WeaponData data) { }
 }

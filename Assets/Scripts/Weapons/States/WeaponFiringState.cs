@@ -21,7 +21,7 @@ public class WeaponFiringState : WeaponState
         // 全弾撃ち終わった場合
         if (burstRemaining <= 0)
         {
-            controller.WeaponStateMachine.ChangeCooldownState();
+            TransitionAfterBurst();
             return;
         }
 
@@ -36,8 +36,19 @@ public class WeaponFiringState : WeaponState
         }
         else
         {
-            controller.WeaponStateMachine.ChangeCooldownState();
+            TransitionAfterBurst();
         }
+    }
+
+    private void TransitionAfterBurst()
+    {
+        if (controller.Weapon.ShouldStartAutoReload())
+        {
+            controller.WeaponStateMachine.ChangeReloadingState();
+            return;
+        }
+
+        controller.WeaponStateMachine.ChangeCooldownState();
     }
 
     public override void Exit()
@@ -59,11 +70,5 @@ public class WeaponFiringState : WeaponState
 	public override void OnReload()
     {
         Debug.Log($"銃撃中にリロードはできません");
-    }
-
-    public override void OnChangeWeapon(WeaponData data)
-    {
-        controller.WeaponView.SetReloadProgress(0f);
-        controller.WeaponStateMachine.ChangeIdleState();
     }
 }

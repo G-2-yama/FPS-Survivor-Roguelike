@@ -8,12 +8,7 @@ public class WeaponIdleState : WeaponState
     {
         controller.WeaponView.SetReloadProgress(0f);
 
-        if(controller.Weapon.WeaponData == null)
-        {
-            return;
-        }
-
-        if (controller.Weapon.WeaponData.AutoReload && controller.Weapon.CurrentAmmo <= 0)
+        if (controller.Weapon.ShouldStartAutoReload())
         {
             controller.WeaponStateMachine.ChangeReloadingState();
         }
@@ -43,11 +38,5 @@ public class WeaponIdleState : WeaponState
 	public override void OnReload()
     {
         controller.WeaponStateMachine.ChangeReloadingState();
-    }
-
-    public override void OnChangeWeapon(WeaponData data)
-    {
-        controller.WeaponView.SetReloadProgress(0f);
-        controller.WeaponStateMachine.ChangeIdleState();
     }
 }
