@@ -89,5 +89,7 @@ public class UpgradeManager : MonoBehaviour
         
         UpgradeBase GrenadeUnlockUpgrade = new AbilityUnlock("グレネードアンロック", "グレネードをアンロックします", abilityDatas[0], player, false);
         upgradePool.Add(GrenadeUnlockUpgrade);
+        UpgradeBase SuperShotUnlockUpgrade = new AbilityUnlock("スーパーショットアンロック", "スーパースキルをアンロックします", abilityDatas[1], player, true);
+        upgradePool.Add(SuperShotUnlockUpgrade);
     }
 }

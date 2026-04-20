@@ -43,6 +43,9 @@ public class PlayerInventory : MonoBehaviour
         if (!slots.ContainsKey(slotA) || !slots.ContainsKey(slotB))
             return false;
 
+        if (!slotA.IsCompatibleWith(slotB))
+            return false;
+
         slots[slotA].SwapLoadoutWith(slots[slotB]);
 
         // 両スロットの変化を通知

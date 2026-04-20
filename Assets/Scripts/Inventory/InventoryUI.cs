@@ -18,6 +18,7 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     public void OnSlotClicked(SlotView clickedSlot)
     {
+        // 初回のスロット選択
         if (selectedSlot == null)
         {
             selectedSlot = clickedSlot;
@@ -25,9 +26,17 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
+        // 同じスロットを選択時
         if (selectedSlot == clickedSlot)
         {
-            // 同じスロットをもう一度押したら選択解除
+            selectedSlot.SetHighlight(false);
+            selectedSlot = null;
+            return;
+        }
+
+        // 同じ種類のスロット出ない場合
+        if (!selectedSlot.SlotType.IsCompatibleWith(clickedSlot.SlotType))
+        {
             selectedSlot.SetHighlight(false);
             selectedSlot = null;
             return;
