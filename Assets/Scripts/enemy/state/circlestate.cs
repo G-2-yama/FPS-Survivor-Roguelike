@@ -20,7 +20,7 @@ public class CircleState : IState
 
         float distance = Vector3.Distance(enemy.transform.position, enemy.Target.position);
 
-        if (distance > enemy.Config.EngageDistance)
+        if (distance >= enemy.Config.EngageDistance + 1.0f)
         {
             stateMachine.ChangeState(new ChaseState(enemy, stateMachine));
             return;

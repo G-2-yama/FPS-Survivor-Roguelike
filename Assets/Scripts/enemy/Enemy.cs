@@ -5,6 +5,7 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyAttackController attackController;
 
+
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 

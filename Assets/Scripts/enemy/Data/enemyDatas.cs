@@ -16,4 +16,5 @@ public class EnemyConfig : ScriptableObject
     [Min(0)] public int AttackPower = 1;
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
+    
 }
