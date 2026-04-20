@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3401467886361116014}
   - component: {fileID: 2387826997369872478}
   - component: {fileID: 4026590150384374135}
-  - component: {fileID: 5334258693336859210}
+  - component: {fileID: 2350751310219634791}
   m_Layer: 0
   m_Name: basicammo
   m_TagString: Untagged
@@ -144,7 +144,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5334258693336859210
+--- !u!114 &2350751310219634791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8664942034152862397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3dfc63739e35c4fa486ab3ae11319b, type: 3}
+  m_Script: {fileID: 11500000, guid: 96574a6c1e4cf0c4eb7c3b19d147f8d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProjectileObject
+  m_EditorClassIdentifier: Assembly-CSharp::NormalProjectile
