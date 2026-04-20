@@ -5,7 +5,7 @@ public class EnemyGenerator : MonoBehaviour
 {
     public GameObject enemyPrefab;
 
-    public Vector3 defaultpos;
+    Vector3 defaultpos;
     float time = 0f;
 
     public float moverange = 5;
@@ -25,7 +25,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         time += Time.deltaTime * 2;
         transform.position =
-            new Vector3(Mathf.Sin(time), 0, 0) * moverange + defaultpos;
+            new Vector3(Mathf.Sin(time), 0, Mathf.Cos(time)) * moverange + defaultpos;
     }
 
     IEnumerator Generate()
@@ -35,12 +35,11 @@ public class EnemyGenerator : MonoBehaviour
             if (currentEnemyCount < capenemy)
             {
                 var obj = PoolManager.Instance.Get(enemyPrefab);
-                var enemy = obj.GetComponent<Enemycondition>();
-
+            
                 currentEnemyCount++;
 
                 
-                enemy.Init();
+             
 
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;

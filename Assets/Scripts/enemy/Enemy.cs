@@ -1,88 +1,38 @@
 using UnityEngine;
-using System.Collections;
 
-public class Enemycondition : PoolableObject, IDamageable
+public class EnemyHealth : PoolableObject, IDamageable
 {
-    [SerializeField] private enemyDatas enemydata;
-    [SerializeField] private enemybulletData enemybulletdata;
-    [SerializeField] private Transform shotpoint;
-
-    private Transform player;
-    private Vector3 playerposition;
+    [SerializeField] private EnemyConfig config;
+    [SerializeField] private EnemyAttackController attackController;
 
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
-    Coroutine shotCoroutine;
-
-
-    public void Init()
-    {
-        Health = new Health(enemydata.Hp);
-        Health.OnDeath += HandleDeath;
-    }
-
-    void HandleDeath()
-    {
-        Release(); // ← 自分で帰る
-    }
-
     public void TakeDamage(int damage)
     {
-        Health.TakeDamage(damage);
+        Health?.TakeDamage(damage);
     }
 
     public override void OnGet()
     {
-        // プレイヤー取得（初回だけ）
-        if (player == null)
-        {
-            GameObject p = GameObject.Find("Player");
-            if (p != null) player = p.transform;
-        }
-
-        // HP初期化
-        Init();
-
-        // コルーチン開始
-        shotCoroutine = StartCoroutine(Shot());
+        Health = new Health(config.MaxHp);
+        Health.OnDeath += HandleDeath;
     }
 
     public override void OnRelease()
     {
-        
-        if (shotCoroutine != null)
-        {
-            StopCoroutine(shotCoroutine);
-            shotCoroutine = null;
-        }
+        attackController?.CancelAttack();
 
-      
         if (Health != null)
         {
             Health.OnDeath -= HandleDeath;
+            Health = null;
         }
     }
 
-    void Update()
+    private void HandleDeath()
     {
-        if (player == null) return;
-        playerposition = player.position - transform.position;
-    }
-
-    IEnumerator Shot()
-    {
-        yield return null;
-
-        while (true)
-        {
-            if (playerposition.sqrMagnitude > 0.001f)
-            {
-                Vector3 dir = playerposition.normalized;
-                enemybulletdata.Shot(shotpoint, dir);
-            }
-
-            yield return new WaitForSeconds(3f);
-        }
+        Release();
     }
 }
+
