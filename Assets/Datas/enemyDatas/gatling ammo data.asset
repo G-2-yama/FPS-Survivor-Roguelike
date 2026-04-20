@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4805234922ec5d243a0e384fc2e3c2e4, type: 3}
-  m_Name: New Enemybullet Data
-  m_EditorClassIdentifier: Assembly-CSharp::enemybulletData
-  Speed: 10
+  m_Name: gatling ammo data
+  m_EditorClassIdentifier: Assembly-CSharp::BulletData
+  Speed: 25
   Lifetime: 2
-  Prefab: {fileID: 6556299627688077866, guid: 5ec9dd94aad773540b462f94e239cfeb, type: 3}
+  Prefab: {fileID: 8664942034152862397, guid: 0d0efc4d20d4b6245a349adf6c6bddf2, type: 3}
