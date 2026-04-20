@@ -36,6 +36,20 @@ public class WeaponController : MonoBehaviour
     {
         weaponStateMachine = new WeaponStateMachine(this);
         weaponRecoil = new WeaponRecoil(weapon);
+
+        weapon.OnWeaponEquipped += HandleWeaponEquipped;
+    }
+
+    private void OnDestroy()
+    {
+        weapon.OnWeaponEquipped -= HandleWeaponEquipped;
+    
+    }
+
+    private void HandleWeaponEquipped(WeaponData data)
+    {
+        isFirePressed = false;
+        weaponStateMachine?.OnChangeWeapon(data);
     }
 
     public void Update()

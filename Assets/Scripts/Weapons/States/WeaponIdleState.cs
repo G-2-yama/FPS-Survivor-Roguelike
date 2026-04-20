@@ -6,7 +6,17 @@ public class WeaponIdleState : WeaponState
 
     public override void Enter()
     {
-        Debug.Log("Weapon Idle Stateに入りました");
+        controller.WeaponView.SetReloadProgress(0f);
+
+        if(controller.Weapon.WeaponData == null)
+        {
+            return;
+        }
+
+        if (controller.Weapon.WeaponData.AutoReload && controller.Weapon.CurrentAmmo <= 0)
+        {
+            controller.WeaponStateMachine.ChangeReloadingState();
+        }
     }
 
     public override void Update()
@@ -33,5 +43,11 @@ public class WeaponIdleState : WeaponState
 	public override void OnReload()
     {
         controller.WeaponStateMachine.ChangeReloadingState();
+    }
+
+    public override void OnChangeWeapon(WeaponData data)
+    {
+        controller.WeaponView.SetReloadProgress(0f);
+        controller.WeaponStateMachine.ChangeIdleState();
     }
 }
