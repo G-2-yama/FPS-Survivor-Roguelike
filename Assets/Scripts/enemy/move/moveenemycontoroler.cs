@@ -25,7 +25,7 @@ public class EnemyMovementController : MonoBehaviour
         offset = Quaternion.AngleAxis(angularSpeed * Time.deltaTime, Vector3.up) * offset;
 
         Vector3 nextPos = center.position + offset;
-        nextPos.y = Mathf.MoveTowards(self.position.y, center.position.y, angularSpeed);
+        nextPos.y = Mathf.MoveTowards(self.position.y, center.position.y, 1 * Time.deltaTime);
 
         self.position = nextPos;
         self.rotation = Quaternion.LookRotation(-1*(center.position - self.position));
