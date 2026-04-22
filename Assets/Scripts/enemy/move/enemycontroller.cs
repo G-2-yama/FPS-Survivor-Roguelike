@@ -17,6 +17,7 @@ public class EnemyBrain : MonoBehaviour
     private void Awake()
     {
         stateMachine = new StateMachine<IState>();
+
     }
 
     private void Start()

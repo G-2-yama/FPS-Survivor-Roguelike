@@ -1136,7 +1136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerModel
   walkSpeed: 10
-  runSpeed: 8
+  runSpeed: 12
   lookSensitivity: 0.08
   minPitch: -80
   maxPitch: 80

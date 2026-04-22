@@ -21,13 +21,27 @@ public class EnemyMovementController : MonoBehaviour
             offset = -center.forward * radius;
         }
 
-        offset = offset.normalized * radius;
+       
+        float currentRadius = offset.magnitude;
+        float targetRadius = radius;
+        float radiusDiff = targetRadius - currentRadius;
+
+        // 半径をゆるく補正（係数は調整ポイント）
+        offset += offset.normalized * radiusDiff * 0.1f;
+        // ============================
+
+        // 回転
         offset = Quaternion.AngleAxis(angularSpeed * Time.deltaTime, Vector3.up) * offset;
 
         Vector3 nextPos = center.position + offset;
+
+        // Y補正
         nextPos.y = Mathf.MoveTowards(self.position.y, center.position.y, 1 * Time.deltaTime);
 
         self.position = nextPos;
-        self.rotation = Quaternion.LookRotation(-1*(center.position - self.position));
+
+        // 向き
+        Vector3 toCenter = center.position - self.position;
+        self.rotation = Quaternion.LookRotation(-toCenter);
     }
 }
