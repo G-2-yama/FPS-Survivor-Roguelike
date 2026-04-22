@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: gatling enemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 10
-  ChaseSpeed: 2
+  ChaseSpeed: 6
   OrbitRadius: 4
   OrbitAngularSpeed: 20
   EngageDistance: 5
