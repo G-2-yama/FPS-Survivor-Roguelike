@@ -36,6 +36,14 @@ public class WeaponController : MonoBehaviour
     {
         weaponStateMachine = new WeaponStateMachine(this);
         weaponRecoil = new WeaponRecoil(weapon);
+
+        weapon.OnWeaponEquipped += weaponStateMachine.OnChangeWeapon;
+    }
+
+    private void OnDestroy()
+    {
+        weapon.OnWeaponEquipped -= weaponStateMachine.OnChangeWeapon;
+    
     }
 
     public void Update()

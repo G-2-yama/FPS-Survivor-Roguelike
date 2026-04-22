@@ -4,8 +4,7 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private Weapon mainLeftWeapon;
-    [SerializeField] private Weapon mainRightWeapon;
+    [SerializeField] private Player player;
 
     private Dictionary<SlotType, Weapon> slots;
 
@@ -15,8 +14,10 @@ public class PlayerInventory : MonoBehaviour
     {
         slots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.MainLeft,  mainLeftWeapon  },
-            { SlotType.MainRight, mainRightWeapon },
+            { SlotType.MainLeft,  player.LeftWeapon  },
+            { SlotType.MainRight, player.RightWeapon },
+            { SlotType.LeftAbility, player.LeftAbility },   
+            { SlotType.RightAbility, player.RightAbility } 
         };
     }
 
@@ -32,21 +33,6 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// メイン左右の入れ替え
-    /// </summary>
-    public bool SwapMainWeapons()
-    {
-        if (!HasWeapon(SlotType.MainLeft) && !HasWeapon(SlotType.MainRight))
-            return false;
-
-        mainLeftWeapon.SwapLoadoutWith(mainRightWeapon);
-
-        OnSlotChanged?.Invoke(SlotType.MainLeft, mainLeftWeapon.WeaponData);
-        OnSlotChanged?.Invoke(SlotType.MainRight, mainRightWeapon.WeaponData);
-        return true;
-    }
-
-    /// <summary>
     /// 指定したスロット同士の装備を入れ替える
     /// </summary>
     /// <param name="slotA"></param>
@@ -55,6 +41,9 @@ public class PlayerInventory : MonoBehaviour
     public bool Swap(SlotType slotA, SlotType slotB)
     {
         if (!slots.ContainsKey(slotA) || !slots.ContainsKey(slotB))
+            return false;
+
+        if (!slotA.IsCompatibleWith(slotB))
             return false;
 
         slots[slotA].SwapLoadoutWith(slots[slotB]);

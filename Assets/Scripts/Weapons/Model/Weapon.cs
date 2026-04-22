@@ -121,6 +121,20 @@ public class Weapon : MonoBehaviour
         int maxAmmo = weaponStats != null ? weaponStats.MagazineSize : 0;
         OnAmmoChanged?.Invoke(currentAmmo, maxAmmo);
     }
+    
+    /// <summary>
+    /// オートリロードをするべきかどうかを判断するメソッド
+    /// </summary>
+    /// <returns></returns>
+    public bool ShouldStartAutoReload()
+    {
+        if(WeaponData == null)
+        {
+            return false;
+        }
+        
+        return WeaponData.AutoReload && CurrentAmmo <= 0;
+    }
 
     /// <summary>
     /// 武器をクリアして非装備状態にする内部処理メソッド

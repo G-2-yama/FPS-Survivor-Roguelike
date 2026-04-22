@@ -18,29 +18,37 @@ public class WeaponFiringState : WeaponState
 
     public override void Update()
     {
-        // 全弾撃ち終わったらクールダウン状態に遷移
+        // 全弾撃ち終わった場合
         if (burstRemaining <= 0)
         {
-            controller.WeaponStateMachine.ChangeCooldownState();
+            TransitionAfterBurst();
             return;
         }
-      
+
         timer -= Time.deltaTime;
+        if (timer > 0f) return;
 
-        if (timer <= 0f)
+        if (controller.Weapon.Fire())
         {
-            if (controller.Weapon.Fire())
-            {
-                controller.WeaponRecoil.AddRecoil();
-                burstRemaining--;
-
-                timer = controller.Weapon.WeaponStats.BurstInterval;
-            }
-            else    // 弾切れの場合はアイドル状態に遷移
-            {
-                controller.WeaponStateMachine.ChangeCooldownState();
-            }
+            controller.WeaponRecoil.AddRecoil();
+            burstRemaining--;
+            timer = controller.Weapon.WeaponStats.BurstInterval;
         }
+        else
+        {
+            TransitionAfterBurst();
+        }
+    }
+
+    private void TransitionAfterBurst()
+    {
+        if (controller.Weapon.ShouldStartAutoReload())
+        {
+            controller.WeaponStateMachine.ChangeReloadingState();
+            return;
+        }
+
+        controller.WeaponStateMachine.ChangeCooldownState();
     }
 
     public override void Exit()

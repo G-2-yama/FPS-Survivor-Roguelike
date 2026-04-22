@@ -8,8 +8,7 @@ public class ExplosiveProjectile : ProjectileObject
     {
         GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
         area.transform.position = transform.position;
-        Debug.Log(area);
-
+        
         Release();
     }
 }

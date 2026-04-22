@@ -55,7 +55,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "f1ba0d36-48eb-4cd5-b651-1c94a6531f70",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -127,6 +127,24 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "6f254fd3-23de-4941-b4a0-6ac7b381fdf7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LeftAbility",
+                    "type": "Button",
+                    "id": "9eedb548-4bd7-4fd8-9084-3bab6bfa953d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightAbility",
+                    "type": "Button",
+                    "id": "0f4ff843-d030-4cd6-a86f-18cc2772014d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -571,6 +589,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04fe6e07-a8e8-438f-a4ee-da0f1623d07b",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ee99e54-611f-4ce6-8963-7e16392d375d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
