@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
-/// プレイヤーの基底ステートと動作ステートをまとめて更新する管理クラス
+/// 身体状態と一時アクション状態をまとめて更新する。
+/// 身体状態は継続的なプレイヤー状態、Action は割り込み動作として分けている。
 /// </summary>
 public class PlayerStateCoordinator
 {
@@ -11,56 +12,51 @@ public class PlayerStateCoordinator
     private PlayerContext context;
 
     /// <summary>
-    /// Idle/Walking/Ungrounded/Deadを管理する基底ステートマシン
+    /// 継続的な身体状態を管理するステートマシン
     /// </summary>
-    private PlayerBaseStateMachine baseStateMachine;
-    public PlayerBaseStateMachine BaseStateMachine => baseStateMachine;
+    private PlayerBodyStateMachine bodyStateMachine;
 
     /// <summary>
-    /// NoAction/Dashなどの一時動作を管理する動作ステートマシン
+    /// 一時アクション状態を管理するステートマシン
     /// </summary>
     private PlayerActionStateMachine actionStateMachine;
-    public PlayerActionStateMachine ActionStateMachine => actionStateMachine;
 
     /// <summary>
-    /// 現在の基底ステートが死亡状態かどうか
+    /// 現在の身体状態ID
     /// </summary>
-    public bool IsDead => baseStateMachine.IsDead;
+    public PlayerBodyStateId CurrentBodyStateId => bodyStateMachine.CurrentStateId;
 
     /// <summary>
     /// 2種類のプレイヤーステートマシンを初期化する
     /// </summary>
-    /// <param name="context">プレイヤー制御コンテキスト</param>
     public PlayerStateCoordinator(PlayerContext context)
     {
         this.context = context;
         actionStateMachine = new PlayerActionStateMachine(context);
-        baseStateMachine = new PlayerBaseStateMachine(context, actionStateMachine);
+        bodyStateMachine = new PlayerBodyStateMachine(context, actionStateMachine);
     }
 
     /// <summary>
     /// 状態の更新処理を実行する
     /// </summary>
-    public void Update()
+    public void Update(float deltaTime)
     {
-        if (IsDead)
+        if (CurrentBodyStateId == PlayerBodyStateId.Dead)
         {
-            baseStateMachine.Update();
+            bodyStateMachine.Update();
             return;
         }
 
-        actionStateMachine.Update();
+        actionStateMachine.Update(deltaTime);
 
         if (!actionStateMachine.IsBlockingNormalMovement)
         {
-            baseStateMachine.Update();
+            bodyStateMachine.Update();
         }
 
-        context.Look.ApplyLook(context.Input.LookInput);
+        context.Look.ApplyLook(context.Controls.LookInput);
 
-        Vector2 recoil = context.WeaponController
-            .WeaponRecoil.Update(Time.deltaTime);
-
+        Vector2 recoil = context.WeaponController.WeaponRecoil.Update(deltaTime);
         context.Look.AddRecoil(recoil);
 
         if (actionStateMachine.IsBlockingNormalMovement)
@@ -69,18 +65,17 @@ public class PlayerStateCoordinator
         }
 
         context.Locomotion.Move(
-            context.Input.MoveInput,
-            context.Input.IsJumpHeld,
-            Time.deltaTime
-        );
+            context.Controls.MoveInput,
+            context.Controls.JumpHeld,
+            deltaTime);
     }
 
     /// <summary>
     /// 死亡状態へ遷移する
     /// </summary>
-    public void ChangeDeadBaseState()
+    public void ChangeToDeadState()
     {
-        actionStateMachine.ChangeNoActionState();
-        baseStateMachine.ChangeDeadState();
+        actionStateMachine.ChangeToNoActionState();
+        bodyStateMachine.ChangeToDeadState();
     }
 }

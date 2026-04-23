@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// プレイヤーの移動・視点・ジャンプ・ダッシュ・初期HPに関する設定値を保持するモデル
+/// プレイヤーの移動・視点・ジャンプ・ダッシュ設定を保持するモデル
 /// </summary>
 public class PlayerConfig : MonoBehaviour
 {
@@ -154,16 +154,6 @@ public class PlayerConfig : MonoBehaviour
     /// ジャンプ時の初速
     /// </summary>
     public float JumpForce => jumpForce;
-
-    /// <summary>
-    /// プレイヤーの初期HP
-    /// </summary>
-    [SerializeField] private int initialHP = 100;
-
-    /// <summary>
-    /// プレイヤーの初期HP
-    /// </summary>
-    public int InitialHP => initialHP;
 
     /// <summary>
     /// ダッシュで移動する距離

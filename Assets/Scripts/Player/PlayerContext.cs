@@ -1,14 +1,18 @@
-﻿using UnityEngine;
-
 /// <summary>
-/// プレイヤー制御に必要なモデル・入力・移動・視点への参照をまとめるコンテキスト
+/// プレイヤー制御で共有するデータ参照をまとめる。
+/// 各システムはこのコンテキストだけを受け取り、MonoBehaviour へ直接依存しない。
 /// </summary>
 public class PlayerContext
 {
     /// <summary>
-    /// 体力と移動設定を保持するプレイヤーモデル
+    /// プレイヤー体力モデル
     /// </summary>
-    public PlayerHealth Player { get; }
+    public PlayerHealth Health { get; }
+
+    /// <summary>
+    /// プレイヤー全体設定
+    /// </summary>
+    public PlayerConfig Config { get; }
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
@@ -21,7 +25,7 @@ public class PlayerContext
     public PlayerMotor Motor { get; }
 
     /// <summary>
-    /// 通常移動とダッシュ移動の速度計算
+    /// 歩行や空中移動の速度更新
     /// </summary>
     public PlayerLocomotion Locomotion { get; }
 
@@ -31,47 +35,48 @@ public class PlayerContext
     public PlayerJumpController JumpController { get; }
 
     /// <summary>
-    /// プレイヤー本体とカメラピッチの視点制御
+    /// 視点制御
     /// </summary>
     public PlayerLookController Look { get; }
 
     /// <summary>
-    /// 現在の入力状態
+    /// 継続入力の現在値
     /// </summary>
-    public PlayerInputState Input { get; }
+    public PlayerControlState Controls { get; }
+
+    /// <summary>
+    /// 単発入力要求のバッファ
+    /// </summary>
+    public PlayerCommandBuffer Commands { get; }
 
     /// <summary>
     /// プレイヤー制御に必要な参照を初期化する
     /// </summary>
-    /// <param name="player">プレイヤーモデル</param>
-    /// <param name="weaponController">武器コントローラー</param>
-    /// <param name="motor">速度適用処理</param>
-    /// <param name="locomotion">移動速度計算</param>
-    /// <param name="jumpController">ジャンプ処理</param>
-    /// <param name="look">視点処理</param>
-    /// <param name="input">入力状態</param>
     public PlayerContext(
-        PlayerHealth player,
+        PlayerHealth health,
+        PlayerConfig config,
         WeaponController weaponController,
         PlayerMotor motor,
         PlayerLocomotion locomotion,
         PlayerJumpController jumpController,
         PlayerLookController look,
-        PlayerInputState input)
+        PlayerControlState controls,
+        PlayerCommandBuffer commands)
     {
-        Player = player;
+        Health = health;
+        Config = config;
         WeaponController = weaponController;
         Motor = motor;
         Locomotion = locomotion;
         JumpController = jumpController;
         Look = look;
-        Input = input;
+        Controls = controls;
+        Commands = commands;
     }
 
     /// <summary>
     /// 残りジャンプ回数があればジャンプを開始する
     /// </summary>
-    /// <returns>ジャンプを開始できた場合はtrue</returns>
     public bool TryJump()
     {
         return JumpController.TryJump();

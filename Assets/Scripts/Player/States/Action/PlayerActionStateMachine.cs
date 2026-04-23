@@ -1,21 +1,19 @@
-﻿using UnityEngine;
-
 /// <summary>
-/// プレイヤーの動作ステートを管理するステートマシン
+/// プレイヤーの一時アクション状態を管理するステートマシン
 /// </summary>
 public class PlayerActionStateMachine : StateMachine<PlayerActionState>
 {
     /// <summary>
     /// 特殊動作を行っていない状態
     /// </summary>
-    private PlayerActionState noActionState;
-    public PlayerActionState NoActionState => noActionState;
+    private PlayerNoActionState noActionState;
+    public PlayerNoActionState NoActionState => noActionState;
 
     /// <summary>
     /// ダッシュ動作状態
     /// </summary>
-    private PlayerDashActionState dashState;
-    public PlayerDashActionState DashState => dashState;
+    private PlayerDashActionState dashActionState;
+    public PlayerDashActionState DashActionState => dashActionState;
 
     /// <summary>
     /// 現在の動作ステート
@@ -30,28 +28,26 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     /// <summary>
     /// 動作ステートを生成し、特殊動作なし状態へ遷移する
     /// </summary>
-    /// <param name="context">プレイヤー制御コンテキスト</param>
     public PlayerActionStateMachine(PlayerContext context)
     {
         noActionState = new PlayerNoActionState(context, this);
-        dashState = new PlayerDashActionState(context, this);
-
+        dashActionState = new PlayerDashActionState(context, this);
         ChangeState(noActionState);
     }
 
     /// <summary>
     /// 現在の動作状態を更新する前にダッシュのクールタイムを更新する
     /// </summary>
-    public new void Update()
+    public void Update(float deltaTime)
     {
-        dashState.UpdateCooldown(Time.deltaTime);
+        dashActionState.UpdateCooldown(deltaTime);
         base.Update();
     }
 
     /// <summary>
-    /// 何もしていない動作状態に遷移
+    /// 特殊動作を行っていない状態へ遷移する
     /// </summary>
-    public void ChangeNoActionState()
+    public void ChangeToNoActionState()
     {
         ChangeState(noActionState);
     }
@@ -59,15 +55,14 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     /// <summary>
     /// ダッシュ開始条件を満たしている場合にダッシュ動作へ遷移する
     /// </summary>
-    /// <returns>ダッシュ動作へ遷移した場合はtrue</returns>
-    public bool TryChangeDashState()
+    public bool TryChangeToDashActionState()
     {
-        if (!dashState.CanEnter())
+        if (!dashActionState.CanEnter())
         {
             return false;
         }
 
-        ChangeState(dashState);
+        ChangeState(dashActionState);
         return true;
     }
 }

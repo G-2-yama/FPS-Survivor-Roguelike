@@ -1,16 +1,16 @@
-﻿using UnityEngine;
 using System;
+using UnityEngine;
 
 /// <summary>
-/// プレイヤーの体力と被ダメージ判定を扱うモデル
+/// プレイヤーの体力と被ダメージ判定を扱うモデル。
+/// 移動や視点設定には依存せず、体力責務だけを持つ。
 /// </summary>
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     /// <summary>
-    /// 初期HPなど、体力初期化にも利用するプレイヤー設定
+    /// 体力初期化に使う初期HP
     /// </summary>
-    [SerializeField] private PlayerConfig config;
-    public PlayerConfig Config => config;
+    [SerializeField] private int initialHP = 100;
 
     /// <summary>
     /// ダメージ判定で使用する所属チーム
@@ -32,14 +32,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     /// </summary>
     private void Awake()
     {
-        Health = new Health(config.InitialHP);
+        Health = new Health(initialHP);
         Health.OnDeath += HandleDeath;
     }
 
     /// <summary>
     /// ダメージを受ける処理
     /// </summary>
-    /// <param name="damage">受けるダメージ量</param>
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);

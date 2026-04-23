@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// プレイヤーの水平回転とカメラの上下回転を制御するクラス
+/// プレイヤーの水平視点とカメラの上下視点を制御するクラス
 /// </summary>
 public class PlayerLookController
 {
@@ -11,9 +11,9 @@ public class PlayerLookController
     private Transform playerTransform;
 
     /// <summary>
-    /// 上下回転を適用するカメラのピッチ用Transform
+    /// 上下視点を適用するカメラの回転支点
     /// </summary>
-    private Transform cameraPitchTransform;
+    private Transform cameraLookPivotTransform;
 
     /// <summary>
     /// 視点感度とピッチ制限の設定
@@ -34,15 +34,15 @@ public class PlayerLookController
     /// 視点制御に必要な参照を初期化する
     /// </summary>
     /// <param name="playerTransform">水平回転を適用するTransform</param>
-    /// <param name="cameraPitchTransform">上下回転を適用するTransform</param>
+    /// <param name="cameraLookPivotTransform">上下視点を適用するTransform</param>
     /// <param name="settings">視点設定</param>
     public PlayerLookController(
         Transform playerTransform,
-        Transform cameraPitchTransform,
+        Transform cameraLookPivotTransform,
         PlayerConfig settings)
     {
         this.playerTransform = playerTransform;
-        this.cameraPitchTransform = cameraPitchTransform;
+        this.cameraLookPivotTransform = cameraLookPivotTransform;
         this.settings = settings;
     }
 
@@ -62,7 +62,7 @@ public class PlayerLookController
         playerTransform.Rotate(Vector3.up * yawDelta);
 
         pitch = Mathf.Clamp(pitch - pitchDelta, settings.MinPitch, settings.MaxPitch);
-        cameraPitchTransform.localEulerAngles = new Vector3(pitch, 0, 0);
+        cameraLookPivotTransform.localEulerAngles = new Vector3(pitch, 0, 0);
 
         // 反動を徐々に減衰させる
         recoilOffset = Vector2.Lerp(recoilOffset, Vector2.zero, Time.deltaTime * 10f);

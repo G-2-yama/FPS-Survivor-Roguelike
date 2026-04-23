@@ -42,7 +42,7 @@ public class PlayerDashActionState : PlayerActionState
     public bool CanEnter()
     {
         return cooldownTimer <= 0f
-            && context.Locomotion.TryGetMoveDirection(context.Input.MoveInput, out _);
+            && context.Locomotion.TryGetMoveDirection(context.Controls.MoveInput, out _);
     }
 
     /// <summary>
@@ -64,13 +64,13 @@ public class PlayerDashActionState : PlayerActionState
     /// </summary>
     public override void Enter()
     {
-        if (!context.Locomotion.TryGetMoveDirection(context.Input.MoveInput, out dashDirection))
+        if (!context.Locomotion.TryGetMoveDirection(context.Controls.MoveInput, out dashDirection))
         {
-            actionStateMachine.ChangeNoActionState();
+            actionStateMachine.ChangeToNoActionState();
             return;
         }
 
-        dashTimer = context.Player.Config.DashDuration;
+        dashTimer = context.Config.DashDuration;
         context.Locomotion.ClearHorizontalVelocity();
     }
 
@@ -88,7 +88,7 @@ public class PlayerDashActionState : PlayerActionState
             return;
         }
 
-        actionStateMachine.ChangeNoActionState();
+        actionStateMachine.ChangeToNoActionState();
     }
 
     /// <summary>
@@ -98,6 +98,6 @@ public class PlayerDashActionState : PlayerActionState
     {
         dashTimer = 0f;
         dashDirection = Vector3.zero;
-        cooldownTimer = context.Player.Config.DashCooldown;
+        cooldownTimer = context.Config.DashCooldown;
     }
 }

@@ -1,27 +1,28 @@
 using UnityEngine;
 
 /// <summary>
-/// 通常移動、空中移動、ダッシュ移動の速度計算を扱うクラス
+/// プレイヤーの継続的な移動性能を扱うクラス。
+/// ここでいう Locomotion は姿勢そのものではなく、歩行中や空中移動中の速度更新を指す。
 /// </summary>
 public class PlayerLocomotion
 {
     /// <summary>
-    /// 停止入力とみなす最小入力値の二乗
+    /// 停止扱いにする最小の入力量
     /// </summary>
     private const float StopInputDeadzoneSqr = 0.0001f;
 
     /// <summary>
-    /// 接地中に地面へ吸い付けるための下向き速度
+    /// 接地中に床へ吸い付けるための下向き速度
     /// </summary>
     private const float GroundedVerticalVelocity = -2f;
 
     /// <summary>
-    /// 空中で逆方向入力を入れた際に水平速度が0になるまでの目安時間
+    /// 空中で逆方向へ切り返す時にゼロまで戻す目安時間
     /// </summary>
     private const float AirReverseToZeroTime = 0.5f;
 
     /// <summary>
-    /// 移動方向の基準となるプレイヤーTransform
+    /// 移動入力をワールド座標へ変換する基準Transform
     /// </summary>
     private Transform playerTransform;
 
@@ -31,7 +32,7 @@ public class PlayerLocomotion
     private PlayerMotor motor;
 
     /// <summary>
-    /// ジャンプ関連の実行時状態
+    /// ジャンプ補正を扱う制御クラス
     /// </summary>
     private PlayerJumpController jumpController;
 
@@ -41,12 +42,12 @@ public class PlayerLocomotion
     private PlayerConfig settings;
 
     /// <summary>
-    /// 移動計算に必要な参照を初期化する
+    /// 移動制御に必要な参照を初期化する
     /// </summary>
-    /// <param name="playerTransform">移動方向の基準になるプレイヤーTransform</param>
+    /// <param name="playerTransform">移動方向を決めるTransform</param>
     /// <param name="motor">速度を適用するモーター</param>
-    /// <param name="jumpController">ジャンプ関連の実行時状態</param>
-    /// <param name="settings">移動・ジャンプ設定</param>
+    /// <param name="jumpController">ジャンプ補正を扱う制御クラス</param>
+    /// <param name="settings">プレイヤー移動設定</param>
     public PlayerLocomotion(
         Transform playerTransform,
         PlayerMotor motor,
@@ -60,7 +61,7 @@ public class PlayerLocomotion
     }
 
     /// <summary>
-    /// 入力状態に応じて水平移動とジャンプ中の垂直移動を更新する
+    /// 通常移動を更新し、垂直方向の速度とジャンプ長押しも進める
     /// </summary>
     public void Move(Vector2 moveInput, bool jumpHeld, float deltaTime)
     {
@@ -110,11 +111,11 @@ public class PlayerLocomotion
     }
 
     /// <summary>
-    /// 移動入力をワールド座標系の移動方向へ変換する
+    /// ダッシュ開始に使える移動方向を取得する
     /// </summary>
-    /// <param name="moveInput">移動入力値</param>
-    /// <param name="direction">正規化されたワールド座標系の移動方向</param>
-    /// <returns>有効な移動方向を取得できた場合はtrue</returns>
+    /// <param name="moveInput">移動入力</param>
+    /// <param name="direction">正規化した移動方向</param>
+    /// <returns>有効な移動方向がある場合はtrue</returns>
     public bool TryGetMoveDirection(Vector2 moveInput, out Vector3 direction)
     {
         Vector3 move = GetMoveVector(moveInput);
@@ -129,9 +130,9 @@ public class PlayerLocomotion
     }
 
     /// <summary>
-    /// 指定された方向へ1フレーム分のダッシュ移動を行う
+    /// 指定方向へ1フレーム分のダッシュ移動を適用する
     /// </summary>
-    /// <param name="direction">正規化されたワールド座標系のダッシュ方向</param>
+    /// <param name="direction">正規化されたダッシュ方向</param>
     /// <param name="deltaTime">ダッシュ移動を適用する時間</param>
     public void MoveDash(Vector3 direction, float deltaTime)
     {
@@ -150,7 +151,7 @@ public class PlayerLocomotion
     }
 
     /// <summary>
-    /// 強制移動状態へ入る前に水平方向の速度を初期化する
+    /// ダッシュ開始前などに水平速度を明示的に止める
     /// </summary>
     public void ClearHorizontalVelocity()
     {
@@ -158,7 +159,7 @@ public class PlayerLocomotion
     }
 
     /// <summary>
-    /// 移動入力をプレイヤー基準のワールド移動量に変換する
+    /// 移動入力をプレイヤー基準のワールド移動へ変換する
     /// </summary>
     private Vector3 GetMoveVector(Vector2 moveInput)
     {
