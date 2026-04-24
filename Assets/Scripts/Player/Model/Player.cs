@@ -1,6 +1,10 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
+/// <summary>
+/// プレイヤーの装備と体力をまとめて保持するモデル。
+/// 移動や入力の実処理は別クラスへ寄せ、ここでは他システムが参照する状態のみを管理する。
+/// </summary>
 public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private PlayerConfig config;
@@ -13,61 +17,55 @@ public class Player : MonoBehaviour, IDamageable
 
     public event Action OnDeath;
 
-    [SerializeField] public Weapon leftWeapon;
+    [SerializeField] private Weapon leftWeapon;
     public Weapon LeftWeapon => leftWeapon;
-    public bool HasLeftWeapon => leftWeapon.WeaponData != null;
+    public bool HasLeftWeapon => leftWeapon != null && leftWeapon.WeaponData != null;
 
-    [SerializeField] public Weapon rightWeapon;
+    [SerializeField] private Weapon rightWeapon;
     public Weapon RightWeapon => rightWeapon;
-    public bool HasRightWeapon => rightWeapon.WeaponData != null;
+    public bool HasRightWeapon => rightWeapon != null && rightWeapon.WeaponData != null;
 
     [SerializeField] private Weapon leftAbility;
     public Weapon LeftAbility => leftAbility;
-    public bool HasLeftAbility => leftAbility.WeaponData != null;
+    public bool HasLeftAbility => leftAbility != null && leftAbility.WeaponData != null;
 
     [SerializeField] private Weapon rightAbility;
     public Weapon RightAbility => rightAbility;
-    public bool HasRightAbility => rightAbility.WeaponData != null; 
+    public bool HasRightAbility => rightAbility != null && rightAbility.WeaponData != null;
 
     /// <summary>
-    /// プレイヤーの体力を管理するモデル
+    /// プレイヤーの体力モデル
     /// </summary>
     public Health Health { get; private set; }
 
     private void Awake()
     {
-        Health = new Health(config.InitialHP);
+        int initialHp = config != null ? config.InitialHP : 100;
+        Health = new Health(initialHp);
         Health.OnDeath += HandleDeath;
     }
 
-    /// <summary>
-    /// ダメージを受ける処理
-    /// </summary>
-    /// <param name="damage">受けるダメージ量</param>
+    private void OnDestroy()
+    {
+        if (Health != null)
+        {
+            Health.OnDeath -= HandleDeath;
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);
     }
 
-    /// <summary>
-    /// 左手の装備武器を変更する
-    /// </summary>
-    /// <param name="weapon">装備する武器</param>
-    public void EquipLeftWeapon(WeaponData weapon) => leftWeapon.Equip(weapon);
+    public void EquipLeftWeapon(WeaponData weapon) => leftWeapon?.Equip(weapon);
 
-    /// <summary>
-    /// 右手の装備武器を変更する
-    /// </summary>
-    /// <param name="weapon">装備する武器</param>
-    public void EquipRightWeapon(WeaponData weapon) => rightWeapon.Equip(weapon);
-    
-    public void EquipLeftAbility(WeaponData ability) => leftAbility.Equip(ability);
+    public void EquipRightWeapon(WeaponData weapon) => rightWeapon?.Equip(weapon);
 
-    public void EquipRightAbility(WeaponData ability) => rightAbility.Equip(ability);
+    public void EquipLeftAbility(WeaponData ability) => leftAbility?.Equip(ability);
 
-    /// <summary>
-    /// 死亡したときに呼び出される処理
-    /// </summary>
+    public void EquipRightAbility(WeaponData ability) => rightAbility?.Equip(ability);
+
     private void HandleDeath()
     {
         OnDeath?.Invoke();

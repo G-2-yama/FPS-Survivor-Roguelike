@@ -1,185 +1,273 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 /// <summary>
-/// プレイヤー入力を受け取り、モデル反映と状態更新を行うコントローラー
+/// Unity から届く入力やライフサイクルイベントをプレイヤー制御へ中継する。
+/// ゲーム内データの更新は PlayerRuntime 側へ寄せ、MonoBehaviour は橋渡しに専念する。
 /// </summary>
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    /// <summary>
+    /// プレイヤーモデル
+    /// </summary>
+    [FormerlySerializedAs("playerHealth")]
     [SerializeField] private Player player;
-    public Player Player => player;
 
+    /// <summary>
+    /// プレイヤー全体設定
+    /// </summary>
+    [SerializeField] private PlayerConfig playerConfig;
+
+    /// <summary>
+    /// 物理挙動を無効化してCharacterController移動へ寄せるためのRigidbody
+    /// </summary>
     [SerializeField] private Rigidbody playerRigidbody;
 
     /// <summary>
-    /// 左武器の入力・攻撃処理を管理するコントローラー
+    /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    [SerializeField] private WeaponController leftWeaponController;
-    public WeaponController LeftWeaponController => leftWeaponController;
+    [SerializeField] private WeaponController weaponController;
 
     /// <summary>
-    /// 右武器の入力・攻撃処理を管理するコントローラー
+    /// カメラの上下視点を制御するためのTransform
     /// </summary>
-    [SerializeField] private WeaponController rightWeaponController;
-    public WeaponController RightWeaponController => rightWeaponController;
+    [FormerlySerializedAs("cameraPitchTransform")]
+    [SerializeField] private Transform cameraLookPivotTransform;
 
     /// <summary>
-    /// カメラのピッチ回転を制御するためのTransform
+    /// プレイヤー移動に使用するCharacterController
     /// </summary>
-    [SerializeField] private Transform cameraPitchTransform;
-
-    private StateMachine<PlayerState> stateMachine;
-    public StateMachine<PlayerState> StateMachine => stateMachine;
+    private CharacterController playerCharacterController;
 
     /// <summary>
-    /// 移動処理
+    /// 入力コールバックの反映先
     /// </summary>
-    private PlayerMover mover;
-    public PlayerMover Mover => mover;
+    private PlayerInputRelay inputRelay;
 
     /// <summary>
-    /// 視点処理
+    /// プレイヤー制御の実処理
     /// </summary>
-    private PlayerLook look;
-    public PlayerLook Look => look;
+    private PlayerRuntime runtime;
 
     /// <summary>
-    /// 移動入力値を保持
+    /// 必要な参照とランタイムを初期化する
     /// </summary>
-    private Vector2 moveInput;
-    public Vector2 MoveInput => moveInput;
-
-    /// <summary>
-    /// 視点入力値を保持
-    /// </summary>
-    private Vector2 lookInput;
-    public Vector2 LookInput => lookInput;
-
-    /// <summary>
-    /// スプリント入力状態を保持
-    /// </summary>
-    private bool isSprinting;
-    public bool IsSprinting => isSprinting;
-
-    /// <summary>
-    /// 接地状態を保持
-    /// </summary>
-    private bool isGrounded;
-    public bool IsGrounded => isGrounded;
-
-    /// <summary>
-    /// ジャンプ入力要求を保持
-    /// </summary>
-    private bool jumpRequested;
-
-    /// <summary>
-    /// 初期化
-    /// </summary>
-    void Awake()
+    private void Awake()
     {
-        playerRigidbody.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        playerCharacterController = GetComponent<CharacterController>();
+        player = ResolvePlayer();
+        playerConfig = ResolvePlayerConfig();
+        cameraLookPivotTransform = ResolveCameraLookPivotTransform();
 
-        stateMachine = new StateMachine<PlayerState>();
+        if (!ValidateReferences())
+        {
+            enabled = false;
+            return;
+        }
 
-        mover = new PlayerMover(transform, playerRigidbody, player.Config);
-        look = new PlayerLook(transform, cameraPitchTransform, player.Config);
+        ConfigureRigidbodyForCharacterController();
+
+        PlayerMotor motor = new PlayerMotor(playerCharacterController);
+        PlayerJumpController jumpController = new PlayerJumpController(motor, playerConfig);
+        PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig);
+        PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, playerConfig);
+        PlayerControlState controls = new PlayerControlState();
+        PlayerCommandBuffer commands = new PlayerCommandBuffer();
+
+        PlayerContext context = new PlayerContext(
+            player,
+            playerConfig,
+            weaponController,
+            motor,
+            locomotion,
+            jumpController,
+            look,
+            controls,
+            commands);
+
+        runtime = new PlayerRuntime(context);
+        inputRelay = new PlayerInputRelay(controls, commands, weaponController, () => !runtime.IsDead);
     }
 
     /// <summary>
-    /// 初期状態として待機状態に遷移
+    /// 死亡通知を購読する
     /// </summary>
-    void Start()
+    private void Start()
     {
+        if (player == null || runtime == null)
+        {
+            return;
+        }
+
         player.OnDeath += OnPlayerDeath;
-        stateMachine.ChangeState(new AliveState(this));
     }
 
     /// <summary>
-    /// 入力値をモデルへ反映し、視点処理と状態更新を実行
+    /// 1フレーム分の更新をランタイムへ委譲する
     /// </summary>
-    void Update()
+    private void Update()
     {
-        isGrounded = mover.IsGrounded();
+        if (runtime == null)
+        {
+            return;
+        }
 
-        stateMachine.Update();
+        runtime.Update(Time.deltaTime);
     }
 
-    void OnDestroy()
+    /// <summary>
+    /// 死亡通知の購読を解除する
+    /// </summary>
+    private void OnDestroy()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         player.OnDeath -= OnPlayerDeath;
     }
 
     /// <summary>
-    /// ジャンプ処理
+    /// CharacterControllerが壁に当たったときに水平速度を壁面へ沿わせる
     /// </summary>
-    public void Jump()
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        mover.Jump();
+        runtime?.HandleWallHit(hit.normal);
     }
 
     /// <summary>
-    /// ジャンプ入力要求を1回だけ取り出す
+    /// 死亡時の停止処理をランタイムへ委譲する
     /// </summary>
-    /// <returns>ジャンプ入力要求があった場合はtrue</returns>
-    public bool ConsumeJumpRequest()
+    private void OnPlayerDeath()
     {
-        if (!jumpRequested)
+        runtime?.HandleDeath();
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnMove(context);
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnSprint(context);
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnLook(context);
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnJump(context);
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnFire(context);
+    }
+
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnReload(context);
+    }
+
+    /// <summary>
+    /// 必須参照が揃っているか確認する
+    /// </summary>
+    private bool ValidateReferences()
+    {
+        if (player == null)
         {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(player)}.", this);
             return false;
         }
 
-        jumpRequested = false;
+        if (playerConfig == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(playerConfig)}.", this);
+            return false;
+        }
+
+        if (weaponController == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(weaponController)}.", this);
+            return false;
+        }
+
+        if (cameraLookPivotTransform == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(cameraLookPivotTransform)}.", this);
+            return false;
+        }
+
         return true;
     }
 
     /// <summary>
-    /// プレイヤーを死亡状態にさせる
+    /// CharacterController を使う前提の Rigidbody 設定へ寄せる
     /// </summary>
-    public void OnPlayerDeath()
+    private void ConfigureRigidbodyForCharacterController()
     {
-        Debug.Log("Playerが死亡しました");
-
-        moveInput = Vector2.zero;
-        lookInput = Vector2.zero;
-        isSprinting = false;
-        jumpRequested = false;
-        playerRigidbody.linearVelocity = Vector3.zero;
-
-        stateMachine.ChangeState(new DeathState(this));
-    }
-
-    /// <summary>
-    /// 移動入力を受け取り、移動状態を更新
-    /// </summary>
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
-
-    /// <summary>
-    /// スプリント入力を受け取り、スプリント状態を更新
-    /// </summary>
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-        isSprinting = context.ReadValueAsButton();
-    }
-
-    /// <summary>
-    /// 視点入力を受け取り、マウスによる視点移動に利用
-    /// </summary>
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        lookInput = context.ReadValue<Vector2>();
-    }
-
-    /// <summary>
-    /// ジャンプ入力を受け取る
-    /// </summary>
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        if (playerRigidbody == null)
         {
-            jumpRequested = true;
+            return;
         }
+
+        playerRigidbody.linearVelocity = Vector3.zero;
+        playerRigidbody.isKinematic = true;
+        playerRigidbody.useGravity = false;
+    }
+
+    /// <summary>
+    /// 視点の上下回転を適用するTransformを解決する
+    /// </summary>
+    private Transform ResolveCameraLookPivotTransform()
+    {
+        if (cameraLookPivotTransform != null)
+        {
+            return cameraLookPivotTransform;
+        }
+
+        Camera childCamera = GetComponentInChildren<Camera>(true);
+        if (childCamera != null)
+        {
+            Debug.LogWarning(
+                $"{nameof(PlayerController)} on {name} auto-assigned {nameof(cameraLookPivotTransform)} from child camera.",
+                this);
+            return childCamera.transform;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// プレイヤーモデルを解決する
+    /// </summary>
+    private Player ResolvePlayer()
+    {
+        if (player != null)
+        {
+            return player;
+        }
+
+        return GetComponent<Player>();
+    }
+
+    /// <summary>
+    /// プレイヤー設定を解決する
+    /// </summary>
+    private PlayerConfig ResolvePlayerConfig()
+    {
+        if (playerConfig != null)
+        {
+            return playerConfig;
+        }
+
+        return GetComponent<PlayerConfig>();
     }
 }
