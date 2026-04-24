@@ -7,12 +7,15 @@ public enum SlotType
     MainRight,
     LeftAbility,
     RightAbility,
+    LeftAutoWeapon,
+    RightAutoWeapon,
 }
 
 public enum SlotGroup
 {
     Main,
     Ability,
+    AutoWeapon
 }
 
 public static class SlotTypeExtensions
@@ -23,6 +26,8 @@ public static class SlotTypeExtensions
         { SlotType.MainRight,    SlotGroup.Main    },
         { SlotType.LeftAbility,  SlotGroup.Ability },
         { SlotType.RightAbility, SlotGroup.Ability },
+        { SlotType.LeftAutoWeapon, SlotGroup.AutoWeapon },
+        { SlotType.RightAutoWeapon, SlotGroup.AutoWeapon }
     };
 
     /// <summary>

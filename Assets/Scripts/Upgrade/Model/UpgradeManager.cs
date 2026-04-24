@@ -11,6 +11,7 @@ public class UpgradeManager : MonoBehaviour
 
     [SerializeField] private List<WeaponData> weaponDatas;
     [SerializeField] private List<WeaponData> abilityDatas;
+    [SerializeField] private List<WeaponData> autoWeaponDatas;
 
     private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
     private List<UpgradeBase> currentChoices = new List<UpgradeBase>();
@@ -91,5 +92,10 @@ public class UpgradeManager : MonoBehaviour
         upgradePool.Add(GrenadeUnlockUpgrade);
         UpgradeBase SuperShotUnlockUpgrade = new AbilityUnlock("スーパーショットアンロック", "スーパースキルをアンロックします", abilityDatas[1], player, true);
         upgradePool.Add(SuperShotUnlockUpgrade);
+
+        UpgradeBase LeftAutoWeaponUnlockUpgrade = new AutoWeaponUnlock("左オート武器アンロック", "左手のオート武器をアンロックします", autoWeaponDatas[0], player, false);
+        upgradePool.Add(LeftAutoWeaponUnlockUpgrade);
+        UpgradeBase RightAutoWeaponUnlockUpgrade = new AutoWeaponUnlock("右オート武器アンロック", "右手のオート武器をアンロックします", autoWeaponDatas[0], player, true);
+        upgradePool.Add(RightAutoWeaponUnlockUpgrade);
     }
 }

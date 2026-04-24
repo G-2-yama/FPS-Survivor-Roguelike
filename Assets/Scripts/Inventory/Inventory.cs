@@ -17,7 +17,9 @@ public class PlayerInventory : MonoBehaviour
             { SlotType.MainLeft,  player.LeftWeapon  },
             { SlotType.MainRight, player.RightWeapon },
             { SlotType.LeftAbility, player.LeftAbility },   
-            { SlotType.RightAbility, player.RightAbility } 
+            { SlotType.RightAbility, player.RightAbility },
+            { SlotType.LeftAutoWeapon, player.LeftAutoWeapon },
+            { SlotType.RightAutoWeapon, player.RightAutoWeapon }
         };
     }
 

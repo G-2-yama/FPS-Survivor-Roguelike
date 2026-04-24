@@ -27,6 +27,8 @@ public class WeaponData : ScriptableObject
     
 
     [Header("Attack")]
+    [SerializeField] private bool autoFire = false;
+    public bool AutoFire => autoFire;
 
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
     public WeaponTriggerType TriggerType => triggerType;
