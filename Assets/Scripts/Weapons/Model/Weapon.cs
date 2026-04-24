@@ -4,8 +4,13 @@ using System;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponData weaponData;
-
     public WeaponData WeaponData => weaponData;
+
+    [SerializeField] private int level = 0;
+    public int Level => level;
+
+    private WeaponStats weaponStats;
+    public WeaponStats WeaponStats => weaponStats;
 
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
@@ -18,9 +23,64 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public event Action<int, int> OnAmmoChanged;
 
-    private void Start()
+    /// <summary>
+    /// 武器が装備されたときに通知するイベント
+    /// </summary>
+    public event Action<WeaponData> OnWeaponEquipped;
+
+    private void Awake()
     {
-        currentAmmo = weaponData.MagazineSize;
+        if (weaponData == null)
+        {
+            return;
+        }
+
+        weaponStats = weaponData.CreateBonusStats(level);
+        currentAmmo = weaponStats.MagazineSize;
+    }
+
+    /// <summary>
+    /// 新しい武器を装備するメソッド
+    /// </summary>
+    /// <param name="newData">新しい武器データ</param>
+    /// <param name="newLevel">新しいレベル</param>
+    /// <param name="ammo">新しい残弾数</param>
+    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
+    {
+        if (newData == null)
+        {
+            ClearWeapon();
+            return;
+        }
+
+        ApplyWeapon(newData, newLevel, ammo);
+    }
+
+    /// <summary>
+    /// 他の武器と装備状態を入れ替える
+    /// </summary>
+    public void SwapLoadoutWith(Weapon other)
+    {
+        WeaponData ownData = weaponData;
+        int ownLevel = level;
+        int ownAmmo = currentAmmo;
+
+        Equip(other.weaponData, other.level, other.currentAmmo);
+        other.Equip(ownData, ownLevel, ownAmmo);
+    }
+
+    /// <summary>
+    /// 武器レベルを上げるメソッド
+    /// </summary>
+    public void LevelUp()
+    {
+        if (weaponData == null)
+        {
+            return;
+        }
+
+        level++;
+        weaponStats = weaponData.CreateBonusStats(level);
     }
 
     /// <summary>
@@ -38,7 +98,9 @@ public class Weapon : MonoBehaviour
         currentAmmo--;
         NotifyAmmoChanged();
 
-        ExecuteFire();
+        var fireMode = weaponData.FireModeData;
+        fireMode.Fire(this);
+
         return true;
     }
 
@@ -47,46 +109,66 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        currentAmmo = weaponData.MagazineSize;
+        currentAmmo = weaponStats.MagazineSize;
         NotifyAmmoChanged();
     }
 
     /// <summary>
     /// 弾薬数の変化を通知するメソッド
     /// </summary>
-    private void NotifyAmmoChanged()
+    public void NotifyAmmoChanged()
     {
-        OnAmmoChanged?.Invoke(currentAmmo, weaponData.MagazineSize);
+        int maxAmmo = weaponStats != null ? weaponStats.MagazineSize : 0;
+        OnAmmoChanged?.Invoke(currentAmmo, maxAmmo);
+    }
+    
+    /// <summary>
+    /// オートリロードをするべきかどうかを判断するメソッド
+    /// </summary>
+    /// <returns></returns>
+    public bool ShouldStartAutoReload()
+    {
+        if(WeaponData == null)
+        {
+            return false;
+        }
+        
+        return WeaponData.AutoReload && CurrentAmmo <= 0;
     }
 
     /// <summary>
-    /// 攻撃処理を実装するメソッド
+    /// 武器をクリアして非装備状態にする内部処理メソッド
     /// </summary>
-    private void ExecuteFire()
+    private void ClearWeapon()
     {
-        var fireMode = weaponData.FireModeData;
+        weaponData = null;
+        level = 0;
+        weaponStats = null;
+        currentAmmo = 0;
 
-        Vector3 direction = GetFireDirection();
-
-        fireMode.Fire(this, direction);
+        OnWeaponEquipped?.Invoke(null);
+        NotifyAmmoChanged();
     }
 
     /// <summary>
-    /// 発射方向をスプレッド角度に基づいてランダムに決定するメソッド
+    /// 新しい武器を装備する内部処理メソッド
     /// </summary>
-    /// <returns>発射方向</returns>
-    private Vector3 GetFireDirection()
+    /// <param name="newData">新しい武器データ</param>
+    /// <param name="newLevel">新しいレベル</param>
+    /// <param name="ammo">新しい残弾数</param>
+    private void ApplyWeapon(WeaponData newData, int newLevel, int ammo)
     {
-        float spread = weaponData.SpreadAngle;
+        weaponData = newData;
+        level = Mathf.Max(0, newLevel);
+        weaponStats = weaponData.CreateBonusStats(level);
 
-        float x = UnityEngine.Random.Range(-spread, spread);
-        float y = UnityEngine.Random.Range(-spread, spread);
+        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
+        currentAmmo = ammo == -1
+            ? weaponStats.MagazineSize
+            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
 
-        Vector3 direction = Camera.main.transform.forward;
-        direction = Quaternion.Euler(y, x, 0) * direction;
-
-        return direction;
+        OnWeaponEquipped?.Invoke(weaponData);
+        NotifyAmmoChanged();
     }
-
 
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4447309597282105441}
   - component: {fileID: 7540704968161900505}
   - component: {fileID: -8799390753316756408}
-  - component: {fileID: 4125147895993603803}
+  - component: {fileID: 2179000361033521519}
   m_Layer: 0
   m_Name: Ammo
   m_TagString: Untagged
@@ -108,7 +108,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4125147895993603803
+--- !u!114 &2179000361033521519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,6 +150,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6556299627688077866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3dfc63739e35c4fa486ab3ae11319b, type: 3}
+  m_Script: {fileID: 11500000, guid: 96574a6c1e4cf0c4eb7c3b19d147f8d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProjectileObject
+  m_EditorClassIdentifier: Assembly-CSharp::NormalProjectile

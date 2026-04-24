@@ -13,16 +13,18 @@ public class WeaponReloadingState : WeaponState
     {
         Debug.Log("Weapon Reloading Stateに入りました");
 
-        timer = controller.Weapon.WeaponData.ReloadTime;
+        timer = controller.Weapon.WeaponStats.ReloadTime;
     }
 
     public override void Update()
     {
         timer -= Time.deltaTime;
 
+        controller.WeaponView.SetReloadProgress(1f - timer / controller.Weapon.WeaponStats.ReloadTime);
         // リロードの完了
         if (timer <= 0f)
         {
+            controller.WeaponView.SetReloadProgress(0f);
             controller.Weapon.Reload();
             controller.WeaponStateMachine.ChangeIdleState();
         }

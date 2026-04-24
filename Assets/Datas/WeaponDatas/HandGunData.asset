@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
+  m_Name: HandGunData
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponId: weapon_default
+  displayName: "\u30CF\u30F3\u30C9\u30AC\u30F3"
+  icon: {fileID: 0}
+  weaponModelPrefab: {fileID: 7974870550914696341, guid: 76cb5043f84c3014194b61cea5c3be16, type: 3}
+  fireModeData: {fileID: 11400000, guid: b4102ea5d3f41ed4a96b95a0900c1bc1, type: 2}
+  triggerType: 0
+  damage: 20
+  fireInterval: 0.15
+  spreadAngle: 0.5
+  recoilX: 0.012
+  recoilY: 0.004
+  recoilRecoverySpeed: 40
+  adsZoom: 60
+  adsSpreadMultiplier: 0.4
+  adsRecoilMultiplier: 0.6
+  burstCount: 1
+  burstInterval: 0.05
+  useMagazine: 1
+  magazineSize: 16
+  reloadTime: 1.6
+  maxReserveAmmo: 120
+  levelBonusData:
+  - Damage: 0
+    FireInterval: 0
+    SpreadAngle: 0
+    RecoilX: 0
+    RecoilY: 0
+    MagazineSize: 0
+    ReloadTime: 0
+    RecoilRecoverySpeed: 0
+    BurstCount: 0
+    BurstInterval: 0
+  - Damage: 10
+    FireInterval: 0
+    SpreadAngle: 0
+    RecoilX: 0
+    RecoilY: 0
+    MagazineSize: 2
+    ReloadTime: 0
+    RecoilRecoverySpeed: 0
+    BurstCount: 0
+    BurstInterval: 0

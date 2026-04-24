@@ -9,7 +9,7 @@ public class PlayerHealthTextView : MonoBehaviour
     /// <summary>
     /// 表示対象のプレイヤー体力モデル
     /// </summary>
-    [SerializeField] private PlayerHealth player;
+    [SerializeField] private Player player;
 
     /// <summary>
     /// 現在HPと最大HPを表示するテキスト

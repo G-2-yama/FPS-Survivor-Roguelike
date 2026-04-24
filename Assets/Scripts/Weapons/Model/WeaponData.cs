@@ -14,6 +14,13 @@ public class WeaponData : ScriptableObject
     [SerializeField] private string displayName = "New Weapon";
     public string DisplayName => displayName;
 
+    [SerializeField] private Sprite icon;
+    public Sprite Icon => icon;
+
+    [Header("Visual")]
+    [SerializeField] private GameObject weaponModelPrefab;
+    public GameObject WeaponModelPrefab => weaponModelPrefab;
+
     [Header("Fire Mode")]
     [SerializeField] private FireModeData fireModeData;
     public FireModeData FireModeData => fireModeData;
@@ -24,7 +31,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
     public WeaponTriggerType TriggerType => triggerType;
 
-    [SerializeField, Min(0f)] private float damage = 10f;
+    [SerializeField, Min(0f)] private int damage = 10;
     public float Damage => damage;
 
     [SerializeField, Min(0.01f)] private float fireInterval = 0.12f;
@@ -45,22 +52,9 @@ public class WeaponData : ScriptableObject
     public float RecoilRecoverySpeed => recoilRecoverySpeed;
 
 
-    [Header("ADS")]
-    [SerializeField] private float adsZoom = 60f;
-    public float AdsZoom => adsZoom;
-
-    [SerializeField] private float adsSpreadMultiplier = 0.4f;
-    public float AdsSpreadMultiplier => adsSpreadMultiplier;
-
-    [SerializeField] private float adsRecoilMultiplier = 0.6f;
-    public float AdsRecoilMultiplier => adsRecoilMultiplier;
-
-
     [Header("Burst")]
-    [SerializeField] private bool useBurst;
-    public bool UseBurst => useBurst;
 
-    [SerializeField, Min(1)] private int burstCount = 3;
+    [SerializeField, Min(1)] private int burstCount = 1;
     public int BurstCount => burstCount;
 
     [SerializeField, Min(0f)] private float burstInterval = 0.05f;
@@ -68,8 +62,8 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Ammo")]
-    [SerializeField] private bool useMagazine = true;
-    public bool UseMagazine => useMagazine;
+    [SerializeField] private bool autoReload = false;
+    public bool AutoReload => autoReload;
 
     [SerializeField, Min(1)] private int magazineSize = 30;
     public int MagazineSize => magazineSize;
@@ -82,78 +76,31 @@ public class WeaponData : ScriptableObject
 
 
     [Header("Level")]
-    [SerializeField] private WeaponLevelData[] levelData;
-    public WeaponLevelData[] LevelData => levelData;
+    [SerializeField] private WeaponStats[] levelBonusData;
+    public WeaponStats[] LevelBonusData => levelBonusData;
 
-
-    /// <summary>
-    /// レベルに応じたダメージを取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味したダメージ</returns>
-    public float GetDamage(int level)
+    public WeaponStats CreateBonusStats(int level)
     {
-        return damage + levelData[level].damageBonus;
-    }
+        var stats = new WeaponStats
+        {
+            Damage = damage,
+            FireInterval = fireInterval,
+            SpreadAngle = spreadAngle,
+            RecoilX = recoilX,
+            RecoilY = recoilY,
+            MagazineSize = magazineSize,
+            ReloadTime = reloadTime,
+            RecoilRecoverySpeed = recoilRecoverySpeed,
+            BurstCount = burstCount,
+            BurstInterval = burstInterval
+        };
 
-    /// <summary>
-    /// レベルに応じた射撃間隔を取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味した射撃間隔</returns>
-    public float GetFireInterval(int level)
-    {
-        return fireInterval + levelData[level].fireIntervalBonus;
-    }
+        if (level < levelBonusData.Length)
+        {
+            stats.Add(levelBonusData[level]);
+        }
 
-    /// <summary>
-    /// レベルに応じた拡散角を取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味した拡散角</returns>
-    public float GetSpread(int level)
-    {
-        return spreadAngle + levelData[level].spreadBonus;
-    }
-
-    /// <summary>
-    /// レベルに応じたX反動を取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味したX反動</returns>
-    public float GetRecoilX(int level)
-    {
-        return recoilX + levelData[level].recoilXBonus;
-    }
-
-    /// <summary>
-    /// レベルに応じたY反動を取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味したY反動</returns>
-    public float GetRecoilY(int level)
-    {
-        return recoilY + levelData[level].recoilYBonus;
-    }
-
-    /// <summary>
-    /// レベルに応じたマガジンサイズを取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味したマガジンサイズ</returns>
-    public int GetMagazineSize(int level)
-    {
-        return magazineSize + levelData[level].magazineSizeBonus;
-    }
-
-    /// <summary>
-    /// レベルに応じたリロード時間を取得する
-    /// </summary>
-    /// <param name="level">武器レベル</param>
-    /// <returns>レベル補正を加味したリロード時間</returns>
-    public float GetReloadTime(int level)
-    {
-        return reloadTime + levelData[level].reloadTimeBonus;
+        return stats;
     }
 }
 

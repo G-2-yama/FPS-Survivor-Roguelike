@@ -156,6 +156,16 @@ public class PlayerConfig : MonoBehaviour
     public float JumpForce => jumpForce;
 
     /// <summary>
+    /// プレイヤーの初期HP
+    /// </summary>
+    [SerializeField] private int initialHP = 100;
+
+    /// <summary>
+    /// プレイヤーの初期HP
+    /// </summary>
+    public int InitialHP => initialHP;
+
+    /// <summary>
     /// ダッシュで移動する距離
     /// </summary>
     [SerializeField, Min(0f)] private float dashDistance = 6f;

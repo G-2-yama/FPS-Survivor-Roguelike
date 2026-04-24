@@ -10,10 +10,10 @@ using UnityEngine.Serialization;
 public class PlayerController : MonoBehaviour
 {
     /// <summary>
-    /// プレイヤー体力モデル
+    /// プレイヤーモデル
     /// </summary>
-    [FormerlySerializedAs("player")]
-    [SerializeField] private PlayerHealth playerHealth;
+    [FormerlySerializedAs("playerHealth")]
+    [SerializeField] private Player player;
 
     /// <summary>
     /// プレイヤー全体設定
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerCharacterController = GetComponent<CharacterController>();
-        playerHealth = ResolvePlayerHealth();
+        player = ResolvePlayer();
         playerConfig = ResolvePlayerConfig();
         cameraLookPivotTransform = ResolveCameraLookPivotTransform();
 
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
         PlayerCommandBuffer commands = new PlayerCommandBuffer();
 
         PlayerContext context = new PlayerContext(
-            playerHealth,
+            player,
             playerConfig,
             weaponController,
             motor,
@@ -96,12 +96,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        if (playerHealth == null || runtime == null)
+        if (player == null || runtime == null)
         {
             return;
         }
 
-        playerHealth.OnDeath += OnPlayerDeath;
+        player.OnDeath += OnPlayerDeath;
     }
 
     /// <summary>
@@ -122,12 +122,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
-        if (playerHealth == null)
+        if (player == null)
         {
             return;
         }
 
-        playerHealth.OnDeath -= OnPlayerDeath;
+        player.OnDeath -= OnPlayerDeath;
     }
 
     /// <summary>
@@ -181,9 +181,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool ValidateReferences()
     {
-        if (playerHealth == null)
+        if (player == null)
         {
-            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(playerHealth)}.", this);
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(player)}.", this);
             return false;
         }
 
@@ -246,16 +246,16 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤー体力モデルを解決する
+    /// プレイヤーモデルを解決する
     /// </summary>
-    private PlayerHealth ResolvePlayerHealth()
+    private Player ResolvePlayer()
     {
-        if (playerHealth != null)
+        if (player != null)
         {
-            return playerHealth;
+            return player;
         }
 
-        return GetComponent<PlayerHealth>();
+        return GetComponent<Player>();
     }
 
     /// <summary>

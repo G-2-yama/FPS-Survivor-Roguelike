@@ -7,7 +7,7 @@ public class PlayerContext
     /// <summary>
     /// プレイヤー体力モデル
     /// </summary>
-    public PlayerHealth Health { get; }
+    public Player Player { get; }
 
     /// <summary>
     /// プレイヤー全体設定
@@ -53,7 +53,7 @@ public class PlayerContext
     /// プレイヤー制御に必要な参照を初期化する
     /// </summary>
     public PlayerContext(
-        PlayerHealth health,
+        Player player,
         PlayerConfig config,
         WeaponController weaponController,
         PlayerMotor motor,
@@ -63,7 +63,7 @@ public class PlayerContext
         PlayerControlState controls,
         PlayerCommandBuffer commands)
     {
-        Health = health;
+        Player = player;
         Config = config;
         WeaponController = weaponController;
         Motor = motor;

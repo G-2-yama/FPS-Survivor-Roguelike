@@ -2,38 +2,41 @@ using UnityEngine;
 
 public class CircleState : IState
 {
-    private moveenemy enemy;
-    private StateMachine<IState> stateMachine;
+    private readonly EnemyBrain enemy;
+    private readonly StateMachine<IState> stateMachine;
 
-    public CircleState(moveenemy enemy, StateMachine<IState> sm)
+    public CircleState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
-        this.stateMachine = sm;
+        this.stateMachine = stateMachine;
     }
 
     public void Enter() { }
 
     public void Update()
     {
-        Vector3 toTarget = enemy.Target.position - enemy.transform.position;
-        float distance = toTarget.magnitude;
+        if (enemy.Target == null)
+            return;
 
-        if (distance > enemy.Length)
+        float distance = Vector3.Distance(enemy.transform.position, enemy.Target.position);
+
+        if (distance >= enemy.Config.EngageDistance + 1.0f)
         {
             stateMachine.ChangeState(new ChaseState(enemy, stateMachine));
             return;
         }
 
-        Vector3 offset = enemy.transform.position - enemy.Target.position;
-       
-        offset = offset.normalized * enemy.Radius;
+        enemy.Movement.OrbitAround(
+            enemy.transform,
+            enemy.Target,
+            enemy.Config.OrbitRadius,
+            enemy.Config.OrbitAngularSpeed);
 
-        enemy.transform.rotation = Quaternion.LookRotation(offset);
-
-        offset = Quaternion.AngleAxis(enemy.EnemyDatas.Speed *3* Time.deltaTime, enemy.Target.up) * offset;
-        enemy.transform.position = enemy.Target.position + offset;
+        enemy.Attack.TryAttack();
     }
 
-
-    public void Exit() { }
+    public void Exit()
+    {
+        enemy.Attack.CancelAttack();
+    }
 }

@@ -12,14 +12,16 @@ public class ProjectileData : FireModeData
     [SerializeField] private GameObject prefab;
     public GameObject Prefab => prefab;
 
+
     /// <inheritdoc />
-    public override void Fire(Weapon weapon, Vector3 direction)
+    public override void Fire(Weapon weapon)
     {
-        GameObject bullet = Instantiate(
-            prefab,
-            weapon.Muzzle.position,
-            Quaternion.LookRotation(direction)
-        );
+        Vector3 direction = GetFireDirection(weapon);
+
+        GameObject bullet = PoolManager.Instance.Get(prefab);
+
+        bullet.transform.position = weapon.Muzzle.position;
+        bullet.transform.rotation = Quaternion.LookRotation(direction);
 
         var projectile = bullet.GetComponent<ProjectileObject>();
         projectile.Initialize((col) => TryApplyDamage(weapon, col),lifetime);

@@ -35,6 +35,11 @@ public class WeaponStateMachine : StateMachine<WeaponState>
         currentState?.OnReload();
     }
 
+    public void OnChangeWeapon(WeaponData data)
+    {
+        ChangeIdleState();
+    }
+
     /// <summary>
     /// 待機状態に遷移
     /// </summary>

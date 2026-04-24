@@ -3,26 +3,52 @@ using UnityEngine;
 public class WeaponFiringState : WeaponState
 {
     public WeaponFiringState(WeaponController controller) : base(controller) { }
+    
+    private int burstRemaining;
+    private float timer;
+    private bool hasFired;
 
     public override void Enter()
     {
         Debug.Log("Weapon Firing Stateに入りました");
 
-        if (controller.Weapon.Fire())
-        {
-            // 発射成功
-            controller.WeaponRecoil.AddRecoil();
-            controller.WeaponStateMachine.ChangeCooldownState();
-            return;
-        }
-
-        // 発射失敗
-        controller.WeaponStateMachine.ChangeIdleState();
+        burstRemaining = controller.Weapon.WeaponStats.BurstCount;
+        timer = 0f;
     }
 
     public override void Update()
     {
-        // 発射状態の更新処理をここに実装
+        // 全弾撃ち終わった場合
+        if (burstRemaining <= 0)
+        {
+            TransitionAfterBurst();
+            return;
+        }
+
+        timer -= Time.deltaTime;
+        if (timer > 0f) return;
+
+        if (controller.Weapon.Fire())
+        {
+            controller.WeaponRecoil.AddRecoil();
+            burstRemaining--;
+            timer = controller.Weapon.WeaponStats.BurstInterval;
+        }
+        else
+        {
+            TransitionAfterBurst();
+        }
+    }
+
+    private void TransitionAfterBurst()
+    {
+        if (controller.Weapon.ShouldStartAutoReload())
+        {
+            controller.WeaponStateMachine.ChangeReloadingState();
+            return;
+        }
+
+        controller.WeaponStateMachine.ChangeCooldownState();
     }
 
     public override void Exit()

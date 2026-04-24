@@ -5,20 +5,21 @@ public class WeaponRecoil
     private Vector2 currentRecoil;
     private Vector2 targetRecoil;
 
-    private WeaponData weaponData;
+    private Weapon weapon;
 
-    public WeaponRecoil(WeaponData data)
+    public WeaponRecoil(Weapon weapon)
     {
-        weaponData = data;
+        this.weapon = weapon;
     }
+
 
     /// <summary>
     /// 発射時に反動を加える
     /// </summary>
     public void AddRecoil()
     {
-        float recoilX = weaponData.RecoilX;
-        float recoilY = weaponData.RecoilY;
+        float recoilX = weapon.WeaponStats.RecoilX;
+        float recoilY = weapon.WeaponStats.RecoilY;
 
         targetRecoil += new Vector2(
             Random.Range(-recoilY, recoilY), // 横ブレ
@@ -31,11 +32,16 @@ public class WeaponRecoil
     /// </summary>
     public Vector2 Update(float deltaTime)
     {
+        if (weapon.WeaponData == null)
+        {
+            return Vector2.zero;
+        }
+
         // 現在値をターゲットに近づける
         currentRecoil = Vector2.Lerp(currentRecoil, targetRecoil, deltaTime * 10f);
 
         // ターゲットを0に戻す（回復）
-        targetRecoil = Vector2.Lerp(targetRecoil, Vector2.zero, deltaTime * weaponData.RecoilRecoverySpeed);
+        targetRecoil = Vector2.Lerp(targetRecoil, Vector2.zero, deltaTime * weapon.WeaponStats.RecoilRecoverySpeed);
 
         return currentRecoil;
     }
