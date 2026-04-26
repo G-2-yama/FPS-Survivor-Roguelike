@@ -3,26 +3,72 @@ using UnityEngine;
 public class LevelUp : UpgradeBase
 {
     private Player player;
+    private WeaponType targetType;
     private bool isRightHand;
+
 
     public override bool IsAvailable()
     {
-        return isRightHand ? player.HasRightWeapon : player.HasLeftWeapon;
+        if (targetType == WeaponType.Main)
+        {
+            if(isRightHand)
+                return player.HasRightWeapon;
+            else
+                return player.HasLeftWeapon;
+        }
+        else if (targetType == WeaponType.Ability)
+        {
+            if (isRightHand)
+                return player.HasRightAbility;
+            else
+                return player.HasLeftAbility;
+        }
+        else if (targetType == WeaponType.AutoWeapon)
+        {
+            if (isRightHand)
+                return player.HasRightAutoWeapon;
+            else
+                return player.HasLeftAutoWeapon;
+        }
+
+        return false;
     }
 
-    public LevelUp(string displayName, string description, Player player, bool isRightHand) : base(displayName, description)
+    public LevelUp(string displayName, string description,WeaponType weaponType ,Player player, bool isRightHand) : base(displayName, description)
     {
+        this.targetType = weaponType;
         this.player = player;
         this.isRightHand = isRightHand;
     }
 
     public override void Apply()
     {
-        Weapon target = isRightHand ? player.RightWeapon : player.LeftWeapon;
+        Weapon target = null;
 
-        if (target == null || target.WeaponData == null)
+        if(targetType == WeaponType.Main)
         {
-            Debug.Log("Weapon is not equipped.");
+            if (isRightHand)
+                target = player.RightWeapon;
+            else
+                target = player.LeftWeapon;
+        }
+        else if(targetType == WeaponType.Ability)
+        {
+            if (isRightHand)
+                target = player.RightAbility;
+            else
+                target = player.LeftAbility;
+        }
+        else if(targetType == WeaponType.AutoWeapon)
+        {
+            if (isRightHand)
+                target = player.RightAutoWeapon;
+            else
+                target = player.LeftAutoWeapon;
+        }
+
+        if(target != null)
+        {
             return;
         }
 

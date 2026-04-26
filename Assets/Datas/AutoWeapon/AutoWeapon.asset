@@ -17,6 +17,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   weaponModelPrefab: {fileID: 0}
   fireModeData: {fileID: 11400000, guid: a57f55e250b675f40a14d62e83165707, type: 2}
+  weaponType: 2
   autoFire: 1
   triggerType: 0
   damage: 10
@@ -30,7 +31,6 @@ MonoBehaviour:
   autoReload: 1
   magazineSize: 1
   reloadTime: 1.6
-  maxReserveAmmo: 120
   levelBonusData:
   - Damage: 0
     FireInterval: 0
