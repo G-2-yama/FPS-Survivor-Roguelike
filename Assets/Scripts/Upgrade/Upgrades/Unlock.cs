@@ -1,10 +1,9 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Upgrade/Unlock")]
 public class Unlock : UpgradeBase
 {
-    private WeaponData target;
-    private Player player;
-    private bool isRightHand;
+    [SerializeField] private WeaponData target;
 
     public override bool IsAvailable()
     {
@@ -24,50 +23,40 @@ public class Unlock : UpgradeBase
         return false;
     }
 
-    public Unlock(string displayName, string description, WeaponData target, Player player, bool isRightHand) : base(displayName, description)
-    {
-        this.target = target;
-        this.player = player;
-        this.isRightHand = isRightHand;
-    }
-
     public override void Apply()
     {
         if (target.WeaponType == WeaponType.Main)
         {
-            if (isRightHand && !player.HasRightWeapon)
-            {
-                player.EquipRightWeapon(target);
-            }
-            else if (!isRightHand && !player.HasLeftWeapon)
+            if (!player.HasLeftWeapon)
             {
                 player.EquipLeftWeapon(target);
+            }
+            else if (!player.HasRightWeapon)
+            {
+                player.EquipRightWeapon(target);
             }
         }
         else if (target.WeaponType == WeaponType.Ability)
         {
-            if(isRightHand && !player.HasRightAbility)
-            {
-                player.EquipRightAbility(target);
-            }
-            else if (!isRightHand && !player.HasLeftAbility)
+            if (!player.HasLeftAbility)
             {
                 player.EquipLeftAbility(target);
+            }
+            else if (!player.HasRightAbility)
+            {
+                player.EquipRightAbility(target);
             }
         }
         else if (target.WeaponType == WeaponType.AutoWeapon)
         {
-            if (isRightHand && !player.HasRightAutoWeapon)
+            if (!player.HasLeftAutoWeapon)
             {
-                player.RightAutoWeapon.Equip(target);
+                player.EquipLeftAutoWeapon(target);
             }
-            else if (!isRightHand && !player.HasLeftAutoWeapon)
+            else if (!player.HasRightAutoWeapon)
             {
-                player.LeftAutoWeapon.Equip(target);
+                player.EquipRightAutoWeapon(target);
             }
         }
     }
-
-
-
 }

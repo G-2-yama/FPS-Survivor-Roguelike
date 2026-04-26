@@ -3,31 +3,25 @@ using System.Collections.Generic;
 
 public enum SlotType
 {
-    MainLeft,
-    MainRight,
+    LeftMain,
+    RightMain,
     LeftAbility,
     RightAbility,
     LeftAutoWeapon,
     RightAutoWeapon,
-}
 
-public enum SlotGroup
-{
-    Main,
-    Ability,
-    AutoWeapon
 }
 
 public static class SlotTypeExtensions
 {
-    private static readonly Dictionary<SlotType, SlotGroup> GroupMap = new()
+    private static readonly Dictionary<SlotType, WeaponType> GroupMap = new()
     {
-        { SlotType.MainLeft,     SlotGroup.Main    },
-        { SlotType.MainRight,    SlotGroup.Main    },
-        { SlotType.LeftAbility,  SlotGroup.Ability },
-        { SlotType.RightAbility, SlotGroup.Ability },
-        { SlotType.LeftAutoWeapon, SlotGroup.AutoWeapon },
-        { SlotType.RightAutoWeapon, SlotGroup.AutoWeapon }
+        { SlotType.LeftMain,     WeaponType.Main    },
+        { SlotType.RightMain,    WeaponType.Main    },
+        { SlotType.LeftAbility,  WeaponType.Ability },
+        { SlotType.RightAbility, WeaponType.Ability },
+        { SlotType.LeftAutoWeapon, WeaponType.AutoWeapon },
+        { SlotType.RightAutoWeapon, WeaponType.AutoWeapon }
     };
 
     /// <summary>
@@ -36,7 +30,7 @@ public static class SlotTypeExtensions
     /// <param name="slot">スロット</param>
     /// <returns>スロットが属するグループ</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static SlotGroup GetGroup(this SlotType slot)
+    public static WeaponType GetGroup(this SlotType slot)
     {
         if (GroupMap.TryGetValue(slot, out var group))
             return group;

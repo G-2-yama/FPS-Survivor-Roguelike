@@ -1,21 +1,22 @@
 using UnityEngine;
 
 
-public abstract class UpgradeBase
+public abstract class UpgradeBase : ScriptableObject
 {
-    private string displayName;
-    public virtual string DisplayName => displayName;
+    [SerializeField] protected string displayName;
+    public string DisplayName => displayName;
 
-    private string description;
-    public virtual string Description => description;
+    [SerializeField] protected string description;
+    public string Description => description;
+    
+    protected Player player;
+
+    public void Initialize(Player player)
+    {
+        this.player = player;
+    }
 
     public virtual bool IsAvailable() => true;
-    
-    public UpgradeBase(string displayName, string description)
-    {
-        this.displayName = displayName;
-        this.description = description;
-    }
         
     /// <summary>
     /// このアップグレードを対象のゲームオブジェクトに適用します

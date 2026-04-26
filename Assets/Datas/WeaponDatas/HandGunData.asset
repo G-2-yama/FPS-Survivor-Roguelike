@@ -16,7 +16,9 @@ MonoBehaviour:
   displayName: "\u30CF\u30F3\u30C9\u30AC\u30F3"
   icon: {fileID: 0}
   weaponModelPrefab: {fileID: 7974870550914696341, guid: 76cb5043f84c3014194b61cea5c3be16, type: 3}
-  fireModeData: {fileID: 11400000, guid: b4102ea5d3f41ed4a96b95a0900c1bc1, type: 2}
+  fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
+  weaponType: 0
+  autoFire: 0
   triggerType: 0
   damage: 20
   fireInterval: 0.15
@@ -24,15 +26,11 @@ MonoBehaviour:
   recoilX: 0.012
   recoilY: 0.004
   recoilRecoverySpeed: 40
-  adsZoom: 60
-  adsSpreadMultiplier: 0.4
-  adsRecoilMultiplier: 0.6
   burstCount: 1
   burstInterval: 0.05
-  useMagazine: 1
+  autoReload: 0
   magazineSize: 16
   reloadTime: 1.6
-  maxReserveAmmo: 120
   levelBonusData:
   - Damage: 0
     FireInterval: 0
