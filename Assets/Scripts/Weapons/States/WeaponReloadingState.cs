@@ -12,7 +12,7 @@ public class WeaponReloadingState : WeaponState
     public override void Enter()
     {
         Debug.Log("Weapon Reloading Stateに入りました");
-
+        controller.WeaponView.PlayReloadAnimation();
         timer = controller.Weapon.WeaponStats.ReloadTime;
     }
 

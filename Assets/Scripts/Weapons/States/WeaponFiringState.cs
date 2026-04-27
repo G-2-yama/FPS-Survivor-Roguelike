@@ -30,6 +30,7 @@ public class WeaponFiringState : WeaponState
 
         if (controller.Weapon.Fire())
         {
+            controller.WeaponView.PlayFireAnimation();
             controller.WeaponRecoil.AddRecoil();
             burstRemaining--;
             timer = controller.Weapon.WeaponStats.BurstInterval;

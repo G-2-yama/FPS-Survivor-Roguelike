@@ -11,6 +11,8 @@ public class WeaponView : MonoBehaviour
 
     private GameObject weaponModelInstance;
 
+    private Animator animator;
+
     /// <summary>
     /// 初期化時にイベント購読を行い、初期表示状態を設定する
     /// </summary>
@@ -50,6 +52,22 @@ public class WeaponView : MonoBehaviour
     public void SetReloadProgress(float progress)
     {
         reloadIndicator.fillAmount = progress;
+    }
+
+    public void PlayReloadAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Reload");
+        }
+    }
+
+    public void PlayFireAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Fire");
+        }
     }
 
     /// <summary>
@@ -93,6 +111,7 @@ public class WeaponView : MonoBehaviour
         }
 
         weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
+        animator = weaponModelInstance.GetComponent<Animator>();
     }
 
     /// <summary>
