@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponId: weapon_default
   displayName: "\u30CF\u30F3\u30C9\u30AC\u30F3"
   icon: {fileID: 0}
-  weaponModelPrefab: {fileID: 7974870550914696341, guid: 76cb5043f84c3014194b61cea5c3be16, type: 3}
+  weaponModelPrefab: {fileID: 3637342788740244059, guid: 452274f2432a6d34d8b2732670808f74, type: 3}
   fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
   weaponType: 0
   autoFire: 0
