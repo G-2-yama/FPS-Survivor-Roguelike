@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private SlotView[] slotUIs;
+    [SerializeField] private DiscardSlotView discardSlotUI;
 
     private SlotView selectedSlot = null;
 
@@ -44,6 +46,20 @@ public class InventoryUI : MonoBehaviour
 
         // 異なるスロットを選択→スワップ実行
         inventory.Swap(selectedSlot.SlotType, clickedSlot.SlotType);
+        selectedSlot.SetHighlight(false);
+        selectedSlot = null;
+    }
+
+    /// <summary>
+    /// 廃棄スロットがクリックされたとき。
+    /// 武器スロットが選択済みなら即廃棄。選択がなければ何もしない。
+    /// </summary>
+    public void OnDiscardSlotClicked()
+    {
+        if (selectedSlot == null) return;
+
+        inventory.Discard(selectedSlot.SlotType);
+
         selectedSlot.SetHighlight(false);
         selectedSlot = null;
     }

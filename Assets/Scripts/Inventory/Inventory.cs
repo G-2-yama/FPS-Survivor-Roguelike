@@ -14,10 +14,12 @@ public class PlayerInventory : MonoBehaviour
     {
         slots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.MainLeft,  player.LeftWeapon  },
-            { SlotType.MainRight, player.RightWeapon },
+            { SlotType.LeftMain,  player.LeftWeapon  },
+            { SlotType.RightMain, player.RightWeapon },
             { SlotType.LeftAbility, player.LeftAbility },   
-            { SlotType.RightAbility, player.RightAbility } 
+            { SlotType.RightAbility, player.RightAbility },
+            { SlotType.LeftAutoWeapon, player.LeftAutoWeapon },
+            { SlotType.RightAutoWeapon, player.RightAutoWeapon }
         };
     }
 
@@ -51,6 +53,15 @@ public class PlayerInventory : MonoBehaviour
         // 両スロットの変化を通知
         OnSlotChanged?.Invoke(slotA, slots[slotA].WeaponData);
         OnSlotChanged?.Invoke(slotB, slots[slotB].WeaponData);
+        return true;
+    }
+
+    public bool Discard(SlotType slot)
+    {
+        if (!slots.TryGetValue(slot, out var weapon)) return false;
+
+        weapon.Equip(null);
+        OnSlotChanged?.Invoke(slot, null);
         return true;
     }
 }

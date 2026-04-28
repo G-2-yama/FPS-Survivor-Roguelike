@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -33,6 +34,15 @@ public class Player : MonoBehaviour, IDamageable
     public Weapon RightAbility => rightAbility;
     public bool HasRightAbility => rightAbility != null && rightAbility.WeaponData != null;
 
+    [SerializeField] private Weapon rightAutoWeapon;
+    public Weapon RightAutoWeapon => rightAutoWeapon;
+    public bool HasRightAutoWeapon => rightAutoWeapon != null && rightAutoWeapon.WeaponData != null;
+
+    [SerializeField] private Weapon leftAutoWeapon;
+    public Weapon LeftAutoWeapon => leftAutoWeapon;
+    public bool HasLeftAutoWeapon => leftAutoWeapon != null && leftAutoWeapon.WeaponData != null;
+
+
     /// <summary>
     /// プレイヤーの体力モデル
     /// </summary>
@@ -65,6 +75,10 @@ public class Player : MonoBehaviour, IDamageable
     public void EquipLeftAbility(WeaponData ability) => leftAbility?.Equip(ability);
 
     public void EquipRightAbility(WeaponData ability) => rightAbility?.Equip(ability);
+
+    public void EquipLeftAutoWeapon(WeaponData autoWeapon) => leftAutoWeapon?.Equip(autoWeapon);
+
+    public void EquipRightAutoWeapon(WeaponData autoWeapon) => rightAutoWeapon?.Equip(autoWeapon);
 
     private void HandleDeath()
     {

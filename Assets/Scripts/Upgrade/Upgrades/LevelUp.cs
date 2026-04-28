@@ -1,33 +1,21 @@
 using UnityEngine;
 
+
+[CreateAssetMenu(menuName = "Upgrade/LevelUp")]
 public class LevelUp : UpgradeBase
 {
-    private Player player;
-    private bool isRightHand;
+    [SerializeField] private SlotType targetType;
 
     public override bool IsAvailable()
     {
-        return isRightHand ? player.HasRightWeapon : player.HasLeftWeapon;
-    }
-
-    public LevelUp(string displayName, string description, Player player, bool isRightHand) : base(displayName, description)
-    {
-        this.player = player;
-        this.isRightHand = isRightHand;
+        return player.Inventory.HasWeapon(targetType);
     }
 
     public override void Apply()
     {
-        Weapon target = isRightHand ? player.RightWeapon : player.LeftWeapon;
-
-        if (target == null || target.WeaponData == null)
-        {
-            Debug.Log("Weapon is not equipped.");
-            return;
-        }
+        Weapon target = player.Inventory.GetWeapon(targetType);
 
         target.LevelUp();
         target.NotifyAmmoChanged();
-        Debug.Log($"{target.WeaponData.DisplayName} leveled up to {target.Level}!");
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WeaponIdleState : WeaponState
@@ -6,11 +7,20 @@ public class WeaponIdleState : WeaponState
 
     public override void Enter()
     {
+        if (controller.Weapon.WeaponData == null)
+        {
+            return;
+        }
+
         controller.WeaponView.SetReloadProgress(0f);
 
         if (controller.Weapon.ShouldStartAutoReload())
         {
             controller.WeaponStateMachine.ChangeReloadingState();
+        }
+        else if (controller.Weapon.WeaponData.AutoFire)
+        {
+            controller.WeaponStateMachine.ChangeFiringState();
         }
     }
 

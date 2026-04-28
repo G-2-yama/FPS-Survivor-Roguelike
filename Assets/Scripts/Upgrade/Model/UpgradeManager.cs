@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,10 +10,7 @@ public class UpgradeManager : MonoBehaviour
 
     [SerializeField] private UpgradeView upgradeView;
 
-    [SerializeField] private List<WeaponData> weaponDatas;
-    [SerializeField] private List<WeaponData> abilityDatas;
-
-    private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
+    [SerializeField] private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
     private List<UpgradeBase> currentChoices = new List<UpgradeBase>();
 
     void Start()
@@ -75,21 +73,10 @@ public class UpgradeManager : MonoBehaviour
     }
 
     private void SetUpgradePool()
-    {   
-        UpgradeBase LeftWeaponLevelUpUpgrade = new LevelUp("左武器レベルアップ", "武器のレベルを上げます", player, false);
-        upgradePool.Add(LeftWeaponLevelUpUpgrade);
-        UpgradeBase RightWeaponLevelUpUpgrade = new LevelUp("右武器レベルアップ", "武器のレベルを上げます", player, true);
-        upgradePool.Add(RightWeaponLevelUpUpgrade);
-        UpgradeBase ShotgunUnlockUpgrade = new WeaponUnlock("ショットガンアンロック", "ショットガンをアンロックします", weaponDatas[1], player, true);
-        upgradePool.Add(ShotgunUnlockUpgrade);
-        UpgradeBase HandgunUnlockUpgrade = new WeaponUnlock("ハンドガンアンロック", "ハンドガンをアンロックします", weaponDatas[0], player, false);
-        upgradePool.Add(HandgunUnlockUpgrade);
-        UpgradeBase RifleUnlockUpgrade = new WeaponUnlock("ライフルアンロック", "ライフルをアンロックします", weaponDatas[2], player, true);
-        upgradePool.Add(RifleUnlockUpgrade);
-        
-        UpgradeBase GrenadeUnlockUpgrade = new AbilityUnlock("グレネードアンロック", "グレネードをアンロックします", abilityDatas[0], player, false);
-        upgradePool.Add(GrenadeUnlockUpgrade);
-        UpgradeBase SuperShotUnlockUpgrade = new AbilityUnlock("スーパーショットアンロック", "スーパースキルをアンロックします", abilityDatas[1], player, true);
-        upgradePool.Add(SuperShotUnlockUpgrade);
+    {
+        foreach(var upgrade in upgradePool)
+        {
+            upgrade.Initialize(player);
+        }
     }
 }

@@ -21,12 +21,17 @@ public class WeaponData : ScriptableObject
     [SerializeField] private GameObject weaponModelPrefab;
     public GameObject WeaponModelPrefab => weaponModelPrefab;
 
-    [Header("Fire Mode")]
+    [Header("Type")]
     [SerializeField] private FireModeData fireModeData;
     public FireModeData FireModeData => fireModeData;
+
+    [SerializeField] private WeaponType weaponType = WeaponType.Main;
+    public WeaponType WeaponType => weaponType;
     
 
     [Header("Attack")]
+    [SerializeField] private bool autoFire = false;
+    public bool AutoFire => autoFire;
 
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
     public WeaponTriggerType TriggerType => triggerType;
@@ -71,9 +76,6 @@ public class WeaponData : ScriptableObject
     [SerializeField, Min(0f)] private float reloadTime = 1.6f;
     public float ReloadTime => reloadTime;
 
-    [SerializeField, Min(0)] private int maxReserveAmmo = 120;
-    public int MaxReserveAmmo => maxReserveAmmo;
-
 
     [Header("Level")]
     [SerializeField] private WeaponStats[] levelBonusData;
@@ -108,5 +110,11 @@ public enum WeaponTriggerType
 {
     SemiAuto = 0,
     FullAuto = 1,
-    Charge = 2,
+}
+
+public enum WeaponType
+{
+    Main = 0,
+    Ability = 1,
+    AutoWeapon = 2,
 }
