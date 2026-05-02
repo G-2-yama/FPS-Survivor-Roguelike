@@ -42,7 +42,7 @@ public abstract class ProjectileObject : PoolableObject
     {
         if (hasHit) return;
         hasHit = true;
-
+     
         HandleHit(collision.collider);
     }
 
@@ -52,9 +52,23 @@ public abstract class ProjectileObject : PoolableObject
     /// <param name="other">接触したCollider</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (hasHit) return;
-        hasHit = true;
+        var selfDamageable = GetComponent<IDamageable>();
+        var damageable = other.GetComponentInParent<IDamageable>();
 
+        if (damageable == selfDamageable)
+            return;
+
+        if (selfDamageable != null && damageable != null)
+        {
+            if ((selfDamageable.TeamType & damageable.TeamType) != 0)
+            {
+                return;
+            }
+        }
+
+        if (hasHit) return;
+
+        hasHit = true;
         HandleHit(other);
     }
 

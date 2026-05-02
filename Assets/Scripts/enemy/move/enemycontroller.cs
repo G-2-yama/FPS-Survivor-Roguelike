@@ -25,7 +25,7 @@ public class EnemyBrain : MonoBehaviour
         stateMachine.ChangeState(new ChaseState(this, stateMachine));
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         stateMachine.Update();
     }
