@@ -23,9 +23,7 @@ public class EnemyGenerator : MonoBehaviour
 
     void Update()
     {
-        time += Time.deltaTime * 2;
-        transform.position =
-            new Vector3(Mathf.Sin(time), 0, Mathf.Cos(time)) * moverange + defaultpos;
+        
     }
 
     IEnumerator Generate()
