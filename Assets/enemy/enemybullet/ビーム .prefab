@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5851302597135405322}
   - component: {fileID: 5256256251613663212}
   - component: {fileID: 3790727184624878098}
-  - component: {fileID: 577862157505126609}
+  - component: {fileID: 3598961988766839563}
   m_Layer: 0
   m_Name: "\u30D3\u30FC\u30E0 "
   m_TagString: Untagged
@@ -136,12 +136,12 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &577862157505126609
+--- !u!114 &3598961988766839563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3338841769763293187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96574a6c1e4cf0c4eb7c3b19d147f8d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f9d9fef5ebc2064e89ab25e0c906d8b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NormalProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::enemyplojectileobject
+  config: {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
