@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
-  m_Name: New shotenemyData
-  m_EditorClassIdentifier: Assembly-CSharp::enemyDatas
-  MaxHp: 5
-  ChaseSpeed: 8
-  OrbitRadius: 7
-  OrbitAngularSpeed: 10
-  EngageDistance: 8
+  m_Name: beam
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
+  MaxHp: 10
+  ChaseSpeed: 0
+  OrbitRadius: 1
+  OrbitAngularSpeed: 1
+  EngageDistance: 1
   AttackPower: 1
-  AttackInterval: 3
-  AttackPattern: {fileID: 11400000, guid: 2ff7f9945009f96429b76e843ccf5219, type: 2}
+  AttackInterval: 1
+  AttackPattern: {fileID: 0}

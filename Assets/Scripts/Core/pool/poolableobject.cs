@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 public class PoolableObject : MonoBehaviour, IPoolable
 {
     ObjectPool<GameObject> pool;
+   
 
     public void SetPool(ObjectPool<GameObject> pool)
     {
