@@ -17,6 +17,7 @@ public class Player : MonoBehaviour, IDamageable
     public TeamType TeamType => TeamType.Player;
 
     public event Action OnDeath;
+    public event Action OnLevelUp;
 
     [SerializeField] private Weapon leftWeapon;
     public Weapon LeftWeapon => leftWeapon;
@@ -47,6 +48,9 @@ public class Player : MonoBehaviour, IDamageable
     /// プレイヤーの体力モデル
     /// </summary>
     public Health Health { get; private set; }
+    
+    private int level = 1;
+    public int Level => level;
 
     private void Awake()
     {
@@ -66,6 +70,12 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         Health.TakeDamage(damage);
+    }
+
+    public void LevelUp()
+    {
+        level++;
+        OnLevelUp?.Invoke();
     }
 
     public void EquipLeftWeapon(WeaponData weapon) => leftWeapon?.Equip(weapon);

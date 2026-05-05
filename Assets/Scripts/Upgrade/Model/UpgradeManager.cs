@@ -32,22 +32,20 @@ public class UpgradeManager : MonoBehaviour
     }
 
     /// <summary>
-    /// アップグレードUIを表示し、ゲームを一時停止する
+    /// アップグレードUIを表示
     /// </summary>
     public void ShowUpgradeUI()
     {
-        Time.timeScale = 0f;
         GenerateChoices();
         upgradeView.Setup(currentChoices);
         upgradeView.Show();
     }
 
     /// <summary>
-    /// アップグレードUIを非表示にし、ゲームを再開する
+    /// アップグレードUIを非表示
     /// </summary>
     public void HideUpgradeUI()
     {
-        Time.timeScale = 1f;
         upgradeView.Hide();
     }
 

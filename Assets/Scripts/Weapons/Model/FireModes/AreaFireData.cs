@@ -6,7 +6,6 @@ public class AreaFireData : FireModeData
     [Header("エリア設定")]
     [SerializeField] private Vector2 areaSize = new Vector2(10f, 10f); // X,Z範囲
     [SerializeField] private float spawnHeight = 20f;   // 上空の高さ
-    [SerializeField] private float dropDistance = 30f;
 
     [Header("弾数設定")]
     [SerializeField] private int projectileCount = 1;
