@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394d8199d1256d94690fbf88f272948a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
-  timeLimit: 10
+  timeLimit: 100
 --- !u!4 &383212505
 Transform:
   m_ObjectHideFlags: 0
@@ -7421,7 +7421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb79781a1ff5e645a0f973d36ff454b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
-  player: {fileID: 275487193}
   upgradeView: {fileID: 1653113033}
   upgradePool:
   - {fileID: 11400000, guid: 876ec18f36f9dff4ea999a53ee71e108, type: 2}

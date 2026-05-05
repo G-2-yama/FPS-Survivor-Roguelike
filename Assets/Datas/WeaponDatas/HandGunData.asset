@@ -22,7 +22,7 @@ MonoBehaviour:
   triggerType: 0
   damage: 20
   fireInterval: 0.15
-  spreadAngle: 0.5
+  spreadAngle: 0
   recoilX: 0.012
   recoilY: 0.004
   recoilRecoverySpeed: 40
