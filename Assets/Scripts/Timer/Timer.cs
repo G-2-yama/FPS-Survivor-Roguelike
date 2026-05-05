@@ -15,6 +15,11 @@ public class Timer : MonoBehaviour
 
     public void StartTimer()
     {
+        IsRunning = true;
+    }
+
+    public void RestartTimer()
+    {
         ElapsedTime = 0f;
         IsRunning = true;
     }

@@ -17,6 +17,7 @@ public class GameStateMachine : StateMachine<GameState>
         endState = new EndState(controller);
         upgradeState = new UpgradeState(controller);
 
+        controller.StartTimer();
         ChangeState(playingState);
     }
 

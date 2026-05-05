@@ -13,7 +13,8 @@ public class GameController
         this.gameManager = gameManager;
     }
 
-    public void StartTimer()     => gameManager.Timer.StartTimer();
+    public void ReStartTimer()     => gameManager.Timer.RestartTimer();
+    public void StartTimer()       => gameManager.Timer.StartTimer();
     public void StopTimer()      => gameManager.Timer.StopTimer();
     public void PauseGame()      => Time.timeScale = 0f;
     public void ResumeGame()     => Time.timeScale = 1f;

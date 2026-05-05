@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
-    [SerializeField] private Player player;
-
     [SerializeField] private UpgradeView upgradeView;
 
     [SerializeField] private List<UpgradeBase> upgradePool = new List<UpgradeBase>();
     private List<UpgradeBase> currentChoices = new List<UpgradeBase>();
 
-    void Start()
-    {
-        SetUpgradePool();
-    }
+    private GameController gameController;
 
+    public void Initialize(GameController controller)
+    {
+        this.gameController = controller;
+        SetUpgradePool(controller.Player);
+    }
     /// <summary>
     /// アップグレードの選択肢がクリックされたときの処理
     /// </summary>
@@ -26,7 +26,7 @@ public class UpgradeManager : MonoBehaviour
     {
         var selectedUpgrade = currentChoices[upgradeIndex];
         selectedUpgrade.Apply();
-
+        gameController.StateMachine.ChangePlayingState();
         // アップグレードUIを閉じる
         HideUpgradeUI();
     }
@@ -70,7 +70,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    private void SetUpgradePool()
+    private void SetUpgradePool(Player player)
     {
         foreach(var upgrade in upgradePool)
         {

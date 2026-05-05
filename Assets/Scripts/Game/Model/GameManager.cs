@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Player player;
     public Player Player => player;
-    
+
     [SerializeField] private Timer timer;
     public Timer Timer => timer;
 
@@ -19,9 +19,10 @@ public class GameManager : MonoBehaviour
     private GameStateMachine gameStateMachine;
     public GameStateMachine GameStateMachine => gameStateMachine;
 
-    private void Start()
+    public void Start()
     {
         gameController = new GameController(this);
+        upgradeManager.Initialize(gameController);
         gameStateMachine = new GameStateMachine(gameController);
     }
 
