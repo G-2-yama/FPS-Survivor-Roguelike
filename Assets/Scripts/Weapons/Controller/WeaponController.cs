@@ -38,12 +38,17 @@ public class WeaponController : MonoBehaviour
         weaponRecoil = new WeaponRecoil(weapon);
 
         weapon.OnWeaponEquipped += weaponStateMachine.OnChangeWeapon;
+        WeaponControllerManager.OnGlobalFire += OnGlobalFireReceived;
+        WeaponControllerManager.OnGlobalFireReleased += OnGlobalFireReleasedReceived;
+        WeaponControllerManager.OnReload += OnReloadReceived;
     }
 
     private void OnDestroy()
     {
         weapon.OnWeaponEquipped -= weaponStateMachine.OnChangeWeapon;
-    
+        WeaponControllerManager.OnGlobalFire -= OnGlobalFireReceived;
+        WeaponControllerManager.OnGlobalFireReleased -= OnGlobalFireReleasedReceived;
+        WeaponControllerManager.OnReload -= OnReloadReceived;
     }
 
     public void Update()
@@ -75,10 +80,12 @@ public class WeaponController : MonoBehaviour
         {
             isFirePressed = true;
             weaponStateMachine.OnFire();
+            WeaponControllerManager.BroadcastFire();
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
             isFirePressed = false;
+            WeaponControllerManager.BroadcastFireReleased();
         }
     }
 
@@ -95,6 +102,29 @@ public class WeaponController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             weaponStateMachine.OnReload();
+            WeaponControllerManager.BroadcastReload();
         }
+    }
+
+    private void OnGlobalFireReceived()
+    {
+        if (isFirePressed) return;
+        if (weapon.WeaponData == null || !IsInputEnabled) return;
+
+        isFirePressed = true;
+        weaponStateMachine.OnFire();
+    }
+
+    private void OnGlobalFireReleasedReceived()
+    {
+        if (!isFirePressed) return;
+        isFirePressed = false;
+    }
+
+    private void OnReloadReceived()
+    {
+        if (weapon.WeaponData == null || !IsInputEnabled) return;
+
+        weaponStateMachine.OnReload();
     }
 }
