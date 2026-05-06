@@ -10,7 +10,7 @@ public class WeaponData : ScriptableObject
     [Header("Identity")]
     [SerializeField] private string weaponId = "weapon_default";
     public string WeaponId => weaponId;
-    
+
     [SerializeField] private string displayName = "New Weapon";
     public string DisplayName => displayName;
 
@@ -27,83 +27,40 @@ public class WeaponData : ScriptableObject
 
     [SerializeField] private WeaponType weaponType = WeaponType.Main;
     public WeaponType WeaponType => weaponType;
-    
 
-    [Header("Attack")]
+    [Header("Trigger")]
     [SerializeField] private bool autoFire = false;
     public bool AutoFire => autoFire;
+
+    [SerializeField] private bool autoReload = false;
+    public bool AutoReload => autoReload;
 
     [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
     public WeaponTriggerType TriggerType => triggerType;
 
-    [SerializeField, Min(0f)] private int damage = 10;
-    public float Damage => damage;
+    [Header("Stats")]
+    [SerializeField] private WeaponStats baseStats;
+    public WeaponStats BaseStats => baseStats;
 
-    [SerializeField, Min(0.01f)] private float fireInterval = 0.12f;
-    public float FireInterval => fireInterval;
+    [SerializeField] private WeaponStats[] levelStats;
 
-    [SerializeField, Range(0f, 45f)] private float spreadAngle = 0.5f;
-    public float SpreadAngle => spreadAngle;
-
-
-    [Header("Recoil")]
-    [SerializeField] private float recoilX = 1.2f;
-    public float RecoilX => recoilX;
-
-    [SerializeField] private float recoilY = 0.4f;
-    public float RecoilY => recoilY;
-
-    [SerializeField] private float recoilRecoverySpeed = 8f;
-    public float RecoilRecoverySpeed => recoilRecoverySpeed;
-
-
-    [Header("Burst")]
-
-    [SerializeField, Min(1)] private int burstCount = 1;
-    public int BurstCount => burstCount;
-
-    [SerializeField, Min(0f)] private float burstInterval = 0.05f;
-    public float BurstInterval => burstInterval;
-
-
-    [Header("Ammo")]
-    [SerializeField] private bool autoReload = false;
-    public bool AutoReload => autoReload;
-
-    [SerializeField, Min(1)] private int magazineSize = 30;
-    public int MagazineSize => magazineSize;
-
-    [SerializeField, Min(0f)] private float reloadTime = 1.6f;
-    public float ReloadTime => reloadTime;
-
-
-    [Header("Level")]
-    [SerializeField] private WeaponStats[] levelBonusData;
-    public WeaponStats[] LevelBonusData => levelBonusData;
-
-    public WeaponStats CreateBonusStats(int level)
+    /// <summary>
+    /// 指定レベルのステータスを返す
+    /// level=0ならbaseStats、それ以降はlevelStats[level-1]のスナップショット
+    /// </summary>
+    public WeaponStats CreateStats(int level)
     {
-        var stats = new WeaponStats
-        {
-            Damage = damage,
-            FireInterval = fireInterval,
-            SpreadAngle = spreadAngle,
-            RecoilX = recoilX,
-            RecoilY = recoilY,
-            MagazineSize = magazineSize,
-            ReloadTime = reloadTime,
-            RecoilRecoverySpeed = recoilRecoverySpeed,
-            BurstCount = burstCount,
-            BurstInterval = burstInterval
-        };
+        if (level <= 0 || levelStats == null || levelStats.Length == 0)
+            return baseStats.Clone();
 
-        if (level < levelBonusData.Length)
-        {
-            stats.Add(levelBonusData[level]);
-        }
-
-        return stats;
+        int index = Mathf.Clamp(level - 1, 0, levelStats.Length - 1);
+        return levelStats[index].Clone();
     }
+
+    /// <summary>
+    /// 最大レベルを返す（level=0がベースなので+1）
+    /// </summary>
+    public int MaxLevel => levelStats != null ? levelStats.Length : 0;
 }
 
 public enum WeaponTriggerType

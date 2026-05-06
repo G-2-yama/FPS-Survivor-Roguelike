@@ -19,16 +19,17 @@ MonoBehaviour:
   fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
   weaponType: 1
   autoFire: 0
-  triggerType: 0
-  damage: 500
-  fireInterval: 0.12
-  spreadAngle: 0
-  recoilX: 0
-  recoilY: 0
-  recoilRecoverySpeed: 0
-  burstCount: 1
-  burstInterval: 0.05
   autoReload: 1
-  magazineSize: 1
-  reloadTime: 8
-  levelBonusData: []
+  triggerType: 0
+  baseStats:
+    Damage: 500
+    FireInterval: 0.12
+    RecoilX: 0
+    RecoilY: 0
+    RecoilRecoverySpeed: 0
+    MagazineSize: 1
+    ReloadTime: 8
+    BurstCount: 1
+    BurstInterval: 0.05
+    SpreadAngle: 0
+  levelStats: []

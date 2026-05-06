@@ -1,29 +1,33 @@
+using UnityEngine;
+
 [System.Serializable]
 public class WeaponStats
 {
     public int Damage;
     public float FireInterval;
-    public float SpreadAngle;
     public float RecoilX;
     public float RecoilY;
-    public int MagazineSize;
-    public float ReloadTime;
     public float RecoilRecoverySpeed;
-    public int BurstCount;
-    public float BurstInterval;
-  
+    public int MagazineSize = 1;
+    public float ReloadTime = 1.0f;
+    public int BurstCount = 1;
+    public float BurstInterval = 0.05f;
+    [SerializeField, Range(0f, 45f)] public float SpreadAngle = 0.0f;
 
-    public void Add(WeaponStats bonusStats)
+    public WeaponStats Clone()
     {
-        Damage += bonusStats.Damage;
-        FireInterval += bonusStats.FireInterval;
-        SpreadAngle += bonusStats.SpreadAngle;
-        RecoilX += bonusStats.RecoilX;
-        RecoilY += bonusStats.RecoilY;
-        MagazineSize += bonusStats.MagazineSize;
-        ReloadTime += bonusStats.ReloadTime;
-        RecoilRecoverySpeed += bonusStats.RecoilRecoverySpeed;
-        BurstCount += bonusStats.BurstCount;
-        BurstInterval += bonusStats.BurstInterval;
+        return new WeaponStats
+        {
+            Damage = Damage,
+            FireInterval = FireInterval,
+            SpreadAngle = SpreadAngle,
+            RecoilX = RecoilX,
+            RecoilY = RecoilY,
+            MagazineSize = MagazineSize,
+            ReloadTime = ReloadTime,
+            RecoilRecoverySpeed = RecoilRecoverySpeed,
+            BurstCount = BurstCount,
+            BurstInterval = BurstInterval,
+        };
     }
 }
