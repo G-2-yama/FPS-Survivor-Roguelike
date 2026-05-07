@@ -37,4 +37,11 @@ public class Health
         CurrentHP = Mathf.Min(CurrentHP + amount, MaxHP);
         OnHealthChanged?.Invoke(CurrentHP, MaxHP);
     }
+
+    public void IncreaseHP(int amount)
+    {
+        MaxHP += amount;
+        CurrentHP += amount;
+        OnHealthChanged?.Invoke(CurrentHP, MaxHP);
+    }
 }

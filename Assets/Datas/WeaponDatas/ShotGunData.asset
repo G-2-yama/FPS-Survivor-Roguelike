@@ -17,40 +17,19 @@ MonoBehaviour:
   icon: {fileID: 0}
   weaponModelPrefab: {fileID: 2231289778767898452, guid: b123c7c2715a42e48b2e1568aa76357b, type: 3}
   fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
+  weaponType: 0
+  autoFire: 0
+  autoReload: 0
   triggerType: 0
-  damage: 7
-  fireInterval: 0.25
-  spreadAngle: 5
-  recoilX: 0.012
-  recoilY: 0.01
-  recoilRecoverySpeed: 40
-  adsZoom: 60
-  adsSpreadMultiplier: 0.4
-  adsRecoilMultiplier: 0.6
-  burstCount: 10
-  burstInterval: 0.005
-  useMagazine: 1
-  magazineSize: 30
-  reloadTime: 2
-  maxReserveAmmo: 120
-  levelBonusData:
-  - Damage: 0
-    FireInterval: 0
-    SpreadAngle: 0
-    RecoilX: 0
-    RecoilY: 0
-    MagazineSize: 0
-    ReloadTime: 0
-    RecoilRecoverySpeed: 0
-    BurstCount: 0
-    BurstInterval: 0
-  - Damage: 1
-    FireInterval: 0
-    SpreadAngle: 0
-    RecoilX: 0
-    RecoilY: 0
-    MagazineSize: 10
-    ReloadTime: 0
-    RecoilRecoverySpeed: 0
-    BurstCount: 0
-    BurstInterval: 0
+  baseStats:
+    Damage: 5
+    FireInterval: 0.25
+    RecoilX: 0.012
+    RecoilY: 0.01
+    MagazineSize: 30
+    ReloadTime: 2
+    RecoilRecoverySpeed: 40
+    BurstCount: 10
+    BurstInterval: 0.005
+    SpreadAngle: 5
+  levelStats: []

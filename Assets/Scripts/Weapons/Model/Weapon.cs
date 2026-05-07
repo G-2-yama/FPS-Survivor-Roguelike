@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        weaponStats = weaponData.CreateBonusStats(level);
+        weaponStats = weaponData.CreateStats(level);
         currentAmmo = weaponStats.MagazineSize;
     }
 
@@ -80,7 +80,7 @@ public class Weapon : MonoBehaviour
         }
 
         level++;
-        weaponStats = weaponData.CreateBonusStats(level);
+        weaponStats = weaponData.CreateStats(level);
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public class Weapon : MonoBehaviour
     {
         weaponData = newData;
         level = Mathf.Max(0, newLevel);
-        weaponStats = weaponData.CreateBonusStats(level);
+        weaponStats = weaponData.CreateStats(level);
 
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
         currentAmmo = ammo == -1

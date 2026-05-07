@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
     public TeamType TeamType => TeamType.Player;
 
     public event Action OnDeath;
+    public event Action OnLevelUp;
 
     [SerializeField] private Weapon leftWeapon;
     public Weapon LeftWeapon => leftWeapon;
@@ -42,11 +44,16 @@ public class Player : MonoBehaviour, IDamageable
     public Weapon LeftAutoWeapon => leftAutoWeapon;
     public bool HasLeftAutoWeapon => leftAutoWeapon != null && leftAutoWeapon.WeaponData != null;
 
+    List<Item> items = new List<Item>();
+    public IReadOnlyList<Item> Items => items;
 
     /// <summary>
     /// プレイヤーの体力モデル
     /// </summary>
     public Health Health { get; private set; }
+    
+    private int level = 1;
+    public int Level => level;
 
     private void Awake()
     {
@@ -68,6 +75,12 @@ public class Player : MonoBehaviour, IDamageable
         Health.TakeDamage(damage);
     }
 
+    public void LevelUp()
+    {
+        level++;
+        OnLevelUp?.Invoke();
+    }
+
     public void EquipLeftWeapon(WeaponData weapon) => leftWeapon?.Equip(weapon);
 
     public void EquipRightWeapon(WeaponData weapon) => rightWeapon?.Equip(weapon);
@@ -80,6 +93,12 @@ public class Player : MonoBehaviour, IDamageable
 
     public void EquipRightAutoWeapon(WeaponData autoWeapon) => rightAutoWeapon?.Equip(autoWeapon);
 
+    public void EquiptItem(Item item)
+    {
+        items.Add(item);
+        item.Initialize(this);
+        item.Apply();
+    }
     private void HandleDeath()
     {
         OnDeath?.Invoke();
