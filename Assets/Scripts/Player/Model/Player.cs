@@ -20,32 +20,6 @@ public class Player : MonoBehaviour, IDamageable
     public event Action OnDeath;
     public event Action OnLevelUp;
 
-    [SerializeField] private Weapon leftWeapon;
-    public Weapon LeftWeapon => leftWeapon;
-    public bool HasLeftWeapon => leftWeapon != null && leftWeapon.WeaponData != null;
-
-    [SerializeField] private Weapon rightWeapon;
-    public Weapon RightWeapon => rightWeapon;
-    public bool HasRightWeapon => rightWeapon != null && rightWeapon.WeaponData != null;
-
-    [SerializeField] private Weapon leftAbility;
-    public Weapon LeftAbility => leftAbility;
-    public bool HasLeftAbility => leftAbility != null && leftAbility.WeaponData != null;
-
-    [SerializeField] private Weapon rightAbility;
-    public Weapon RightAbility => rightAbility;
-    public bool HasRightAbility => rightAbility != null && rightAbility.WeaponData != null;
-
-    [SerializeField] private Weapon rightAutoWeapon;
-    public Weapon RightAutoWeapon => rightAutoWeapon;
-    public bool HasRightAutoWeapon => rightAutoWeapon != null && rightAutoWeapon.WeaponData != null;
-
-    [SerializeField] private Weapon leftAutoWeapon;
-    public Weapon LeftAutoWeapon => leftAutoWeapon;
-    public bool HasLeftAutoWeapon => leftAutoWeapon != null && leftAutoWeapon.WeaponData != null;
-
-    List<Item> items = new List<Item>();
-    public IReadOnlyList<Item> Items => items;
 
     /// <summary>
     /// プレイヤーの体力モデル
@@ -81,26 +55,5 @@ public class Player : MonoBehaviour, IDamageable
         OnLevelUp?.Invoke();
     }
 
-    public void EquipLeftWeapon(WeaponData weapon) => leftWeapon?.Equip(weapon);
-
-    public void EquipRightWeapon(WeaponData weapon) => rightWeapon?.Equip(weapon);
-
-    public void EquipLeftAbility(WeaponData ability) => leftAbility?.Equip(ability);
-
-    public void EquipRightAbility(WeaponData ability) => rightAbility?.Equip(ability);
-
-    public void EquipLeftAutoWeapon(WeaponData autoWeapon) => leftAutoWeapon?.Equip(autoWeapon);
-
-    public void EquipRightAutoWeapon(WeaponData autoWeapon) => rightAutoWeapon?.Equip(autoWeapon);
-
-    public void EquiptItem(Item item)
-    {
-        items.Add(item);
-        item.Initialize(this);
-        item.Apply();
-    }
-    private void HandleDeath()
-    {
-        OnDeath?.Invoke();
-    }
+    private void HandleDeath() => OnDeath?.Invoke();
 }

@@ -9,15 +9,15 @@ public class Unlock : UpgradeBase
     {
         if(target.WeaponType == WeaponType.Main)
         {
-            return !player.HasLeftWeapon || !player.HasRightWeapon;
+            return !player.Inventory.HasWeapon(SlotType.RightMain) || !player.Inventory.HasWeapon(SlotType.LeftMain);
         }
         else if(target.WeaponType == WeaponType.Ability)
         {
-            return !player.HasLeftAbility || !player.HasRightAbility;
+            return !player.Inventory.HasWeapon(SlotType.LeftAbility) || !player.Inventory.HasWeapon(SlotType.RightAbility);
         }
         else if(target.WeaponType == WeaponType.AutoWeapon)
         {
-            return !player.HasLeftAutoWeapon || !player.HasRightAutoWeapon;
+            return !player.Inventory.HasWeapon(SlotType.LeftAutoWeapon) || !player.Inventory.HasWeapon(SlotType.RightAutoWeapon);
         }
        
         return false;
@@ -27,35 +27,35 @@ public class Unlock : UpgradeBase
     {
         if (target.WeaponType == WeaponType.Main)
         {
-            if (!player.HasLeftWeapon)
+            if (!player.Inventory.HasWeapon(SlotType.LeftMain))
             {
-                player.EquipLeftWeapon(target);
+                player.Inventory.EquipWeapon(SlotType.LeftMain, target);
             }
-            else if (!player.HasRightWeapon)
+            else if (!player.Inventory.HasWeapon(SlotType.RightMain))
             {
-                player.EquipRightWeapon(target);
+                player.Inventory.EquipWeapon(SlotType.RightMain, target);
             }
         }
         else if (target.WeaponType == WeaponType.Ability)
         {
-            if (!player.HasLeftAbility)
+            if (!player.Inventory.HasWeapon(SlotType.LeftAbility))
             {
-                player.EquipLeftAbility(target);
+                player.Inventory.EquipWeapon(SlotType.LeftAbility, target);
             }
-            else if (!player.HasRightAbility)
+            else if (!player.Inventory.HasWeapon(SlotType.RightAbility))
             {
-                player.EquipRightAbility(target);
+                player.Inventory.EquipWeapon(SlotType.RightAbility, target);
             }
         }
         else if (target.WeaponType == WeaponType.AutoWeapon)
         {
-            if (!player.HasLeftAutoWeapon)
+            if (!player.Inventory.HasWeapon(SlotType.LeftAutoWeapon))
             {
-                player.EquipLeftAutoWeapon(target);
+                player.Inventory.EquipWeapon(SlotType.LeftAutoWeapon, target);
             }
-            else if (!player.HasRightAutoWeapon)
+            else if (!player.Inventory.HasWeapon(SlotType.RightAutoWeapon))
             {
-                player.EquipRightAutoWeapon(target);
+                player.Inventory.EquipWeapon(SlotType.RightAutoWeapon, target);
             }
         }
     }

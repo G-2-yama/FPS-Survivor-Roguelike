@@ -6,32 +6,49 @@ public class PlayerInventory : MonoBehaviour
 {
     [SerializeField] private Player player;
 
-    private Dictionary<SlotType, Weapon> slots;
+    [SerializeField] private Weapon leftWeapon;
+    [SerializeField] private Weapon rightWeapon;
+    [SerializeField] private Weapon leftAbility;
+    [SerializeField] private Weapon rightAbility;
+    [SerializeField] private Weapon leftAutoWeapon;
+    [SerializeField] private Weapon rightAutoWeapon;
 
+    private Dictionary<SlotType, Weapon> slots;
+    public IReadOnlyDictionary<SlotType, Weapon> Slots => slots;
     public event Action<SlotType, WeaponData> OnSlotChanged;
+
+    private List<Item> items = new List<Item>();
+    public IReadOnlyList<Item> Items => items;
+    public event Action<Item> OnItemAdded;
 
     private void Awake()
     {
         slots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.LeftMain,  player.LeftWeapon  },
-            { SlotType.RightMain, player.RightWeapon },
-            { SlotType.LeftAbility, player.LeftAbility },   
-            { SlotType.RightAbility, player.RightAbility },
-            { SlotType.LeftAutoWeapon, player.LeftAutoWeapon },
-            { SlotType.RightAutoWeapon, player.RightAutoWeapon }
+            { SlotType.LeftMain,       leftWeapon      },
+            { SlotType.RightMain,      rightWeapon     },
+            { SlotType.LeftAbility,    leftAbility     },
+            { SlotType.RightAbility,   rightAbility    },
+            { SlotType.LeftAutoWeapon, leftAutoWeapon  },
+            { SlotType.RightAutoWeapon,rightAutoWeapon },
         };
     }
-
-    public Weapon GetWeapon(SlotType slot) => slots[slot];
 
     public bool HasWeapon(SlotType slot)
         => slots.TryGetValue(slot, out var w) && w?.WeaponData != null;
 
-    public void Equip(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
+    public void EquipWeapon(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
     {
         if (slots.TryGetValue(slot, out var weapon))
             weapon.Equip(data, level, ammo);
+    }
+
+    public void EquipItem(Item item)
+    {
+        items.Add(item);
+        item.Initialize(player);
+        item.Apply();
+        OnItemAdded?.Invoke(item);
     }
 
     /// <summary>

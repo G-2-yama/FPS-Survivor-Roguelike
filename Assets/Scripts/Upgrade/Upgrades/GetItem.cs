@@ -7,11 +7,11 @@ public class GetItem : UpgradeBase
 
     public override bool IsAvailable()
     {
-        return player.Items.Count < 6;
+        return player.Inventory.Items.Count < 6;
     }
 
     public override void Apply()
     {
-        player.EquiptItem(target);
+        player.Inventory.EquipItem(target);
     }
 }

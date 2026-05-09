@@ -82,7 +82,12 @@ public class InventoryUI : MonoBehaviour
     {
         foreach (var slotUI in slotUIs)
         {
-            var weapon = inventory.GetWeapon(slotUI.SlotType);
+            var weapon = inventory.Slots[slotUI.SlotType];
+            if (weapon == null)
+            {
+                slotUI.Refresh(null);
+                continue;
+            }
             slotUI.Refresh(weapon?.WeaponData);
         }
     }
