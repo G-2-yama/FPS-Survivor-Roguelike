@@ -15,4 +15,9 @@ public class HealthUpItem : Item
     {
         player.Health.IncreaseHP(HealthIncreaseAmount);
     }
+    
+    public override void Revert()
+    {
+        player.Health.IncreaseHP(-HealthIncreaseAmount);
+    }
 }

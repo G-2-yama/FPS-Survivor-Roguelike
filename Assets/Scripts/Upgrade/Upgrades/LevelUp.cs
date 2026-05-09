@@ -13,7 +13,7 @@ public class LevelUp : UpgradeBase
 
     public override void Apply()
     {
-        Weapon target = player.Inventory.Slots[targetType];
+        Weapon target = player.Inventory.WeaponSlots[targetType];
 
         target.LevelUp();
         target.NotifyAmmoChanged();

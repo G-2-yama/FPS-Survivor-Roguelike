@@ -13,35 +13,73 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private Weapon leftAutoWeapon;
     [SerializeField] private Weapon rightAutoWeapon;
 
-    private Dictionary<SlotType, Weapon> slots;
-    public IReadOnlyDictionary<SlotType, Weapon> Slots => slots;
+    private Dictionary<SlotType, Weapon> weaponSlots;
+    public IReadOnlyDictionary<SlotType, Weapon> WeaponSlots => weaponSlots;
     public event Action<SlotType, WeaponData> OnSlotChanged;
 
     private List<Item> items = new List<Item>();
     public IReadOnlyList<Item> Items => items;
-    public event Action<Item> OnItemAdded;
+    public event Action<Item>    OnItemAdded;
+
+    /// <summary>廃棄されたアイテムのインデックスを通知する</summary>
+    public event Action<int> OnItemRemoved;
 
     private void Awake()
     {
-        slots = new Dictionary<SlotType, Weapon>
+        weaponSlots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.LeftMain,       leftWeapon      },
-            { SlotType.RightMain,      rightWeapon     },
-            { SlotType.LeftAbility,    leftAbility     },
-            { SlotType.RightAbility,   rightAbility    },
-            { SlotType.LeftAutoWeapon, leftAutoWeapon  },
-            { SlotType.RightAutoWeapon,rightAutoWeapon },
+            { SlotType.LeftMain,        leftWeapon      },
+            { SlotType.RightMain,       rightWeapon     },
+            { SlotType.LeftAbility,     leftAbility     },
+            { SlotType.RightAbility,    rightAbility    },
+            { SlotType.LeftAutoWeapon,  leftAutoWeapon  },
+            { SlotType.RightAutoWeapon, rightAutoWeapon },
         };
     }
 
+    // -------------------------------------------------------
+    // Weapon
+    // -------------------------------------------------------
+
     public bool HasWeapon(SlotType slot)
-        => slots.TryGetValue(slot, out var w) && w?.WeaponData != null;
+        => weaponSlots.TryGetValue(slot, out var w) && w?.WeaponData != null;
 
     public void EquipWeapon(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
     {
-        if (slots.TryGetValue(slot, out var weapon))
+        if (weaponSlots.TryGetValue(slot, out var weapon))
             weapon.Equip(data, level, ammo);
     }
+
+    /// <summary>
+    /// 指定したスロット同士の装備を入れ替える
+    /// </summary>
+    public bool Swap(SlotType slotA, SlotType slotB)
+    {
+        if (!weaponSlots.ContainsKey(slotA) || !weaponSlots.ContainsKey(slotB))
+            return false;
+
+        if (!slotA.IsCompatibleWith(slotB))
+            return false;
+
+        weaponSlots[slotA].SwapLoadoutWith(weaponSlots[slotB]);
+
+        OnSlotChanged?.Invoke(slotA, weaponSlots[slotA].WeaponData);
+        OnSlotChanged?.Invoke(slotB, weaponSlots[slotB].WeaponData);
+        return true;
+    }
+
+    public bool Discard(SlotType slot)
+    {
+        if (!weaponSlots.TryGetValue(slot, out var weapon)) return false;
+
+        weapon.Equip(null);
+        OnSlotChanged?.Invoke(slot, null);
+        return true;
+    }
+
+    // -------------------------------------------------------
+    // Item
+    // -------------------------------------------------------
 
     public void EquipItem(Item item)
     {
@@ -52,33 +90,18 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定したスロット同士の装備を入れ替える
+    /// 指定インデックスのアイテムを廃棄する。
+    /// Item.Revert() を呼んだあとリストから除去し OnItemRemoved を発火する。
     /// </summary>
-    /// <param name="slotA"></param>
-    /// <param name="slotB"></param>
-    /// <returns></returns>
-    public bool Swap(SlotType slotA, SlotType slotB)
+    /// <param name="index">Items リスト上のインデックス</param>
+    /// <returns>廃棄に成功した場合 true</returns>
+    public bool DiscardItem(int index)
     {
-        if (!slots.ContainsKey(slotA) || !slots.ContainsKey(slotB))
-            return false;
+        if (index < 0 || index >= items.Count) return false;
 
-        if (!slotA.IsCompatibleWith(slotB))
-            return false;
-
-        slots[slotA].SwapLoadoutWith(slots[slotB]);
-
-        // 両スロットの変化を通知
-        OnSlotChanged?.Invoke(slotA, slots[slotA].WeaponData);
-        OnSlotChanged?.Invoke(slotB, slots[slotB].WeaponData);
-        return true;
-    }
-
-    public bool Discard(SlotType slot)
-    {
-        if (!slots.TryGetValue(slot, out var weapon)) return false;
-
-        weapon.Equip(null);
-        OnSlotChanged?.Invoke(slot, null);
+        items[index].Revert();
+        items.RemoveAt(index);
+        OnItemRemoved?.Invoke(index);
         return true;
     }
 }

@@ -1,105 +1,217 @@
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
-
+ 
+/// <summary>
+/// インベントリUI全体の管理クラス。
+/// WeaponスロットとItemスロットの両方に対応する。
+///
+/// 選択フロー（Weapon / Item 共通）:
+///   1回目クリック → 選択状態（ハイライト ON）
+///   同じスロットを再クリック → 選択解除
+///   廃棄スロットをクリック → 選択中のスロットを廃棄
+///   Weaponスロット同士を選択 → 互換性があればスワップ
+///   Itemスロットは廃棄のみ（スワップなし）
+/// </summary>
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private Canvas inventoryCanvas;
     public Canvas InventoryCanvas => inventoryCanvas;
-
+ 
     [SerializeField] private PlayerInventory inventory;
-    [SerializeField] private SlotView[] slotUIs;
+ 
+    [SerializeField] private WeaponSlotView[] weaponSlotUIs;
+    [SerializeField] private ItemSlotView[] itemSlotUIs;
+ 
+    // --- 廃棄スロット（Weapon / Item 共用） ---
     [SerializeField] private DiscardSlotView discardSlotUI;
-
-    private SlotView selectedSlot = null;
-
-    /// <summary>
-    /// スロットがクリックされたとき
-    /// 1回目の選択 → 選択状態に
-    /// 2回目の選択 → スワップ実行
-    /// </summary>
-    public void OnSlotClicked(SlotView clickedSlot)
+ 
+    // 選択中のWeaponスロット
+    private WeaponSlotView selectedWeaponSlot = null;
+ 
+    // 選択中のItemスロット
+    private ItemSlotView selectedItemSlot = null;
+ 
+    // -------------------------------------------------------
+    // Unity lifecycle
+    // -------------------------------------------------------
+ 
+    private void OnEnable()
     {
-        // 初回のスロット選択
-        if (selectedSlot == null)
+        inventory.OnSlotChanged += OnWeaponSlotChanged;
+        inventory.OnItemAdded   += OnItemAdded;
+        inventory.OnItemRemoved += OnItemRemoved;
+        RefreshAll();
+    }
+ 
+    private void OnDisable()
+    {
+        inventory.OnSlotChanged -= OnWeaponSlotChanged;
+        inventory.OnItemAdded   -= OnItemAdded;
+        inventory.OnItemRemoved -= OnItemRemoved;
+    }
+ 
+    // -------------------------------------------------------
+    // クリックハンドラー（各ViewのButton.OnClickから呼ぶ）
+    // -------------------------------------------------------
+ 
+    /// <summary>
+    /// Weaponスロットがクリックされたとき
+    /// </summary>
+    public void OnWeaponSlotClicked(WeaponSlotView clickedSlot)
+    {
+        // Itemスロットの選択は解除する
+        ClearItemSelection();
+ 
+        // 初回選択
+        if (selectedWeaponSlot == null)
         {
-            selectedSlot = clickedSlot;
+            selectedWeaponSlot = clickedSlot;
             clickedSlot.SetHighlight(true);
             return;
         }
-
-        // 同じスロットを選択時
-        if (selectedSlot == clickedSlot)
+ 
+        // 同じスロットを再クリック → 解除
+        if (selectedWeaponSlot == clickedSlot)
         {
-            selectedSlot.SetHighlight(false);
-            selectedSlot = null;
+            ClearWeaponSelection();
             return;
         }
-
-        // 同じ種類のスロット出ない場合
-        if (!selectedSlot.SlotType.IsCompatibleWith(clickedSlot.SlotType))
+ 
+        // 互換性なし → 選択し直し
+        if (!selectedWeaponSlot.SlotType.IsCompatibleWith(clickedSlot.SlotType))
         {
-            selectedSlot.SetHighlight(false);
-            selectedSlot = null;
+            ClearWeaponSelection();
             return;
         }
-
-        // 異なるスロットを選択→スワップ実行
-        inventory.Swap(selectedSlot.SlotType, clickedSlot.SlotType);
-        selectedSlot.SetHighlight(false);
-        selectedSlot = null;
+ 
+        // スワップ実行
+        inventory.Swap(selectedWeaponSlot.SlotType, clickedSlot.SlotType);
+        ClearWeaponSelection();
     }
-
+ 
+    /// <summary>
+    /// Itemスロットがクリックされたとき（廃棄のみ。廃棄スロットへ誘導する）
+    /// </summary>
+    public void OnItemSlotClicked(ItemSlotView clickedSlot)
+    {
+        // Weaponスロットの選択は解除する
+        ClearWeaponSelection();
+ 
+        // 初回選択
+        if (selectedItemSlot == null)
+        {
+            selectedItemSlot = clickedSlot;
+            clickedSlot.SetHighlight(true);
+            return;
+        }
+ 
+        // 同じスロットを再クリック → 解除
+        if (selectedItemSlot == clickedSlot)
+        {
+            ClearItemSelection();
+            return;
+        }
+ 
+        // Itemスロット同士はスワップ不可。選択し直し。
+        ClearItemSelection();
+        selectedItemSlot = clickedSlot;
+        clickedSlot.SetHighlight(true);
+    }
+ 
     /// <summary>
     /// 廃棄スロットがクリックされたとき。
-    /// 武器スロットが選択済みなら即廃棄。選択がなければ何もしない。
+    /// WeaponまたはItemが選択済みなら廃棄する。
     /// </summary>
     public void OnDiscardSlotClicked()
     {
-        if (selectedSlot == null) return;
-
-        inventory.Discard(selectedSlot.SlotType);
-
-        selectedSlot.SetHighlight(false);
-        selectedSlot = null;
+        if (selectedWeaponSlot != null)
+        {
+            inventory.Discard(selectedWeaponSlot.SlotType);
+            ClearWeaponSelection();
+            return;
+        }
+ 
+        if (selectedItemSlot != null)
+        {
+            inventory.DiscardItem(selectedItemSlot.ItemIndex);
+            ClearItemSelection();
+        }
     }
-
-    private void OnEnable()
-    {
-        inventory.OnSlotChanged += OnSlotChanged;
-        RefreshAll();
-    }
-
-    private void OnDisable()
-    {
-        inventory.OnSlotChanged -= OnSlotChanged;
-    }
-
-    /// <summary>
-    /// 全スロットの表示を初期化
-    /// </summary>
+ 
+    // -------------------------------------------------------
+    // 表示更新
+    // -------------------------------------------------------
+ 
     private void RefreshAll()
     {
-        foreach (var slotUI in slotUIs)
+        RefreshAllWeaponSlots();
+        RefreshAllItemSlots();
+    }
+ 
+    private void RefreshAllWeaponSlots()
+    {
+        foreach (var slotUI in weaponSlotUIs)
         {
-            var weapon = inventory.Slots[slotUI.SlotType];
-            if (weapon == null)
-            {
-                slotUI.Refresh(null);
-                continue;
-            }
+            var weapon = inventory.WeaponSlots[slotUI.SlotType];
             slotUI.Refresh(weapon?.WeaponData);
         }
     }
-
-    /// <summary>
-    /// 変化したスロットだけ更新
-    /// </summary>
-    /// <param name="slotType">変化したスロットのタイプ</param>
-    /// <param name="data">新しい武器データ</param>
-    private void OnSlotChanged(SlotType slotType, WeaponData data)
+ 
+    private void RefreshAllItemSlots()
     {
-        var slotUI = Array.Find(slotUIs, s => s.SlotType == slotType);
+        for (int i = 0; i < itemSlotUIs.Length; i++)
+        {
+            var item = i < inventory.Items.Count ? inventory.Items[i] : null;
+            itemSlotUIs[i].Refresh(item, i);
+        }
+    }
+ 
+    // -------------------------------------------------------
+    // イベントハンドラー
+    // -------------------------------------------------------
+ 
+    private void OnWeaponSlotChanged(SlotType slotType, WeaponData data)
+    {
+        var slotUI = Array.Find(weaponSlotUIs, s => s.SlotType == slotType);
         slotUI?.Refresh(data);
+    }
+ 
+    /// <summary>
+    /// アイテムが追加されたとき、追加されたスロットだけ更新する
+    /// </summary>
+    private void OnItemAdded(Item item)
+    {
+        int index = inventory.Items.Count - 1;
+        if (index < itemSlotUIs.Length)
+            itemSlotUIs[index].Refresh(item, index);
+    }
+ 
+    /// <summary>
+    /// アイテムが廃棄されたとき、そのインデックス以降を詰めて再描画する
+    /// </summary>
+    private void OnItemRemoved(int removedIndex)
+    {
+        // 削除されたインデックス以降をすべて再描画（リストが詰まるため）
+        for (int i = removedIndex; i < itemSlotUIs.Length; i++)
+        {
+            var item = i < inventory.Items.Count ? inventory.Items[i] : null;
+            itemSlotUIs[i].Refresh(item, i);
+        }
+    }
+ 
+    // -------------------------------------------------------
+    // 選択状態クリア
+    // -------------------------------------------------------
+ 
+    private void ClearWeaponSelection()
+    {
+        selectedWeaponSlot?.SetHighlight(false);
+        selectedWeaponSlot = null;
+    }
+ 
+    private void ClearItemSelection()
+    {
+        selectedItemSlot?.SetHighlight(false);
+        selectedItemSlot = null;
     }
 }

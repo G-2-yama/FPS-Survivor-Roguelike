@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlotView : MonoBehaviour
+public class WeaponSlotView : MonoBehaviour
 {
     [SerializeField] private SlotType slotType;
     [SerializeField] private Image weaponIcon;
