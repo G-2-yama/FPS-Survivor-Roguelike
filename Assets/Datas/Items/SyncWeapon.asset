@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d298346cecd0ab40bd8333d0921d785, type: 3}
   m_Name: SyncWeapon
   m_EditorClassIdentifier: Assembly-CSharp::SyncWeaponItem
-  displayName: 
-  description: 
+  displayName: "\u30B7\u30F3\u30AF\u30ED"
+  icon: {fileID: 21300000, guid: 06d075db707b13d4883335cc19422a0e, type: 3}
+  description: "\u540C\u671F\u3055\u305B\u308B"

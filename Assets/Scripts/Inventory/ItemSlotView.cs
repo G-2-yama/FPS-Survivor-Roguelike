@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ItemSlotView : MonoBehaviour
 {
     [SerializeField] private Image itemIcon;
+    [SerializeField] private Image Button;
     [SerializeField] private Text itemNameText;
  
     /// <summary>Items リスト上のインデックス。InventoryUI が割り当てる。</summary>
@@ -23,11 +24,13 @@ public class ItemSlotView : MonoBehaviour
         if (item == null)
         {
             itemIcon.sprite  = null;
+            itemIcon.gameObject.SetActive(false);
             itemNameText.text = "Empty";
             return;
         }
  
         itemIcon.sprite   = item.Icon;
+        itemIcon.gameObject.SetActive(true);
         itemNameText.text = item.DisplayName;
     }
  
@@ -36,6 +39,6 @@ public class ItemSlotView : MonoBehaviour
     /// </summary>
     public void SetHighlight(bool highlight)
     {
-        itemIcon.color = highlight ? Color.yellow : Color.white;
+        Button.color = highlight ? Color.yellow : Color.white;
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponId: weapon_default
   displayName: "\u30CF\u30F3\u30C9\u30AC\u30F3"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: fce6330d3d4187344b8ebc779da3bd02, type: 3}
   weaponModelPrefab: {fileID: 3637342788740244059, guid: 452274f2432a6d34d8b2732670808f74, type: 3}
   fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
   weaponType: 0
@@ -26,9 +26,9 @@ MonoBehaviour:
     FireInterval: 0.15
     RecoilX: 0.012
     RecoilY: 0.004
+    RecoilRecoverySpeed: 40
     MagazineSize: 16
     ReloadTime: 1.6
-    RecoilRecoverySpeed: 40
     BurstCount: 1
     BurstInterval: 0.05
     SpreadAngle: 0
