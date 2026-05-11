@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/HitScan")]
 public class HitScanData : FireModeData
@@ -17,6 +19,11 @@ public class HitScanData : FireModeData
         if (Physics.Raycast(ray, out RaycastHit hit, maxRange))
         {
             TryApplyDamage(weapon, hit.collider);
+            TryEnableHitEffect(out GameObject hitEffect);
+            if (hitEffect != null)
+            {
+                hitEffect.transform.position = hit.point;
+            }
         }
     }
 }

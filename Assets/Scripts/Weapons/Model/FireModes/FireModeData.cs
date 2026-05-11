@@ -1,8 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class FireModeData : ScriptableObject
 {
+    [SerializeField] private GameObject effectPrefab;
+    public GameObject EffectPrefab => effectPrefab;
+
     /// <summary>
     /// 攻撃処理を実装するメソッド
     /// </summary>
@@ -22,6 +24,18 @@ public abstract class FireModeData : ScriptableObject
             && damageable.TeamType != TeamType.Boss) return false;
 
         damageable.TakeDamage(GetDamageAmount(weapon));
+        return true;
+    }
+
+    public bool TryEnableHitEffect(out GameObject effectInstance)
+    {
+        if (effectPrefab == null)
+        {
+            effectInstance = null;
+            return false;
+        }
+
+        effectInstance = PoolManager.Instance.Get(effectPrefab);
         return true;
     }
 
