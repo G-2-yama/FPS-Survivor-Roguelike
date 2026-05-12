@@ -65,6 +65,10 @@ public abstract class ProjectileObject : PoolableObject
                 return;
             }
         }
+        else if (selfDamageable != null && damageable == null) 
+        {
+            return;
+        }
 
         if (hasHit) return;
 

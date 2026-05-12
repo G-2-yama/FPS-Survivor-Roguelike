@@ -7,7 +7,7 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     public Health Health { get; private set; }
     public void TakeDamage(int damage)
     {
-        Health?.TakeDamage(damage);
+        Health?.TakeDamage(config.Damagelange*damage);
     }
     public override void OnGet()
     {
