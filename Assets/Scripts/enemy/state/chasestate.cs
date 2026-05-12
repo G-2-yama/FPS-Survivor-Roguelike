@@ -18,18 +18,37 @@ public class ChaseState : IState
         if (enemy.Target == null)
             return;
 
-        float distance = Vector3.Distance(enemy.transform.position, enemy.Target.position);
+        float distance = Vector3.Distance(
+            enemy.transform.position,
+            enemy.Target.position);
 
         if (distance <= enemy.Config.EngageDistance - 1.0f)
         {
-            stateMachine.ChangeState(new CircleState(enemy, stateMachine));
+            stateMachine.ChangeState(
+                new CircleState(enemy, stateMachine));
             return;
         }
 
-        enemy.Movement.MoveTowards(
-            enemy.transform,
-            enemy.Target.position,
-            enemy.Config.ChaseSpeed);
+        switch (enemy.ChaseMovementType)
+        {
+            case ChaseMovementType.Normal:
+
+                enemy.Movement.MoveTowards(
+                    enemy.transform,
+                    enemy.Target.position,
+                    enemy.Config.ChaseSpeed);
+
+                break;
+
+            case ChaseMovementType.Rolling:
+
+                enemy.Movement.RollTowards(
+                    enemy.transform,
+                    enemy.Target.position,
+                    enemy.Config.ChaseSpeed);
+
+                break;
+        }
     }
 
     public void Exit() { }

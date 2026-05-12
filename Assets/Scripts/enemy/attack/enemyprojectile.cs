@@ -9,6 +9,39 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     {
         Health?.TakeDamage(config.Damagelange*damage);
     }
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        var selfDamageable = GetComponent<IDamageable>();
+        var damageable = collision.collider.GetComponentInParent<IDamageable>();
+        if (damageable == selfDamageable)
+            return;
+        if (selfDamageable != null && damageable != null)
+        {
+            if ((selfDamageable.TeamType & damageable.TeamType) != 0)
+            { return; }
+        }
+        else if (selfDamageable != null && damageable == null)
+        { return; }
+        else if (selfDamageable == null && damageable != null)
+        { return; }
+
+        base.OnCollisionEnter(collision);
+    }
+    protected override void OnTriggerEnter(Collider other)
+    {
+        var selfDamageable = GetComponent<IDamageable>();
+        var damageable = other.GetComponentInParent<IDamageable>();
+        if (damageable == selfDamageable) 
+            return; 
+        if (selfDamageable != null && damageable != null)
+        { if ((selfDamageable.TeamType & damageable.TeamType) != 0) 
+            { return; } } 
+        else if (selfDamageable != null && damageable == null) 
+        { return; } 
+        else if (selfDamageable == null && damageable != null) 
+        { return; }
+        base.OnTriggerEnter(other);
+    }
     public override void OnGet()
     {
         base.OnGet();
