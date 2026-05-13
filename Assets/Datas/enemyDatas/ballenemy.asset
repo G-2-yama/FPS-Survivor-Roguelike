@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 5
   damagelange: 1
-  ChaseSpeed: 5
+  ChaseSpeed: 10
   OrbitRadius: 1
   OrbitAngularSpeed: 1
-  EngageDistance: 1
+  EngageDistance: 6
   AttackPower: 1
   AttackInterval: 1
   AttackPattern: {fileID: 0}
