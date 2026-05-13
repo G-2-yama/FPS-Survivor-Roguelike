@@ -14,7 +14,7 @@ public class EnemyHealth : PoolableObject, IDamageable
 
     public void TakeDamage(int damage)
     {
-        Health?.TakeDamage(damage);
+        Health?.TakeDamage(config.Damagelange*damage);
     }
 
     public override void OnGet()

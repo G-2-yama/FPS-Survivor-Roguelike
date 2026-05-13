@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
+  enemyPrefab: {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   moverange: 20
   capenemy: 100
   mintime: 1
@@ -1927,7 +1927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &328223105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394d8199d1256d94690fbf88f272948a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
-  timeLimit: 1000
+  timeLimit: 100
 --- !u!4 &383212505
 Transform:
   m_ObjectHideFlags: 0
@@ -2529,7 +2529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &430907016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2556,7 +2556,7 @@ Transform:
   m_GameObject: {fileID: 430907015}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.5, y: 3.33, z: 10}
+  m_LocalPosition: {x: -17.04117, y: 3.33, z: -22.198921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4063,7 +4063,6 @@ Transform:
   - {fileID: 430907017}
   - {fileID: 328223106}
   - {fileID: 208856129}
-  - {fileID: 1800776559}
   m_Father: {fileID: 275487189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1023013649
@@ -7874,55 +7873,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &1800776558
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1800776559}
-  - component: {fileID: 1800776560}
-  m_Layer: 0
-  m_Name: enemygenelate
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1800776559
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800776558}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.04117, y: 3.33, z: -22.198921}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1018864606}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1800776560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800776558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
-  moverange: 20
-  capenemy: 100
-  mintime: 1
-  maxtime: 2
 --- !u!1 &1841412493
 GameObject:
   m_ObjectHideFlags: 0

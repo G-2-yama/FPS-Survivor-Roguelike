@@ -6,6 +6,15 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyTargetProvider targetProvider;
     [SerializeField] private EnemyMovementController movement;
     [SerializeField] private EnemyAttackController attack;
+    [SerializeField]
+    private ChaseMovementType chaseMovementType;
+
+    public ChaseMovementType ChaseMovementType => chaseMovementType;
+    [SerializeField]
+    private CombatBehaviourType combatBehaviour;
+
+    public CombatBehaviourType CombatBehaviour
+        => combatBehaviour;
 
     private StateMachine<IState> stateMachine;
 
