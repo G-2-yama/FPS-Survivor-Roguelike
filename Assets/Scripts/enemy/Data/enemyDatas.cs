@@ -5,6 +5,9 @@ public class EnemyConfig : ScriptableObject
 {
     [Header("Status")]
     [Min(1)] public int MaxHp = 5;
+    [SerializeField] private int damagelange = 1;
+    public int Damagelange => damagelange;
+
 
     [Header("Movement")]
     [Min(0f)] public float ChaseSpeed = 3f;

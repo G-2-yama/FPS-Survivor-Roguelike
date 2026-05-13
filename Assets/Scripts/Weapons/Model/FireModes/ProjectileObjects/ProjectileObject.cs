@@ -38,37 +38,26 @@ public abstract class ProjectileObject : PoolableObject
     /// 物理衝突時にヒット処理を行う
     /// </summary>
     /// <param name="collision">衝突情報</param>
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (hasHit) return;
+
         hasHit = true;
-     
+
         HandleHit(collision.collider);
     }
+
 
     /// <summary>
     /// Trigger侵入時にヒット処理を行う
     /// </summary>
     /// <param name="other">接触したCollider</param>
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        var selfDamageable = GetComponent<IDamageable>();
-        var damageable = other.GetComponentInParent<IDamageable>();
-
-        if (damageable == selfDamageable)
-            return;
-
-        if (selfDamageable != null && damageable != null)
-        {
-            if ((selfDamageable.TeamType & damageable.TeamType) != 0)
-            {
-                return;
-            }
-        }
-
         if (hasHit) return;
 
         hasHit = true;
+
         HandleHit(other);
     }
 
