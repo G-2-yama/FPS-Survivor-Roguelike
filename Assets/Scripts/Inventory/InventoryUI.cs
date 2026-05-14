@@ -21,8 +21,7 @@ public class InventoryUI : MonoBehaviour
  
     [SerializeField] private WeaponSlotView[] weaponSlotUIs;
     [SerializeField] private ItemSlotView[] itemSlotUIs;
- 
-    // --- 廃棄スロット（Weapon / Item 共用） ---
+
     [SerializeField] private DiscardSlotView discardSlotUI;
  
     // 選択中のWeaponスロット
@@ -126,7 +125,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (selectedWeaponSlot != null)
         {
-            inventory.Discard(selectedWeaponSlot.SlotType);
+            inventory.DiscardWeapon(selectedWeaponSlot.SlotType);
             ClearWeaponSelection();
             return;
         }

@@ -61,14 +61,24 @@ public class PlayerInventory : MonoBehaviour
         if (!slotA.IsCompatibleWith(slotB))
             return false;
 
-        weaponSlots[slotA].SwapLoadoutWith(weaponSlots[slotB]);
+        SwapLoadout(weaponSlots[slotA], weaponSlots[slotB]);
 
         OnSlotChanged?.Invoke(slotA, weaponSlots[slotA].WeaponData);
         OnSlotChanged?.Invoke(slotB, weaponSlots[slotB].WeaponData);
         return true;
     }
 
-    public bool Discard(SlotType slot)
+    private void SwapLoadout(Weapon weaponA, Weapon weaponB)
+    {
+        WeaponData dataA = weaponA.WeaponData;
+        int levelA = weaponA.Level;
+        int ammoA = weaponA.CurrentAmmo;
+
+        weaponA.Equip(weaponB.WeaponData, weaponB.Level, weaponB.CurrentAmmo);
+        weaponB.Equip(dataA, levelA, ammoA);
+    }
+
+    public bool DiscardWeapon(SlotType slot)
     {
         if (!weaponSlots.TryGetValue(slot, out var weapon)) return false;
 

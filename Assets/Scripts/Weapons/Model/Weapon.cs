@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class Weapon : MonoBehaviour
 {
@@ -54,19 +55,6 @@ public class Weapon : MonoBehaviour
         }
 
         ApplyWeapon(newData, newLevel, ammo);
-    }
-
-    /// <summary>
-    /// 他の武器と装備状態を入れ替える
-    /// </summary>
-    public void SwapLoadoutWith(Weapon other)
-    {
-        WeaponData ownData = weaponData;
-        int ownLevel = level;
-        int ownAmmo = currentAmmo;
-
-        Equip(other.weaponData, other.level, other.currentAmmo);
-        other.Equip(ownData, ownLevel, ownAmmo);
     }
 
     /// <summary>
