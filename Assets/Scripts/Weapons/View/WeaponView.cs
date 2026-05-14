@@ -1,126 +1,84 @@
 using UnityEngine;
 using UnityEngine.UI;
-
-public class WeaponView : MonoBehaviour
+public abstract class WeaponView : MonoBehaviour
 {
-    [SerializeField] private Weapon weapon;
-
-    [SerializeField] private Text currentAmmoText;
-
+    [SerializeField] protected Weapon weapon;
+    [SerializeField] protected Image weaponIcon;
     [SerializeField] private Image reloadIndicator;
 
-    private GameObject weaponModelInstance;
+    protected GameObject weaponModelInstance;
+    protected Animator animator;
 
-    private Animator animator;
-
-    /// <summary>
-    /// 初期化時にイベント購読を行い、初期表示状態を設定する
-    /// </summary>
-    private void Start()
+    protected virtual void Start()
     {
-        weapon.OnAmmoChanged += UpdateAmmo;
         weapon.OnWeaponEquipped += HandleWeaponEquipped;
 
-        if (weapon.WeaponData == null)
-        {
-            currentAmmoText.gameObject.SetActive(false);
-            reloadIndicator.gameObject.SetActive(false);
-            ClearWeaponModel();
-            return;
-        }
-
-        SetWeaponModel(weapon.WeaponData);
-        currentAmmoText.gameObject.SetActive(true);
-        reloadIndicator.gameObject.SetActive(true);
-        UpdateAmmo(weapon.CurrentAmmo, weapon.WeaponStats.MagazineSize);
+        RefreshView();
     }
 
-    /// <summary>
-    /// 破棄時にイベント購読を解除し、表示中モデルを後始末する
-    /// </summary>
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (weapon != null)
         {
-            weapon.OnAmmoChanged -= UpdateAmmo;
             weapon.OnWeaponEquipped -= HandleWeaponEquipped;
         }
 
         ClearWeaponModel();
     }
 
-    public void SetReloadProgress(float progress)
+    protected virtual void HandleWeaponEquipped(WeaponData data)
     {
-        reloadIndicator.fillAmount = progress;
+        RefreshView();
     }
 
-    public void PlayReloadAnimation()
+    protected virtual void RefreshView()
     {
-        if (animator != null)
-        {
-            animator.SetTrigger("Reload");
-        }
-    }
+        var data = weapon.WeaponData;
 
-    public void PlayFireAnimation()
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger("Fire");
-        }
-    }
+        bool hasWeapon = data != null;
 
-    /// <summary>
-    /// 武器装備イベントを受け取り、表示モデルを切り替える
-    /// </summary>
-    /// <param name="data">装備された武器データ</param>
-    private void HandleWeaponEquipped(WeaponData data)
-    {
-        if (data == null)
+        weaponIcon.gameObject.SetActive(hasWeapon);
+
+        if (!hasWeapon)
         {
-            currentAmmoText.gameObject.SetActive(false);
-            reloadIndicator.gameObject.SetActive(false);
             ClearWeaponModel();
             return;
         }
-        currentAmmoText.gameObject.SetActive(true);
-        reloadIndicator.gameObject.SetActive(true);
+
+        weaponIcon.sprite = data.Icon;
+
         SetWeaponModel(data);
     }
 
-    /// <summary>
-    /// 残弾表示を更新する
-    /// </summary>
-    /// <param name="current">現在弾数</param>
-    /// <param name="max">最大弾数</param>
-    private void UpdateAmmo(int current, int max)
-    {
-        currentAmmoText.text = $"{current} / {max}";
-    }
-
-    /// <summary>
-    /// 指定された武器データに応じて武器モデルを生成して表示する
-    /// </summary>
-    /// <param name="data">表示対象の武器データ</param>
-    private void SetWeaponModel(WeaponData data)
+    protected void SetWeaponModel(WeaponData data)
     {
         ClearWeaponModel();
+
         if (data.WeaponModelPrefab == null)
-        {
             return;
-        }
 
         weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
+
         animator = weaponModelInstance.GetComponent<Animator>();
     }
 
-    /// <summary>
-    /// 現在表示中の武器モデルを破棄する
-    /// </summary>
-    private void ClearWeaponModel()
+    protected void ClearWeaponModel()
     {
-        Destroy(weaponModelInstance);
-        weaponModelInstance = null;
+        if (weaponModelInstance != null)
+        {
+            Destroy(weaponModelInstance);
+            weaponModelInstance = null;
+        }
+
+        animator = null;
     }
 
+    public virtual void SetReloadProgress(float progress)
+    { 
+        reloadIndicator.fillAmount = progress;
+    }
+
+    public virtual void PlayReloadAnimation() { }
+
+    public virtual void PlayFireAnimation() { }
 }
