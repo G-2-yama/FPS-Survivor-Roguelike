@@ -295,3 +295,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ballprojectile
   config: {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
   prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
+  expprefab: {fileID: 4870280988163620757, guid: 6f65a4012f4d3464087734f90d9be92d, type: 3}

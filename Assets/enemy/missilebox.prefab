@@ -703,6 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   config: {fileID: 11400000, guid: 335b76842e15bb14fb8b6a35724d5584, type: 2}
   attackController: {fileID: 4758849224248555182}
+  prefab: {fileID: 4870280988163620757, guid: 6f65a4012f4d3464087734f90d9be92d, type: 3}
 --- !u!114 &4758849224248555182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,6 +736,8 @@ MonoBehaviour:
   targetProvider: {fileID: 720501540243354655}
   movement: {fileID: 2131483456560350963}
   attack: {fileID: 4758849224248555182}
+  chaseMovementType: 0
+  combatBehaviour: 0
 --- !u!114 &2131483456560350963
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemycondition
   config: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
   attackController: {fileID: 4933798852626595605}
+  prefab: {fileID: 4870280988163620757, guid: 6f65a4012f4d3464087734f90d9be92d, type: 3}
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +164,8 @@ MonoBehaviour:
   targetProvider: {fileID: 1800572802802244149}
   movement: {fileID: 2372962091248375863}
   attack: {fileID: 4933798852626595605}
+  chaseMovementType: 0
+  combatBehaviour: 0
 --- !u!54 &5154964929320662522
 Rigidbody:
   m_ObjectHideFlags: 0

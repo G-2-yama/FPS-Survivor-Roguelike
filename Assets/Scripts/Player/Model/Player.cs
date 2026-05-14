@@ -9,6 +9,10 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour, IDamageable
 {
+    [SerializeField] private float exp;
+    public float Exp => exp;
+    [SerializeField] ExpManager expmaneger;
+
     [SerializeField] private PlayerConfig config;
     public PlayerConfig Config => config;
 
@@ -74,10 +78,21 @@ public class Player : MonoBehaviour, IDamageable
     {
         Health.TakeDamage(damage);
     }
+    public void AddExp(int amount)
+    {
+        exp += amount;
 
+        while (exp >= expmaneger.LevelUpExp)
+        {
+            exp -= (int)expmaneger.LevelUpExp;
+
+            LevelUp();
+        }
+    }
     public void LevelUp()
     {
         level++;
+        expmaneger.IncreaseRequiredExp();
         OnLevelUp?.Invoke();
     }
 
