@@ -113,20 +113,20 @@ TextureImporter:
       name: InventoryUI_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 329
-        width: 378
-        height: 356
+        x: 41
+        y: 728
+        width: 1439
+        height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 150, y: 150, z: 150, w: 150}
+      border: {x: 700, y: 0, z: 700, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af6585d9b525ab442aff1545cff5aa32
-      internalID: 624209399
+      spriteID: 730cb88f16370604dae4374fc069e286
+      internalID: -982868785
       vertices: []
       indices: 
       edges: []
@@ -135,20 +135,20 @@ TextureImporter:
       name: InventoryUI_1
       rect:
         serializedVersion: 2
-        x: 522
-        y: 327
+        x: 41
+        y: 321
         width: 378
         height: 356
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 150, y: 150, z: 150, w: 150}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0638f6d60ddb1f44183c7c332686a05f
-      internalID: 1864891615
+      spriteID: 97072dc8719d6c949bdf835307270a08
+      internalID: 117993191
       vertices: []
       indices: 
       edges: []
@@ -157,10 +157,10 @@ TextureImporter:
       name: InventoryUI_2
       rect:
         serializedVersion: 2
-        x: 975
-        y: 296
-        width: 429
-        height: 419
+        x: 563
+        y: 321
+        width: 378
+        height: 356
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,8 +169,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7dee50844f15cba4582289dbffc69388
-      internalID: 2101948641
+      spriteID: 011cce32ad625fa4d8580f0bee126da6
+      internalID: -45527123
       vertices: []
       indices: 
       edges: []
@@ -179,10 +179,10 @@ TextureImporter:
       name: InventoryUI_3
       rect:
         serializedVersion: 2
-        x: 749
-        y: 8
-        width: 256
-        height: 182
+        x: 1016
+        y: 290
+        width: 429
+        height: 418
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,8 +191,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ab2ff322c9bc9204198c553c92e105f0
-      internalID: 1172091250
+      spriteID: 0d54e713023c2b0488d5aed94d3510ab
+      internalID: -626593588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InventoryUI_4
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 3
+        width: 256
+        height: 181
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cd83082b3261a14cb51f4b659bd8595
+      internalID: 61201416
       vertices: []
       indices: 
       edges: []
@@ -201,7 +223,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bbbefc7c104224042b8364460e639703
+    spriteID: d155946925a701a4c95e1221414d62da
     internalID: 0
     vertices: []
     indices: 
@@ -213,10 +235,11 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      InventoryUI_0: 624209399
-      InventoryUI_1: 1864891615
-      InventoryUI_2: 2101948641
-      InventoryUI_3: 1172091250
+      InventoryUI_0: -982868785
+      InventoryUI_1: 117993191
+      InventoryUI_2: -45527123
+      InventoryUI_3: -626593588
+      InventoryUI_4: 61201416
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
