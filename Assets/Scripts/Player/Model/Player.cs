@@ -11,6 +11,8 @@ public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private float exp;
     public float Exp => exp;
+    private int pendingLevelUps;
+    public int PendingLevelUps => pendingLevelUps;
     [SerializeField] ExpManager expmaneger;
 
     [SerializeField] private PlayerConfig config;
@@ -84,17 +86,29 @@ public class Player : MonoBehaviour, IDamageable
 
         while (exp >= expmaneger.LevelUpExp)
         {
+           
             exp -= (int)expmaneger.LevelUpExp;
-
             LevelUp();
+
+
         }
     }
+    public void ConsumePendingLevelUp()
+    {
+        if (pendingLevelUps > 0)
+        {
+            pendingLevelUps--;
+        }
+    }
+
     public void LevelUp()
     {
         level++;
+        pendingLevelUps++;
         expmaneger.IncreaseRequiredExp();
         OnLevelUp?.Invoke();
     }
+
 
     public void EquipLeftWeapon(WeaponData weapon) => leftWeapon?.Equip(weapon);
 

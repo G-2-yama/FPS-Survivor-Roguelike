@@ -26,9 +26,17 @@ public class UpgradeManager : MonoBehaviour
     {
         var selectedUpgrade = currentChoices[upgradeIndex];
         selectedUpgrade.Apply();
-        gameController.StateMachine.ChangePlayingState();
-        // アップグレードUIを閉じる
+        gameController.Player.ConsumePendingLevelUp();
+
         HideUpgradeUI();
+        if (gameController.Player.PendingLevelUps > 0)
+        {
+            gameController.StateMachine.ChangeUpgradeState();
+        }
+        else
+        {
+            gameController.StateMachine.ChangePlayingState();
+        }
     }
 
     /// <summary>

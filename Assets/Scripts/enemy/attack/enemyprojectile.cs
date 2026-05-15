@@ -48,6 +48,7 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     public override void OnGet()
     {
         base.OnGet();
+        deathType= DeathType.Normal;
         Health = new Health(config.MaxHp);
         Health.OnDeath += HandleDeath;
 

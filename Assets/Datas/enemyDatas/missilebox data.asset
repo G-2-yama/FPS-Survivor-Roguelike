@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: missilebox data
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 1
+  damagelange: 1
   ChaseSpeed: 3
   OrbitRadius: 7
   OrbitAngularSpeed: 15
   EngageDistance: 8
-  AttackPower: 10
+  AttackPower: 3
   AttackInterval: 3
   AttackPattern: {fileID: 11400000, guid: 7029c73fe1d07324dbeefe3ed84978e0, type: 2}
