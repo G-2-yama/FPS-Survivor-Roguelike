@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: basicammo(enemy)
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 2
+  damagelange: 1
   ChaseSpeed: 1
   OrbitRadius: 1
   OrbitAngularSpeed: 1
