@@ -16,12 +16,15 @@ public class PlayerHealthTextView : MonoBehaviour
     /// </summary>
     [SerializeField] private Text currentHealthText;
 
+    [SerializeField] private Image currentHealthBar;
+
     /// <summary>
     /// HP変更通知を購読する
     /// </summary>
     private void Start()
     {
         player.Health.OnHealthChanged += UpdateHealthText;
+        UpdateHealthText(player.Health.CurrentHP, player.Health.MaxHP);
     }
 
     /// <summary>
@@ -31,7 +34,8 @@ public class PlayerHealthTextView : MonoBehaviour
     /// <param name="max">最大HP</param>
     private void UpdateHealthText(int current, int max)
     {
-        currentHealthText.text = $"{current} / {max}";
+        currentHealthText.text = $"{current}/{max}";
+        currentHealthBar.fillAmount = (float)current / max;
     }
 
     /// <summary>

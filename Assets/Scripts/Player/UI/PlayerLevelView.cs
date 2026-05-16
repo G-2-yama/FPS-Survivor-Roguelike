@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -16,12 +17,19 @@ public class PlayerLevelView : MonoBehaviour
     /// </summary>
     [SerializeField] private Text currentLevelText;
 
+    [SerializeField] private Image currentLevelBar;
+
+    [SerializeField] private ExpManager expmager;
+
     /// <summary>
     /// レベル変更通知を購読する
     /// </summary>
     private void Start()
     {
         player.OnLevelUp += UpdateLevelText;
+        player.OnExpGained += UpdateLevelBar;
+        UpdateLevelText();
+        UpdateLevelBar(0);
     }
 
     /// <summary>
@@ -31,6 +39,12 @@ public class PlayerLevelView : MonoBehaviour
     {
         int level = player.Level;
         currentLevelText.text = $"Lv.{level}";
+        currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
+    }
+
+    private void UpdateLevelBar(int expGained)
+    {
+        currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
     }
 
     /// <summary>
@@ -39,5 +53,6 @@ public class PlayerLevelView : MonoBehaviour
     private void OnDestroy()
     {
         player.OnLevelUp -= UpdateLevelText;
+        player.OnExpGained -= UpdateLevelBar;
     }
 }

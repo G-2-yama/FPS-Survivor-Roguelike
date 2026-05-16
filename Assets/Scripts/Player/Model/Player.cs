@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public event Action OnDeath;
     public event Action OnLevelUp;
+    public event Action<int> OnExpGained;
 
 
     /// <summary>
@@ -57,13 +58,14 @@ public class Player : MonoBehaviour, IDamageable
     public void AddExp(int amount)
     {
         exp += amount;
+        OnExpGained?.Invoke(amount);
 
-        while (exp >= expmaneger.LevelUpExp)
+        while (exp >= expmaneger.LevelUpRequiredExp)
         {
            
-            exp -= (int)expmaneger.LevelUpExp;
+            exp -= (int)expmaneger.LevelUpRequiredExp;
             LevelUp();
-
+            
 
         }
     }
