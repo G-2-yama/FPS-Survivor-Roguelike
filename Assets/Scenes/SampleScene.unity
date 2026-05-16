@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 275487191}
   - component: {fileID: 275487190}
   - component: {fileID: 275487195}
+  - component: {fileID: 275487197}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1695,6 +1696,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae42e02257d79f4bb0ec5ab323c17a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  exp: 0
+  expmaneger: {fileID: 275487197}
   config: {fileID: 275487191}
   inventory: {fileID: 1569679481}
 --- !u!114 &275487194
@@ -1750,6 +1753,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelView
   player: {fileID: 275487193}
   currentLevelText: {fileID: 342769813}
+--- !u!114 &275487197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf568c6c4fa27e64dbacd8e37d5db45a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::expmaneger
+  levelUpExp: 1
+  levelUpRate: 2
 --- !u!1 &283540922
 GameObject:
   m_ObjectHideFlags: 0

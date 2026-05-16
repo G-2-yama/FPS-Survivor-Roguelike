@@ -4,7 +4,7 @@ public class EnemyHealth : PoolableObject, IDamageable
 {
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyAttackController attackController;
-   
+    [SerializeField] private GameObject prefab;
 
 
     public TeamType TeamType => TeamType.Enemy;
@@ -38,7 +38,11 @@ public class EnemyHealth : PoolableObject, IDamageable
     }
 
     private void HandleDeath()
+
     {
+        GameObject expitem= PoolManager.Instance.Get(prefab);
+        expitem.transform.position = transform.position;
+        Debug.Log("death");
         Release();
     }
 }
