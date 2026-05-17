@@ -13,6 +13,7 @@ public class WeaponFiringState : WeaponState
         Debug.Log("Weapon Firing Stateに入りました");
 
         burstRemaining = controller.Weapon.WeaponStats.BurstCount;
+        hasFired = false;
         timer = 0f;
     }
 
@@ -30,7 +31,11 @@ public class WeaponFiringState : WeaponState
 
         if (controller.Weapon.Fire())
         {
-            controller.WeaponView.PlayFireAnimation();
+            if (!hasFired)
+            {
+                controller.WeaponView.PlayFireAnimation();
+                hasFired = true;
+            }
             controller.WeaponRecoil.AddRecoil();
             burstRemaining--;
             timer = controller.Weapon.WeaponStats.BurstInterval;
