@@ -1,11 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlotView : MonoBehaviour
+public class WeaponSlotView : MonoBehaviour
 {
     [SerializeField] private SlotType slotType;
     [SerializeField] private Image weaponIcon;
+    [SerializeField] private Image Button;
     [SerializeField] private Text weaponNameText;
+
+    private Color initialColor;
+
+    private void Awake()
+    {
+        initialColor = Button.color;
+    }
 
     public SlotType SlotType => slotType;
 
@@ -15,11 +23,13 @@ public class SlotView : MonoBehaviour
         if (data == null)
         {
             weaponIcon.sprite = null;
+            weaponIcon.gameObject.SetActive(false);
             weaponNameText.text = "Empty";
             return;
         }
 
         weaponIcon.sprite = data.Icon;
+        weaponIcon.gameObject.SetActive(true);
         weaponNameText.text = data.DisplayName;
     }
 
@@ -29,6 +39,6 @@ public class SlotView : MonoBehaviour
     /// <param name="highlight">選択状態の場合はtrue</param>
     public void SetHighlight(bool highlight)
     {
-        weaponIcon.color = highlight ? Color.yellow : Color.white;
+        Button.color = highlight ? Color.yellow : initialColor;
     }
 }

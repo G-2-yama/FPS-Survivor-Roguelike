@@ -9,7 +9,6 @@ public enum SlotType
     RightAbility,
     LeftAutoWeapon,
     RightAutoWeapon,
-
 }
 
 public static class SlotTypeExtensions

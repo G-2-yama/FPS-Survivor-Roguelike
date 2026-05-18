@@ -13,4 +13,9 @@ public class SyncWeaponItem : Item
     {
         WeaponControllerManager.IsSyncMode = true;
     }
+
+    public override void Revert()
+    {
+        WeaponControllerManager.IsSyncMode = false;
+    }
 }

@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce480390cab59f4491e6f20ec498bd9, type: 3}
   m_Name: HitScan
   m_EditorClassIdentifier: Assembly-CSharp::HitScanData
+  effectPrefab: {fileID: 5131132216050497334, guid: d3319b2e6e4d65548b6117ea0943007d, type: 3}
   maxRange: 60
-  trailSpeed: 200
-  trailPrefab: {fileID: 5594201398675537535, guid: 720dcf5cbf9b4274bbd209d760559985, type: 3}
-  visibleDistance: 10
