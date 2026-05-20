@@ -1,33 +1,85 @@
 using UnityEngine;
 
 [System.Serializable]
-public class WeaponStats
+public sealed class WeaponStats
 {
-    public int Damage;
-    public float FireInterval;
-    public float RecoilX;
-    public float RecoilY;
-    public float RecoilRecoverySpeed;
-    public int MagazineSize = 1;
-    public float ReloadTime = 1.0f;
-    public int BurstCount = 1;
-    public float BurstInterval = 0.05f;
-    [SerializeField, Range(0f, 45f)] public float SpreadAngle = 0.0f;
+    [SerializeField] private DamageProfile damage;
+    [SerializeField] private FireRhythmProfile fireRhythm;
+    [SerializeField] private RecoilProfile recoil;
+    [SerializeField] private AmmoProfile ammo;
 
-    public WeaponStats Clone()
-    {
-        return new WeaponStats
-        {
-            Damage = Damage,
-            FireInterval = FireInterval,
-            SpreadAngle = SpreadAngle,
-            RecoilX = RecoilX,
-            RecoilY = RecoilY,
-            MagazineSize = MagazineSize,
-            ReloadTime = ReloadTime,
-            RecoilRecoverySpeed = RecoilRecoverySpeed,
-            BurstCount = BurstCount,
-            BurstInterval = BurstInterval,
-        };
-    }
+    public int MagazineSize => ammo.MagazineSize;
+    public float FireInterval => fireRhythm.FireInterval;
+    public int BurstCount => fireRhythm.BurstCount;
+    public float BurstInterval => fireRhythm.BurstInterval;
+    public float RecoilX => recoil.RecoilX;
+    public float RecoilY => recoil.RecoilY;
+    public float ReloadTime => ammo.ReloadTime;
+    public float RecoilRecoverySpeed => recoil.RecoverySpeed;
+    public float SpreadAngle => damage.SpreadAngle;
+    public int Damage => damage.Damage;
+}
+
+/// <summary>
+/// 攻撃威力・精度。生成後は変更不可
+/// </summary>
+[System.Serializable]
+public sealed class DamageProfile
+{
+    [SerializeField] private int damage;
+    [SerializeField, Range(0f, 45f)] private float spreadAngle;
+
+    public int Damage => damage;
+    public float SpreadAngle => spreadAngle;
+
+    private DamageProfile() { }
+}
+
+/// <summary>
+/// 射撃リズム。生成後は変更不可。
+/// </summary>
+[System.Serializable]
+public sealed class FireRhythmProfile
+{
+    [SerializeField] private float fireInterval;
+    [SerializeField] private int   burstCount    = 1;
+    [SerializeField] private float burstInterval = 0.05f;
+
+    public float FireInterval  => fireInterval;
+    public int   BurstCount    => burstCount;
+    public float BurstInterval => burstInterval;
+
+    private FireRhythmProfile() { }
+}
+
+/// <summary>
+/// 反動。生成後は変更不可。
+/// </summary>
+[System.Serializable]
+public sealed class RecoilProfile
+{
+    [SerializeField] private float recoilX;
+    [SerializeField] private float recoilY;
+    [SerializeField] private float recoverySpeed;
+
+    public float RecoilX       => recoilX;
+    public float RecoilY       => recoilY;
+    public float RecoverySpeed => recoverySpeed;
+
+    private RecoilProfile() { }
+}
+
+/// <summary>
+/// 弾薬・リロード。生成後は変更不可。
+/// </summary>
+[System.Serializable]
+public sealed class AmmoProfile
+{
+    [SerializeField] private int   magazineSize = 1;
+    [SerializeField] private float reloadTime   = 1.0f;
+
+    public int   MagazineSize => magazineSize;
+    public float ReloadTime   => reloadTime;
+
+    private AmmoProfile() { }
 }

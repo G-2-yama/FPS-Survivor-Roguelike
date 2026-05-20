@@ -8,59 +8,119 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     [Header("Identity")]
-    [SerializeField] private string weaponId = "weapon_default";
-    public string WeaponId => weaponId;
-
-    [SerializeField] private string displayName = "New Weapon";
-    public string DisplayName => displayName;
-
-    [SerializeField] private Sprite icon;
-    public Sprite Icon => icon;
+    [SerializeField] private WeaponIdentity identity;
+    public WeaponIdentity Identity => identity;
 
     [Header("Visual")]
-    [SerializeField] private GameObject weaponModelPrefab;
-    public GameObject WeaponModelPrefab => weaponModelPrefab;
+    [SerializeField] private WeaponVisual visual;
+    public WeaponVisual Visual => visual;
 
-    [Header("Type")]
-    [SerializeField] private FireModeData fireModeData;
-    public FireModeData FireModeData => fireModeData;
-
-    [SerializeField] private WeaponType weaponType = WeaponType.Main;
-    public WeaponType WeaponType => weaponType;
+    [Header("Classification")]
+    [SerializeField] private WeaponClassification classification;
+    public WeaponClassification Classification => classification;
 
     [Header("Trigger")]
-    [SerializeField] private bool autoFire = false;
-    public bool AutoFire => autoFire;
-
-    [SerializeField] private bool autoReload = false;
-    public bool AutoReload => autoReload;
-
-    [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
-    public WeaponTriggerType TriggerType => triggerType;
+    [SerializeField] private WeaponTriggerConfig trigger;
+    public WeaponTriggerConfig Trigger => trigger;
 
     [Header("Stats")]
-    [SerializeField] private WeaponStats baseStats;
-    public WeaponStats BaseStats => baseStats;
+    [SerializeField] private WeaponLevelTable levelTable;
 
+    public int MaxLevel => levelTable.MaxLevel;
+    public WeaponStats GetStats(int level) => levelTable.GetStats(level);
+    public bool AutoFire => trigger.AutoFire;
+    public bool AutoReload => trigger.AutoReload;
+    public WeaponTriggerType TriggerType => trigger.TriggerType;
+    public WeaponType WeaponType => classification.WeaponType;
+    public FireModeData FireModeData => classification.FireModeData;
+    public GameObject WeaponModelPrefab => visual.WeaponModelPrefab;
+    public Sprite Icon => identity.Icon;
+    public string DisplayName => identity.DisplayName;
+    public string WeaponId => identity.WeaponId;
+}
+
+/// <summary>
+/// レベルとWeaponStatsの対応を管理する
+/// 「どのレベルでどのStatsか」という目的だけを持つ
+/// </summary>
+[System.Serializable]
+public sealed class WeaponLevelTable
+{
+    [SerializeField] private WeaponStats baseStats;
     [SerializeField] private WeaponStats[] levelStats;
 
+    /// <summary>最大レベル（0=baseのみの場合は0）</summary>
+    public int MaxLevel => levelStats != null ? levelStats.Length : 0;
+
     /// <summary>
-    /// 指定レベルのステータスを返す
-    /// level=0ならbaseStats、それ以降はlevelStats[level-1]のスナップショット
+    /// 指定レベルのStatsを返す
+    /// 不変オブジェクトなので参照を直接返しても安全
     /// </summary>
-    public WeaponStats CreateStats(int level)
+    public WeaponStats GetStats(int level)
     {
         if (level <= 0 || levelStats == null || levelStats.Length == 0)
-            return baseStats.Clone();
+            return baseStats;
 
         int index = Mathf.Clamp(level - 1, 0, levelStats.Length - 1);
-        return levelStats[index].Clone();
+        return levelStats[index];
     }
+}
 
-    /// <summary>
-    /// 最大レベルを返す（level=0がベースなので+1）
-    /// </summary>
-    public int MaxLevel => levelStats != null ? levelStats.Length : 0;
+/// <summary>
+/// 武器の識別・UI表示に関するデータ
+/// 「この武器が何者か」という目的
+/// </summary>
+[System.Serializable]
+public class WeaponIdentity
+{
+    [SerializeField] private string weaponId = "weapon_default";
+    [SerializeField] private string displayName = "New Weapon";
+    [SerializeField] private Sprite icon;
+
+    public string WeaponId => weaponId;
+    public string DisplayName => displayName;
+    public Sprite Icon => icon;
+}
+
+/// <summary>
+/// 武器の見た目・演出に関するデータ
+/// 「プレイヤーの目に何が見えるか」という目的
+/// </summary>
+[System.Serializable]
+public class WeaponVisual
+{
+    [SerializeField] private GameObject weaponModelPrefab;
+    public GameObject WeaponModelPrefab => weaponModelPrefab;
+}
+
+/// <summary>
+/// 射撃トリガーの挙動に関するデータ
+/// 「ボタン入力がどう射撃に変換されるか」という目的
+/// </summary>
+[System.Serializable]
+public class WeaponTriggerConfig
+{
+    [SerializeField] private bool autoFire = false;
+    [SerializeField] private bool autoReload = false;
+    [SerializeField] private WeaponTriggerType triggerType = WeaponTriggerType.FullAuto;
+
+    public bool AutoFire => autoFire;
+    public bool AutoReload => autoReload;
+    public WeaponTriggerType TriggerType => triggerType;
+}
+
+/// <summary>
+/// ゲームプレイ上の分類に関するデータ
+/// 「武器がゲームシステム内でどの枠に属するか」という目的
+/// </summary>
+[System.Serializable]
+public class WeaponClassification
+{
+    [SerializeField] private WeaponType weaponType = WeaponType.Main;
+    [SerializeField] private FireModeData fireModeData;
+
+    public WeaponType WeaponType => weaponType;
+    public FireModeData FireModeData => fireModeData;
 }
 
 public enum WeaponTriggerType

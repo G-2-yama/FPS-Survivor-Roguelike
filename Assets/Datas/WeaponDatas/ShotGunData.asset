@@ -12,24 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
   m_Name: ShotGunData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponId: weapon_default
-  displayName: "\u30B7\u30E7\u30C3\u30C8\u30AC\u30F3"
-  icon: {fileID: 21300000, guid: 7507488a32980a447a03debd1d70f5c2, type: 3}
-  weaponModelPrefab: {fileID: 5205645611520847389, guid: b123c7c2715a42e48b2e1568aa76357b, type: 3}
-  fireModeData: {fileID: 11400000, guid: a8ac5e8d2c0cf0746949141c97e5d87e, type: 2}
-  weaponType: 0
-  autoFire: 0
-  autoReload: 0
-  triggerType: 0
-  baseStats:
-    Damage: 5
-    FireInterval: 0.25
-    RecoilX: 0.012
-    RecoilY: 0.01
-    RecoilRecoverySpeed: 40
-    MagazineSize: 30
-    ReloadTime: 2
-    BurstCount: 10
-    BurstInterval: 0.005
-    SpreadAngle: 5
-  levelStats: []
+  identity:
+    weaponId: weapon_default
+    displayName: New Weapon
+    icon: {fileID: 0}
+  visual:
+    weaponModelPrefab: {fileID: 0}
+  classification:
+    weaponType: 0
+    fireModeData: {fileID: 0}
+  trigger:
+    autoFire: 0
+    autoReload: 0
+    triggerType: 1
+  levelTable:
+    baseStats:
+      damage:
+        damage: 0
+        spreadAngle: 0
+      fireRhythm:
+        fireInterval: 0
+        burstCount: 1
+        burstInterval: 0.05
+      recoil:
+        recoilX: 0
+        recoilY: 0
+        recoverySpeed: 0
+      ammo:
+        magazineSize: 1
+        reloadTime: 1
+    levelStats:
+    - damage:
+        damage: 0
+        spreadAngle: 0
+      fireRhythm:
+        fireInterval: 0
+        burstCount: 0
+        burstInterval: 0
+      recoil:
+        recoilX: 0
+        recoilY: 0
+        recoverySpeed: 0
+      ammo:
+        magazineSize: 0
+        reloadTime: 0

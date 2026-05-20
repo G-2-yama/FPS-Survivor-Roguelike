@@ -9897,7 +9897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
+  weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
 --- !u!114 &240814480
