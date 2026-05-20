@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class WeaponRecoil : MonoBehaviour
+public class WeaponRecoil
 {
-    [SerializeField] private Transform cameraPivotPoint;
     private Vector2 recoilOffset;
     public Vector2 RecoilOffset => recoilOffset;
     private Vector2 recoilVelocity;

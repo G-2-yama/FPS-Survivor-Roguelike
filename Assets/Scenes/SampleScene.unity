@@ -9849,7 +9849,6 @@ GameObject:
   - component: {fileID: 240814479}
   - component: {fileID: 240814478}
   - component: {fileID: 240814480}
-  - component: {fileID: 240814481}
   m_Layer: 0
   m_Name: RightWeapon
   m_TagString: Untagged
@@ -9901,7 +9900,6 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 240814481}
 --- !u!114 &240814480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9919,19 +9917,6 @@ MonoBehaviour:
   reloadIndicator: {fileID: 1175798750}
   currentAmmoText: {fileID: 512261117}
   magazineSizeText: {fileID: 1167786399}
---- !u!114 &240814481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240814476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &247306957
 GameObject:
   m_ObjectHideFlags: 0
@@ -18146,7 +18131,6 @@ GameObject:
   - component: {fileID: 445505113}
   - component: {fileID: 445505112}
   - component: {fileID: 445505114}
-  - component: {fileID: 445505115}
   m_Layer: 0
   m_Name: LeftAuto
   m_TagString: Untagged
@@ -18198,7 +18182,6 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 445505115}
 --- !u!114 &445505114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18214,19 +18197,6 @@ MonoBehaviour:
   weapon: {fileID: 445505113}
   weaponIcon: {fileID: 1515440714}
   reloadIndicator: {fileID: 548522011}
---- !u!114 &445505115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 445505109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &445926644
 GameObject:
   m_ObjectHideFlags: 0
@@ -55557,7 +55527,6 @@ GameObject:
   - component: {fileID: 1461869975}
   - component: {fileID: 1461869974}
   - component: {fileID: 1461869976}
-  - component: {fileID: 1461869977}
   m_Layer: 0
   m_Name: LeftAbility
   m_TagString: Untagged
@@ -55609,7 +55578,6 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 1461869977}
 --- !u!114 &1461869976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55625,19 +55593,6 @@ MonoBehaviour:
   weapon: {fileID: 1461869975}
   weaponIcon: {fileID: 947946181}
   reloadIndicator: {fileID: 1027326535}
---- !u!114 &1461869977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461869972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &1463043571
 GameObject:
   m_ObjectHideFlags: 0
@@ -72642,7 +72597,6 @@ GameObject:
   - component: {fileID: 1909986805}
   - component: {fileID: 1909986804}
   - component: {fileID: 1909986806}
-  - component: {fileID: 1909986807}
   m_Layer: 0
   m_Name: RightAbility
   m_TagString: Untagged
@@ -72694,7 +72648,6 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 1909986807}
 --- !u!114 &1909986806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72710,19 +72663,6 @@ MonoBehaviour:
   weapon: {fileID: 1909986805}
   weaponIcon: {fileID: 1305416038}
   reloadIndicator: {fileID: 629129633}
---- !u!114 &1909986807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909986802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &1913136981
 GameObject:
   m_ObjectHideFlags: 0
@@ -76021,7 +75961,6 @@ GameObject:
   - component: {fileID: 2019895852}
   - component: {fileID: 2019895851}
   - component: {fileID: 2019895853}
-  - component: {fileID: 2019895854}
   m_Layer: 0
   m_Name: RightAuto
   m_TagString: Untagged
@@ -76073,7 +76012,6 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 2019895854}
 --- !u!114 &2019895853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76089,19 +76027,6 @@ MonoBehaviour:
   weapon: {fileID: 2019895852}
   weaponIcon: {fileID: 2052095913}
   reloadIndicator: {fileID: 1409653947}
---- !u!114 &2019895854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2019895848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &2022669240
 GameObject:
   m_ObjectHideFlags: 0
@@ -76114,7 +76039,6 @@ GameObject:
   - component: {fileID: 2022669244}
   - component: {fileID: 2022669243}
   - component: {fileID: 2022669245}
-  - component: {fileID: 2022669246}
   m_Layer: 0
   m_Name: LeftWeapon
   m_TagString: Untagged
@@ -76166,7 +76090,6 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
-  weaponRecoil: {fileID: 2022669246}
 --- !u!114 &2022669245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76184,19 +76107,6 @@ MonoBehaviour:
   reloadIndicator: {fileID: 286274470}
   currentAmmoText: {fileID: 454838536}
   magazineSizeText: {fileID: 207828317}
---- !u!114 &2022669246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022669240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef6fbbca43b294ab6cc83ed00842e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
-  cameraPivotPoint: {fileID: 330585546}
 --- !u!1 &2022879464
 GameObject:
   m_ObjectHideFlags: 0

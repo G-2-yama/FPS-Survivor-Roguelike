@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
 
-    [SerializeField] private WeaponRecoil weaponRecoil;
+    private WeaponRecoil weaponRecoil;
     public WeaponRecoil WeaponRecoil => weaponRecoil;
 
     /// <summary>
@@ -34,6 +34,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        weaponRecoil = new WeaponRecoil();
         if (weaponData == null)
         {
             return;
@@ -41,6 +42,7 @@ public class Weapon : MonoBehaviour
 
         weaponStats = weaponData.GetStats(level);
         currentAmmo = weaponStats.MagazineSize;
+
         weaponRecoil.Initialization(weaponStats.RecoilProfile);
     }
 
