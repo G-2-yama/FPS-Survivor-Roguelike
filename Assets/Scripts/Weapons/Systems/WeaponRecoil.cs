@@ -1,48 +1,55 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
-public class WeaponRecoil
+public class WeaponRecoil : MonoBehaviour
 {
-    private Vector2 currentRecoil;
-    private Vector2 targetRecoil;
+    [SerializeField] private Transform cameraPivotPoint;
+    private Vector2 recoilOffset;
+    public Vector2 RecoilOffset => recoilOffset;
+    private Vector2 recoilVelocity;
 
-    private Weapon weapon;
+    private RecoilProfile recoilProfile;
 
-    public WeaponRecoil(Weapon weapon)
+    public void Initialization(RecoilProfile recoilProfile)
     {
-        this.weapon = weapon;
+        this.recoilProfile = recoilProfile;
     }
-
 
     /// <summary>
     /// 発射時に反動を加える
     /// </summary>
-    public void AddRecoil()
+    public void AddRecoil(float recoilMultiplier = 1f)
     {
-        float recoilX = weapon.WeaponStats.RecoilX;
-        float recoilY = weapon.WeaponStats.RecoilY;
+        if (recoilProfile == null)
+        {
+            return;
+        }
 
-        targetRecoil += new Vector2(
-            Random.Range(-recoilY, recoilY), // 横ブレ
-            recoilX // 縦ブレ
-        );
+        float yaw = Random.Range(-recoilProfile.YawKick, recoilProfile.YawKick) * recoilProfile.YawRandomness;
+
+        recoilOffset.y += recoilProfile.PitchKick * recoilMultiplier;
+        recoilOffset.x += yaw * recoilMultiplier;
     }
 
     /// <summary>
     /// 毎フレーム更新（回復処理）
     /// </summary>
-    public Vector2 Update(float deltaTime)
+    public Vector2 Tick(float deltaTime)
     {
-        if (weapon.WeaponData == null)
+        if (recoilProfile == null)
         {
             return Vector2.zero;
         }
 
-        // 現在値をターゲットに近づける
-        currentRecoil = Vector2.Lerp(currentRecoil, targetRecoil, deltaTime * 10f);
+        float dt = deltaTime;
 
-        // ターゲットを0に戻す（回復）
-        targetRecoil = Vector2.Lerp(targetRecoil, Vector2.zero, deltaTime * weapon.WeaponStats.RecoilRecoverySpeed);
+        Vector2 accel = (-recoilProfile.ReturnStrength * recoilOffset) - (recoilProfile.Damping * recoilVelocity);
+        
+        recoilVelocity += accel * dt;
+        recoilOffset += recoilVelocity * dt;
 
-        return currentRecoil;
+        recoilOffset.y = Mathf.Clamp(recoilOffset.y, -recoilProfile.MaxPitch, recoilProfile.MaxPitch);
+
+        return recoilOffset;
     }
 }

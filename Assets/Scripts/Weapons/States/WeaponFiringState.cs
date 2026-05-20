@@ -36,7 +36,7 @@ public class WeaponFiringState : WeaponState
                 controller.WeaponView.PlayFireAnimation();
                 hasFired = true;
             }
-            controller.WeaponRecoil.AddRecoil();
+            controller.Weapon.WeaponRecoil.AddRecoil();
             burstRemaining--;
             timer = controller.Weapon.WeaponStats.BurstInterval;
         }

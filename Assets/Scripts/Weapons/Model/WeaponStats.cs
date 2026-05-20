@@ -6,16 +6,15 @@ public sealed class WeaponStats
     [SerializeField] private DamageProfile damage;
     [SerializeField] private FireRhythmProfile fireRhythm;
     [SerializeField] private RecoilProfile recoil;
+    public RecoilProfile RecoilProfile => recoil;
     [SerializeField] private AmmoProfile ammo;
 
     public int MagazineSize => ammo.MagazineSize;
     public float FireInterval => fireRhythm.FireInterval;
     public int BurstCount => fireRhythm.BurstCount;
     public float BurstInterval => fireRhythm.BurstInterval;
-    public float RecoilX => recoil.RecoilX;
-    public float RecoilY => recoil.RecoilY;
     public float ReloadTime => ammo.ReloadTime;
-    public float RecoilRecoverySpeed => recoil.RecoverySpeed;
+
     public float SpreadAngle => damage.SpreadAngle;
     public int Damage => damage.Damage;
 }
@@ -58,13 +57,18 @@ public sealed class FireRhythmProfile
 [System.Serializable]
 public sealed class RecoilProfile
 {
-    [SerializeField] private float recoilX;
-    [SerializeField] private float recoilY;
-    [SerializeField] private float recoverySpeed;
-
-    public float RecoilX       => recoilX;
-    public float RecoilY       => recoilY;
-    public float RecoverySpeed => recoverySpeed;
+    [SerializeField] private float pitchKick;
+    public float PitchKick => pitchKick;
+    [SerializeField] private float yawKick;
+    public float YawKick => yawKick;
+    [SerializeField] private float yawRandomness;
+    public float YawRandomness => yawRandomness;
+    [SerializeField] private float returnStrength;
+    public float ReturnStrength => returnStrength;
+    [SerializeField] private float damping;
+    public float Damping => damping;
+    [SerializeField] private float maxPitch;
+    public float MaxPitch => maxPitch;
 
     private RecoilProfile() { }
 }

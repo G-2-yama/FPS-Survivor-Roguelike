@@ -19,6 +19,9 @@ public class Weapon : MonoBehaviour
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
 
+    [SerializeField] private WeaponRecoil weaponRecoil;
+    public WeaponRecoil WeaponRecoil => weaponRecoil;
+
     /// <summary>
     /// 弾薬数が変化したときに通知するイベント
     /// </summary>
@@ -38,6 +41,7 @@ public class Weapon : MonoBehaviour
 
         weaponStats = weaponData.GetStats(level);
         currentAmmo = weaponStats.MagazineSize;
+        weaponRecoil.Initialization(weaponStats.RecoilProfile);
     }
 
     /// <summary>
@@ -149,6 +153,7 @@ public class Weapon : MonoBehaviour
         weaponData = newData;
         level = Mathf.Max(0, newLevel);
         weaponStats = weaponData.GetStats(level);
+        weaponRecoil.Initialization(weaponStats.RecoilProfile);
 
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
         currentAmmo = ammo == -1

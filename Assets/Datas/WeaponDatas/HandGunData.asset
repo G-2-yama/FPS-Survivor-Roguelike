@@ -24,7 +24,7 @@ MonoBehaviour:
   trigger:
     autoFire: 0
     autoReload: 0
-    triggerType: 1
+    triggerType: 0
   levelTable:
     baseStats:
       damage:
@@ -35,9 +35,12 @@ MonoBehaviour:
         burstCount: 1
         burstInterval: 0.05
       recoil:
-        recoilX: 0
-        recoilY: 0
-        recoverySpeed: 0
+        pitchKick: 1.2
+        yawKick: 0.4
+        yawRandomness: 1
+        returnStrength: 20
+        damping: 18
+        maxPitch: 20
       ammo:
         magazineSize: 10
         reloadTime: 1
