@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Weapons/Weapon Data")]
 public class WeaponData : ScriptableObject
 {
+    public virtual bool IsEmpty => false;
+
     [Header("Identity")]
     [SerializeField] private WeaponIdentity identity;
     public WeaponIdentity Identity => identity;

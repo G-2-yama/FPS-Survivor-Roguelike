@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using Unity.VisualScripting;
 
 public class Weapon : MonoBehaviour
 {
@@ -27,14 +25,21 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponView weaponView;
     public WeaponView WeaponView => weaponView;
 
-    public bool HasWeapon => weaponData != null;
+    public bool HasWeapon => weaponData != null && !weaponData.IsEmpty;
+
+    public bool IsEmpty => !HasWeapon;
 
     private void Awake()
     {
         stateMachine = new WeaponStateMachine(this);
         weaponRecoil = new WeaponRecoil();
-        if (weaponData == null)
+        if (!HasWeapon)
         {
+            weaponData = EmptyWeaponData.Instance;
+            weaponStats = null;
+            currentAmmo = 0;
+            weaponRecoil.Initialization(null);
+            weaponView.RefreshView(this);
             return;
         }
 
@@ -52,7 +57,7 @@ public class Weapon : MonoBehaviour
     /// <param name="ammo">新しい残弾数</param>
     public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
     {
-        if (newData == null)
+        if (newData == null || newData.IsEmpty)
         {
             ClearWeapon();
             return;
@@ -65,7 +70,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void LevelUp()
     {
-        if (weaponData == null)
+        if (!HasWeapon)
         {
             return;
         }
@@ -81,7 +86,7 @@ public class Weapon : MonoBehaviour
     /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
     public bool Fire()
     {
-        if (currentAmmo <= 0)
+        if (!HasWeapon || weaponStats == null || currentAmmo <= 0)
         {
             return false;
         }
@@ -98,6 +103,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
+        if (!HasWeapon || weaponStats == null)
+        {
+            return;
+        }
+
         currentAmmo = weaponStats.MagazineSize;
         weaponView.RefreshView(this);
     }
@@ -108,7 +118,7 @@ public class Weapon : MonoBehaviour
     /// <returns></returns>
     public bool ShouldStartAutoReload()
     {
-        return weaponData != null &&
+        return HasWeapon &&
                weaponData.AutoReload &&
                currentAmmo <= 0;
     }
@@ -136,10 +146,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void ClearWeapon()
     {
-        weaponData = null;
+        weaponData = EmptyWeaponData.Instance;
         level = 0;
         weaponStats = null;
         currentAmmo = 0;
+        weaponRecoil.Initialization(null);
 
         stateMachine.ChangeIdleState();
         weaponView.RefreshView(this);

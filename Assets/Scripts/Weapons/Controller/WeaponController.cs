@@ -54,7 +54,7 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (weapon.WeaponData == null || !IsInputEnabled)
+        if (!weapon.HasWeapon || !IsInputEnabled)
         {
             return;
         }
@@ -77,7 +77,7 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        if (weapon.WeaponData == null || !IsInputEnabled)
+        if (!weapon.HasWeapon || !IsInputEnabled)
         {
             return;
         }
@@ -92,7 +92,7 @@ public class WeaponController : MonoBehaviour
     private void OnGlobalFireReceived()
     {
         if (isFirePressed) return;
-        if (weapon.WeaponData == null || !IsInputEnabled) return;
+        if (!weapon.HasWeapon || !IsInputEnabled) return;
 
         isFirePressed = true;
         weapon.StateMachine.OnFire();
@@ -106,7 +106,7 @@ public class WeaponController : MonoBehaviour
 
     private void OnReloadReceived()
     {
-        if (weapon.WeaponData == null || !IsInputEnabled) return;
+        if (!weapon.HasWeapon || !IsInputEnabled) return;
 
         weapon.StateMachine.OnReload();
     }

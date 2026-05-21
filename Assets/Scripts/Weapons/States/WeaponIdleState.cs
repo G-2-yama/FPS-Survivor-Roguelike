@@ -7,7 +7,7 @@ public class WeaponIdleState : WeaponState
 
     public override void Enter()
     {
-        if (weapon.WeaponData == null)
+        if (!weapon.HasWeapon)
         {
             return;
         }

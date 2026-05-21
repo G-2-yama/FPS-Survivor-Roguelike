@@ -42,7 +42,7 @@ public class PlayerInventory : MonoBehaviour
     // -------------------------------------------------------
 
     public bool HasWeapon(SlotType slot)
-        => weaponSlots.TryGetValue(slot, out var w) && w?.WeaponData != null;
+        => weaponSlots.TryGetValue(slot, out var w) && w?.HasWeapon == true;
 
     public void EquipWeapon(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
     {
@@ -83,7 +83,7 @@ public class PlayerInventory : MonoBehaviour
         if (!weaponSlots.TryGetValue(slot, out var weapon)) return false;
 
         weapon.Equip(null);
-        OnSlotChanged?.Invoke(slot, null);
+        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
         return true;
     }
 

@@ -54,7 +54,7 @@ public abstract class FireModeData : ScriptableObject
     /// <returns>発射方向</returns>
     protected Vector3 GetFireDirection(Weapon weapon)
     {
-        if (weapon.WeaponData == null)
+        if (!weapon.HasWeapon || weapon.WeaponStats == null)
         {
             return Vector3.zero;
         }

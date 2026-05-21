@@ -20,7 +20,7 @@ public class WeaponSlotView : MonoBehaviour
     // インベントリUIから呼ばれる表示更新
     public void Refresh(WeaponData data)
     {
-        if (data == null)
+        if (data == null || data.IsEmpty)
         {
             weaponIcon.sprite = null;
             weaponIcon.gameObject.SetActive(false);
