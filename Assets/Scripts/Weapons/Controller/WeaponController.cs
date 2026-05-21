@@ -6,12 +6,6 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Weapon weapon;
 
     public Weapon Weapon => weapon;
-    
-    [SerializeField] private WeaponView weaponView;
-    public WeaponView WeaponView => weaponView;
-
-    private WeaponStateMachine weaponStateMachine;
-    public WeaponStateMachine WeaponStateMachine => weaponStateMachine;
 
     /// <summary>
     /// 攻撃入力が押されているかどうかを管理するフラグ
@@ -28,8 +22,6 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        weaponStateMachine = new WeaponStateMachine(this);
-        weapon.OnWeaponEquipped += weaponStateMachine.OnChangeWeapon;
         WeaponControllerManager.OnGlobalFire += OnGlobalFireReceived;
         WeaponControllerManager.OnGlobalFireReleased += OnGlobalFireReleasedReceived;
         WeaponControllerManager.OnReload += OnReloadReceived;
@@ -37,7 +29,6 @@ public class WeaponController : MonoBehaviour
 
     private void OnDestroy()
     {
-        weapon.OnWeaponEquipped -= weaponStateMachine.OnChangeWeapon;
         WeaponControllerManager.OnGlobalFire -= OnGlobalFireReceived;
         WeaponControllerManager.OnGlobalFireReleased -= OnGlobalFireReleasedReceived;
         WeaponControllerManager.OnReload -= OnReloadReceived;
@@ -45,7 +36,7 @@ public class WeaponController : MonoBehaviour
 
     public void Update()
     {
-        weaponStateMachine.Update();
+        weapon.StateMachine.Update();
     }
 
     public void EnableInput()
@@ -71,7 +62,7 @@ public class WeaponController : MonoBehaviour
         if (context.phase == InputActionPhase.Started)
         {
             isFirePressed = true;
-            weaponStateMachine.OnFire();
+            weapon.StateMachine.OnFire();
             WeaponControllerManager.BroadcastFire();
         }
         else if (context.phase == InputActionPhase.Canceled)
@@ -93,7 +84,7 @@ public class WeaponController : MonoBehaviour
 
         if (context.phase == InputActionPhase.Performed)
         {
-            weaponStateMachine.OnReload();
+            weapon.StateMachine.OnReload();
             WeaponControllerManager.BroadcastReload();
         }
     }
@@ -104,7 +95,7 @@ public class WeaponController : MonoBehaviour
         if (weapon.WeaponData == null || !IsInputEnabled) return;
 
         isFirePressed = true;
-        weaponStateMachine.OnFire();
+        weapon.StateMachine.OnFire();
     }
 
     private void OnGlobalFireReleasedReceived()
@@ -117,6 +108,6 @@ public class WeaponController : MonoBehaviour
     {
         if (weapon.WeaponData == null || !IsInputEnabled) return;
 
-        weaponStateMachine.OnReload();
+        weapon.StateMachine.OnReload();
     }
 }

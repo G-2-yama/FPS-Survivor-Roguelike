@@ -9900,6 +9900,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 240814480}
 --- !u!114 &240814480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18182,6 +18183,7 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 445505114}
 --- !u!114 &445505114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55578,6 +55580,7 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 1461869976}
 --- !u!114 &1461869976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72648,6 +72651,7 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 1909986806}
 --- !u!114 &1909986806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76012,6 +76016,7 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 2019895853}
 --- !u!114 &2019895853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76090,6 +76095,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 2022669245}
 --- !u!114 &2022669245
 MonoBehaviour:
   m_ObjectHideFlags: 0

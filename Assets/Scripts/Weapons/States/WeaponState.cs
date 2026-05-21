@@ -1,10 +1,11 @@
 public abstract class WeaponState : IState
 {
-	protected WeaponController controller;
+	protected Weapon weapon;
+	protected WeaponStateMachine stateMachine => weapon.StateMachine;
 
-	public WeaponState(WeaponController controller)
+	public WeaponState(Weapon weapon)
 	{
-		this.controller = controller;
+		this.weapon = weapon;
 	}
 
 	/// <summary>

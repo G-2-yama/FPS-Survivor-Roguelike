@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class WeaponFiringState : WeaponState
 {
-    public WeaponFiringState(WeaponController controller) : base(controller) { }
-    
+    public WeaponFiringState(Weapon weapon) : base(weapon) { }
+
     private int burstRemaining;
     private float timer;
     private bool hasFired;
@@ -12,7 +12,7 @@ public class WeaponFiringState : WeaponState
     {
         Debug.Log("Weapon Firing Stateに入りました");
 
-        burstRemaining = controller.Weapon.WeaponStats.BurstCount;
+        burstRemaining = weapon.WeaponStats.BurstCount;
         hasFired = false;
         timer = 0f;
     }
@@ -29,16 +29,16 @@ public class WeaponFiringState : WeaponState
         timer -= Time.deltaTime;
         if (timer > 0f) return;
 
-        if (controller.Weapon.Fire())
+        if (weapon.Fire())
         {
             if (!hasFired)
             {
-                controller.WeaponView.PlayFireAnimation();
+                weapon.WeaponView.PlayFireAnimation();
                 hasFired = true;
             }
-            controller.Weapon.WeaponRecoil.AddRecoil();
+            weapon.WeaponRecoil.AddRecoil();
             burstRemaining--;
-            timer = controller.Weapon.WeaponStats.BurstInterval;
+            timer = weapon.WeaponStats.BurstInterval;
         }
         else
         {
@@ -48,13 +48,13 @@ public class WeaponFiringState : WeaponState
 
     private void TransitionAfterBurst()
     {
-        if (controller.Weapon.ShouldStartAutoReload())
+        if (weapon.ShouldStartAutoReload())
         {
-            controller.WeaponStateMachine.ChangeReloadingState();
+            stateMachine.ChangeReloadingState();
             return;
         }
 
-        controller.WeaponStateMachine.ChangeCooldownState();
+        stateMachine.ChangeCooldownState();
     }
 
     public override void Exit()

@@ -4,12 +4,12 @@ public class WeaponCooldownState : WeaponState
 {
     private float timer;
 
-    public WeaponCooldownState(WeaponController controller) : base(controller) { }
+    public WeaponCooldownState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
         Debug.Log("Weapon Cooldown Stateに入りました");
-        timer = controller.Weapon.WeaponStats.FireInterval;
+        timer = weapon.WeaponStats.FireInterval;
     }
 
     public override void Update()
@@ -18,14 +18,13 @@ public class WeaponCooldownState : WeaponState
 
         if (timer <= 0f)
         {
-            if (controller.Weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto
-                && controller.IsFirePressed)
+            if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto)
             {
-                controller.WeaponStateMachine.ChangeFiringState();
+                stateMachine.ChangeFiringState();
             }
             else
             {
-                controller.WeaponStateMachine.ChangeIdleState();
+                stateMachine.ChangeIdleState();
             }
         }
     }

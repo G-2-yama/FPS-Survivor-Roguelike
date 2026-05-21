@@ -21,19 +21,17 @@ public class Weapon : MonoBehaviour
 
     private WeaponRecoil weaponRecoil;
     public WeaponRecoil WeaponRecoil => weaponRecoil;
+    
+    private WeaponStateMachine stateMachine;
+    public WeaponStateMachine StateMachine => stateMachine;
+    [SerializeField] private WeaponView weaponView;
+    public WeaponView WeaponView => weaponView;
 
-    /// <summary>
-    /// 弾薬数が変化したときに通知するイベント
-    /// </summary>
-    public event Action<int, int> OnAmmoChanged;
-
-    /// <summary>
-    /// 武器が装備されたときに通知するイベント
-    /// </summary>
-    public event Action<WeaponData> OnWeaponEquipped;
+    public bool HasWeapon => weaponData != null;
 
     private void Awake()
     {
+        stateMachine = new WeaponStateMachine(this);
         weaponRecoil = new WeaponRecoil();
         if (weaponData == null)
         {
@@ -59,8 +57,7 @@ public class Weapon : MonoBehaviour
             ClearWeapon();
             return;
         }
-
-        ApplyWeapon(newData, newLevel, ammo);
+        InitializeWeapon(newData, newLevel, ammo);
     }
 
     /// <summary>
@@ -75,6 +72,7 @@ public class Weapon : MonoBehaviour
 
         level++;
         weaponStats = weaponData.GetStats(level);
+        weaponView.RefreshView(this);
     }
 
     /// <summary>
@@ -85,15 +83,12 @@ public class Weapon : MonoBehaviour
     {
         if (currentAmmo <= 0)
         {
-            Debug.Log($"{weaponData.DisplayName} is out of ammo!");
             return false;
         }
 
         currentAmmo--;
-        NotifyAmmoChanged();
-
-        var fireMode = weaponData.FireModeData;
-        fireMode.Fire(this);
+        weaponView.RefreshView(this);
+        weaponData.FireModeData.Fire(this);
 
         return true;
     }
@@ -104,16 +99,7 @@ public class Weapon : MonoBehaviour
     public void Reload()
     {
         currentAmmo = weaponStats.MagazineSize;
-        NotifyAmmoChanged();
-    }
-
-    /// <summary>
-    /// 弾薬数の変化を通知するメソッド
-    /// </summary>
-    public void NotifyAmmoChanged()
-    {
-        int maxAmmo = weaponStats != null ? weaponStats.MagazineSize : 0;
-        OnAmmoChanged?.Invoke(currentAmmo, maxAmmo);
+        weaponView.RefreshView(this);
     }
     
     /// <summary>
@@ -122,12 +108,27 @@ public class Weapon : MonoBehaviour
     /// <returns></returns>
     public bool ShouldStartAutoReload()
     {
-        if(WeaponData == null)
-        {
-            return false;
-        }
-        
-        return WeaponData.AutoReload && CurrentAmmo <= 0;
+        return weaponData != null &&
+               weaponData.AutoReload &&
+               currentAmmo <= 0;
+    }
+
+    private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
+    {
+        weaponData = data;
+        level = Mathf.Max(0, newLevel);
+
+        weaponStats = weaponData.GetStats(level);
+
+        weaponRecoil.Initialization(weaponStats.RecoilProfile);
+
+        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
+        currentAmmo = (ammo < 0)
+            ? weaponStats.MagazineSize
+            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
+
+        stateMachine.ChangeIdleState();
+        weaponView.RefreshView(this);
     }
 
     /// <summary>
@@ -140,30 +141,7 @@ public class Weapon : MonoBehaviour
         weaponStats = null;
         currentAmmo = 0;
 
-        OnWeaponEquipped?.Invoke(null);
-        NotifyAmmoChanged();
+        stateMachine.ChangeIdleState();
+        weaponView.RefreshView(this);
     }
-
-    /// <summary>
-    /// 新しい武器を装備する内部処理メソッド
-    /// </summary>
-    /// <param name="newData">新しい武器データ</param>
-    /// <param name="newLevel">新しいレベル</param>
-    /// <param name="ammo">新しい残弾数</param>
-    private void ApplyWeapon(WeaponData newData, int newLevel, int ammo)
-    {
-        weaponData = newData;
-        level = Mathf.Max(0, newLevel);
-        weaponStats = weaponData.GetStats(level);
-        weaponRecoil.Initialization(weaponStats.RecoilProfile);
-
-        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-        currentAmmo = ammo == -1
-            ? weaponStats.MagazineSize
-            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
-
-        OnWeaponEquipped?.Invoke(weaponData);
-        NotifyAmmoChanged();
-    }
-
 }
