@@ -36,7 +36,7 @@ public class WeaponController : MonoBehaviour
 
     public void Update()
     {
-        weapon.StateMachine.Update();
+        weapon.StateMachine.Update(isFirePressed);
     }
 
     public void EnableInput()

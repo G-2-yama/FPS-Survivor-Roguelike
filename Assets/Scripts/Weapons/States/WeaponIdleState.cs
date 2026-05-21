@@ -24,7 +24,7 @@ public class WeaponIdleState : WeaponState
         }
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         // 待機状態の更新処理をここに実装
     }

@@ -1,4 +1,4 @@
-public abstract class WeaponState : IState
+public abstract class WeaponState
 {
 	protected Weapon weapon;
 	protected WeaponStateMachine stateMachine => weapon.StateMachine;
@@ -16,7 +16,7 @@ public abstract class WeaponState : IState
 	/// <summary>
 	/// 状態のフレーム更新処理
 	/// </summary>
-	public virtual void Update() { }
+	public virtual void Update(bool isPressed) { }
 
 	/// <summary>
 	/// 状態終了時の後処理

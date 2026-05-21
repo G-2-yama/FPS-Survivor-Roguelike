@@ -1,18 +1,15 @@
 using Unity.VisualScripting;
 
-public class WeaponStateMachine : StateMachine<WeaponState>
+public class WeaponStateMachine
 {
+    public WeaponState currentState;
     private WeaponState idleState;
-    public WeaponState CurrentWeaponState => currentState;
 
     private WeaponState firingState;
-    public WeaponState FiringState => firingState;
 
     private WeaponState cooldownState;
-    public WeaponState CooldownState => cooldownState;
 
     private WeaponState reloadingState;
-    public WeaponState ReloadingState => reloadingState;
 
 
     public WeaponStateMachine(Weapon weapon)
@@ -25,6 +22,11 @@ public class WeaponStateMachine : StateMachine<WeaponState>
         ChangeState(idleState);
     }
 
+    public void Update(bool isPressed)
+    {
+        currentState?.Update(isPressed);
+    }
+
     public void OnFire()
     {
         currentState?.OnFire();
@@ -33,11 +35,6 @@ public class WeaponStateMachine : StateMachine<WeaponState>
     public void OnReload()
     {
         currentState?.OnReload();
-    }
-
-    public void OnChangeWeapon(WeaponData data)
-    {
-        ChangeIdleState();
     }
 
     public void ChangeIdleState()
@@ -58,5 +55,12 @@ public class WeaponStateMachine : StateMachine<WeaponState>
     public void ChangeReloadingState()
     {
         ChangeState(reloadingState);
+    }
+
+    private void ChangeState(WeaponState newState)
+    {
+        currentState?.Exit();
+        currentState = newState;
+        currentState.Enter();
     }
 }

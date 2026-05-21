@@ -17,7 +17,7 @@ public class WeaponFiringState : WeaponState
         timer = 0f;
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         // 全弾撃ち終わった場合
         if (burstRemaining <= 0)

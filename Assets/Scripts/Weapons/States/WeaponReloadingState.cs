@@ -16,7 +16,7 @@ public class WeaponReloadingState : WeaponState
         timer = weapon.WeaponStats.ReloadTime;
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 

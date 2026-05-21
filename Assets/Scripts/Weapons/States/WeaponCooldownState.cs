@@ -12,13 +12,13 @@ public class WeaponCooldownState : WeaponState
         timer = weapon.WeaponStats.FireInterval;
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 
         if (timer <= 0f)
         {
-            if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto)
+            if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
             {
                 stateMachine.ChangeFiringState();
             }
