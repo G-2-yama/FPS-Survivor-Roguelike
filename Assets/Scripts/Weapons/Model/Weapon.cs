@@ -16,9 +16,6 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
-
-    private WeaponRecoil weaponRecoil;
-    public WeaponRecoil WeaponRecoil => weaponRecoil;
     
     private WeaponStateMachine stateMachine;
     public WeaponStateMachine StateMachine => stateMachine;
@@ -32,21 +29,17 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         stateMachine = new WeaponStateMachine(this);
-        weaponRecoil = new WeaponRecoil();
         if (!HasWeapon)
         {
             weaponData = EmptyWeaponData.Instance;
-            weaponStats = null;
+            weaponStats = WeaponStats.Empty;
             currentAmmo = 0;
-            weaponRecoil.Initialization(null);
             weaponView.RefreshView(this);
             return;
         }
 
         weaponStats = weaponData.GetStats(level);
         currentAmmo = weaponStats.MagazineSize;
-
-        weaponRecoil.Initialization(weaponStats.RecoilProfile);
     }
 
     /// <summary>
@@ -130,8 +123,6 @@ public class Weapon : MonoBehaviour
 
         weaponStats = weaponData.GetStats(level);
 
-        weaponRecoil.Initialization(weaponStats.RecoilProfile);
-
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
         currentAmmo = (ammo < 0)
             ? weaponStats.MagazineSize
@@ -148,9 +139,8 @@ public class Weapon : MonoBehaviour
     {
         weaponData = EmptyWeaponData.Instance;
         level = 0;
-        weaponStats = null;
+        weaponStats = WeaponStats.Empty;
         currentAmmo = 0;
-        weaponRecoil.Initialization(null);
 
         stateMachine.ChangeIdleState();
         weaponView.RefreshView(this);

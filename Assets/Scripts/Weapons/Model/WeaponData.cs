@@ -39,6 +39,8 @@ public class WeaponData : ScriptableObject
     public Sprite Icon => identity.Icon;
     public string DisplayName => identity.DisplayName;
     public string WeaponId => identity.WeaponId;
+
+    
 }
 
 /// <summary>

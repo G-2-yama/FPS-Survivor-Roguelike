@@ -8,7 +8,7 @@ public class WeaponCooldownState : WeaponState
 
     public override void Enter()
     {
-        Debug.Log("Weapon Cooldown Stateに入りました");
+        // Debug.Log("Weapon Cooldown Stateに入りました");
         timer = weapon.WeaponStats.FireInterval;
     }
 
@@ -39,7 +39,7 @@ public class WeaponCooldownState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        Debug.Log($"クールダウン中には銃撃はできません");
+        // Debug.Log($"クールダウン中には銃撃はできません");
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class WeaponCooldownState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        Debug.Log($"クールダウン中にはリロードはできません");
+        // Debug.Log($"クールダウン中にはリロードはできません");
     }
 
 }

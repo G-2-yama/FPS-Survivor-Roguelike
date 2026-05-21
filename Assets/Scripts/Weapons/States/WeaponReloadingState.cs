@@ -40,7 +40,7 @@ public class WeaponReloadingState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        Debug.Log("リロード中には攻撃できません");
+        // Debug.Log("リロード中には攻撃できません");
     }
 
 	/// <summary>

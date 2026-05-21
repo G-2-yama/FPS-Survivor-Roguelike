@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a59c6d275300a049b9578661c6329a8, type: 3}
+  m_Name: EmptyWeaponData
+  m_EditorClassIdentifier: Assembly-CSharp::EmptyWeaponData
+  identity:
+    weaponId: weapon_default
+    displayName: New Weapon
+    icon: {fileID: 0}
+  visual:
+    weaponModelPrefab: {fileID: 0}
+  classification:
+    weaponType: 0
+    fireModeData: {fileID: 0}
+  trigger:
+    autoFire: 0
+    autoReload: 0
+    triggerType: 1
+  levelTable:
+    baseStats:
+      damage:
+        damage: 0
+        spreadAngle: 0
+      fireRhythm:
+        fireInterval: 0
+        burstCount: 1
+        burstInterval: 0.05
+      recoil:
+        pitchKick: 0
+        yawKick: 0
+        yawRandomness: 0
+        returnStrength: 0
+        damping: 0
+        maxPitch: 0
+      ammo:
+        magazineSize: 1
+        reloadTime: 1
+    levelStats: []

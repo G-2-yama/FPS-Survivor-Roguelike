@@ -3,10 +3,12 @@ using UnityEngine;
 [System.Serializable]
 public sealed class WeaponStats
 {
+    public static WeaponStats Empty { get; } = new WeaponStats();
+
     [SerializeField] private DamageProfile damage;
     [SerializeField] private FireRhythmProfile fireRhythm;
-    [SerializeField] private RecoilProfile recoil;
-    public RecoilProfile RecoilProfile => recoil;
+    [SerializeField] private Recoil recoil;
+    public Recoil Recoil => recoil ?? Recoil.Empty;
     [SerializeField] private AmmoProfile ammo;
 
     public int MagazineSize => ammo.MagazineSize;
@@ -25,7 +27,9 @@ public sealed class WeaponStats
 [System.Serializable]
 public sealed class DamageProfile
 {
-    [SerializeField] private int damage;
+    public static DamageProfile Empty { get; } = new DamageProfile();
+
+    [SerializeField] private int damage = 1;
     [SerializeField, Range(0f, 45f)] private float spreadAngle;
 
     public int Damage => damage;
@@ -40,7 +44,9 @@ public sealed class DamageProfile
 [System.Serializable]
 public sealed class FireRhythmProfile
 {
-    [SerializeField] private float fireInterval;
+    public static FireRhythmProfile Empty { get; } = new FireRhythmProfile();
+
+    [SerializeField] private float fireInterval = 0.1f;
     [SerializeField] private int   burstCount    = 1;
     [SerializeField] private float burstInterval = 0.05f;
 
@@ -55,8 +61,10 @@ public sealed class FireRhythmProfile
 /// 反動。生成後は変更不可。
 /// </summary>
 [System.Serializable]
-public sealed class RecoilProfile
+public sealed class Recoil
 {
+    public static Recoil Empty { get; } = new Recoil();
+
     [SerializeField] private float pitchKick;
     public float PitchKick => pitchKick;
     [SerializeField] private float yawKick;
@@ -70,7 +78,37 @@ public sealed class RecoilProfile
     [SerializeField] private float maxPitch;
     public float MaxPitch => maxPitch;
 
-    private RecoilProfile() { }
+    private Vector2 recoilOffset = Vector2.zero;
+    public Vector2 RecoilOffset => recoilOffset;
+    private Vector2 recoilVelocity = Vector2.zero;
+
+    /// <summary>
+    /// 発射時に反動を加える
+    /// </summary>
+    public void AddRecoil(float recoilMultiplier = 1f)
+    {
+        float yaw = Random.Range(-YawKick, YawKick) * YawRandomness;
+
+        recoilOffset.y += PitchKick * recoilMultiplier;
+        recoilOffset.x += yaw * recoilMultiplier;
+    }
+
+    /// <summary>
+    /// 毎フレーム更新（回復処理）
+    /// </summary>
+    public Vector2 Tick(float deltaTime)
+    {
+        float dt = deltaTime;
+
+        Vector2 accel = (-ReturnStrength * recoilOffset) - (Damping * recoilVelocity);
+        
+        recoilVelocity += accel * dt;
+        recoilOffset += recoilVelocity * dt;
+
+        recoilOffset.y = Mathf.Clamp(recoilOffset.y, -MaxPitch, MaxPitch);
+
+        return recoilOffset;
+    }
 }
 
 /// <summary>
@@ -79,6 +117,8 @@ public sealed class RecoilProfile
 [System.Serializable]
 public sealed class AmmoProfile
 {
+    public static AmmoProfile Empty { get; } = new AmmoProfile();
+
     [SerializeField] private int   magazineSize = 1;
     [SerializeField] private float reloadTime   = 1.0f;
 

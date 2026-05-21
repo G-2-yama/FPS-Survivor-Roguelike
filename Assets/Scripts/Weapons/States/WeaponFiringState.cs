@@ -10,7 +10,7 @@ public class WeaponFiringState : WeaponState
 
     public override void Enter()
     {
-        Debug.Log("Weapon Firing Stateに入りました");
+        // Debug.Log("Weapon Firing Stateに入りました");
 
         burstRemaining = weapon.WeaponStats.BurstCount;
         hasFired = false;
@@ -36,7 +36,7 @@ public class WeaponFiringState : WeaponState
                 weapon.WeaponView.PlayFireAnimation();
                 hasFired = true;
             }
-            weapon.WeaponRecoil.AddRecoil();
+            weapon.WeaponStats.Recoil.AddRecoil();
             burstRemaining--;
             timer = weapon.WeaponStats.BurstInterval;
         }
@@ -67,7 +67,7 @@ public class WeaponFiringState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        Debug.Log($"銃撃中に再度銃撃はできません");
+        // Debug.Log($"銃撃中に再度銃撃はできません");
     }
 
 	/// <summary>
@@ -75,6 +75,6 @@ public class WeaponFiringState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        Debug.Log($"銃撃中にリロードはできません");
+        // Debug.Log($"銃撃中にリロードはできません");
     }
 }

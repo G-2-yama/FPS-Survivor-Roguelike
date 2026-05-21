@@ -39,9 +39,10 @@ public class WeaponControllerManager : MonoBehaviour
         {
             if (controller == null) continue;
             if (controller.Weapon == null) continue;
-            if (controller.Weapon.WeaponRecoil == null) continue;
+            if (controller.Weapon.WeaponStats == null) continue;
+            if (controller.Weapon.WeaponStats.Recoil == null) continue;
 
-            var recoil = controller.Weapon.WeaponRecoil;
+            var recoil = controller.Weapon.WeaponStats.Recoil;
 
             recoil.Tick(deltaTime);
 
