@@ -17,7 +17,7 @@ public class PlayerContext
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    public WeaponController WeaponController { get; }
+    public WeaponControllerManager WeaponControllerManager { get; }
 
     /// <summary>
     /// CharacterControllerを使った移動計算
@@ -55,7 +55,7 @@ public class PlayerContext
     public PlayerContext(
         Player player,
         PlayerConfig config,
-        WeaponController weaponController,
+        WeaponControllerManager weaponControllerManager,
         PlayerMotor motor,
         PlayerLocomotion locomotion,
         PlayerJumpController jumpController,
@@ -65,7 +65,7 @@ public class PlayerContext
     {
         Player = player;
         Config = config;
-        WeaponController = weaponController;
+        WeaponControllerManager = weaponControllerManager;
         Motor = motor;
         Locomotion = locomotion;
         JumpController = jumpController;

@@ -10784,7 +10784,7 @@ MonoBehaviour:
   player: {fileID: 275487193}
   playerConfig: {fileID: 0}
   playerRigidbody: {fileID: 275487192}
-  weaponController: {fileID: 2022669243}
+  weaponControllerManager: {fileID: 1417112577}
   cameraLookPivotTransform: {fileID: 330585546}
 --- !u!136 &275487186
 CapsuleCollider:
