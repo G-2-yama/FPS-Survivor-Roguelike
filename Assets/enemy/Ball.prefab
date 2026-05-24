@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 8162666516430899436}
   - component: {fileID: 5010117434686078316}
   - component: {fileID: 446570625007560332}
+  - component: {fileID: 1146902704468627000}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -295,4 +296,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ballprojectile
   config: {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
   exp: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
+  whiteFlash: {fileID: 1146902704468627000}
   prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
+--- !u!114 &1146902704468627000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411297557696040895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a3af06ae41500d459dcdbb86f4a5140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
+  renderers: []
+  whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
+  flashDuration: 0.08

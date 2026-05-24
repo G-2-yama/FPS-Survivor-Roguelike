@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: New shotenemyData
   m_EditorClassIdentifier: Assembly-CSharp::enemyDatas
-  MaxHp: 5
+  MaxHp: 25
+  damagelange: 1
   ChaseSpeed: 8
   OrbitRadius: 7
   OrbitAngularSpeed: 10
