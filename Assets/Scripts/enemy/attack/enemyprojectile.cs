@@ -6,10 +6,21 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     private DeathType deathType = DeathType.Normal;
     [SerializeField] private EnemyConfig config;
     [SerializeField] private GameObject exp;
+    [SerializeField] private WhiteFlash whiteFlash;
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
     public void TakeDamage(int damage)
+
     {
+
+        if (Health == null)
+            return;
+
+        if (Health.CurrentHP > 0)
+        {
+            whiteFlash?.Flash();
+        }
+       
         Health?.TakeDamage(config.Damagelange*damage);
     }
     protected override void OnCollisionEnter(Collision collision)

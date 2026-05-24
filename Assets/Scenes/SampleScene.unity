@@ -8918,7 +8918,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 208856129}
-  - component: {fileID: 208856128}
   m_Layer: 0
   m_Name: enemygenelate (1)
   m_TagString: Untagged
@@ -8926,23 +8925,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &208856128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208856127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
-  moverange: 20
-  capenemy: 100
-  mintime: 1
-  maxtime: 2
 --- !u!4 &208856129
 Transform:
   m_ObjectHideFlags: 0
@@ -13330,7 +13312,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328223106}
-  - component: {fileID: 328223105}
   m_Layer: 0
   m_Name: enemygenelate (2)
   m_TagString: Untagged
@@ -13338,23 +13319,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &328223105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328223104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 9162954730415355086, guid: dbb1fa8a6a7d1914eb6638805760d660, type: 3}
-  moverange: 20
-  capenemy: 100
-  mintime: 1
-  maxtime: 2
 --- !u!4 &328223106
 Transform:
   m_ObjectHideFlags: 0
@@ -17538,7 +17502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430907017}
-  - component: {fileID: 430907016}
   m_Layer: 0
   m_Name: enemygenelate
   m_TagString: Untagged
@@ -17546,23 +17509,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &430907016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430907015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
-  moverange: 20
-  capenemy: 100
-  mintime: 1
-  maxtime: 2
 --- !u!4 &430907017
 Transform:
   m_ObjectHideFlags: 0
@@ -38663,6 +38609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1018864606}
+  - component: {fileID: 1018864607}
   m_Layer: 0
   m_Name: enemygenelater
   m_TagString: Untagged
@@ -38689,6 +38636,32 @@ Transform:
   - {fileID: 1800776559}
   m_Father: {fileID: 275487189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1018864607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018864605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0492a5dce3843246b5afdacb83e7feb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::enemygenelatemaneger
+  enemyGenerators:
+  - {fileID: 430907017}
+  - {fileID: 1800776559}
+  - {fileID: 208856129}
+  - {fileID: 328223106}
+  minSpawnTime: 2
+  maxSpawnTime: 4
+  changeInterval: 20
+  enemyPrefabs:
+  - {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
+  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
+  - {fileID: 9162954730415355086, guid: dbb1fa8a6a7d1914eb6638805760d660, type: 3}
+  - {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
+  timerObject: {fileID: 383212502}
 --- !u!1 &1020732964
 GameObject:
   m_ObjectHideFlags: 0
@@ -67838,7 +67811,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1800776559}
-  - component: {fileID: 1800776560}
   m_Layer: 0
   m_Name: enemygenelate
   m_TagString: Untagged
@@ -67861,23 +67833,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1018864606}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1800776560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800776558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  enemyPrefab: {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
-  moverange: 20
-  capenemy: 100
-  mintime: 1
-  maxtime: 2
 --- !u!1 &1803074991
 GameObject:
   m_ObjectHideFlags: 0

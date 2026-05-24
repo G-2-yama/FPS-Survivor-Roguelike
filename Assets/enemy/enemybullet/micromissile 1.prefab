@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4463976629572857692}
   - component: {fileID: 2836230790004044888}
   - component: {fileID: 6689207877471317752}
+  - component: {fileID: 8496615387957828556}
   m_Layer: 0
   m_Name: micromissile 1
   m_TagString: Untagged
@@ -113,6 +114,8 @@ MonoBehaviour:
   targetProvider: {fileID: 8790778771241833302}
   movement: {fileID: 5299368076619845785}
   attack: {fileID: 0}
+  chaseMovementType: 0
+  combatBehaviour: 0
 --- !u!114 &8790778771241833302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::missileobject
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
+  exp: {fileID: 0}
+  whiteFlash: {fileID: 8496615387957828556}
 --- !u!54 &2836230790004044888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -200,3 +205,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.010408061
   m_Center: {x: 0.0007745719, y: 0.0019060756, z: 0.00009818845}
+--- !u!114 &8496615387957828556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6710789455330182112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a3af06ae41500d459dcdbb86f4a5140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
+  renderers: []
+  whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
+  flashDuration: 0.08

@@ -5,6 +5,7 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyAttackController attackController;
     [SerializeField] private GameObject prefab;
+    [SerializeField] private WhiteFlash whiteFlash;
 
 
     public TeamType TeamType => TeamType.Enemy;
@@ -14,6 +15,13 @@ public class EnemyHealth : PoolableObject, IDamageable
 
     public void TakeDamage(int damage)
     {
+
+        if (Health == null)
+            return;
+        if (Health.CurrentHP > 0)
+        {
+            whiteFlash?.Flash();
+        }
         Health?.TakeDamage(config.Damagelange*damage);
     }
 
@@ -42,7 +50,6 @@ public class EnemyHealth : PoolableObject, IDamageable
     {
         GameObject expitem= PoolManager.Instance.Get(prefab);
         expitem.transform.position = transform.position;
-        Debug.Log("death");
         Release();
     }
 }

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: gatling enemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  MaxHp: 10
+  MaxHp: 50
+  damagelange: 1
   ChaseSpeed: 6
   OrbitRadius: 4
   OrbitAngularSpeed: 20

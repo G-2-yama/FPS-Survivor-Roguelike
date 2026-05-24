@@ -6,10 +6,10 @@ public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance;
 
-    Dictionary<GameObject, ObjectPool<GameObject>> pools =
-        new Dictionary<GameObject, ObjectPool<GameObject>>();
+    private Dictionary<GameObject, ObjectPool<GameObject>> pools
+        = new Dictionary<GameObject, ObjectPool<GameObject>>();
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
     }
@@ -24,42 +24,56 @@ public class PoolManager : MonoBehaviour
         return pools[prefab].Get();
     }
 
-    ObjectPool<GameObject> CreatePool(GameObject prefab)
+    private ObjectPool<GameObject> CreatePool(GameObject prefab)
     {
-        return new ObjectPool<GameObject>(
-            () =>
-            {
-                var obj = Instantiate(prefab);
+        ObjectPool<GameObject> pool = null;
 
-                var poolable = obj.GetComponent<PoolableObject>();
+        pool = new ObjectPool<GameObject>(
+            createFunc: () =>
+            {
+                GameObject obj = Instantiate(prefab);
+
+                PoolableObject poolable =
+                    obj.GetComponent<PoolableObject>();
+
                 if (poolable != null)
                 {
-                    poolable.SetPool(pools[prefab]);
+                    poolable.SetPool(pool);
                 }
 
                 return obj;
             },
 
-            obj =>
+            actionOnGet: obj =>
             {
                 obj.SetActive(true);
 
-                var poolable = obj.GetComponent<IPoolable>();
+                IPoolable poolable =
+                    obj.GetComponent<IPoolable>();
+
                 poolable?.OnGet();
             },
 
-            obj =>
+            actionOnRelease: obj =>
             {
-                var poolable = obj.GetComponent<IPoolable>();
+                IPoolable poolable =
+                    obj.GetComponent<IPoolable>();
+
                 poolable?.OnRelease();
 
                 obj.SetActive(false);
             },
 
-            obj => Destroy(obj),
-            true,
-            10,
-            100
+            actionOnDestroy: obj =>
+            {
+                Destroy(obj);
+            },
+
+            collectionCheck: true,
+            defaultCapacity: 10,
+            maxSize: 100
         );
+
+        return pool;
     }
 }
