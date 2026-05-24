@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class WeaponIdleState : WeaponState
 {
-    public WeaponIdleState(WeaponController controller) : base(controller) { }
+    public WeaponIdleState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
-        if (controller.Weapon.WeaponData == null)
+        if (!weapon.HasWeapon)
         {
             return;
         }
 
-        controller.WeaponView.SetReloadProgress(0f);
+        weapon.WeaponView.SetReloadProgress(0f);
 
-        if (controller.Weapon.ShouldStartAutoReload())
+        if (weapon.ShouldStartAutoReload())
         {
-            controller.WeaponStateMachine.ChangeReloadingState();
+            stateMachine.ChangeReloadingState();
         }
-        else if (controller.Weapon.WeaponData.AutoFire)
+        else if (weapon.WeaponData.AutoFire)
         {
-            controller.WeaponStateMachine.ChangeFiringState();
+            stateMachine.ChangeFiringState();
         }
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         // 待機状態の更新処理をここに実装
     }
@@ -39,7 +39,7 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        controller.WeaponStateMachine.ChangeFiringState();
+        stateMachine.ChangeFiringState();
     }
 
 	/// <summary>
@@ -47,6 +47,6 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        controller.WeaponStateMachine.ChangeReloadingState();
+        stateMachine.ChangeReloadingState();
     }
 }

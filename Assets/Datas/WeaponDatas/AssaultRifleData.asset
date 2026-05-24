@@ -12,34 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
   m_Name: AssaultRifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponId: d
-  displayName: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
-  icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
-  weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
-  fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
-  weaponType: 0
-  autoFire: 0
-  autoReload: 0
-  triggerType: 1
-  baseStats:
-    Damage: 10
-    FireInterval: 0.08
-    RecoilX: 0.04
-    RecoilY: 0.04
-    RecoilRecoverySpeed: 40
-    MagazineSize: 30
-    ReloadTime: 1.6
-    BurstCount: 1
-    BurstInterval: 0.05
-    SpreadAngle: 0.5
-  levelStats:
-  - Damage: 10
-    FireInterval: 0.08
-    RecoilX: 0.04
-    RecoilY: 0.06
-    RecoilRecoverySpeed: 40
-    MagazineSize: 40
-    ReloadTime: 1.5
-    BurstCount: 1
-    BurstInterval: 0.05
-    SpreadAngle: 0.5
+  identity:
+    weaponId: weapon_default
+    displayName: New Weapon
+    icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
+  visual:
+    weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
+  classification:
+    weaponType: 0
+    fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
+  trigger:
+    autoFire: 0
+    autoReload: 0
+    triggerType: 1
+  levelTable:
+    baseStats:
+      damage:
+        damage: 10
+        spreadAngle: 0
+      fireRhythm:
+        fireInterval: 0.07
+        burstCount: 1
+        burstInterval: 0.05
+      recoil:
+        pitchKick: 1.2
+        yawKick: 0.4
+        yawRandomness: 1
+        returnStrength: 10
+        damping: 18
+        maxPitch: 20
+      ammo:
+        magazineSize: 36
+        reloadTime: 2
+    levelStats: []

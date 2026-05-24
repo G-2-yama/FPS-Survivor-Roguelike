@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: SuperShot
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  m_Script: {fileID: 11500000, guid: 6a59c6d275300a049b9578661c6329a8, type: 3}
+  m_Name: EmptyWeaponData
+  m_EditorClassIdentifier: Assembly-CSharp::EmptyWeaponData
   identity:
     weaponId: weapon_default
     displayName: New Weapon
@@ -19,11 +19,11 @@ MonoBehaviour:
   visual:
     weaponModelPrefab: {fileID: 0}
   classification:
-    weaponType: 1
-    fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
+    weaponType: 0
+    fireModeData: {fileID: 0}
   trigger:
     autoFire: 0
-    autoReload: 1
+    autoReload: 0
     triggerType: 1
   levelTable:
     baseStats:

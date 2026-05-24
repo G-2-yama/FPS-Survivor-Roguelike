@@ -4,28 +4,27 @@ public class WeaponCooldownState : WeaponState
 {
     private float timer;
 
-    public WeaponCooldownState(WeaponController controller) : base(controller) { }
+    public WeaponCooldownState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
-        Debug.Log("Weapon Cooldown Stateに入りました");
-        timer = controller.Weapon.WeaponStats.FireInterval;
+        // Debug.Log("Weapon Cooldown Stateに入りました");
+        timer = weapon.WeaponStats.FireInterval;
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 
         if (timer <= 0f)
         {
-            if (controller.Weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto
-                && controller.IsFirePressed)
+            if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
             {
-                controller.WeaponStateMachine.ChangeFiringState();
+                stateMachine.ChangeFiringState();
             }
             else
             {
-                controller.WeaponStateMachine.ChangeIdleState();
+                stateMachine.ChangeIdleState();
             }
         }
     }
@@ -40,7 +39,7 @@ public class WeaponCooldownState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        Debug.Log($"クールダウン中には銃撃はできません");
+        // Debug.Log($"クールダウン中には銃撃はできません");
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public class WeaponCooldownState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        Debug.Log($"クールダウン中にはリロードはできません");
+        // Debug.Log($"クールダウン中にはリロードはできません");
     }
 
 }

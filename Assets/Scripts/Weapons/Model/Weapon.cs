@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using Unity.VisualScripting;
 
 public class Weapon : MonoBehaviour
 {
@@ -18,25 +16,29 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
+    
+    private WeaponStateMachine stateMachine;
+    public WeaponStateMachine StateMachine => stateMachine;
+    [SerializeField] private WeaponView weaponView;
+    public WeaponView WeaponView => weaponView;
 
-    /// <summary>
-    /// 弾薬数が変化したときに通知するイベント
-    /// </summary>
-    public event Action<int, int> OnAmmoChanged;
+    public bool HasWeapon => weaponData != null && !weaponData.IsEmpty;
 
-    /// <summary>
-    /// 武器が装備されたときに通知するイベント
-    /// </summary>
-    public event Action<WeaponData> OnWeaponEquipped;
+    public bool IsEmpty => !HasWeapon;
 
     private void Awake()
     {
-        if (weaponData == null)
+        stateMachine = new WeaponStateMachine(this);
+        if (!HasWeapon)
         {
+            weaponData = EmptyWeaponData.Instance;
+            weaponStats = WeaponStats.Empty;
+            currentAmmo = 0;
+            weaponView.RefreshView(this);
             return;
         }
 
-        weaponStats = weaponData.CreateStats(level);
+        weaponStats = weaponData.GetStats(level);
         currentAmmo = weaponStats.MagazineSize;
     }
 
@@ -48,13 +50,12 @@ public class Weapon : MonoBehaviour
     /// <param name="ammo">新しい残弾数</param>
     public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
     {
-        if (newData == null)
+        if (newData == null || newData.IsEmpty)
         {
             ClearWeapon();
             return;
         }
-
-        ApplyWeapon(newData, newLevel, ammo);
+        InitializeWeapon(newData, newLevel, ammo);
     }
 
     /// <summary>
@@ -62,13 +63,14 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void LevelUp()
     {
-        if (weaponData == null)
+        if (!HasWeapon)
         {
             return;
         }
 
         level++;
-        weaponStats = weaponData.CreateStats(level);
+        weaponStats = weaponData.GetStats(level);
+        weaponView.RefreshView(this);
     }
 
     /// <summary>
@@ -77,17 +79,14 @@ public class Weapon : MonoBehaviour
     /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
     public bool Fire()
     {
-        if (currentAmmo <= 0)
+        if (!HasWeapon || weaponStats == null || currentAmmo <= 0)
         {
-            Debug.Log($"{weaponData.DisplayName} is out of ammo!");
             return false;
         }
 
         currentAmmo--;
-        NotifyAmmoChanged();
-
-        var fireMode = weaponData.FireModeData;
-        fireMode.Fire(this);
+        weaponView.RefreshView(this);
+        weaponData.FireModeData.Fire(this);
 
         return true;
     }
@@ -97,17 +96,13 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        currentAmmo = weaponStats.MagazineSize;
-        NotifyAmmoChanged();
-    }
+        if (!HasWeapon || weaponStats == null)
+        {
+            return;
+        }
 
-    /// <summary>
-    /// 弾薬数の変化を通知するメソッド
-    /// </summary>
-    public void NotifyAmmoChanged()
-    {
-        int maxAmmo = weaponStats != null ? weaponStats.MagazineSize : 0;
-        OnAmmoChanged?.Invoke(currentAmmo, maxAmmo);
+        currentAmmo = weaponStats.MagazineSize;
+        weaponView.RefreshView(this);
     }
     
     /// <summary>
@@ -116,12 +111,25 @@ public class Weapon : MonoBehaviour
     /// <returns></returns>
     public bool ShouldStartAutoReload()
     {
-        if(WeaponData == null)
-        {
-            return false;
-        }
-        
-        return WeaponData.AutoReload && CurrentAmmo <= 0;
+        return HasWeapon &&
+               weaponData.AutoReload &&
+               currentAmmo <= 0;
+    }
+
+    private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
+    {
+        weaponData = data;
+        level = Mathf.Max(0, newLevel);
+
+        weaponStats = weaponData.GetStats(level);
+
+        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
+        currentAmmo = (ammo < 0)
+            ? weaponStats.MagazineSize
+            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
+
+        stateMachine.ChangeIdleState();
+        weaponView.RefreshView(this);
     }
 
     /// <summary>
@@ -129,34 +137,12 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void ClearWeapon()
     {
-        weaponData = null;
+        weaponData = EmptyWeaponData.Instance;
         level = 0;
-        weaponStats = null;
+        weaponStats = WeaponStats.Empty;
         currentAmmo = 0;
 
-        OnWeaponEquipped?.Invoke(null);
-        NotifyAmmoChanged();
+        stateMachine.ChangeIdleState();
+        weaponView.RefreshView(this);
     }
-
-    /// <summary>
-    /// 新しい武器を装備する内部処理メソッド
-    /// </summary>
-    /// <param name="newData">新しい武器データ</param>
-    /// <param name="newLevel">新しいレベル</param>
-    /// <param name="ammo">新しい残弾数</param>
-    private void ApplyWeapon(WeaponData newData, int newLevel, int ammo)
-    {
-        weaponData = newData;
-        level = Mathf.Max(0, newLevel);
-        weaponStats = weaponData.CreateStats(level);
-
-        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-        currentAmmo = ammo == -1
-            ? weaponStats.MagazineSize
-            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
-
-        OnWeaponEquipped?.Invoke(weaponData);
-        NotifyAmmoChanged();
-    }
-
 }

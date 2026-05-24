@@ -7,26 +7,26 @@ public class WeaponReloadingState : WeaponState
     /// </summary>
     private float timer;
 
-    public WeaponReloadingState(WeaponController controller) : base(controller) { }
+    public WeaponReloadingState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
         Debug.Log("Weapon Reloading Stateに入りました");
-        controller.WeaponView.PlayReloadAnimation();
-        timer = controller.Weapon.WeaponStats.ReloadTime;
+        weapon.WeaponView.PlayReloadAnimation();
+        timer = weapon.WeaponStats.ReloadTime;
     }
 
-    public override void Update()
+    public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 
-        controller.WeaponView.SetReloadProgress(1f - timer / controller.Weapon.WeaponStats.ReloadTime);
+        weapon.WeaponView.SetReloadProgress(1f - timer / weapon.WeaponStats.ReloadTime);
         // リロードの完了
         if (timer <= 0f)
         {
-            controller.WeaponView.SetReloadProgress(0f);
-            controller.Weapon.Reload();
-            controller.WeaponStateMachine.ChangeIdleState();
+            weapon.WeaponView.SetReloadProgress(0f);
+            weapon.Reload();
+            stateMachine.ChangeIdleState();
         }
     }
 
@@ -40,7 +40,7 @@ public class WeaponReloadingState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        Debug.Log("リロード中には攻撃できません");
+        // Debug.Log("リロード中には攻撃できません");
     }
 
 	/// <summary>

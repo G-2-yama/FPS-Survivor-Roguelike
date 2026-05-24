@@ -1,28 +1,30 @@
 using Unity.VisualScripting;
 
-public class WeaponStateMachine : StateMachine<WeaponState>
+public class WeaponStateMachine
 {
+    public WeaponState currentState;
     private WeaponState idleState;
-    public WeaponState CurrentWeaponState => currentState;
 
     private WeaponState firingState;
-    public WeaponState FiringState => firingState;
 
     private WeaponState cooldownState;
-    public WeaponState CooldownState => cooldownState;
 
     private WeaponState reloadingState;
-    public WeaponState ReloadingState => reloadingState;
 
 
-    public WeaponStateMachine(WeaponController controller)
+    public WeaponStateMachine(Weapon weapon)
     {
-        idleState = new WeaponIdleState(controller);
-        firingState = new WeaponFiringState(controller);
-        cooldownState = new WeaponCooldownState(controller);
-        reloadingState = new WeaponReloadingState(controller);
+        idleState = new WeaponIdleState(weapon);
+        firingState = new WeaponFiringState(weapon);
+        cooldownState = new WeaponCooldownState(weapon);
+        reloadingState = new WeaponReloadingState(weapon);
 
         ChangeState(idleState);
+    }
+
+    public void Update(bool isPressed)
+    {
+        currentState?.Update(isPressed);
     }
 
     public void OnFire()
@@ -35,40 +37,30 @@ public class WeaponStateMachine : StateMachine<WeaponState>
         currentState?.OnReload();
     }
 
-    public void OnChangeWeapon(WeaponData data)
-    {
-        ChangeIdleState();
-    }
-
-    /// <summary>
-    /// 待機状態に遷移
-    /// </summary>
     public void ChangeIdleState()
     {
         ChangeState(idleState);
     }
 
-    /// <summary>
-    /// 攻撃状態に遷移
-    /// </summary>
     public void ChangeFiringState()
     {
         ChangeState(firingState);
     }
 
-    /// <summary>
-    /// クールダウン状態に遷移
-    /// </summary>
     public void ChangeCooldownState()
     {
         ChangeState(cooldownState);
     }
 
-    /// <summary>
-    /// リロード状態に遷移
-    /// </summary>
     public void ChangeReloadingState()
     {
         ChangeState(reloadingState);
+    }
+
+    private void ChangeState(WeaponState newState)
+    {
+        currentState?.Exit();
+        currentState = newState;
+        currentState.Enter();
     }
 }

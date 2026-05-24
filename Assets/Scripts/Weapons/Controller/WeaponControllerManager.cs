@@ -1,29 +1,68 @@
-public static class WeaponControllerManager
+// WeaponControllerManager.cs
+using UnityEngine;
+using System.Collections.Generic;
+
+public class WeaponControllerManager : MonoBehaviour
 {
+    [SerializeField] private Player player;
+    private readonly List<WeaponController> controllers = new();
+
+    public void Register(WeaponController controller)
+    {
+        if (!controllers.Contains(controller))
+            controllers.Add(controller);
+    }
+
+    public void Unregister(WeaponController controller)
+    {
+        controllers.Remove(controller);
+    }
+
     /// <summary>
-    /// true = 全武器同時発射 / false = 個別発射
+    /// あるコントローラーの発火イベントを受け取ったとき、他のコントローラーに同期イベントを送る
     /// </summary>
-    public static bool IsSyncMode { get; set; } = false;
-
-    public static event System.Action OnGlobalFire;
-    public static event System.Action OnGlobalFireReleased;
-    public static event System.Action OnReload;
-
-    public static void BroadcastFire()
+    /// <param name="source"></param>
+    public void OnWeaponFired(WeaponController source)
     {
-        if (IsSyncMode)
-            OnGlobalFire?.Invoke();
+        if (!player.IsWeaponSync) return;
+        foreach (var c in controllers)
+        {
+            if (c == source) continue;
+            c.FireSync();
+        }
     }
 
-    public static void BroadcastFireReleased()
+    public void OnWeaponReleased(WeaponController source)
     {
-        if (IsSyncMode)
-            OnGlobalFireReleased?.Invoke();
+        if (!player.IsWeaponSync) return;
+        foreach (var c in controllers)
+        {
+            if (c == source) continue;
+            c.ReleaseSync();
+        }
     }
 
-    public static void BroadcastReload()
+    public void OnWeaponReloaded(WeaponController source)
     {
-        if (IsSyncMode)
-            OnReload?.Invoke();
+        if (!player.IsWeaponSync) return;
+        foreach (var c in controllers)
+        {
+            if (c == source) continue;
+            c.ReloadSync();
+        }
+    }
+
+
+    public Vector2 GetTotalRecoil(float deltaTime)
+    {
+        var total = Vector2.zero;
+        foreach (var c in controllers)
+        {
+            var recoil = c?.Weapon?.WeaponStats?.Recoil;
+            if (recoil == null) continue;
+            recoil.Tick(deltaTime);
+            total += recoil.RecoilOffset;
+        }
+        return total;
     }
 }

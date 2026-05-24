@@ -21,7 +21,7 @@ public class PlayerInputRelay
     /// <summary>
     /// 射撃・リロード入力を中継する武器コントローラー
     /// </summary>
-    private WeaponController weaponController;
+    private WeaponControllerManager weaponControllerManager;
 
     /// <summary>
     /// ゲームプレイ入力を受け付けてよい状態か判定する処理
@@ -34,12 +34,12 @@ public class PlayerInputRelay
     public PlayerInputRelay(
         PlayerControlState controls,
         PlayerCommandBuffer commands,
-        WeaponController weaponController,
+        WeaponControllerManager weaponControllerManager,
         Func<bool> canHandleGameplayInput)
     {
         this.controls = controls;
         this.commands = commands;
-        this.weaponController = weaponController;
+        this.weaponControllerManager = weaponControllerManager;
         this.canHandleGameplayInput = canHandleGameplayInput;
     }
 
@@ -87,25 +87,4 @@ public class PlayerInputRelay
         }
     }
 
-    /// <summary>
-    /// 射撃入力を武器コントローラーへ中継する
-    /// </summary>
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        if (canHandleGameplayInput())
-        {
-            weaponController.OnFire(context);
-        }
-    }
-
-    /// <summary>
-    /// リロード入力を武器コントローラーへ中継する
-    /// </summary>
-    public void OnReload(InputAction.CallbackContext context)
-    {
-        if (canHandleGameplayInput())
-        {
-            weaponController.OnReload(context);
-        }
-    }
 }

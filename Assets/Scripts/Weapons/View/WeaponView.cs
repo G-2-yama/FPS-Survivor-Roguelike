@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public abstract class WeaponView : MonoBehaviour
 {
     [SerializeField] protected Weapon weapon;
@@ -11,54 +12,53 @@ public abstract class WeaponView : MonoBehaviour
 
     protected virtual void Start()
     {
-        weapon.OnWeaponEquipped += HandleWeaponEquipped;
-
-        RefreshView();
+        RefreshView(weapon);
     }
 
     protected virtual void OnDestroy()
     {
-        if (weapon != null)
-        {
-            weapon.OnWeaponEquipped -= HandleWeaponEquipped;
-        }
-
         ClearWeaponModel();
     }
 
-    protected virtual void HandleWeaponEquipped(WeaponData data)
+    public virtual void RefreshView(Weapon weapon)
     {
-        RefreshView();
-    }
-
-    protected virtual void RefreshView()
-    {
-        var data = weapon.WeaponData;
-
-        bool hasWeapon = data != null;
-
-        weaponIcon.gameObject.SetActive(hasWeapon);
-
-        if (!hasWeapon)
+        if (weapon == null)
         {
-            ClearWeaponModel();
+            SetWeaponInactive();
             return;
         }
 
-        weaponIcon.sprite = data.Icon;
+        weaponIcon.gameObject.SetActive(weapon.HasWeapon);
 
-        SetWeaponModel(data);
+        if (!weapon.HasWeapon)
+        {
+            SetWeaponInactive();
+            return;
+        }
+
+        weaponIcon.sprite = weapon.WeaponData.Icon;
+
+        SetWeaponModel(weapon.WeaponData);
     }
+
+    public virtual void SetReloadProgress(float progress)
+    {
+        reloadIndicator.fillAmount = progress;
+    }
+
+    public virtual void PlayReloadAnimation() { }
+
+    public virtual void PlayFireAnimation() { }
+
 
     protected void SetWeaponModel(WeaponData data)
     {
         ClearWeaponModel();
 
-        if (data.WeaponModelPrefab == null)
+        if (data == null || data.WeaponModelPrefab == null)
             return;
 
         weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
-
         animator = weaponModelInstance.GetComponent<Animator>();
     }
 
@@ -73,12 +73,8 @@ public abstract class WeaponView : MonoBehaviour
         animator = null;
     }
 
-    public virtual void SetReloadProgress(float progress)
-    { 
-        reloadIndicator.fillAmount = progress;
+    private void SetWeaponInactive()
+    {
+        ClearWeaponModel();
     }
-
-    public virtual void PlayReloadAnimation() { }
-
-    public virtual void PlayFireAnimation() { }
 }

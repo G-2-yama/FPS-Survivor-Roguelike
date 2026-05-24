@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    [SerializeField] private WeaponController weaponController;
+    [SerializeField] private WeaponControllerManager weaponControllerManager;
 
     /// <summary>
     /// カメラの上下視点を制御するためのTransform
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         PlayerContext context = new PlayerContext(
             player,
             playerConfig,
-            weaponController,
+            weaponControllerManager,
             motor,
             locomotion,
             jumpController,
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
             commands);
 
         runtime = new PlayerRuntime(context);
-        inputRelay = new PlayerInputRelay(controls, commands, weaponController, () => !runtime.IsDead);
+        inputRelay = new PlayerInputRelay(controls, commands, weaponControllerManager, () => !runtime.IsDead);
     }
 
     /// <summary>
@@ -166,15 +166,6 @@ public class PlayerController : MonoBehaviour
         inputRelay?.OnJump(context);
     }
 
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        inputRelay?.OnFire(context);
-    }
-
-    public void OnReload(InputAction.CallbackContext context)
-    {
-        inputRelay?.OnReload(context);
-    }
 
     /// <summary>
     /// 必須参照が揃っているか確認する
@@ -193,9 +184,9 @@ public class PlayerController : MonoBehaviour
             return false;
         }
 
-        if (weaponController == null)
+        if (weaponControllerManager == null)
         {
-            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(weaponController)}.", this);
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(weaponControllerManager)}.", this);
             return false;
         }
 

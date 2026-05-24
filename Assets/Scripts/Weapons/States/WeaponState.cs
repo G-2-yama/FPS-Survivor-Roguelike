@@ -1,10 +1,11 @@
-public abstract class WeaponState : IState
+public abstract class WeaponState
 {
-	protected WeaponController controller;
+	protected Weapon weapon;
+	protected WeaponStateMachine stateMachine => weapon.StateMachine;
 
-	public WeaponState(WeaponController controller)
+	public WeaponState(Weapon weapon)
 	{
-		this.controller = controller;
+		this.weapon = weapon;
 	}
 
 	/// <summary>
@@ -15,7 +16,7 @@ public abstract class WeaponState : IState
 	/// <summary>
 	/// 状態のフレーム更新処理
 	/// </summary>
-	public virtual void Update() { }
+	public virtual void Update(bool isPressed) { }
 
 	/// <summary>
 	/// 状態終了時の後処理

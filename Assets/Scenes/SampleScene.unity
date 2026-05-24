@@ -9851,7 +9851,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &240814478
 MonoBehaviour:
@@ -9866,7 +9866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 240814479}
-  weaponView: {fileID: 240814480}
+  manager: {fileID: 1417112577}
 --- !u!114 &240814479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9879,9 +9879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
+  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 240814480}
 --- !u!114 &240814480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10765,7 +10766,7 @@ MonoBehaviour:
   player: {fileID: 275487193}
   playerConfig: {fileID: 0}
   playerRigidbody: {fileID: 275487192}
-  weaponController: {fileID: 2022669243}
+  weaponControllerManager: {fileID: 1417112577}
   cameraLookPivotTransform: {fileID: 330585546}
 --- !u!136 &275487186
 CapsuleCollider:
@@ -13534,7 +13535,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13614,12 +13614,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 240814477}
-  - {fileID: 2022669241}
-  - {fileID: 1909986803}
-  - {fileID: 1461869973}
-  - {fileID: 2019895849}
-  - {fileID: 445505110}
+  - {fileID: 1417112576}
   m_Father: {fileID: 275487189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
@@ -13666,18 +13661,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &330585548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Postprocessing.Runtime::UnityEngine.Rendering.PostProcessing.PostProcessVolume
 --- !u!1 &341469055
 GameObject:
   m_ObjectHideFlags: 0
@@ -18110,7 +18093,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &445505112
 MonoBehaviour:
@@ -18125,7 +18108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 445505113}
-  weaponView: {fileID: 445505114}
+  manager: {fileID: 1417112577}
 --- !u!114 &445505113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18138,9 +18121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 445505114}
 --- !u!114 &445505114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53539,6 +53523,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1411953362}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1417112574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1417112576}
+  - component: {fileID: 1417112577}
+  m_Layer: 0
+  m_Name: WeaponController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1417112576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417112574}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 240814477}
+  - {fileID: 2022669241}
+  - {fileID: 1909986803}
+  - {fileID: 1461869973}
+  - {fileID: 2019895849}
+  - {fileID: 445505110}
+  m_Father: {fileID: 330585546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1417112577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417112574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754e4c5c45120ec428d49f947c41813d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponControllerManager
+  player: {fileID: 275487193}
 --- !u!1 &1418906765
 GameObject:
   m_ObjectHideFlags: 0
@@ -55533,7 +55568,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1461869974
 MonoBehaviour:
@@ -55548,7 +55583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 1461869975}
-  weaponView: {fileID: 1461869976}
+  manager: {fileID: 1417112577}
 --- !u!114 &1461869975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55561,9 +55596,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 1461869976}
 --- !u!114 &1461869976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72585,7 +72621,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1909986804
 MonoBehaviour:
@@ -72600,7 +72636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 1909986805}
-  weaponView: {fileID: 1909986806}
+  manager: {fileID: 1417112577}
 --- !u!114 &1909986805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72613,9 +72649,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 1909986806}
 --- !u!114 &1909986806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75949,7 +75986,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2019895851
 MonoBehaviour:
@@ -75964,7 +76001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 2019895852}
-  weaponView: {fileID: 2019895853}
+  manager: {fileID: 1417112577}
 --- !u!114 &2019895852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75977,9 +76014,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 2019895853}
 --- !u!114 &2019895853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76027,7 +76065,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 1417112576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2022669243
 MonoBehaviour:
@@ -76042,7 +76080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weapon: {fileID: 2022669244}
-  weaponView: {fileID: 2022669245}
+  manager: {fileID: 1417112577}
 --- !u!114 &2022669244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76055,9 +76093,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   level: 0
   muzzle: {fileID: 83808289}
+  weaponView: {fileID: 2022669245}
 --- !u!114 &2022669245
 MonoBehaviour:
   m_ObjectHideFlags: 0

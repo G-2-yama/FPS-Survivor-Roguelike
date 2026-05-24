@@ -27,6 +27,13 @@ public class Player : MonoBehaviour, IDamageable
     public event Action OnLevelUp;
     public event Action<int> OnExpGained;
 
+    private bool IsWeaponSyncEnabled = false;
+    public bool IsWeaponSync => IsWeaponSyncEnabled;
+    public void SetWeaponSync(bool enabled)
+    {
+        IsWeaponSyncEnabled = enabled;
+    }
+
 
     /// <summary>
     /// プレイヤーの体力モデル

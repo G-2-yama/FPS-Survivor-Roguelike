@@ -16,6 +16,5 @@ public class LevelUp : UpgradeBase
         Weapon target = player.Inventory.WeaponSlots[targetType];
 
         target.LevelUp();
-        target.NotifyAmmoChanged();
     }
 }
