@@ -6,16 +6,16 @@ public class SyncWeaponItem : Item
 {
     public override bool IsAvailable()
     {
-        return !WeaponControllerManager.IsSyncMode;
+        return !player.IsWeaponSync;
     }
 
     public override void Apply()
     {
-        WeaponControllerManager.IsSyncMode = true;
+        player.SetWeaponSync(true);
     }
 
     public override void Revert()
     {
-        WeaponControllerManager.IsSyncMode = false;
+        player.SetWeaponSync(false);
     }
 }

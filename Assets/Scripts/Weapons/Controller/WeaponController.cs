@@ -1,3 +1,4 @@
+// WeaponController.cs
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,31 +8,22 @@ public class WeaponController : MonoBehaviour
 
     public Weapon Weapon => weapon;
 
-    /// <summary>
-    /// 攻撃入力が押されているかどうかを管理するフラグ
-    /// </summary>
     private bool isFirePressed;
-
     public bool IsFirePressed => isFirePressed;
 
     private bool isInputEnabled = true;
     public bool IsInputEnabled => isInputEnabled;
 
-    /// <summary>
-    /// 初期化
-    /// </summary>
+    [SerializeField] private WeaponControllerManager manager;
+
     void Start()
     {
-        WeaponControllerManager.OnGlobalFire += OnGlobalFireReceived;
-        WeaponControllerManager.OnGlobalFireReleased += OnGlobalFireReleasedReceived;
-        WeaponControllerManager.OnReload += OnReloadReceived;
+        manager.Register(this);
     }
 
     private void OnDestroy()
     {
-        WeaponControllerManager.OnGlobalFire -= OnGlobalFireReceived;
-        WeaponControllerManager.OnGlobalFireReleased -= OnGlobalFireReleasedReceived;
-        WeaponControllerManager.OnReload -= OnReloadReceived;
+        manager.Unregister(this);
     }
 
     public void Update()
@@ -39,75 +31,72 @@ public class WeaponController : MonoBehaviour
         weapon.StateMachine.Update(isFirePressed);
     }
 
-    public void EnableInput()
-    {
-        isInputEnabled = true;
-    }
+    public void EnableInput()  => isInputEnabled = true;
+    public void DisableInput() => isInputEnabled = false;
 
-    public void DisableInput()
-    {
-        isInputEnabled = false;
-    }
 
-    /// <summary>
-    /// 攻撃入力を処理するメソッド
-    /// </summary>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !IsInputEnabled)
-        {
-            return;
-        }
+        if (!weapon.HasWeapon || !isInputEnabled) return;
 
         if (context.phase == InputActionPhase.Started)
         {
-            isFirePressed = true;
-            weapon.StateMachine.OnFire();
-            WeaponControllerManager.BroadcastFire();
+            FireInternal();
+            manager.OnWeaponFired(this);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            isFirePressed = false;
-            WeaponControllerManager.BroadcastFireReleased();
+            ReleaseInternal();
+            manager.OnWeaponReleased(this);
         }
     }
 
-    /// <summary>
-    /// リロード入力を処理するメソッド
-    /// </summary>
     public void OnReload(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !IsInputEnabled)
-        {
-            return;
-        }
+        if (!weapon.HasWeapon || !isInputEnabled) return;
 
         if (context.phase == InputActionPhase.Performed)
         {
-            weapon.StateMachine.OnReload();
-            WeaponControllerManager.BroadcastReload();
+            ReloadInternal();
+            manager.OnWeaponReloaded(this);
         }
     }
 
-    private void OnGlobalFireReceived()
-    {
-        if (isFirePressed) return;
-        if (!weapon.HasWeapon || !IsInputEnabled) return;
+    // ────── Manager から呼ばれる同期メソッド ──────
+    // publicだが、直接Inputからは呼ばれない
 
+    public void FireSync()
+    {
+        if (!weapon.HasWeapon || !isInputEnabled || isFirePressed) return;
+        FireInternal();
+    }
+
+    public void ReleaseSync()
+    {
+        if (!isFirePressed) return;
+        ReleaseInternal();
+    }
+
+    public void ReloadSync()
+    {
+        if (!weapon.HasWeapon || !isInputEnabled) return;
+        ReloadInternal();
+    }
+
+
+    private void FireInternal()
+    {
         isFirePressed = true;
         weapon.StateMachine.OnFire();
     }
 
-    private void OnGlobalFireReleasedReceived()
+    private void ReleaseInternal()
     {
-        if (!isFirePressed) return;
         isFirePressed = false;
     }
 
-    private void OnReloadReceived()
+    private void ReloadInternal()
     {
-        if (!weapon.HasWeapon || !IsInputEnabled) return;
-
         weapon.StateMachine.OnReload();
     }
 }
