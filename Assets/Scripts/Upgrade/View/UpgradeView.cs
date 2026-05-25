@@ -6,6 +6,7 @@ public class UpgradeView : MonoBehaviour
 {
     [SerializeField] private Canvas upgradeCanvas;
     [SerializeField] private UpgradeButtonView[] upgradeButtonsViews;
+    [SerializeField] private UIFader uiFader;
 
     /// <summary>
     /// アップグレードの選択肢をセットアップする
@@ -33,6 +34,7 @@ public class UpgradeView : MonoBehaviour
     public void Show()
     {
         upgradeCanvas.gameObject.SetActive(true);
+        uiFader.FadeIn();
     }
 
     /// <summary>
@@ -40,7 +42,10 @@ public class UpgradeView : MonoBehaviour
     /// </summary>
     public void Hide()
     {
-        upgradeCanvas.gameObject.SetActive(false);
+        uiFader.FadeOut(() =>
+        {
+            upgradeCanvas.gameObject.SetActive(false);
+        });
     }
 
 }
