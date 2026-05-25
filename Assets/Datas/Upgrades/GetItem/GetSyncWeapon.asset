@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GetItem
   displayName: "\u30B7\u30F3\u30AF\u30ED"
   description: "\u5168\u3066\u306E\u6B66\u5668\u3092\u540C\u6642\u306B\u4F7F\u3046"
+  icon: {fileID: 21300000, guid: 06d075db707b13d4883335cc19422a0e, type: 3}
+  rarity: 3
   target: {fileID: 11400000, guid: 32879d6c60e2d5a4190c9a2665fa1537, type: 2}

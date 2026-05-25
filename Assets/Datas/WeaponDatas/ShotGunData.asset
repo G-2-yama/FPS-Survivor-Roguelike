@@ -29,11 +29,11 @@ MonoBehaviour:
     baseStats:
       damage:
         damage: 5
-        spreadAngle: 1
+        spreadAngle: 10
       fireRhythm:
         fireInterval: 0.75
         burstCount: 10
-        burstInterval: 0.01
+        burstInterval: 0.001
       recoil:
         pitchKick: 2.5
         yawKick: 0.4

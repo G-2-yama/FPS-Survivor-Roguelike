@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b5b0cd04dcd3c4386a005bcb6de3b3, type: 3}
   m_Name: AssaultRifleUnlock
   m_EditorClassIdentifier: Assembly-CSharp::Unlock
-  displayName: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB\u53D6\u5F97"
-  description: 
+  displayName: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
+  description: "\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB\u3092\u30E1\u30A4\u30F3\u6B66\u5668\u306B\u88C5\u5099\u3059\u308B"
+  icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
+  rarity: 2
   target: {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
