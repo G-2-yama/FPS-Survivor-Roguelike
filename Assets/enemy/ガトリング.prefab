@@ -294,8 +294,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.9184673, y: 1, z: 3.4912727}
-  m_Center: {x: -0.035929136, y: 0, z: 2.702007}
+  m_Size: {x: 5.185035, y: 2.415923, z: 4.840442}
+  m_Center: {x: 0.1538637, y: 0.7079615, z: 2.027422}
 --- !u!54 &5128404338816379899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -339,6 +339,7 @@ MonoBehaviour:
   attackController: {fileID: 633176299316624300}
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: -3031036075592505957}
+  deathDelay: 0.5
 --- !u!114 &633176299316624300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f396d1bc534a274691d17c74a934e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  rb: {fileID: 5128404338816379899}
   config: {fileID: 11400000, guid: 7e0663357ac5f754798b9e6df11f5461, type: 2}
   targetProvider: {fileID: 8298053889167880734}
   movement: {fileID: 1267458368135057594}

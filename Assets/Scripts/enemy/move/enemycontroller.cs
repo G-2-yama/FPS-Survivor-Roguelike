@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyBrain : MonoBehaviour
 {
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyTargetProvider targetProvider;
     [SerializeField] private EnemyMovementController movement;
@@ -9,6 +10,7 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField]
     private ChaseMovementType chaseMovementType;
 
+    public Rigidbody Rb => rb;
     public ChaseMovementType ChaseMovementType => chaseMovementType;
     [SerializeField]
     private CombatBehaviourType combatBehaviour;

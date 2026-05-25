@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class CircleState : IState
+public class CombatState : IState
 {
     private readonly EnemyBrain enemy;
     private readonly StateMachine<IState> stateMachine;
 
-    public CircleState(EnemyBrain enemy, StateMachine<IState> stateMachine)
+    public CombatState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
@@ -35,10 +35,11 @@ public class CircleState : IState
             case CombatBehaviourType.Orbit:
 
                 enemy.Movement.OrbitAround(
+                    enemy.Rb,
                     enemy.transform,
                     enemy.Target,
                     enemy.Config.OrbitRadius,
-                    enemy.Config.OrbitAngularSpeed);
+                    enemy.Config.OrbitAngularSpeed); 
 
                 enemy.Attack?.TryAttack();
 
@@ -47,6 +48,7 @@ public class CircleState : IState
             case CombatBehaviourType.JumpAttack:
 
                 enemy.Movement.JumpToward(
+                    enemy.Rb,
                     enemy.transform,
                     enemy.Target,
                     12f,
