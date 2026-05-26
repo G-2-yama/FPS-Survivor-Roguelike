@@ -154,3 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::enemyplojectileobject
   config: {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
+  exp: {fileID: 0}
+  whiteFlash: {fileID: 0}
+  deathDelay: 0.1

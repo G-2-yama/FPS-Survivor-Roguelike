@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class enemyplojectileobject : ProjectileObject,IDamageable
 
@@ -7,6 +8,7 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     [SerializeField] private EnemyConfig config;
     [SerializeField] private GameObject exp;
     [SerializeField] private WhiteFlash whiteFlash;
+    [SerializeField] private float deathDelay = 0.1f;
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
     public void TakeDamage(int damage)
@@ -78,19 +80,19 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     }
     private void HandleDeath()
     {
-       
-        
-         if (deathType == DeathType.Normal) {
-            if (exp != null)
-            {
-                GameObject expitem = PoolManager.Instance.Get(exp);
-                expitem.transform.position = transform.position;
-            }
-        }
 
-         
-        
-        Release();
+
+        if (deathType == DeathType.Normal)
+        {
+
+            StartCoroutine(DeathRoutine());
+
+        }
+        else
+        {
+
+            Release();
+        }
     }
     protected override void HandleHit(Collider col)
     {
@@ -98,6 +100,20 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
         deathType = DeathType.SelfDestruct;
         Health?.TakeDamage(9999);
     }
+    private IEnumerator DeathRoutine()
+    {
+
+        yield return new WaitForSeconds(deathDelay);
+
+        if (exp != null)
+        {
+            GameObject expitem = PoolManager.Instance.Get(exp);
+            expitem.transform.position = transform.position;
+        }
+
+        Release();
+    }
 }
+
 
 

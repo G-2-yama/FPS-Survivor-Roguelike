@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyHealth : PoolableObject, IDamageable
 {
@@ -6,27 +7,31 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private EnemyAttackController attackController;
     [SerializeField] private GameObject prefab;
     [SerializeField] private WhiteFlash whiteFlash;
-
-
+   
+    [SerializeField] private float deathDelay = 0.1f;
+  
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
-  
-    
+
+    private bool isDead = false;
 
     public void TakeDamage(int damage)
     {
-
-        if (Health == null)
+        if (Health == null || isDead)
             return;
+
         if (Health.CurrentHP > 0)
         {
             whiteFlash?.Flash();
         }
-        Health?.TakeDamage(config.Damagelange*damage);
+
+        Health.TakeDamage(config.Damagelange * damage);
     }
 
     public override void OnGet()
     {
+        isDead = false;
+
         Health = new Health(config.MaxHp);
         Health.OnDeath += HandleDeath;
     }
@@ -40,17 +45,25 @@ public class EnemyHealth : PoolableObject, IDamageable
             Health.OnDeath -= HandleDeath;
             Health = null;
         }
-        
-      
-
     }
 
     private void HandleDeath()
-
     {
-        GameObject expitem= PoolManager.Instance.Get(prefab);
+        if (isDead) return;
+
+        isDead = true;
+
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+       
+        yield return new WaitForSeconds(deathDelay);
+
+        GameObject expitem = PoolManager.Instance.Get(prefab);
         expitem.transform.position = transform.position;
+
         Release();
     }
 }
-

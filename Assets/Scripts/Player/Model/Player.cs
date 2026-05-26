@@ -25,7 +25,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public event Action OnDeath;
     public event Action OnLevelUp;
-    public event Action<int> OnExpGained;
+    public event Action<float> OnExpGained;
 
     private bool IsWeaponSyncEnabled = false;
     public bool IsWeaponSync => IsWeaponSyncEnabled;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         Health.TakeDamage(damage);
     }
-    public void AddExp(int amount)
+    public void AddExp(float amount)
     {
         exp += amount;
         OnExpGained?.Invoke(amount);
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour, IDamageable
         while (exp >= expmaneger.LevelUpRequiredExp)
         {
            
-            exp -= (int)expmaneger.LevelUpRequiredExp;
+            exp -= expmaneger.LevelUpRequiredExp;
             LevelUp();
             
 

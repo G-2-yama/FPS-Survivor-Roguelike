@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class EnemyMovementController : MonoBehaviour
 {
-    public void MoveTowards(Transform self, Vector3 destination, float moveSpeed)
+    public void MoveTowards(Rigidbody rb,Transform self, Vector3 destination, float moveSpeed)
     {
-        Rigidbody rb = self.GetComponent<Rigidbody>();
-        if (rb == null) return;
+      
 
         Vector3 toTarget = destination - rb.position;
         if (toTarget.sqrMagnitude <= 0.0001f)
@@ -21,10 +20,9 @@ public class EnemyMovementController : MonoBehaviour
     }
 
 
-    public void OrbitAround(Transform self, Transform center, float radius, float angularSpeed)
+    public void OrbitAround(Rigidbody rb,Transform self, Transform center, float radius, float angularSpeed)
     {
-        Rigidbody rb = self.GetComponent<Rigidbody>();
-        if (rb == null) return;
+        
 
         Vector3 offset = rb.position - center.position;
 
@@ -54,13 +52,12 @@ public class EnemyMovementController : MonoBehaviour
         Quaternion rot = Quaternion.LookRotation(-toCenter);
         rb.MoveRotation(rot);
     }
-    public void RollTowards(
+    public void RollTowards(Rigidbody rb,
     Transform self,
     Vector3 destination,
     float moveForce)
     {
-        Rigidbody rb = self.GetComponent<Rigidbody>();
-        if (rb == null) return;
+       
 
         Vector3 dir = destination - rb.position;
         dir.y = 0f;
@@ -80,14 +77,12 @@ public class EnemyMovementController : MonoBehaviour
         ForceMode.Acceleration);
 
     }
-    public void JumpToward(
+    public void JumpToward(Rigidbody rb,
     Transform self,
     Transform target,
     float forwardForce,
     float upwardForce)
     {
-        Rigidbody rb = self.GetComponent<Rigidbody>();
-        if (rb == null) return;
 
         // ˜A‘±ƒWƒƒƒ“ƒv–hŽ~
         if (rb.linearVelocity.y > 0.1f)

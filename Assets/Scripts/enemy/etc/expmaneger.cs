@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class ExpManager : MonoBehaviour
 {
-    [SerializeField] private int levelUpRequiredExp = 10;
-    public int LevelUpRequiredExp => levelUpRequiredExp;
+    [SerializeField] private float levelUpRequiredExp = 10;
+    public float LevelUpRequiredExp => levelUpRequiredExp;
 
     [SerializeField] private float levelUpRate = 1.2f;
 
     public void IncreaseRequiredExp()
     {
-        levelUpRequiredExp = Mathf.RoundToInt(levelUpRequiredExp * levelUpRate);
+        levelUpRequiredExp = levelUpRequiredExp * levelUpRate;
     }
 }

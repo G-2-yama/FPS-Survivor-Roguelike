@@ -42,7 +42,7 @@ public class PlayerLevelView : MonoBehaviour
         currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
     }
 
-    private void UpdateLevelBar(int expGained)
+    private void UpdateLevelBar(float expGained)
     {
         currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
     }

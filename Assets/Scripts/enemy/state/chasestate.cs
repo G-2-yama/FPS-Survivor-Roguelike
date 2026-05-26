@@ -25,7 +25,7 @@ public class ChaseState : IState
         if (distance <= enemy.Config.EngageDistance - 1.0f)
         {
             stateMachine.ChangeState(
-                new CircleState(enemy, stateMachine));
+                new CombatState(enemy, stateMachine));
             return;
         }
 
@@ -34,15 +34,17 @@ public class ChaseState : IState
             case ChaseMovementType.Normal:
 
                 enemy.Movement.MoveTowards(
+                    enemy.Rb,
                     enemy.transform,
                     enemy.Target.position,
-                    enemy.Config.ChaseSpeed);
+                    enemy.Config.ChaseSpeed); 
 
                 break;
 
             case ChaseMovementType.Rolling:
 
                 enemy.Movement.RollTowards(
+                    enemy.Rb,
                     enemy.transform,
                     enemy.Target.position,
                     enemy.Config.ChaseSpeed);

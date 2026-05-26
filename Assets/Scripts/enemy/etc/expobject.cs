@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ExpObject : PoolableObject
 {
-    [SerializeField] private int expAmount = 1;
+    [SerializeField] private float expAmount = 1;
 
-    public int ExpAmount => expAmount;
+    public float ExpAmount => expAmount;
 }
