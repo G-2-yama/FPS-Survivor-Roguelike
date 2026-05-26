@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f396d1bc534a274691d17c74a934e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  rb: {fileID: 2836230790004044888}
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
   targetProvider: {fileID: 8790778771241833302}
   movement: {fileID: 5299368076619845785}
@@ -157,6 +158,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
   exp: {fileID: 0}
   whiteFlash: {fileID: 8496615387957828556}
+  deathDelay: 0.1
 --- !u!54 &2836230790004044888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -203,8 +205,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.010408061
-  m_Center: {x: 0.0007745719, y: 0.0019060756, z: 0.00009818845}
+  m_Radius: 0.015117536
+  m_Center: {x: 0.0007745719, y: 0.0019060763, z: -0.0046112863}
 --- !u!114 &8496615387957828556
 MonoBehaviour:
   m_ObjectHideFlags: 0

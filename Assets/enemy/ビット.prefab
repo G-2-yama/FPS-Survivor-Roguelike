@@ -146,10 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e827c71607bd264ca4d74611d72a0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemycondition
+  deathType: 0
   config: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
   attackController: {fileID: 4933798852626595605}
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: 7862773016890114749}
+  deathDelay: 0.1
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f396d1bc534a274691d17c74a934e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moveenemy
+  rb: {fileID: 5154964929320662522}
   config: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
   targetProvider: {fileID: 1800572802802244149}
   movement: {fileID: 2372962091248375863}

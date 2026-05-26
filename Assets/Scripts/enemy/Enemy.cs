@@ -8,7 +8,7 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private GameObject prefab;
     [SerializeField] private WhiteFlash whiteFlash;
    
-    [SerializeField] private float deathDelay = 1f;
+    [SerializeField] private float deathDelay = 0.1f;
   
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }

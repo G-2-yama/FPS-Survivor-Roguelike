@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: ballenemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  MaxHp: 25
+  MaxHp: 1
   damagelange: 1
   ChaseSpeed: 2
   OrbitRadius: 1
