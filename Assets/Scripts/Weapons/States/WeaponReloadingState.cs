@@ -13,14 +13,14 @@ public class WeaponReloadingState : WeaponState
     {
         Debug.Log("Weapon Reloading Stateに入りました");
         weapon.WeaponView.PlayReloadAnimation();
-        timer = weapon.WeaponStats.ReloadTime;
+        timer = weapon.WeaponData.ReloadTime;
     }
 
     public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 
-        weapon.WeaponView.SetReloadProgress(1f - timer / weapon.WeaponStats.ReloadTime);
+        weapon.WeaponView.SetReloadProgress(1f - timer / weapon.WeaponData.ReloadTime);
         // リロードの完了
         if (timer <= 0f)
         {

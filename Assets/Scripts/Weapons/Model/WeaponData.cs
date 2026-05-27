@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 武器ごとの差分パラメータを保持するデータ定義
-/// 攻撃システム側はこのデータを受け取り、共通処理で攻撃を実行する
 /// </summary>
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Weapons/Weapon Data")]
 public class WeaponData : ScriptableObject
@@ -26,53 +25,75 @@ public class WeaponData : ScriptableObject
     public WeaponTriggerConfig Trigger => trigger;
 
     [Header("Stats")]
-    [SerializeField] private WeaponLevelTable levelTable;
+    [SerializeField] private DamageProfile damage;
+    [SerializeField] private FireRhythmProfile fireRhythm;
+    [SerializeField] private Recoil recoil;
+    [SerializeField] private AmmoProfile ammo;
 
-    public int MaxLevel => levelTable.MaxLevel;
-    public WeaponStats GetStats(int level) => levelTable.GetStats(level);
+    [Header("Level")]
+    [SerializeField] private WeaponData nextLevelData;
+    public WeaponData NextLevelData => nextLevelData;
+
+    // =========================
+    // Trigger
+    // =========================
+
     public bool AutoFire => trigger.AutoFire;
     public bool AutoReload => trigger.AutoReload;
     public WeaponTriggerType TriggerType => trigger.TriggerType;
+
+    // =========================
+    // Classification
+    // =========================
+
     public WeaponType WeaponType => classification.WeaponType;
     public FireModeData FireModeData => classification.FireModeData;
+
+    // =========================
+    // Visual
+    // =========================
+
     public GameObject WeaponModelPrefab => visual.WeaponModelPrefab;
+
+    // =========================
+    // Identity
+    // =========================
+
     public Sprite Icon => identity.Icon;
     public string DisplayName => identity.DisplayName;
     public string WeaponId => identity.WeaponId;
 
-    
-}
+    // =========================
+    // Damage
+    // =========================
 
-/// <summary>
-/// レベルとWeaponStatsの対応を管理する
-/// 「どのレベルでどのStatsか」という目的だけを持つ
-/// </summary>
-[System.Serializable]
-public sealed class WeaponLevelTable
-{
-    [SerializeField] private WeaponStats baseStats;
-    [SerializeField] private WeaponStats[] levelStats;
+    public int Damage => damage.Damage;
+    public float SpreadAngle => damage.SpreadAngle;
 
-    /// <summary>最大レベル（0=baseのみの場合は0）</summary>
-    public int MaxLevel => levelStats != null ? levelStats.Length : 0;
+    // =========================
+    // Fire Rhythm
+    // =========================
 
-    /// <summary>
-    /// 指定レベルのStatsを返す
-    /// 不変オブジェクトなので参照を直接返しても安全
-    /// </summary>
-    public WeaponStats GetStats(int level)
-    {
-        if (level <= 0 || levelStats == null || levelStats.Length == 0)
-            return baseStats;
+    public float FireInterval => fireRhythm.FireInterval;
+    public int BurstCount => fireRhythm.BurstCount;
+    public float BurstInterval => fireRhythm.BurstInterval;
 
-        int index = Mathf.Clamp(level - 1, 0, levelStats.Length - 1);
-        return levelStats[index];
-    }
+    // =========================
+    // Ammo
+    // =========================
+
+    public int MagazineSize => ammo.MagazineSize;
+    public float ReloadTime => ammo.ReloadTime;
+
+    // =========================
+    // Recoil
+    // =========================
+
+    public Recoil Recoil => recoil ?? Recoil.Empty;
 }
 
 /// <summary>
 /// 武器の識別・UI表示に関するデータ
-/// 「この武器が何者か」という目的
 /// </summary>
 [System.Serializable]
 public class WeaponIdentity
@@ -88,7 +109,6 @@ public class WeaponIdentity
 
 /// <summary>
 /// 武器の見た目・演出に関するデータ
-/// 「プレイヤーの目に何が見えるか」という目的
 /// </summary>
 [System.Serializable]
 public class WeaponVisual
@@ -99,7 +119,6 @@ public class WeaponVisual
 
 /// <summary>
 /// 射撃トリガーの挙動に関するデータ
-/// 「ボタン入力がどう射撃に変換されるか」という目的
 /// </summary>
 [System.Serializable]
 public class WeaponTriggerConfig
@@ -115,7 +134,6 @@ public class WeaponTriggerConfig
 
 /// <summary>
 /// ゲームプレイ上の分類に関するデータ
-/// 「武器がゲームシステム内でどの枠に属するか」という目的
 /// </summary>
 [System.Serializable]
 public class WeaponClassification
@@ -138,4 +156,114 @@ public enum WeaponType
     Main = 0,
     Ability = 1,
     AutoWeapon = 2,
+}
+
+/// <summary>
+/// 攻撃威力・精度
+/// </summary>
+[System.Serializable]
+public sealed class DamageProfile
+{
+    public static DamageProfile Empty { get; } = new DamageProfile();
+
+    [SerializeField] private int damage = 1;
+    [SerializeField, Range(0f, 45f)] private float spreadAngle;
+
+    public int Damage => damage;
+    public float SpreadAngle => spreadAngle;
+
+    private DamageProfile() { }
+}
+
+/// <summary>
+/// 射撃リズム
+/// </summary>
+[System.Serializable]
+public sealed class FireRhythmProfile
+{
+    public static FireRhythmProfile Empty { get; } = new FireRhythmProfile();
+
+    [SerializeField] private float fireInterval = 0.1f;
+    [SerializeField] private int burstCount = 1;
+    [SerializeField] private float burstInterval = 0.05f;
+
+    public float FireInterval => fireInterval;
+    public int BurstCount => burstCount;
+    public float BurstInterval => burstInterval;
+
+    private FireRhythmProfile() { }
+}
+
+/// <summary>
+/// 反動
+/// </summary>
+[System.Serializable]
+public sealed class Recoil
+{
+    public static Recoil Empty { get; } = new Recoil();
+
+    [SerializeField] private float pitchKick = 1.2f;
+    [SerializeField] private float yawKick = 0.4f;
+    [SerializeField] private float yawRandomness = 1f;
+    [SerializeField] private float returnStrength = 20f;
+    [SerializeField] private float damping = 18f;
+    [SerializeField] private float maxPitch = 20f;
+
+    public float PitchKick => pitchKick;
+    public float YawKick => yawKick;
+    public float YawRandomness => yawRandomness;
+    public float ReturnStrength => returnStrength;
+    public float Damping => damping;
+    public float MaxPitch => maxPitch;
+
+    private Vector2 recoilOffset = Vector2.zero;
+    private Vector2 recoilVelocity = Vector2.zero;
+
+    public Vector2 RecoilOffset => recoilOffset;
+
+    /// <summary>
+    /// 発射時に反動を加える
+    /// </summary>
+    public void AddRecoil(float recoilMultiplier = 1f)
+    {
+        float yaw = Random.Range(-YawKick, YawKick) * YawRandomness;
+
+        recoilOffset.y += PitchKick * recoilMultiplier;
+        recoilOffset.x += yaw * recoilMultiplier;
+    }
+
+    /// <summary>
+    /// 毎フレーム更新
+    /// </summary>
+    public Vector2 Tick(float deltaTime)
+    {
+        Vector2 accel =
+            (-ReturnStrength * recoilOffset) -
+            (Damping * recoilVelocity);
+
+        recoilVelocity += accel * deltaTime;
+        recoilOffset += recoilVelocity * deltaTime;
+
+        recoilOffset.y =
+            Mathf.Clamp(recoilOffset.y, -MaxPitch, MaxPitch);
+
+        return recoilOffset;
+    }
+}
+
+/// <summary>
+/// 弾薬・リロード
+/// </summary>
+[System.Serializable]
+public sealed class AmmoProfile
+{
+    public static AmmoProfile Empty { get; } = new AmmoProfile();
+
+    [SerializeField] private int magazineSize = 1;
+    [SerializeField] private float reloadTime = 1.0f;
+
+    public int MagazineSize => magazineSize;
+    public float ReloadTime => reloadTime;
+
+    private AmmoProfile() { }
 }

@@ -12,7 +12,7 @@ public class WeaponFiringState : WeaponState
     {
         // Debug.Log("Weapon Firing Stateに入りました");
 
-        burstRemaining = weapon.WeaponStats.BurstCount;
+        burstRemaining = weapon.WeaponData.BurstCount;
         hasFired = false;
         timer = 0f;
     }
@@ -36,9 +36,9 @@ public class WeaponFiringState : WeaponState
                 weapon.WeaponView.PlayFireAnimation();
                 hasFired = true;
             }
-            weapon.WeaponStats.Recoil.AddRecoil();
+            weapon.WeaponData.Recoil.AddRecoil();
             burstRemaining--;
-            timer = weapon.WeaponStats.BurstInterval;
+            timer = weapon.WeaponData.BurstInterval;
         }
         else
         {

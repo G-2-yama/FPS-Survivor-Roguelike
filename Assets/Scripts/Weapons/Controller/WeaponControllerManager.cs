@@ -58,7 +58,7 @@ public class WeaponControllerManager : MonoBehaviour
         var total = Vector2.zero;
         foreach (var c in controllers)
         {
-            var recoil = c?.Weapon?.WeaponStats?.Recoil;
+            var recoil = c?.Weapon?.WeaponData?.Recoil;
             if (recoil == null) continue;
             recoil.Tick(deltaTime);
             total += recoil.RecoilOffset;

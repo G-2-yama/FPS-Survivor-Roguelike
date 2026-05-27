@@ -25,23 +25,21 @@ MonoBehaviour:
     autoFire: 0
     autoReload: 0
     triggerType: 0
-  levelTable:
-    baseStats:
-      damage:
-        damage: 5
-        spreadAngle: 10
-      fireRhythm:
-        fireInterval: 0.75
-        burstCount: 10
-        burstInterval: 0.001
-      recoil:
-        pitchKick: 2.5
-        yawKick: 0.4
-        yawRandomness: 1
-        returnStrength: 20
-        damping: 18
-        maxPitch: 20
-      ammo:
-        magazineSize: 30
-        reloadTime: 1.5
-    levelStats: []
+  damage:
+    damage: 10
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.75
+    burstCount: 10
+    burstInterval: 0.001
+  recoil:
+    pitchKick: 2.5
+    yawKick: 0.4
+    yawRandomness: 1
+    returnStrength: 20
+    damping: 18
+    maxPitch: 20
+  ammo:
+    magazineSize: 30
+    reloadTime: 1
+  nextLevelData: {fileID: 0}
