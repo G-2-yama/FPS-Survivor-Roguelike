@@ -19,7 +19,6 @@ public class ProjectileLauncher : MonoBehaviour
         }
 
         projectile.Initialize(
-            hit => TryApplyDamage(hit, damage),
             damage,
             bulletData.Lifetime);
     }

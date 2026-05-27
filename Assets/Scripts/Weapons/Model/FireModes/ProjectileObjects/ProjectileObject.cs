@@ -25,9 +25,8 @@ public abstract class ProjectileObject : PoolableObject
     /// </summary>
     /// <param name="onHitAction">衝突したColliderを受け取るヒット時コールバック</param>
     /// <param name="lifeTime">自動破棄までの秒数</param>
-    public void Initialize(System.Action<Collider> onHitAction, int damage, float lifeTime)
+    public void Initialize(int damage, float lifeTime)
     {
-        onHit = onHitAction;
         this.damage = damage;
         lifeRoutine = StartCoroutine(LifeTimer(lifeTime));
     }

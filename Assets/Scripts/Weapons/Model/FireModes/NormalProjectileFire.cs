@@ -24,7 +24,7 @@ public class NormalProjectileFire : FireModeData
         bullet.transform.rotation = Quaternion.LookRotation(direction);
 
         var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize((col) => TryApplyDamage(weapon, col), weapon.WeaponData.Damage, lifetime);
+        projectile.Initialize(weapon.WeaponData.Damage, lifetime);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = direction * speed;
