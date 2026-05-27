@@ -8,7 +8,8 @@ public class LevelUp : UpgradeBase
 
     public override bool IsAvailable()
     {
-        return player.Inventory.HasWeapon(targetType);
+        Weapon target = player.Inventory.WeaponSlots[targetType];
+        return player.Inventory.HasWeapon(targetType) && target.WeaponData.NextLevelData != null;
     }
 
     public override void Apply()

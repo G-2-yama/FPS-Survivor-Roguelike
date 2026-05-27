@@ -5,9 +5,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponData weaponData;
     public WeaponData WeaponData => weaponData;
 
-    [SerializeField] private int level = 0;
-    public int Level => level;
-
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
 
@@ -63,7 +60,6 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        level++;
         weaponData = weaponData.NextLevelData;
         weaponView.RefreshView(this);
     }
@@ -114,7 +110,6 @@ public class Weapon : MonoBehaviour
     private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
     {
         weaponData = data;
-        level = Mathf.Max(0, newLevel);
 
 
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
@@ -132,7 +127,6 @@ public class Weapon : MonoBehaviour
     private void ClearWeapon()
     {
         weaponData = EmptyWeaponData.Instance;
-        level = 0;
         currentAmmo = 0;
 
         stateMachine.ChangeIdleState();
