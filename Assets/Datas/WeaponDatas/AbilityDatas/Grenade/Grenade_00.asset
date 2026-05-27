@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: AssaultRifleData
+  m_Name: Grenade_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: New Weapon
-    icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
+    icon: {fileID: 0}
   visual:
-    weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
+    weaponModelPrefab: {fileID: 0}
   classification:
-    weaponType: 0
-    fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
+    weaponType: 1
+    fireModeData: {fileID: 11400000, guid: b4102ea5d3f41ed4a96b95a0900c1bc1, type: 2}
   trigger:
     autoFire: 0
-    autoReload: 0
+    autoReload: 1
     triggerType: 1
   damage:
     damage: 10
@@ -36,10 +36,10 @@ MonoBehaviour:
     pitchKick: 1.2
     yawKick: 0.4
     yawRandomness: 1
-    returnStrength: 10
+    returnStrength: 20
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 36
-    reloadTime: 1.6
+    magazineSize: 1
+    reloadTime: 1
   nextLevelData: {fileID: 0}

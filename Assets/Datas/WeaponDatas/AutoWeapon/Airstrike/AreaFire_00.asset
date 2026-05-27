@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10f9dfbe488b30b4389a835cb4cec5fa, type: 3}
-  m_Name: AreaFire
+  m_Name: AreaFire_00
   m_EditorClassIdentifier: Assembly-CSharp::AreaFireData
   areaSize: {x: 10, y: 10}
   spawnHeight: 20

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: SuperShot
+  m_Name: SuperShot_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -20,28 +20,26 @@ MonoBehaviour:
     weaponModelPrefab: {fileID: 0}
   classification:
     weaponType: 1
-    fireModeData: {fileID: 11400000, guid: 18ff5d4ed5535fe42a33b8d0768c7968, type: 2}
+    fireModeData: {fileID: 11400000, guid: a2506d25e67dc4343ba3ece7f27e67b6, type: 2}
   trigger:
     autoFire: 0
     autoReload: 1
     triggerType: 1
-  levelTable:
-    baseStats:
-      damage:
-        damage: 0
-        spreadAngle: 0
-      fireRhythm:
-        fireInterval: 0
-        burstCount: 1
-        burstInterval: 0.05
-      recoil:
-        pitchKick: 0
-        yawKick: 0
-        yawRandomness: 0
-        returnStrength: 0
-        damping: 0
-        maxPitch: 0
-      ammo:
-        magazineSize: 1
-        reloadTime: 1
-    levelStats: []
+  damage:
+    damage: 1000
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.1
+    burstCount: 1
+    burstInterval: 0.05
+  recoil:
+    pitchKick: 1.2
+    yawKick: 0.4
+    yawRandomness: 1
+    returnStrength: 20
+    damping: 18
+    maxPitch: 20
+  ammo:
+    magazineSize: 1
+    reloadTime: 3
+  nextLevelData: {fileID: 0}
