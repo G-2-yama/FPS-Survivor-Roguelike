@@ -2,37 +2,39 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UpgradeButtonView : MonoBehaviour,
-    IPointerEnterHandler, IPointerExitHandler
+public class UpgradeButtonView : MonoBehaviour
 {
+    [SerializeField] Image ButtonImage;
     [SerializeField] private Text buttonText;
+    [SerializeField] private Text descriptionText;
+    [SerializeField] private Image iconImage;
 
-    private UpgradeBase upgrade;
-    private UpgradeView view;
-
-    public void Setup(UpgradeBase upgrade, UpgradeView view)
+    public void Setup(UpgradeBase upgrade)
     {
-        this.upgrade = upgrade;
-        this.view = view;
-
         buttonText.text = upgrade.DisplayName;
+        descriptionText.text = upgrade.Description;
+        iconImage.sprite = upgrade.Icon;
+
+        Color rarityColor = GetColorByRarity(upgrade.Rarity);
+        ButtonImage.color = rarityColor;
     }
 
-    /// <summary>
-    /// マウスオーバーでアップグレードの詳細を表示する
-    /// </summary>
-    /// <param name="eventData">ポインタイベントデータ</param>
-    public void OnPointerEnter(PointerEventData eventData)
+    private Color GetColorByRarity(Rarity rarity)
     {
-        view.ShowUpgradeDetail(upgrade);
-    }
-
-    /// <summary>
-    /// マウスが離れたらアップグレードの詳細を非表示にする
-    /// </summary>
-    /// <param name="eventData">ポインタイベントデータ</param>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        view.HideUpgradeDetail();
+        switch (rarity)
+        {
+            case Rarity.Common:
+                return new Color(1f, 1f, 1f);
+            case Rarity.Uncommon:
+                return new Color(0.5f, 1f, 0.5f);
+            case Rarity.Rare:
+                return new Color(0, 0.5f, 1f);
+            case Rarity.Epic:
+                return new Color(0.6f, 0, 0.6f);
+            case Rarity.Legendary:
+                return new Color(1f, 0.5f, 0);
+            default:
+                return Color.white;
+        }
     }
 }

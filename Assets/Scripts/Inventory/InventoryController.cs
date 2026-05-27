@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private UIFader uiFader;
 
     public bool IsOpen { get; private set; } = false;
 
@@ -14,12 +15,16 @@ public class InventoryController : MonoBehaviour
     {
         IsOpen = true;
         inventoryUI.InventoryCanvas.gameObject.SetActive(true);
+        uiFader.FadeIn();
     }
 
     public void Close()
     {
+        uiFader.FadeOut(() =>
+        {
+            inventoryUI.InventoryCanvas.gameObject.SetActive(false);
+        });
         IsOpen = false;
-        inventoryUI.InventoryCanvas.gameObject.SetActive(false);
     }
 
     public void Toggle()

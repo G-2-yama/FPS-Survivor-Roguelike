@@ -6,14 +6,12 @@ public class UpgradeView : MonoBehaviour
 {
     [SerializeField] private Canvas upgradeCanvas;
     [SerializeField] private UpgradeButtonView[] upgradeButtonsViews;
-    [SerializeField] private Text displayNameText;
-    [SerializeField] private Text descriptionText;
+    [SerializeField] private UIFader uiFader;
 
     /// <summary>
     /// アップグレードの選択肢をセットアップする
     /// </summary>
     /// <param name="choices">選択肢のリスト</param>
-    /// <param name="manager">アップグレードマネージャ</param>
     public void Setup(List<UpgradeBase> choices)
     {
         for (int i = 0; i < upgradeButtonsViews.Length; i++)
@@ -21,7 +19,7 @@ public class UpgradeView : MonoBehaviour
             if (i < choices.Count)
             {
                 upgradeButtonsViews[i].gameObject.SetActive(true);
-                upgradeButtonsViews[i].Setup(choices[i], this);
+                upgradeButtonsViews[i].Setup(choices[i]);
             }
             else
             {
@@ -36,6 +34,7 @@ public class UpgradeView : MonoBehaviour
     public void Show()
     {
         upgradeCanvas.gameObject.SetActive(true);
+        uiFader.FadeIn();
     }
 
     /// <summary>
@@ -43,26 +42,10 @@ public class UpgradeView : MonoBehaviour
     /// </summary>
     public void Hide()
     {
-        upgradeCanvas.gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// アップグレードの詳細を表示する
-    /// </summary>
-    /// <param name="upgrade">表示するアップグレード</param>
-    public void ShowUpgradeDetail(UpgradeBase upgrade)
-    {
-        displayNameText.text = upgrade.DisplayName;
-        descriptionText.text = upgrade.Description;
-    }
-
-    /// <summary>
-    /// アップグレードの詳細を非表示にする
-    /// </summary>
-    public void HideUpgradeDetail()
-    {
-        displayNameText.text = "";
-        descriptionText.text = "";
+        uiFader.FadeOut(() =>
+        {
+            upgradeCanvas.gameObject.SetActive(false);
+        });
     }
 
 }

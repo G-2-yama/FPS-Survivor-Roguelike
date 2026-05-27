@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum Rarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
 
 public abstract class UpgradeBase : ScriptableObject
 {
@@ -8,7 +16,12 @@ public abstract class UpgradeBase : ScriptableObject
 
     [SerializeField] protected string description;
     public string Description => description;
-    
+    [SerializeField] protected Sprite icon;
+    public Sprite Icon => icon;
+
+    [SerializeField] protected Rarity rarity;
+    public Rarity Rarity => rarity;
+
     protected Player player;
 
     public void Initialize(Player player)

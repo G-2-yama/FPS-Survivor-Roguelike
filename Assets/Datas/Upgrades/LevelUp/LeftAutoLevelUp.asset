@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: LeftAutoLevelUp
   m_EditorClassIdentifier: Assembly-CSharp::LevelUp
   displayName: "\u5DE6\u30AA\u30FC\u30C8\u6B66\u5668\u5F37\u5316"
-  description: 
+  description: "\u5DE6\u306E\u30AA\u30FC\u30C8\u6B66\u5668\u306E\u30EC\u30D9\u30EB\u30921\u4E0A\u3052\u308B"
+  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  rarity: 0
   targetType: 4

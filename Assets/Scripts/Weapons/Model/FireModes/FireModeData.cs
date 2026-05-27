@@ -61,8 +61,8 @@ public abstract class FireModeData : ScriptableObject
 
         float spread = weapon.WeaponStats.SpreadAngle;
 
-        float x = UnityEngine.Random.Range(-spread, spread);
-        float y = UnityEngine.Random.Range(-spread, spread);
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
 
         Vector3 direction = Camera.main.transform.forward;
         direction = Quaternion.Euler(y, x, 0) * direction;
