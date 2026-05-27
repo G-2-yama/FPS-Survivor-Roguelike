@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: LightningGun_01
+  m_Name: LightningGun_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: New Weapon
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: e1d9ae16319bf3048a5c4a17e01d10e4, type: 3}
   visual:
-    weaponModelPrefab: {fileID: 3637342788740244059, guid: 452274f2432a6d34d8b2732670808f74, type: 3}
+    weaponModelPrefab: {fileID: 125668353827341869, guid: d5fdc6cbe8c2ad04cb571cdc4b193d3a, type: 3}
   classification:
     weaponType: 0
     fireModeData: {fileID: 11400000, guid: fc1f797baa1062e40b5d7c8cdda591cb, type: 2}
@@ -26,19 +26,19 @@ MonoBehaviour:
     autoReload: 0
     triggerType: 0
   damage:
-    damage: 1
+    damage: 30
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0.1
+    fireInterval: 0.5
     burstCount: 1
     burstInterval: 0.05
   recoil:
-    pitchKick: 1.2
-    yawKick: 0.4
-    yawRandomness: 1
-    returnStrength: 20
-    damping: 18
-    maxPitch: 20
+    pitchKick: 2.4
+    yawKick: 1
+    yawRandomness: 2
+    returnStrength: 10
+    damping: 36
+    maxPitch: 40
   ammo:
     magazineSize: 10
     reloadTime: 3
