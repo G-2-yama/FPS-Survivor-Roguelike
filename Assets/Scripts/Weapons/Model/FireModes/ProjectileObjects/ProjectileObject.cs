@@ -9,6 +9,8 @@ public abstract class ProjectileObject : PoolableObject
     private Coroutine lifeRoutine;
     protected Rigidbody rb;
 
+    protected int damage;
+
     /// <summary>
     /// 二重ヒット防止フラグ
     /// </summary>
@@ -23,11 +25,13 @@ public abstract class ProjectileObject : PoolableObject
     /// </summary>
     /// <param name="onHitAction">衝突したColliderを受け取るヒット時コールバック</param>
     /// <param name="lifeTime">自動破棄までの秒数</param>
-    public void Initialize(System.Action<Collider> onHitAction, float lifeTime)
+    public void Initialize(System.Action<Collider> onHitAction, int damage, float lifeTime)
     {
         onHit = onHitAction;
+        this.damage = damage;
         lifeRoutine = StartCoroutine(LifeTimer(lifeTime));
     }
+
     IEnumerator LifeTimer(float time)
     {
         yield return new WaitForSeconds(time);

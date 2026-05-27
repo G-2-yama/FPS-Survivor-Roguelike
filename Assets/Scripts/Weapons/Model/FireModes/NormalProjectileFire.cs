@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/Projectile")]
-public class ProjectileData : FireModeData
+public class NormalProjectileFire : FireModeData
 {
     [SerializeField] private float speed = 80f;
     public float Speed => speed;
@@ -24,9 +24,11 @@ public class ProjectileData : FireModeData
         bullet.transform.rotation = Quaternion.LookRotation(direction);
 
         var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize((col) => TryApplyDamage(weapon, col),lifetime);
+        projectile.Initialize((col) => TryApplyDamage(weapon, col), weapon.WeaponData.Damage, lifetime);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = direction * speed;
     }
+
+    
 }
