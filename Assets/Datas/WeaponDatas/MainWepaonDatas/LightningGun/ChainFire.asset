@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069820746c15c974cb80d89c4785edb6, type: 3}
   m_Name: ChainFire
   m_EditorClassIdentifier: Assembly-CSharp::ChainFire
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 188688732933221572, guid: 44a484b04364083409b6dd723190e340, type: 3}
   maxRange: 60
   chainRange: 10
   chainCount: 3

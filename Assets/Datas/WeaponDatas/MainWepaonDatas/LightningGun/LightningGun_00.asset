@@ -33,7 +33,7 @@ MonoBehaviour:
     burstCount: 1
     burstInterval: 0.05
   recoil:
-    pitchKick: 2.4
+    pitchKick: 4
     yawKick: 1
     yawRandomness: 2
     returnStrength: 10

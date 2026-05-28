@@ -20,7 +20,7 @@ public class NormalProjectileFire : FireModeData
 
         GameObject bullet = PoolManager.Instance.Get(prefab);
 
-        bullet.transform.position = weapon.Muzzle.position;
+        bullet.transform.position = Camera.main.transform.position + direction * 0.5f;
         bullet.transform.rotation = Quaternion.LookRotation(direction);
 
         var projectile = bullet.GetComponent<ProjectileObject>();
