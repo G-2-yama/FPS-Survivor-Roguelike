@@ -2,17 +2,17 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class FlashEffect : PoolableObject
+public class Effecter : PoolableObject
 {
     [SerializeField] private float lifetime = 0.5f;
-    [SerializeField] private ParticleSystem flashParticleSystem;
+    [SerializeField] private ParticleSystem effectParticleSystem;
 
     private Coroutine lifeRoutine;
 
     public override void OnGet()
     {
         lifeRoutine = StartCoroutine(LifeTimer());
-        flashParticleSystem.Play();
+        effectParticleSystem.Play();
     }
 
     public override void OnRelease()

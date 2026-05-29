@@ -33,7 +33,7 @@ public class ChainFire : FireModeData
                 IDamageable damageable =
                     currentTarget.GetComponent<IDamageable>();
 
-                if (damageable == null)
+                if (damageable == null || damageable.TeamType == TeamType.Player)
                     break;
 
                 // ダメージ
