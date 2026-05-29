@@ -15,6 +15,8 @@ public class WeaponData : ScriptableObject
     [Header("Visual")]
     [SerializeField] private WeaponVisual visual;
     public WeaponVisual Visual => visual;
+    [SerializeField] private SoundDB soundDB;
+    public SoundDB SoundDB => soundDB;
 
     [Header("Classification")]
     [SerializeField] private WeaponClassification classification;

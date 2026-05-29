@@ -36,6 +36,7 @@ public class WeaponFiringState : WeaponState
                 weapon.WeaponView.PlayFireAnimation();
                 hasFired = true;
             }
+            weapon.Sounder.Play(SoundCategory.Fire);
             weapon.WeaponData.Recoil.AddRecoil();
             burstRemaining--;
             timer = weapon.WeaponData.BurstInterval;

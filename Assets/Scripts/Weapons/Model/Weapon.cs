@@ -8,6 +8,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
 
+    [SerializeField] private Sounder sounder;
+    public Sounder Sounder => sounder;
+
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
     
@@ -32,6 +35,7 @@ public class Weapon : MonoBehaviour
         }
 
         currentAmmo = weaponData.MagazineSize;
+        sounder.SetSoundDB(weaponData.SoundDB);
     }
 
     /// <summary>
@@ -47,6 +51,7 @@ public class Weapon : MonoBehaviour
             ClearWeapon();
             return;
         }
+        sounder.SetSoundDB(newData.SoundDB);    
         InitializeWeapon(newData, newLevel, ammo);
     }
 
@@ -61,6 +66,7 @@ public class Weapon : MonoBehaviour
         }
 
         weaponData = weaponData.NextLevelData;
+        sounder.SetSoundDB(weaponData.SoundDB);
         weaponView.RefreshView(this);
     }
 
