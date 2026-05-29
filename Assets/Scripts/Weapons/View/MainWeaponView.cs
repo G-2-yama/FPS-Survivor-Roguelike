@@ -27,7 +27,7 @@ public class MainWeaponView : WeaponView
 
         UpdateAmmo(
             weapon.CurrentAmmo,
-            weapon.WeaponStats.MagazineSize
+            weapon.WeaponData.MagazineSize
         );
     }
 

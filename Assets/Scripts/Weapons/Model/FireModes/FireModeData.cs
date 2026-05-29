@@ -44,7 +44,7 @@ public abstract class FireModeData : ScriptableObject
     /// </summary>
     protected int GetDamageAmount(Weapon weapon)
     {
-        return Mathf.RoundToInt(weapon.WeaponStats.Damage);
+        return Mathf.RoundToInt(weapon.WeaponData.Damage);
     }
 
     /// <summary>
@@ -54,12 +54,12 @@ public abstract class FireModeData : ScriptableObject
     /// <returns>発射方向</returns>
     protected Vector3 GetFireDirection(Weapon weapon)
     {
-        if (!weapon.HasWeapon || weapon.WeaponStats == null)
+        if (!weapon.HasWeapon || weapon.WeaponData == null)
         {
             return Vector3.zero;
         }
 
-        float spread = weapon.WeaponStats.SpreadAngle;
+        float spread = weapon.WeaponData.SpreadAngle;
 
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);

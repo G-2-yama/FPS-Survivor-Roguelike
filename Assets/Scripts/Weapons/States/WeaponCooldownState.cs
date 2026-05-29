@@ -9,7 +9,7 @@ public class WeaponCooldownState : WeaponState
     public override void Enter()
     {
         // Debug.Log("Weapon Cooldown Stateに入りました");
-        timer = weapon.WeaponStats.FireInterval;
+        timer = weapon.WeaponData.FireInterval;
     }
 
     public override void Update(bool isPressed)

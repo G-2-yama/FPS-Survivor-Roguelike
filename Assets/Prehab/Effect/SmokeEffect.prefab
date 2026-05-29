@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4628706778957838330}
   - component: {fileID: 5578882128098745376}
   - component: {fileID: 7116833521257688932}
-  - component: {fileID: 2609207160781075564}
+  - component: {fileID: 4130858785341727025}
   m_Layer: 0
   m_Name: SmokeEffect
   m_TagString: Untagged
@@ -4837,7 +4837,7 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!114 &2609207160781075564
+--- !u!114 &4130858785341727025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4846,8 +4846,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5131132216050497334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 793f450ff5a18bf42b9978fab80605cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d36b4bc40c75a842b33579a62d89d2a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmokeEffect
+  m_EditorClassIdentifier: Assembly-CSharp::Effecter
   lifetime: 0.5
-  particleSystem: {fileID: 5578882128098745376}
+  effectParticleSystem: {fileID: 5578882128098745376}

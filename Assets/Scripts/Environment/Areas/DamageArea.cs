@@ -32,6 +32,11 @@ public class DamageArea : PoolableObject
             lifeRoutine = StartCoroutine(LifeTimer(lifetime));
     }
 
+    public void Initialize(int damage)
+    {
+        this.damage = damage;
+    }
+
     /// <summary>
     /// DamageAreaを無効化
     /// </summary>

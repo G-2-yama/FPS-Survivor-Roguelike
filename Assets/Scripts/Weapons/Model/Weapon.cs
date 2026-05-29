@@ -5,12 +5,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponData weaponData;
     public WeaponData WeaponData => weaponData;
 
-    [SerializeField] private int level = 0;
-    public int Level => level;
-
-    private WeaponStats weaponStats;
-    public WeaponStats WeaponStats => weaponStats;
-
     [SerializeField] private Transform muzzle;
     public Transform Muzzle => muzzle;
 
@@ -32,14 +26,12 @@ public class Weapon : MonoBehaviour
         if (!HasWeapon)
         {
             weaponData = EmptyWeaponData.Instance;
-            weaponStats = WeaponStats.Empty;
             currentAmmo = 0;
             weaponView.RefreshView(this);
             return;
         }
 
-        weaponStats = weaponData.GetStats(level);
-        currentAmmo = weaponStats.MagazineSize;
+        currentAmmo = weaponData.MagazineSize;
     }
 
     /// <summary>
@@ -68,8 +60,7 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        level++;
-        weaponStats = weaponData.GetStats(level);
+        weaponData = weaponData.NextLevelData;
         weaponView.RefreshView(this);
     }
 
@@ -79,7 +70,7 @@ public class Weapon : MonoBehaviour
     /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
     public bool Fire()
     {
-        if (!HasWeapon || weaponStats == null || currentAmmo <= 0)
+        if (!HasWeapon || weaponData == null || currentAmmo <= 0)
         {
             return false;
         }
@@ -96,12 +87,12 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        if (!HasWeapon || weaponStats == null)
+        if (!HasWeapon || weaponData == null)
         {
             return;
         }
 
-        currentAmmo = weaponStats.MagazineSize;
+        currentAmmo = weaponData.MagazineSize;
         weaponView.RefreshView(this);
     }
     
@@ -119,14 +110,12 @@ public class Weapon : MonoBehaviour
     private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
     {
         weaponData = data;
-        level = Mathf.Max(0, newLevel);
 
-        weaponStats = weaponData.GetStats(level);
 
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
         currentAmmo = (ammo < 0)
-            ? weaponStats.MagazineSize
-            : Mathf.Clamp(ammo, 0, weaponStats.MagazineSize);
+            ? weaponData.MagazineSize
+            : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
 
         stateMachine.ChangeIdleState();
         weaponView.RefreshView(this);
@@ -138,8 +127,6 @@ public class Weapon : MonoBehaviour
     private void ClearWeapon()
     {
         weaponData = EmptyWeaponData.Instance;
-        level = 0;
-        weaponStats = WeaponStats.Empty;
         currentAmmo = 0;
 
         stateMachine.ChangeIdleState();

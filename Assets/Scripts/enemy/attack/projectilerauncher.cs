@@ -14,12 +14,12 @@ public class ProjectileLauncher : MonoBehaviour
 
         if (!bullet.TryGetComponent<ProjectileObject>(out var projectile))
         {
-            Debug.LogError($"{name}: ProjectileObject ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB");
+            Debug.LogError($"{name}: ProjectileObject ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B");
             return;
         }
 
         projectile.Initialize(
-            hit => TryApplyDamage(hit, damage),
+            damage,
             bulletData.Lifetime);
     }
 

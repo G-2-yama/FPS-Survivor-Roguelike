@@ -71,11 +71,10 @@ public class PlayerInventory : MonoBehaviour
     private void SwapLoadout(Weapon weaponA, Weapon weaponB)
     {
         WeaponData dataA = weaponA.WeaponData;
-        int levelA = weaponA.Level;
         int ammoA = weaponA.CurrentAmmo;
 
-        weaponA.Equip(weaponB.WeaponData, weaponB.Level, weaponB.CurrentAmmo);
-        weaponB.Equip(dataA, levelA, ammoA);
+        weaponA.Equip(weaponB.WeaponData, weaponB.CurrentAmmo);
+        weaponB.Equip(dataA, weaponB.CurrentAmmo);
     }
 
     public bool DiscardWeapon(SlotType slot)
