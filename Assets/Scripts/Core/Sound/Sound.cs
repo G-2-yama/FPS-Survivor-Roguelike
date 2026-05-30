@@ -11,7 +11,8 @@ public enum SoundCategory
 {
     BGM,
     Fire,
-    Reload,
+    ReloadEnter,
+    ReloadEnd,
     Player,
     Enemy,
     Environment,

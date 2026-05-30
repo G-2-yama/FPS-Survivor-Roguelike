@@ -16,7 +16,7 @@ MonoBehaviour:
   - category: 1
     index: 0
     clip: {fileID: 8300000, guid: 69a25e4de13d7be47b1e1d2c18ef36c9, type: 3}
-    volume: 0.2
+    volume: 0.4
     pitch: 1
     playType: 0
     is3D: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
     loop: 0
   - category: 2
     index: 0
-    clip: {fileID: 8300000, guid: 1ccae09090c323a459e63a9c0984b125, type: 3}
+    clip: {fileID: 8300000, guid: 7989b348c39263b42a73d87b5a702330, type: 3}
     volume: 1
     pitch: 0.8
     playType: 0
