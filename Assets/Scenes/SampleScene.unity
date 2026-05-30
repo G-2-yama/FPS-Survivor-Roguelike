@@ -10051,7 +10051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: c213b36bc91d25d4aae7d68949affece, type: 2}
+  weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 240814481}
   weaponView: {fileID: 240814480}
@@ -56387,7 +56387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
-  audioSource: {fileID: 445505116}
+  audioSource: {fileID: 1461869978}
 --- !u!82 &1461869978
 AudioSource:
   m_ObjectHideFlags: 0
@@ -73752,7 +73752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
-  audioSource: {fileID: 445505116}
+  audioSource: {fileID: 1909986808}
 --- !u!82 &1909986808
 AudioSource:
   m_ObjectHideFlags: 0
@@ -77245,7 +77245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
-  audioSource: {fileID: 445505116}
+  audioSource: {fileID: 2019895855}
 --- !u!82 &2019895855
 AudioSource:
   m_ObjectHideFlags: 0
@@ -77405,7 +77405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc76fd030c223714ab99d105b522064c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
+  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 445505115}
   weaponView: {fileID: 2022669245}
@@ -77439,7 +77439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
-  audioSource: {fileID: 445505116}
+  audioSource: {fileID: 2022669247}
 --- !u!82 &2022669247
 AudioSource:
   m_ObjectHideFlags: 0

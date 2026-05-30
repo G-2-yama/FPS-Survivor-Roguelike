@@ -59,7 +59,7 @@ public abstract class FireModeData : ScriptableObject
             return Vector3.zero;
         }
 
-        float spread = weapon.WeaponData.SpreadAngle;
+        float spread = weapon.WeaponData.SpreadAngle * 0.5f;
 
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);

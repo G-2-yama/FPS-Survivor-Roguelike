@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
-  m_Name: LGSoundDB
+  m_Name: ARSoundDB
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
   - category: 1
     index: 0
-    clip: {fileID: 8300000, guid: 6eb8597aa831b8c47962a91bdc69c9f0, type: 3}
-    volume: 0.7
-    pitch: 2
+    clip: {fileID: 8300000, guid: 69a25e4de13d7be47b1e1d2c18ef36c9, type: 3}
+    volume: 0.3
+    pitch: 1
     playType: 0
     is3D: 0
     spatialBlend: 0
     loop: 0
   - category: 2
     index: 0
-    clip: {fileID: 8300000, guid: b31feace097e2e24fa3865d07e1331dd, type: 3}
+    clip: {fileID: 8300000, guid: 1ccae09090c323a459e63a9c0984b125, type: 3}
     volume: 1
-    pitch: 1
+    pitch: 0.5
     playType: 0
     is3D: 0
     spatialBlend: 0

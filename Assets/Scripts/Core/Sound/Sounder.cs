@@ -44,7 +44,7 @@ public class Sounder : MonoBehaviour
             return;
         }
 
-        //ApplySetting(data);
+        ApplySetting(data);
 
         switch (data.playType)
         {
