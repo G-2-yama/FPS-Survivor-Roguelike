@@ -64,6 +64,7 @@ public class WeaponData : ScriptableObject
     public Sprite Icon => identity.Icon;
     public string DisplayName => identity.DisplayName;
     public string WeaponId => identity.WeaponId;
+    public string Description => identity.Description;
 
     // =========================
     // Damage
@@ -103,10 +104,12 @@ public class WeaponIdentity
 {
     [SerializeField] private string weaponId = "weapon_default";
     [SerializeField] private string displayName = "New Weapon";
+    [SerializeField] private string description = "現在のレベルの武器の説明文が入ります";
     [SerializeField] private Sprite icon;
 
     public string WeaponId => weaponId;
     public string DisplayName => displayName;
+    public string Description => description;
     public Sprite Icon => icon;
 }
 

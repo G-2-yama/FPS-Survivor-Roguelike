@@ -8,6 +8,7 @@ public class ItemLevelUp : UpgradeBase
 
     public override bool IsAvailable()
     {
+        UpdateDesription(player.Inventory.Items[itemIndex]?.NextLevelItem);
         return player.Inventory.Items[itemIndex]?.NextLevelItem != null;
     }
 
@@ -16,5 +17,14 @@ public class ItemLevelUp : UpgradeBase
         Item targetItem = player.Inventory.Items[itemIndex];
         player.Inventory.DiscardItem(itemIndex);
         player.Inventory.EquipItem(targetItem.NextLevelItem);
+    }
+
+    private void UpdateDesription(Item nextItem)
+    {
+        if (nextItem == null)
+        {
+            return;
+        }
+        description = nextItem.DisplayName + "のレベルが上がる" + "\n" + nextItem.Description;
     }
 }
