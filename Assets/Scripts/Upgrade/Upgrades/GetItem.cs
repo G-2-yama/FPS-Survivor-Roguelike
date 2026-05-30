@@ -7,7 +7,11 @@ public class GetItem : UpgradeBase
 
     public override bool IsAvailable()
     {
-        return player.Inventory.Items.Count < 6;
+        foreach (var item in player.Inventory.Items)
+        {
+            if (item == null) return true;
+        }
+        return false;
     }
 
     public override void Apply()

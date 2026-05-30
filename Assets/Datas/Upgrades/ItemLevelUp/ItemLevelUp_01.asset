@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a40fe58c98aa96e4a981e7d05c2318a5, type: 3}
+  m_Name: ItemLevelUp_01
+  m_EditorClassIdentifier: Assembly-CSharp::ItemLevelUp
+  displayName: "\u30B9\u30ED\u30C3\u30C82\u30A2\u30A4\u30C6\u30E0\u5F37\u5316"
+  description: "\u30B9\u30ED\u30C3\u30C82\u306E\u30A2\u30A4\u30C6\u30E0\u306E\u30EC\u30D9\u30EB\u304C\uFF11\u4E0A\u304C\u308B"
+  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  rarity: 0
+  itemIndex: 1
