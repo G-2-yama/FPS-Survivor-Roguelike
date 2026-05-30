@@ -56357,7 +56357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 445505115}
+  sounder: {fileID: 1461869977}
   weaponView: {fileID: 1461869976}
 --- !u!114 &1461869976
 MonoBehaviour:
@@ -73722,7 +73722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 445505115}
+  sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
 --- !u!114 &1909986806
 MonoBehaviour:
@@ -77215,7 +77215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 445505115}
+  sounder: {fileID: 2019895854}
   weaponView: {fileID: 2019895853}
 --- !u!114 &2019895853
 MonoBehaviour:
@@ -77407,7 +77407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 445505115}
+  sounder: {fileID: 2022669246}
   weaponView: {fileID: 2022669245}
 --- !u!114 &2022669245
 MonoBehaviour:
