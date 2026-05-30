@@ -9,7 +9,7 @@ public class HitScanData : FireModeData
     public float MaxRange => maxRange;
 
     /// <inheritdoc />
-    public override void Fire(Weapon weapon)
+    public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
         Ray ray = new Ray(Camera.main.transform.position, direction);
@@ -18,7 +18,7 @@ public class HitScanData : FireModeData
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxRange))
         {
-            TryApplyDamage(weapon, hit.collider);
+            TryApplyDamage(weapon, hit.collider, weaponOwner);
             TryEnableHitEffect(out GameObject hitEffect);
             if (hitEffect != null)
             {

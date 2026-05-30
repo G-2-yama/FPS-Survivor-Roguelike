@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private Player weaponOwner;
+    public Player WeaponOwner => weaponOwner;
     [SerializeField] private WeaponData weaponData;
     public WeaponData WeaponData => weaponData;
 
@@ -83,7 +85,7 @@ public class Weapon : MonoBehaviour
 
         currentAmmo--;
         weaponView.RefreshView(this);
-        weaponData.FireModeData.Fire(this);
+        weaponData.FireModeData.Fire(this, weaponOwner);
 
         return true;
     }

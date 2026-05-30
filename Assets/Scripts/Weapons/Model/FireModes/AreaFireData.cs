@@ -15,15 +15,15 @@ public class AreaFireData : FireModeData
     [SerializeField] private float lifetime = 3f;
     [SerializeField] private float speed = 20f;
 
-    public override void Fire(Weapon weapon)
+    public override void Fire(Weapon weapon, Player weaponOwner)
     {
         for (int i = 0; i < projectileCount; i++)
         {
-            FireSingle(weapon);
+            FireSingle(weapon, weaponOwner);
         }
     }
 
-    private void FireSingle(Weapon weapon)
+    private void FireSingle(Weapon weapon, Player weaponOwner)
     {
         // エリア内のランダムなXZ座標を決定
         Vector3 center = weapon.transform.position;

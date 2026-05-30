@@ -9,13 +9,14 @@ public abstract class FireModeData : ScriptableObject
     /// 攻撃処理を実装するメソッド
     /// </summary>
     /// <param name="weapon">攻撃を行う武器</param>
-    public abstract void Fire(Weapon weapon);
+    /// <param name="weaponOwner">武器の所有者</param>
+    public abstract void Fire(Weapon weapon, Player weaponOwner);
 
     /// <summary>
     /// 当たったコライダーからダメージ対象を取得し、必要ならダメージを適用する
     /// </summary>
     /// <returns>ダメージを与えた場合はtrue</returns>
-    public bool TryApplyDamage(Weapon weapon, Collider hitCollider)
+    public bool TryApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
     {
         var damageable = hitCollider.GetComponent<IDamageable>();
         if (damageable == null) return false;
@@ -23,7 +24,7 @@ public abstract class FireModeData : ScriptableObject
         if (damageable.TeamType != TeamType.Enemy 
             && damageable.TeamType != TeamType.Boss) return false;
 
-        damageable.TakeDamage(GetDamageAmount(weapon));
+        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
         return true;
     }
 
@@ -42,9 +43,9 @@ public abstract class FireModeData : ScriptableObject
     /// <summary>
     /// 武器の攻撃力を整数ダメージとして取得する
     /// </summary>
-    protected int GetDamageAmount(Weapon weapon)
+    protected int GetDamageAmount(Weapon weapon, Player weaponOwner)
     {
-        return Mathf.RoundToInt(weapon.WeaponData.Damage);
+        return weapon.WeaponData.DamageProfile.GetDamageAmount(weaponOwner);
     }
 
     /// <summary>

@@ -68,6 +68,7 @@ public class WeaponData : ScriptableObject
     // =========================
     // Damage
     // =========================
+    public DamageProfile DamageProfile => damage;
 
     public int Damage => damage.Damage;
     public float SpreadAngle => damage.SpreadAngle;
@@ -175,6 +176,11 @@ public sealed class DamageProfile
     public float SpreadAngle => spreadAngle;
 
     private DamageProfile() { }
+
+    public int GetDamageAmount(Player weaponOwner)
+    {
+        return damage + weaponOwner.Stats.Damage;
+    }
 }
 
 /// <summary>
