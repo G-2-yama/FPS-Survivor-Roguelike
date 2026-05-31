@@ -11,7 +11,7 @@ public class SlashFire : FireModeData
     {
         Vector3 direction = Camera.main.transform.forward;
 
-        Vector3 spawnPos = weaponOwner.transform.position + direction * distance;
+        Vector3 spawnPos = Camera.main.transform.position + direction * distance;
 
         GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
 
