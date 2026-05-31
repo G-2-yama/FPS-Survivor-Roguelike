@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6017380263142868539}
   - component: {fileID: 8507236809112742344}
   m_Layer: 0
-  m_Name: DamageArea
+  m_Name: SlashArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 6017380263142868539}
   damage: 10
-  interval: 0.5
-  lifetime: 3
-  targetTeam: 3
-  mode: 1
+  interval: 10
+  lifetime: 0.25
+  targetTeam: 6
+  mode: 0

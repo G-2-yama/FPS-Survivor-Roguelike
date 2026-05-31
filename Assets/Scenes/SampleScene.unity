@@ -7275,6 +7275,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &164500398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10052,7 +10053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
+  weaponData: {fileID: 11400000, guid: 84b9664e77a22404ea31f018d4fbf0fc, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 240814481}
   weaponView: {fileID: 240814480}
@@ -10682,6 +10683,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &269377643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15189,6 +15191,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &364933316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27863,6 +27866,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &675531572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28015,6 +28019,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &676319133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33784,6 +33789,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &857137607
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34676,6 +34682,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &880736789
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36175,6 +36182,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &930062883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39456,6 +39464,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1023013651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48540,6 +48549,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1251831039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49306,6 +49316,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1266597776
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -51261,6 +51272,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1309120094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52907,6 +52919,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1374453921
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62779,6 +62792,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1642908213
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67491,6 +67505,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1767220288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71177,6 +71192,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &1855933112
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78869,6 +78885,7 @@ MonoBehaviour:
   interval: 0.2
   lifetime: 0
   targetTeam: 1
+  mode: 0
 --- !u!65 &2036966357
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -82714,6 +82731,63 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1001 &4324723718515092442
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208157812551946685, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371946893808914018, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
+      propertyPath: m_Name
+      value: SlashArea
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5e63343ec7149a846859d1b301e6910c, type: 3}
 --- !u!33 &4703513731025926168
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -83625,3 +83699,4 @@ SceneRoots:
   - {fileID: 1195778458}
   - {fileID: 1903388225}
   - {fileID: 2025044605}
+  - {fileID: 4324723718515092442}
