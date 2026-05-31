@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UpgradeManager upgradeManager;
     public UpgradeManager UpgradeManager => upgradeManager;
 
+    [SerializeField] private Sounder sounder;
+    public Sounder Sounder => sounder;
+
     private GameController gameController;
     private GameStateMachine gameStateMachine;
     public GameStateMachine GameStateMachine => gameStateMachine;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
         gameController = new GameController(this);
         upgradeManager.Initialize(gameController);
         gameStateMachine = new GameStateMachine(gameController);
+        sounder.Play(SoundCategory.BGM);    // 後にGameStartStateのようなものを作成してそちらに置く
     }
 
     private void Update()
