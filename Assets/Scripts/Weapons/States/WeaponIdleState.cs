@@ -16,6 +16,10 @@ public class WeaponIdleState : WeaponState
 
         if (weapon.ShouldStartAutoReload())
         {
+            if(stateMachine == null)
+            {
+                return;
+            }
             stateMachine.ChangeReloadingState();
         }
         else if (weapon.WeaponData.AutoFire)

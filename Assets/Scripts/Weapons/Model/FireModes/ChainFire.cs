@@ -10,7 +10,7 @@ public class ChainFire : FireModeData
     [SerializeField] private float chainRange = 10f;
     [SerializeField] private int chainCount = 3;
 
-    public override void Fire(Weapon weapon)
+    public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
         Ray ray = new Ray(Camera.main.transform.position, direction);
@@ -37,7 +37,7 @@ public class ChainFire : FireModeData
                     break;
 
                 // ダメージ
-                TryApplyDamage(weapon, currentTarget);
+                TryApplyDamage(weapon, currentTarget, weaponOwner);
 
                 hitTargets.Add(currentTarget);
 

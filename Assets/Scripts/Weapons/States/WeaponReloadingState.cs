@@ -14,6 +14,7 @@ public class WeaponReloadingState : WeaponState
         Debug.Log("Weapon Reloading Stateに入りました");
         weapon.WeaponView.PlayReloadAnimation();
         timer = weapon.WeaponData.ReloadTime;
+        weapon.Sounder.Play(SoundCategory.ReloadEnter);
     }
 
     public override void Update(bool isPressed)
@@ -26,6 +27,7 @@ public class WeaponReloadingState : WeaponState
         {
             weapon.WeaponView.SetReloadProgress(0f);
             weapon.Reload();
+            weapon.Sounder.Play(SoundCategory.ReloadEnd);
             stateMachine.ChangeIdleState();
         }
     }

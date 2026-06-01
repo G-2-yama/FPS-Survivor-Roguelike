@@ -10,6 +10,7 @@ public class DamageArea : PoolableObject
     [SerializeField] private float interval = 1f;
     [SerializeField] private float lifetime = 0f;
     [SerializeField] private TeamType targetTeam;
+    [SerializeField] private DamageAreaMode mode;
 
     /// <summary>
     /// 各対象ごとのダメージタイマーを管理する辞書
@@ -51,29 +52,40 @@ public class DamageArea : PoolableObject
         timers.Clear();
     }
 
-    /// <summary>
-    /// 対象ごとに時間を加算し、一定間隔ごとにダメージを与える
-    /// </summary>
-    /// <param name="other">Trigger内に入っているコライダー</param>
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (isReleased) return;
+        if (mode != DamageAreaMode.OnEnterOnce)
+            return;
 
         var damageable = other.GetComponent<IDamageable>();
-        if (damageable == null) return;
 
-        if ((damageable.TeamType & targetTeam) == 0) return;
+        if (damageable == null)
+            return;
 
-        // 初回登録
+        if ((damageable.TeamType & targetTeam) == 0)
+            return;
+
+        damageable.TakeDamage(damage);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (mode != DamageAreaMode.Interval)
+            return;
+
+        var damageable = other.GetComponent<IDamageable>();
+
+        if (damageable == null)
+            return;
+
+        if ((damageable.TeamType & targetTeam) == 0)
+            return;
+
         if (!timers.ContainsKey(damageable))
-        {
             timers[damageable] = 0f;
-        }
 
-        // タイマー加算
         timers[damageable] += Time.deltaTime;
 
-        // 間隔を超えたらダメージ
         if (timers[damageable] >= interval)
         {
             damageable.TakeDamage(damage);
@@ -96,4 +108,10 @@ public class DamageArea : PoolableObject
         yield return new WaitForSeconds(time);
         if (!isReleased) Release();
     }
+}
+
+public enum DamageAreaMode
+{
+    OnEnterOnce, // 入った瞬間に一度だけダメージ
+    Interval,      // 入っている間、一定間隔でダメージ
 }

@@ -15,6 +15,8 @@ public class WeaponData : ScriptableObject
     [Header("Visual")]
     [SerializeField] private WeaponVisual visual;
     public WeaponVisual Visual => visual;
+    [SerializeField] private SoundDB soundDB;
+    public SoundDB SoundDB => soundDB;
 
     [Header("Classification")]
     [SerializeField] private WeaponClassification classification;
@@ -62,10 +64,12 @@ public class WeaponData : ScriptableObject
     public Sprite Icon => identity.Icon;
     public string DisplayName => identity.DisplayName;
     public string WeaponId => identity.WeaponId;
+    public string Description => identity.Description;
 
     // =========================
     // Damage
     // =========================
+    public DamageProfile DamageProfile => damage;
 
     public int Damage => damage.Damage;
     public float SpreadAngle => damage.SpreadAngle;
@@ -100,10 +104,12 @@ public class WeaponIdentity
 {
     [SerializeField] private string weaponId = "weapon_default";
     [SerializeField] private string displayName = "New Weapon";
+    [SerializeField] private string description = "現在のレベルの武器の説明文が入ります";
     [SerializeField] private Sprite icon;
 
     public string WeaponId => weaponId;
     public string DisplayName => displayName;
+    public string Description => description;
     public Sprite Icon => icon;
 }
 
@@ -173,6 +179,11 @@ public sealed class DamageProfile
     public float SpreadAngle => spreadAngle;
 
     private DamageProfile() { }
+
+    public int GetDamageAmount(Player weaponOwner)
+    {
+        return damage + weaponOwner.Stats.Damage;
+    }
 }
 
 /// <summary>

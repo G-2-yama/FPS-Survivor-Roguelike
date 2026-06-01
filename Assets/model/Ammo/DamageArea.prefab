@@ -130,3 +130,4 @@ MonoBehaviour:
   interval: 0.5
   lifetime: 3
   targetTeam: 3
+  mode: 1

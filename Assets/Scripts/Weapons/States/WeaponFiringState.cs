@@ -34,6 +34,7 @@ public class WeaponFiringState : WeaponState
             if (!hasFired)
             {
                 weapon.WeaponView.PlayFireAnimation();
+                weapon.Sounder.Play(SoundCategory.Fire);
                 hasFired = true;
             }
             weapon.WeaponData.Recoil.AddRecoil();

@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IDamageable
     public float Exp => exp;
     private int pendingLevelUps;
     public int PendingLevelUps => pendingLevelUps;
-    [SerializeField] ExpManager expmaneger;
+    [SerializeField] private ExpManager expmanager;
 
     [SerializeField] private PlayerConfig config;
     public PlayerConfig Config => config;
@@ -42,11 +42,13 @@ public class Player : MonoBehaviour, IDamageable
     
     private int level = 1;
     public int Level => level;
+    
+    public PlayerStats Stats { get; private set; }
 
     private void Awake()
     {
-        int initialHp = config != null ? config.InitialHP : 100;
-        Health = new Health(initialHp);
+        Stats = new PlayerStats(config);
+        Health = new Health(Stats.MaxHP);
         Health.OnDeath += HandleDeath;
     }
 
@@ -67,10 +69,10 @@ public class Player : MonoBehaviour, IDamageable
         exp += amount;
         OnExpGained?.Invoke(amount);
 
-        while (exp >= expmaneger.LevelUpRequiredExp)
+        while (exp >= expmanager.LevelUpRequiredExp)
         {
            
-            exp -= expmaneger.LevelUpRequiredExp;
+            exp -= expmanager.LevelUpRequiredExp;
             LevelUp();
             
 
@@ -88,7 +90,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         level++;
         pendingLevelUps++;
-        expmaneger.IncreaseRequiredExp();
+        expmanager.IncreaseRequiredExp();
         OnLevelUp?.Invoke();
     }
 

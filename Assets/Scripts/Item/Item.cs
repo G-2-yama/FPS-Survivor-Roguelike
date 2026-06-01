@@ -10,6 +10,9 @@ public abstract class Item : ScriptableObject
 
     [SerializeField] protected string description;
     public string Description => description;
+
+    [SerializeField] protected Item nextLevelItem;
+    public Item NextLevelItem => nextLevelItem;
     
     protected Player player;
 

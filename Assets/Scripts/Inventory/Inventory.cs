@@ -17,7 +17,7 @@ public class PlayerInventory : MonoBehaviour
     public IReadOnlyDictionary<SlotType, Weapon> WeaponSlots => weaponSlots;
     public event Action<SlotType, WeaponData> OnSlotChanged;
 
-    private List<Item> items = new List<Item>();
+    private Item[] items = new Item[6];
     public IReadOnlyList<Item> Items => items;
     public event Action<Item>    OnItemAdded;
 
@@ -92,10 +92,17 @@ public class PlayerInventory : MonoBehaviour
 
     public void EquipItem(Item item)
     {
-        items.Add(item);
-        item.Initialize(player);
-        item.Apply();
-        OnItemAdded?.Invoke(item);
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == null)
+            {
+                items[i] = item;
+                item.Initialize(player);
+                item.Apply();
+                OnItemAdded?.Invoke(item);
+                return;
+            }
+        }
     }
 
     /// <summary>
@@ -106,10 +113,10 @@ public class PlayerInventory : MonoBehaviour
     /// <returns>廃棄に成功した場合 true</returns>
     public bool DiscardItem(int index)
     {
-        if (index < 0 || index >= items.Count) return false;
+        if (index < 0 || index >= items.Length) return false;
 
         items[index].Revert();
-        items.RemoveAt(index);
+        items[index] = null;
         OnItemRemoved?.Invoke(index);
         return true;
     }

@@ -14,7 +14,7 @@ public class NormalProjectileFire : FireModeData
 
 
     /// <inheritdoc />
-    public override void Fire(Weapon weapon)
+    public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
 

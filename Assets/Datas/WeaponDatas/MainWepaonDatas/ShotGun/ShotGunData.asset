@@ -18,6 +18,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 7507488a32980a447a03debd1d70f5c2, type: 3}
   visual:
     weaponModelPrefab: {fileID: 5205645611520847389, guid: b123c7c2715a42e48b2e1568aa76357b, type: 3}
+  soundDB: {fileID: 11400000, guid: b7def65aa18a0274e8fd3167dd7d48e3, type: 2}
   classification:
     weaponType: 0
     fireModeData: {fileID: 11400000, guid: b78a2e26f1716604699ec34024b14d9d, type: 2}
@@ -27,11 +28,11 @@ MonoBehaviour:
     triggerType: 0
   damage:
     damage: 10
-    spreadAngle: 0
+    spreadAngle: 15
   fireRhythm:
     fireInterval: 0.75
-    burstCount: 10
-    burstInterval: 0.001
+    burstCount: 15
+    burstInterval: 0
   recoil:
     pitchKick: 2.5
     yawKick: 0.4
@@ -40,6 +41,6 @@ MonoBehaviour:
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 30
-    reloadTime: 1
+    magazineSize: 60
+    reloadTime: 2
   nextLevelData: {fileID: 0}

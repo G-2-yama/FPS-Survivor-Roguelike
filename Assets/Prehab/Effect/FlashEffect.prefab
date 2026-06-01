@@ -4851,7 +4851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
   lifetime: 0.5
-  flashParticleSystem: {fileID: 8232064747216438480}
+  effectParticleSystem: {fileID: 0}
 --- !u!1 &5546195495808789498
 GameObject:
   m_ObjectHideFlags: 0
@@ -4869,7 +4869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8420871916904346772
 Transform:
   m_ObjectHideFlags: 0
