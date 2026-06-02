@@ -3,25 +3,29 @@ using UnityEngine;
 public class ExpPickupTrigger : MonoBehaviour
 {
     private ExpObject expObject;
+    private bool pickedUp=false;
 
     private void Awake()
     {
         expObject = GetComponentInParent<ExpObject>();
     }
+    private void OnEnable()
+    {
+        pickedUp = false;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-
+        if (pickedUp)
+            return;
+        
         Player player = other.GetComponent<Player>();
 
         if (player == null)
             return;
-
-        Debug.Log("pickup");
-
+        pickedUp = true;
         player.AddExp(expObject.ExpAmount);
-
         expObject.Release();
     }
 }
