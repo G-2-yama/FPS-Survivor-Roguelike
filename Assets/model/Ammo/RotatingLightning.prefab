@@ -14564,6 +14564,7 @@ GameObject:
   - component: {fileID: 4933424357317235428}
   - component: {fileID: 4609257127868324428}
   - component: {fileID: 8639508520228142371}
+  - component: {fileID: 8780658286209739224}
   m_Layer: 0
   m_Name: RotatingLightning
   m_TagString: Untagged
@@ -19413,3 +19414,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8780658286209739224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4684910651031909879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df700c14b59043b40b6c6163ac3bce95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitDamageArea
+  areaCollider: {fileID: 8639508520228142371}
+  damage: 10
+  interval: 1
+  lifetime: 0
+  targetTeam: 6
+  mode: 0
