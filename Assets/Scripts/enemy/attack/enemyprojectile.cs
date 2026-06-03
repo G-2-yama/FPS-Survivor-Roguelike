@@ -96,6 +96,7 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     }
     protected override void HandleHit(Collider col)
     {
+      
         onHit?.Invoke(col);
         deathType = DeathType.SelfDestruct;
         Health?.TakeDamage(9999);

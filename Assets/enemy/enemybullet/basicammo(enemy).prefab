@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7733582789057215521}
   - component: {fileID: 1056760503474149836}
   - component: {fileID: 4915692453184951791}
-  - component: {fileID: 4444750607739330656}
+  - component: {fileID: 5538543393594772651}
   m_Layer: 0
   m_Name: basicammo(enemy)
   m_TagString: Untagged
@@ -144,7 +144,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4444750607739330656
+--- !u!114 &5538543393594772651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,10 +153,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7491390756978583155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f9d9fef5ebc2064e89ab25e0c906d8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 58a650e1b3dbbc64b9258c02259b1613, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::enemyplojectileobject
+  m_EditorClassIdentifier: Assembly-CSharp::basicenemyprojectile
   config: {fileID: 11400000, guid: 00a397677e7091148a6750e1a9398700, type: 2}
   exp: {fileID: 0}
   whiteFlash: {fileID: 0}
   deathDelay: 0.1
+  targetTeam: 1
