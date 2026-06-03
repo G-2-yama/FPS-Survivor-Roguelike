@@ -18,6 +18,6 @@ MonoBehaviour:
   OrbitRadius: 7
   OrbitAngularSpeed: 10
   EngageDistance: 8
-  AttackPower: 1
+  AttackPower: 2
   AttackInterval: 3
   AttackPattern: {fileID: 11400000, guid: 2ff7f9945009f96429b76e843ccf5219, type: 2}

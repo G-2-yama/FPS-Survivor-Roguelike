@@ -223,7 +223,7 @@ MonoBehaviour:
   exp: {fileID: 0}
   whiteFlash: {fileID: 8496615387957828556}
   deathDelay: 0.1
-  targetTeam: 2
+  targetTeam: 1
 --- !u!1001 &5079089486708136024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -240,6 +240,14 @@ PrefabInstance:
       propertyPath: ShapeModule.angle
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: moveWithCustomTransform
+      value: 
+      objectReference: {fileID: 2424156282767775968}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.07043529
