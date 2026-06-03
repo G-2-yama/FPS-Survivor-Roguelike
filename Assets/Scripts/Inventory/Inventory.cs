@@ -73,8 +73,11 @@ public class PlayerInventory : MonoBehaviour
         WeaponData dataA = weaponA.WeaponData;
         int ammoA = weaponA.CurrentAmmo;
 
-        weaponA.Equip(weaponB.WeaponData, weaponB.CurrentAmmo);
-        weaponB.Equip(dataA, weaponB.CurrentAmmo);
+        WeaponData dataB = weaponB.WeaponData;
+        int ammoB = weaponB.CurrentAmmo;
+
+        weaponA.Equip(dataB, 0, ammoB);
+        weaponB.Equip(dataA, 0, ammoA);
     }
 
     public bool DiscardWeapon(SlotType slot)
