@@ -818,6 +818,18 @@ PrefabInstance:
       propertyPath: moveWithTransform
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: m_FreeformStretching
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.29167318
@@ -832,15 +844,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.041799985
+      value: 0.0355
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00019999873
+      value: 0.0002
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00050000666
+      value: 0.0005
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalRotation.w

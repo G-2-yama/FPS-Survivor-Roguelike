@@ -23,15 +23,5 @@ public class ProjectileLauncher : MonoBehaviour
             bulletData.Lifetime);
     }
 
-    private bool TryApplyDamage(Collider hitCollider, int damage)
-    {
-        if (hitCollider == null) return false;
-
-        var damageable = hitCollider.GetComponent<IDamageable>();
-        if (damageable == null) return false;
-        if (damageable.TeamType == ownerTeam) return false;
-
-        damageable.TakeDamage(damage);
-        return true;
-    }
+  
 }
