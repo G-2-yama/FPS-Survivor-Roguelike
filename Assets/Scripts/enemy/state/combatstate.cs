@@ -11,7 +11,12 @@ public class CombatState : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Enter() { }
+    public void Enter() {
+        if (enemy.animator!=null) {
+            enemy.animator.SetBool("Isidle", false);
+        }
+
+    }
 
     public void Update()
     {
@@ -24,6 +29,9 @@ public class CombatState : IState
 
         if (distance >= enemy.Config.EngageDistance + 1.0f)
         {
+            if (enemy.animator!=null) {
+                enemy.animator.SetBool("Isidle", true);
+            }
             stateMachine.ChangeState(
                 new ChaseState(enemy, stateMachine));
 

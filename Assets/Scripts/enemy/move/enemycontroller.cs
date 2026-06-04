@@ -9,7 +9,7 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyAttackController attack;
     [SerializeField]
     private ChaseMovementType chaseMovementType;
-
+    [SerializeField] public Animator animator; 
     public Rigidbody Rb => rb;
     public ChaseMovementType ChaseMovementType => chaseMovementType;
     [SerializeField]
@@ -24,7 +24,7 @@ public class EnemyBrain : MonoBehaviour
     public Transform Target => targetProvider != null ? targetProvider.CurrentTarget : null;
     public EnemyMovementController Movement => movement;
     public EnemyAttackController Attack => attack;
-
+    
     private void Awake()
     {
         stateMachine = new StateMachine<IState>();
