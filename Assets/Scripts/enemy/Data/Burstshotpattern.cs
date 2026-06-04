@@ -10,6 +10,7 @@ public class BurstShotPattern : AttackPattern
 
     public override IEnumerator Execute(AttackContext context)
     {
+        
         for (int i = 0; i < shotCount; i++)
         {
             if (context.Target == null)

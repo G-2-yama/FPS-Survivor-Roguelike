@@ -50,7 +50,7 @@ public class missileshotposchange : MonoBehaviour
                 previousTarget = target;
             }
 
-            yield return new WaitForSeconds(Bp.Interval);
+            yield return new WaitForSeconds(Bp.Interval+0.5f);
 
             i++;
         }
