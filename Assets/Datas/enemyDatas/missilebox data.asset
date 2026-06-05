@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 25
   damagelange: 1
-  ChaseSpeed: 3
+  ChaseSpeed: 2
   OrbitRadius: 7
   OrbitAngularSpeed: 15
   EngageDistance: 8
