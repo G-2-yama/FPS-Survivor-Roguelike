@@ -856,8 +856,8 @@ MonoBehaviour:
   movement: {fileID: 2131483456560350963}
   attack: {fileID: 4758849224248555182}
   chaseMovementType: 0
-  animator: {fileID: 3752096293260541823}
   combatBehaviour: 0
+  animator: {fileID: 3752096293260541823}
 --- !u!114 &7429119663115475894
 MonoBehaviour:
   m_ObjectHideFlags: 0

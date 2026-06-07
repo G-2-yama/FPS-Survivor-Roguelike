@@ -5,16 +5,21 @@ public class ChaseState : IState
     private readonly EnemyBrain enemy;
     private readonly StateMachine<IState> stateMachine;
 
-    public ChaseState(EnemyBrain enemy, StateMachine<IState> stateMachine)
+    public ChaseState(
+        EnemyBrain enemy,
+        StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
     }
 
-    public void Enter() {
-        if (enemy.animator != null)
+    public void Enter()
+    {
+        if (enemy.Animator != null)
         {
-            enemy.animator.SetBool("Iscombat", false);
+           
+            enemy.Animator.SetBool("Iscombat", false);
+            
         }
     }
 
@@ -29,12 +34,7 @@ public class ChaseState : IState
 
         if (distance <= enemy.Config.EngageDistance - 1.0f)
         {
-            if (enemy.animator != null)
-            {
-                enemy.animator.SetBool("Iscombat", true);
-            }
-            stateMachine.ChangeState(
-                new CombatState(enemy, stateMachine));
+            stateMachine.ChangeState(enemy.CombatState);
             return;
         }
 
@@ -46,7 +46,7 @@ public class ChaseState : IState
                     enemy.Rb,
                     enemy.transform,
                     enemy.Target.position,
-                    enemy.Config.ChaseSpeed); 
+                    enemy.Config.ChaseSpeed);
 
                 break;
 
@@ -62,7 +62,7 @@ public class ChaseState : IState
         }
     }
 
-    public void Exit() { 
-
+    public void Exit()
+    {
     }
 }
