@@ -16,7 +16,7 @@ MonoBehaviour:
     weaponId: weapon_default
     displayName: "\u30B0\u30EC\u30CD\u30FC\u30C9"
     description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
-    icon: {fileID: 21300000, guid: 4d3498a066d735a4db16361517b0be91, type: 3}
+    icon: {fileID: 21300000, guid: 4f9bdf99904bc3e4db857bbf69277cc1, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}

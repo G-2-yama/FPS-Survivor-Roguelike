@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e9cef17cdaffe4e89207bc592f288a, type: 3}
   m_Name: ExplosiveProjectile
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileData
+  effectPrefab: {fileID: 0}
   speed: 25
   lifetime: 2
-  prefab: {fileID: 6556299627688077866, guid: c90c4300e2126cb43958a80fca28af78, type: 3}
+  prefab: {fileID: 4305417644922424915, guid: f5981809b4191fc4e8f26aa5ff143ef9, type: 3}
