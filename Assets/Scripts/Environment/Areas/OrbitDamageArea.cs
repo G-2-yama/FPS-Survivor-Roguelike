@@ -7,9 +7,9 @@ public class OrbitDamageArea : DamageArea
     private float speed;
     private float angle;
 
-    public void Initialize(int damage, Transform center, float radius, float speed, float lifetime = 0f)
+    public void Initialize(int damage, Transform center, float radius, float speed)
     {
-        base.Initialize(damage, lifetime);
+        base.Initialize(damage);
 
         this.center = center;
         this.radius = radius;

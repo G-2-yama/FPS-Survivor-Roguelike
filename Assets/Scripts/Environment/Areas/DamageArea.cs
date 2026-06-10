@@ -33,10 +33,9 @@ public class DamageArea : PoolableObject
             lifeRoutine = StartCoroutine(LifeTimer(lifetime));
     }
 
-    public void Initialize(int damage, float lifetime = 0f)
+    public void Initialize(int damage)
     {
         this.damage = damage;
-        this.lifetime = lifetime;
         OnGet();
     }
 

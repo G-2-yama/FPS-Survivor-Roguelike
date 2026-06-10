@@ -7,7 +7,6 @@ public class OrbitFireData : FireModeData
 
     [SerializeField] float radius = 3f;
     [SerializeField] float rotateSpeed = 180f;
-    [SerializeField] float lifetime = 5f;
 
     public override void Fire(Weapon weapon,Player weaponOwner)
     {
@@ -18,6 +17,6 @@ public class OrbitFireData : FireModeData
         OrbitDamageArea orbit = obj.GetComponent<OrbitDamageArea>();
 
         orbit.Initialize(GetDamageAmount(weapon, weaponOwner),
-            weaponOwner.transform, radius, rotateSpeed, lifetime);
+            weaponOwner.transform, radius, rotateSpeed);
     }
 }

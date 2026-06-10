@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Unlock
   displayName: "\u30B0\u30EC\u30CD\u30FC\u30C9"
   description: "\u30B0\u30EC\u30CD\u30FC\u30C9\u3092\u30A2\u30D3\u30EA\u30C6\u30A3\u306B\u88C5\u5099\u3059\u308B"
-  icon: {fileID: 21300000, guid: 4d3498a066d735a4db16361517b0be91, type: 3}
+  icon: {fileID: 21300000, guid: 4f9bdf99904bc3e4db857bbf69277cc1, type: 3}
   rarity: 2
   target: {fileID: 11400000, guid: 281d7ac504ed3ed439f6984723262ed9, type: 2}

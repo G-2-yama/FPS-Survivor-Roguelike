@@ -19429,6 +19429,6 @@ MonoBehaviour:
   areaCollider: {fileID: 8639508520228142371}
   damage: 10
   interval: 1
-  lifetime: 0
+  lifetime: 5
   targetTeam: 6
   mode: 0
