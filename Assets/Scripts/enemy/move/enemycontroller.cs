@@ -7,33 +7,42 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyTargetProvider targetProvider;
     [SerializeField] private EnemyMovementController movement;
     [SerializeField] private EnemyAttackController attack;
-    [SerializeField]
-    private ChaseMovementType chaseMovementType;
-
-    public Rigidbody Rb => rb;
-    public ChaseMovementType ChaseMovementType => chaseMovementType;
-    [SerializeField]
-    private CombatBehaviourType combatBehaviour;
-
-    public CombatBehaviourType CombatBehaviour
-        => combatBehaviour;
+    [SerializeField] private ChaseMovementType chaseMovementType;
+    [SerializeField] private CombatBehaviourType combatBehaviour;
+    [SerializeField] private Animator animator;
 
     private StateMachine<IState> stateMachine;
 
+    private ChaseState chaseState;
+    private CombatState combatState;
+
+    public Rigidbody Rb => rb;
     public EnemyConfig Config => config;
-    public Transform Target => targetProvider != null ? targetProvider.CurrentTarget : null;
+    public Transform Target => targetProvider?.CurrentTarget;
     public EnemyMovementController Movement => movement;
     public EnemyAttackController Attack => attack;
+    public Animator Animator => animator;
+
+    public ChaseMovementType ChaseMovementType => chaseMovementType;
+    public CombatBehaviourType CombatBehaviour => combatBehaviour;
+
+    public StateMachine<IState> StateMachine => stateMachine;
+
+    public ChaseState ChaseState => chaseState;
+    public CombatState CombatState => combatState;
 
     private void Awake()
     {
         stateMachine = new StateMachine<IState>();
 
+        chaseState = new ChaseState(this, stateMachine);
+        combatState = new CombatState(this, stateMachine);
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        stateMachine.ChangeState(new ChaseState(this, stateMachine));
+     
+        ResetBrain();
     }
 
     private void FixedUpdate()
@@ -44,6 +53,24 @@ public class EnemyBrain : MonoBehaviour
     private void OnDisable()
     {
         attack?.CancelAttack();
+    }
+
+    public void ResetBrain()
+    {
+        if (animator != null)
+        {
+            animator.enabled = false;
+            animator.enabled = true;
+
+            
+
+            animator.SetBool("Iscombat", false);
+           
+
+        }
+
+        stateMachine.ChangeState(chaseState);
+        
     }
 
     public void ChangeState(IState newState)

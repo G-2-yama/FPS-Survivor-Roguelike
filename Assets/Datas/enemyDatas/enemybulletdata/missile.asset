@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: missile
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 2
-  ChaseSpeed: 8
+  damagelange: 1
+  ChaseSpeed: 3
   OrbitRadius: 1
   OrbitAngularSpeed: 1
   EngageDistance: 0
-  AttackPower: 5
-  AttackInterval: 0.01
-  AttackPattern: {fileID: 11400000, guid: 2ff7f9945009f96429b76e843ccf5219, type: 2}
+  AttackPower: 1
+  AttackInterval: 1
+  AttackPattern: {fileID: 0}

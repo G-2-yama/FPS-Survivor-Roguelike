@@ -5,13 +5,22 @@ public class CombatState : IState
     private readonly EnemyBrain enemy;
     private readonly StateMachine<IState> stateMachine;
 
-    public CombatState(EnemyBrain enemy, StateMachine<IState> stateMachine)
+    public CombatState(
+        EnemyBrain enemy,
+        StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
     }
 
-    public void Enter() { }
+    public void Enter()
+    {
+        if (enemy.Animator != null)
+        {
+           
+            enemy.Animator.SetBool("Iscombat", true);
+        }
+    }
 
     public void Update()
     {
@@ -24,9 +33,7 @@ public class CombatState : IState
 
         if (distance >= enemy.Config.EngageDistance + 1.0f)
         {
-            stateMachine.ChangeState(
-                new ChaseState(enemy, stateMachine));
-
+            stateMachine.ChangeState(enemy.ChaseState);
             return;
         }
 
@@ -39,7 +46,7 @@ public class CombatState : IState
                     enemy.transform,
                     enemy.Target,
                     enemy.Config.OrbitRadius,
-                    enemy.Config.OrbitAngularSpeed); 
+                    enemy.Config.OrbitAngularSpeed);
 
                 enemy.Attack?.TryAttack();
 
