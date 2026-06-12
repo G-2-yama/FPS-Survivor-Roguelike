@@ -1,14 +1,11 @@
-using System.Collections;
 using UnityEngine;
-
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/HitScan")]
 public class HitScanData : FireModeData
 {
     [SerializeField] private float maxRange = 60f;
-    public float MaxRange => maxRange;
+    [SerializeField] private float hitRadius = 0.1f;
 
-    /// <inheritdoc />
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
@@ -16,7 +13,7 @@ public class HitScanData : FireModeData
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxRange))
+        if (Physics.SphereCast(ray, hitRadius, out RaycastHit hit, maxRange))
         {
             TryApplyDamage(weapon, hit.collider, weaponOwner);
             TryEnableHitEffect(out GameObject hitEffect);

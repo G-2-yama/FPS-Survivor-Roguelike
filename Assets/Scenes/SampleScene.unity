@@ -63288,6 +63288,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ef6f18089774b3049ad2771a79722044, type: 2}
   - {fileID: 11400000, guid: eff52e0076a33df40855fa97fa085211, type: 2}
   - {fileID: 11400000, guid: a826a1f27d5b438459c2cd82fff725ef, type: 2}
+  - {fileID: 11400000, guid: c2419c75472805b409cb598b777504be, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -77292,7 +77293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
+  weaponData: {fileID: 11400000, guid: d24713427b67b904c8167c9587e9d017, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 2019895854}
   weaponView: {fileID: 2019895853}
