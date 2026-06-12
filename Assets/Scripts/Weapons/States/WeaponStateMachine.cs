@@ -10,6 +10,7 @@ public class WeaponStateMachine
     private WeaponState cooldownState;
 
     private WeaponState reloadingState;
+    private WeaponState chargeState;
 
 
     public WeaponStateMachine(Weapon weapon)
@@ -18,6 +19,7 @@ public class WeaponStateMachine
         firingState = new WeaponFiringState(weapon);
         cooldownState = new WeaponCooldownState(weapon);
         reloadingState = new WeaponReloadingState(weapon);
+        chargeState = new WeaponChargeState(weapon);
 
         ChangeState(idleState);
     }
@@ -55,6 +57,11 @@ public class WeaponStateMachine
     public void ChangeReloadingState()
     {
         ChangeState(reloadingState);
+    }
+
+    public void ChangeChargeState()
+    {
+        ChangeState(chargeState);
     }
 
     private void ChangeState(WeaponState newState)
