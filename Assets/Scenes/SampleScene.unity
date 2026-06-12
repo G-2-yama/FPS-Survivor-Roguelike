@@ -29639,6 +29639,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708403245}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &709516582
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -71.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114629737088864950, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_Name
+      value: ChargeBeam
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226025999189543336, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: lifetime
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
 --- !u!1 &718345492
 GameObject:
   m_ObjectHideFlags: 0
@@ -73799,7 +73860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
+  weaponData: {fileID: 11400000, guid: d91c1213cad4fd0409323b4e9e63834c, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
@@ -83579,3 +83640,4 @@ SceneRoots:
   - {fileID: 1195778458}
   - {fileID: 1903388225}
   - {fileID: 2025044605}
+  - {fileID: 709516582}
