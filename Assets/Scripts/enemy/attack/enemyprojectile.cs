@@ -9,7 +9,7 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     [SerializeField] private GameObject exp;
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private float deathDelay = 0.1f;
-    public TeamType TeamType => TeamType.Enemy;
+    public TeamType TeamType => TeamType.EnemyAmmo;
     public Health Health { get; private set; }
     public void TakeDamage(int damage)
 
@@ -96,11 +96,12 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
     }
     protected override void HandleHit(Collider col)
     {
-      
         onHit?.Invoke(col);
         deathType = DeathType.SelfDestruct;
         Health?.TakeDamage(9999);
     }
+
+
     private IEnumerator DeathRoutine()
     {
 

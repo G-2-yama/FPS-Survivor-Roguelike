@@ -61,14 +61,9 @@ public class ChainFire : FireModeData
     /// <summary>
     /// まだヒットしていない最も近いダメージ可能対象を探す
     /// </summary>
-    private Collider FindNearestEnemy(
-        Collider originTarget,
-        HashSet<Collider> hitTargets)
+    private Collider FindNearestEnemy(Collider originTarget, HashSet<Collider> hitTargets)
     {
-        Collider[] colliders =
-            Physics.OverlapSphere(
-                originTarget.transform.position,
-                chainRange);
+        Collider[] colliders =Physics.OverlapSphere( originTarget.transform.position, chainRange);
 
         Collider nearest = null;
         float nearestDistance = float.MaxValue;
@@ -83,9 +78,7 @@ public class ChainFire : FireModeData
             if (col.GetComponent<IDamageable>() == null)
                 continue;
 
-            float distance = Vector3.Distance(
-                originTarget.transform.position,
-                col.transform.position);
+            float distance = Vector3.Distance(originTarget.transform.position, col.transform.position);
 
             if (distance < nearestDistance)
             {

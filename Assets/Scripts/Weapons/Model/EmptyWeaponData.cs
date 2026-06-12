@@ -18,7 +18,6 @@ public sealed class EmptyWeaponData : WeaponData
         }
     }
 
-    public override bool IsEmpty => true;
 
     private static EmptyWeaponData instance;
 }

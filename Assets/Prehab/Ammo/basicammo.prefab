@@ -156,4 +156,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96574a6c1e4cf0c4eb7c3b19d147f8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NormalProjectile
-  targetTeam: -1
+  targetTeam: 28

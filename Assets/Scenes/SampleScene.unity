@@ -10053,7 +10053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 84b9664e77a22404ea31f018d4fbf0fc, type: 2}
+  weaponData: {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 240814481}
   weaponView: {fileID: 240814480}
@@ -39422,9 +39422,9 @@ MonoBehaviour:
   maxSpawnTime: 2
   changeInterval: 20
   enemyPrefabs:
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
+  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
+  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
   timerObject: {fileID: 383212502}
 --- !u!1 &1020732964

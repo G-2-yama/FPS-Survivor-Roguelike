@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e827c71607bd264ca4d74611d72a0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemycondition
-  deathType: 0
   config: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
   attackController: {fileID: 4933798852626595605}
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
@@ -171,6 +170,7 @@ MonoBehaviour:
   attack: {fileID: 4933798852626595605}
   chaseMovementType: 0
   combatBehaviour: 0
+  animator: {fileID: 0}
 --- !u!54 &5154964929320662522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -274,7 +274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLauncher
   bulletData: {fileID: 11400000, guid: f1257f913ac4f4a4185b948c0fa4a29a, type: 2}
-  ownerTeam: 2
 --- !u!114 &7862773016890114749
 MonoBehaviour:
   m_ObjectHideFlags: 0

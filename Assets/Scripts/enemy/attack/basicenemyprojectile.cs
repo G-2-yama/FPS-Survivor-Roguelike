@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class basicenemyprojectile : enemyplojectileobject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    [SerializeField] private TeamType targetTeam = TeamType.None;
     protected override void HandleHit(Collider col)
     {
         
@@ -14,7 +11,8 @@ public class basicenemyprojectile : enemyplojectileobject
             if ((damageable.TeamType & targetTeam) == 0)
             {
                 base.HandleHit(col);
-                return; }
+                return; 
+            }
             damageable.TakeDamage(damage);
         }
         base.HandleHit(col);

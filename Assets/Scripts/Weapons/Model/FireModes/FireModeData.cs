@@ -20,9 +20,7 @@ public abstract class FireModeData : ScriptableObject
     {
         var damageable = hitCollider.GetComponent<IDamageable>();
         if (damageable == null) return false;
-        
-        if (damageable.TeamType != TeamType.Enemy 
-            && damageable.TeamType != TeamType.Boss) return false;
+        if (damageable.TeamType == TeamType.Player) return false;
 
         damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
         return true;

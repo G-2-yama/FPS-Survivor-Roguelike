@@ -14,8 +14,12 @@ public class NormalProjectile : ProjectileObject
 
             damageable.TakeDamage(damage);
 
+            if (damageable.TeamType == TeamType.EnemyAmmo)
+            {
+                return;
+            }
             hasHit = true;
-            Release();
+            Release(); 
         }
     }
 }

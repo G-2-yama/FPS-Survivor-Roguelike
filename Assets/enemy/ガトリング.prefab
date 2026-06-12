@@ -457,7 +457,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLauncher
   bulletData: {fileID: 11400000, guid: 09a881ae00addff46b6f3e6f09b8e0f6, type: 2}
-  ownerTeam: 2
 --- !u!114 &8298053889167880734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,7 +540,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
