@@ -25,23 +25,24 @@ MonoBehaviour:
     fireModeData: {fileID: 11400000, guid: b78a2e26f1716604699ec34024b14d9d, type: 2}
   trigger:
     autoFire: 0
-    autoReload: 0
+    autoReload: 1
     triggerType: 0
   damage:
-    damage: 10
+    damage: 20
     spreadAngle: 15
   fireRhythm:
     fireInterval: 0.75
-    burstCount: 15
+    burstCount: 20
     burstInterval: 0
+    chargeTime: 0
   recoil:
-    pitchKick: 1
+    pitchKick: 0.8
     yawKick: 0.4
     yawRandomness: 1
     returnStrength: 20
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 60
+    magazineSize: 80
     reloadTime: 2
   nextLevelData: {fileID: 0}

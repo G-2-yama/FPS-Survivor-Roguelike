@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChargeBeamFire
   effectPrefab: {fileID: 0}
   damageAreaPrefab: {fileID: 6114629737088864950, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
-  distance: 0.25
+  distance: 1
