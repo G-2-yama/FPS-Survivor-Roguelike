@@ -32,8 +32,9 @@ MonoBehaviour:
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0.1
-    burstCount: 1
+    burstCount: 5
     burstInterval: 0.05
+    chargeTime: 0
   recoil:
     pitchKick: 1.2
     yawKick: 0.4
@@ -42,6 +43,6 @@ MonoBehaviour:
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 1
+    magazineSize: 5
     reloadTime: 0.5
   nextLevelData: {fileID: 0}

@@ -405,7 +405,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5198,7 +5198,7 @@ MonoBehaviour:
   areaCollider: {fileID: 3500972516992917104}
   damage: 5
   interval: 0.1
-  lifetime: 1
+  lifetime: 3
   targetTeam: -1
   mode: 1
 --- !u!65 &3500972516992917104
