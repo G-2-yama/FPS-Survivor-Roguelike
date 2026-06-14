@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afa27242bbb33b44b1211b06fb1a5da, type: 3}
+  m_Name: AutoTargetFire
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTargetFire
+  effectPrefab: {fileID: 0}
+  searchRadius: 10
+  speed: 10
+  lifetime: 2
+  prefab: {fileID: 3338841769763293187, guid: 6f00b3d3760079c418baee39b430a92c, type: 3}
+  spawnOffset: {x: 0, y: 0.5, z: 0}

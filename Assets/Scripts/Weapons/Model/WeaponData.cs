@@ -81,6 +81,7 @@ public class WeaponData : ScriptableObject
     public float FireInterval => fireRhythm.FireInterval;
     public int BurstCount => fireRhythm.BurstCount;
     public float BurstInterval => fireRhythm.BurstInterval;
+    public float ChargeTime => fireRhythm.ChargeTime;
 
     // =========================
     // Ammo
@@ -197,10 +198,12 @@ public sealed class FireRhythmProfile
     [SerializeField] private float fireInterval = 0.1f;
     [SerializeField] private int burstCount = 1;
     [SerializeField] private float burstInterval = 0.05f;
+    [SerializeField] private float chargeTime = 0.0f;
 
     public float FireInterval => fireInterval;
     public int BurstCount => burstCount;
-    public float BurstInterval => burstInterval;
+    public float BurstInterval =>   burstInterval;
+    public float ChargeTime => chargeTime;
 
     private FireRhythmProfile() { }
 }

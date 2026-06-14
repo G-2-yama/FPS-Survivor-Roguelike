@@ -22,7 +22,7 @@ public class WeaponFiringState : WeaponState
         // 全弾撃ち終わった場合
         if (burstRemaining <= 0)
         {
-            TransitionAfterBurst();
+            stateMachine.ChangeCooldownState();
             return;
         }
 
@@ -43,20 +43,11 @@ public class WeaponFiringState : WeaponState
         }
         else
         {
-            TransitionAfterBurst();
+            stateMachine.ChangeCooldownState();
         }
     }
 
-    private void TransitionAfterBurst()
-    {
-        if (weapon.ShouldStartAutoReload())
-        {
-            stateMachine.ChangeReloadingState();
-            return;
-        }
 
-        stateMachine.ChangeCooldownState();
-    }
 
     public override void Exit()
     {

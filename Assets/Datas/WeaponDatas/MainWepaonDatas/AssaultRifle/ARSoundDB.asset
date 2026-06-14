@@ -22,15 +22,6 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 2
-    index: 0
-    clip: {fileID: 8300000, guid: 56d68f3ceb67bf74c88040a5d3897615, type: 3}
-    volume: 1
-    pitch: 1
-    playType: 0
-    is3D: 0
-    spatialBlend: 0
-    loop: 0
   - category: 3
     index: 0
     clip: {fileID: 8300000, guid: 56d68f3ceb67bf74c88040a5d3897615, type: 3}

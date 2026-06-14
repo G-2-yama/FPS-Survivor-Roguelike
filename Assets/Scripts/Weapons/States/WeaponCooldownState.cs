@@ -24,7 +24,7 @@ public class WeaponCooldownState : WeaponState
             }
             else
             {
-                stateMachine.ChangeIdleState();
+                Transition();
             }
         }
     }
@@ -48,6 +48,17 @@ public class WeaponCooldownState : WeaponState
 	public override void OnReload()
     {
         // Debug.Log($"クールダウン中にはリロードはできません");
+    }
+
+    private void Transition()
+    {
+        if (weapon.ShouldStartAutoReload())
+        {
+            stateMachine.ChangeReloadingState();
+            return;
+        }
+
+        stateMachine.ChangeIdleState();
     }
 
 }

@@ -5,6 +5,7 @@ using System.Collections;
 /// </summary>
 public abstract class ProjectileObject : PoolableObject
 {
+    [SerializeField] protected TeamType targetTeam = TeamType.None;
     protected System.Action<Collider> onHit;
     private Coroutine lifeRoutine;
     protected Rigidbody rb;
@@ -14,12 +15,13 @@ public abstract class ProjectileObject : PoolableObject
     /// <summary>
     /// 二重ヒット防止フラグ
     /// </summary>
-    private bool hasHit = false;
+    protected bool hasHit = false;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
+
     /// <summary>
     /// ヒット時に呼び出す処理と生存時間を初期化する
     /// </summary>
@@ -45,8 +47,6 @@ public abstract class ProjectileObject : PoolableObject
     {
         if (hasHit) return;
 
-        hasHit = true;
-
         HandleHit(collision.collider);
     }
 
@@ -58,8 +58,6 @@ public abstract class ProjectileObject : PoolableObject
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (hasHit) return;
-
-        hasHit = true;
 
         HandleHit(other);
     }
@@ -78,6 +76,8 @@ public abstract class ProjectileObject : PoolableObject
 
     public override void OnRelease()
     {
+        hasHit = true;
+        
         if (lifeRoutine != null)
         {
             StopCoroutine(lifeRoutine);

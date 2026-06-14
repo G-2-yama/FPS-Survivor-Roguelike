@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EmptyWeaponData", menuName = "Weapons/Empty Weapon Data")]
 public sealed class EmptyWeaponData : WeaponData
 {
+    public override bool IsEmpty => true;
+
     public static EmptyWeaponData Instance
     {
         get
@@ -18,7 +20,6 @@ public sealed class EmptyWeaponData : WeaponData
         }
     }
 
-    public override bool IsEmpty => true;
 
     private static EmptyWeaponData instance;
 }

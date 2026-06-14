@@ -24,7 +24,7 @@ public class WeaponIdleState : WeaponState
         }
         else if (weapon.WeaponData.AutoFire)
         {
-            stateMachine.ChangeFiringState();
+            stateMachine.ChangeChargeState();
         }
     }
 
@@ -43,7 +43,7 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        stateMachine.ChangeFiringState();
+        stateMachine.ChangeChargeState();
     }
 
 	/// <summary>

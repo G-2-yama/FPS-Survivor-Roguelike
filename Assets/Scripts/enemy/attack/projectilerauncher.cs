@@ -3,7 +3,6 @@ using UnityEngine;
 public class ProjectileLauncher : MonoBehaviour
 {
     [SerializeField] private BulletData bulletData;
-    [SerializeField] private TeamType ownerTeam = TeamType.Enemy;
 
     public void Shoot(Transform shotPoint, Vector3 direction, int damage)
     {

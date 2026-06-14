@@ -10053,7 +10053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 84b9664e77a22404ea31f018d4fbf0fc, type: 2}
+  weaponData: {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 240814481}
   weaponView: {fileID: 240814480}
@@ -29639,6 +29639,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708403245}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &709516582
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -71.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727641707426468711, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114629737088864950, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_Name
+      value: ChargeBeam
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226025999189543336, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: lifetime
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
 --- !u!1 &718345492
 GameObject:
   m_ObjectHideFlags: 0
@@ -39422,9 +39483,9 @@ MonoBehaviour:
   maxSpawnTime: 2
   changeInterval: 20
   enemyPrefabs:
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
+  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
+  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
   timerObject: {fileID: 383212502}
 --- !u!1 &1020732964
@@ -63288,6 +63349,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ef6f18089774b3049ad2771a79722044, type: 2}
   - {fileID: 11400000, guid: eff52e0076a33df40855fa97fa085211, type: 2}
   - {fileID: 11400000, guid: a826a1f27d5b438459c2cd82fff725ef, type: 2}
+  - {fileID: 11400000, guid: c2419c75472805b409cb598b777504be, type: 2}
+  - {fileID: 11400000, guid: 23f90326a2e62bb43b29b1349a3d18ad, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -73798,7 +73861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
+  weaponData: {fileID: 11400000, guid: d91c1213cad4fd0409323b4e9e63834c, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
@@ -83578,3 +83641,4 @@ SceneRoots:
   - {fileID: 1195778458}
   - {fileID: 1903388225}
   - {fileID: 2025044605}
+  - {fileID: 709516582}

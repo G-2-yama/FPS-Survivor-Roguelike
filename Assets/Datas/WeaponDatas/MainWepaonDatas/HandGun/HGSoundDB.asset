@@ -22,7 +22,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 2
+  - category: 3
     index: 0
     clip: {fileID: 8300000, guid: 7989b348c39263b42a73d87b5a702330, type: 3}
     volume: 1
