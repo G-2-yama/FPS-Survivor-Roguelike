@@ -33515,6 +33515,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836019624}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &836656611
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4004365500606963686, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_Name
+      value: MolotovFire
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.680691
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
 --- !u!1 &840084387
 GameObject:
   m_ObjectHideFlags: 0
@@ -63351,6 +63408,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a826a1f27d5b438459c2cd82fff725ef, type: 2}
   - {fileID: 11400000, guid: c2419c75472805b409cb598b777504be, type: 2}
   - {fileID: 11400000, guid: 23f90326a2e62bb43b29b1349a3d18ad, type: 2}
+  - {fileID: 11400000, guid: 6a223b387fb77bf4b83c9ca571896dda, type: 2}
+  - {fileID: 11400000, guid: efbe7b561c1337a4babad18a763bbe71, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -73861,7 +73920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: d91c1213cad4fd0409323b4e9e63834c, type: 2}
+  weaponData: {fileID: 11400000, guid: 6613df0c9c0e5a24093c1d2252dc951d, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
@@ -83704,3 +83763,4 @@ SceneRoots:
   - {fileID: 2025044605}
   - {fileID: 709516582}
   - {fileID: 8633254269046408517}
+  - {fileID: 836656611}
