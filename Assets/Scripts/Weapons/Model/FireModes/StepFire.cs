@@ -7,7 +7,7 @@ public class StepFire : FireModeData
     [SerializeField] private float distance = 2f;
     [SerializeField] private float stepInterval = 0.5f;
 
-    private Vector3 previousPosition = Camera.main.transform.position;
+    private Vector3 previousPosition;
 
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
