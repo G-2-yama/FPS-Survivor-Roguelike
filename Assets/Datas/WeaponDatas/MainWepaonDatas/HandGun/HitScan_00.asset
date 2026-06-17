@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitScanData
   effectPrefab: {fileID: 5131132216050497334, guid: d3319b2e6e4d65548b6117ea0943007d, type: 3}
   maxRange: 60
+  hitRadius: 0.1
+  tracerPrefab: {fileID: 2070297035038595584, guid: e085c9affb89431479351603436c0352, type: 3}
