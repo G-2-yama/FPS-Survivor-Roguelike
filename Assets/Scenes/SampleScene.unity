@@ -63410,6 +63410,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 23f90326a2e62bb43b29b1349a3d18ad, type: 2}
   - {fileID: 11400000, guid: 6a223b387fb77bf4b83c9ca571896dda, type: 2}
   - {fileID: 11400000, guid: efbe7b561c1337a4babad18a763bbe71, type: 2}
+  - {fileID: 11400000, guid: 497d5ec25c0bab34b97c4e5d854152ec, type: 2}
+  - {fileID: 11400000, guid: 0c971f2b7baaa2c43be79ebaacc0a18e, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -73920,7 +73922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 6613df0c9c0e5a24093c1d2252dc951d, type: 2}
+  weaponData: {fileID: 11400000, guid: ed2e0fb318a276044a0cb7d94245056f, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
@@ -77414,7 +77416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: e1952f8c0f4b6e147a71cbdcf6daf349, type: 2}
+  weaponData: {fileID: 11400000, guid: e73ca687b727fd44c8bf8b6cab37c899, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 2019895854}
   weaponView: {fileID: 2019895853}
@@ -82281,6 +82283,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144563572}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &379984968411623639
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2179758852267092791, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_Name
+      value: Boomerang
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
 --- !u!33 &409793925649106381
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -83838,3 +83897,4 @@ SceneRoots:
   - {fileID: 8633254269046408517}
   - {fileID: 836656611}
   - {fileID: 6049109865083326811}
+  - {fileID: 379984968411623639}

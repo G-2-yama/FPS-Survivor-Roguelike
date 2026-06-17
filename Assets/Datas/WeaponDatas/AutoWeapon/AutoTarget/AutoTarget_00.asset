@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
+  m_Name: AutoTarget_00
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  identity:
+    weaponId: weapon_default
+    displayName: "\u30AA\u30FC\u30C8\u30BF\u30FC\u30B2\u30C3\u30C8"
+    description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
+    icon: {fileID: -982868785, guid: 1115e4780f901f2418cffc1311666326, type: 3}
+  visual:
+    weaponModelPrefab: {fileID: 0}
+  soundDB: {fileID: 0}
+  classification:
+    weaponType: 2
+    fireModeData: {fileID: 11400000, guid: e936a648c02202b41bad3ae84ffb63ee, type: 2}
+  trigger:
+    autoFire: 1
+    autoReload: 1
+    triggerType: 1
+  damage:
+    damage: 10
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.1
+    burstCount: 5
+    burstInterval: 0.05
+    chargeTime: 0
+  recoil:
+    pitchKick: 0
+    yawKick: 0
+    yawRandomness: 0
+    returnStrength: 0
+    damping: 0
+    maxPitch: 0
+  ammo:
+    magazineSize: 5
+    reloadTime: 0.5
+  nextLevelData: {fileID: 0}
