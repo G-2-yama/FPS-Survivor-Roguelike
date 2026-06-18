@@ -5,13 +5,13 @@ using System.Collections;
 public class DamageArea : PoolableObject, IDamageable
 {
     [SerializeField] private Collider areaCollider;
-
+    [SerializeField] private TeamType myTeam;
+    [SerializeField] private TeamType targetTeam;
     [SerializeField] private int damage = 10;
     [SerializeField] private float interval = 1f;
     [SerializeField] private float lifetime = 0f;
-    [SerializeField] private TeamType targetTeam;
     [SerializeField] private DamageAreaMode mode;
-    [SerializeField] private TeamType myTeam;
+
     [SerializeField] private int HP = 1;
     private Health health;
     public TeamType TeamType => myTeam;

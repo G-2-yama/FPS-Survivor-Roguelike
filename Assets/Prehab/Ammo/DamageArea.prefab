@@ -4993,7 +4993,7 @@ MonoBehaviour:
   damage: 10
   interval: 1
   lifetime: 1
-  targetTeam: 6
+  targetTeam: 28
   mode: 0
   myTeam: 2
   HP: 1
