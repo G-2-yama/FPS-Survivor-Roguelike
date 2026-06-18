@@ -19432,3 +19432,5 @@ MonoBehaviour:
   lifetime: 5
   targetTeam: 6
   mode: 0
+  myTeam: 2
+  HP: 1

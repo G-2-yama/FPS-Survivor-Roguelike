@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class NormalProjectile : ProjectileObject
 {
-
-    protected override void HandleHit(Collider col)
+    protected override void HandleHit(Collider collider)
     {
-        if (col.TryGetComponent(out IDamageable damageable))
+
+        if (collider.TryGetComponent(out IDamageable damageable))
         {
             if ((damageable.TeamType & targetTeam) == 0)
             {
@@ -14,12 +14,18 @@ public class NormalProjectile : ProjectileObject
 
             damageable.TakeDamage(damage);
 
-            if (damageable.TeamType == TeamType.EnemyAmmo)
+            // 敵の弾丸の場合は貫通
+            if(damageable.TeamType != TeamType.EnemyAmmo)
             {
-                return;
+                Release();
+                hasHit = true;
             }
+        }
+        else
+        {
+            // 壁などに当たった場合
             hasHit = true;
-            Release(); 
+            Release();
         }
     }
 }

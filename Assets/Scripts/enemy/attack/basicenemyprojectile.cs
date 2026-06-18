@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class basicenemyprojectile : enemyplojectileobject
 {
-    protected override void HandleHit(Collider col)
-    {
-        
-        if (col.TryGetComponent(out IDamageable damageable))
+    protected override void HandleHit(Collider collider)
+    { 
+        if (collider.TryGetComponent(out IDamageable damageable))
         {
-
             if ((damageable.TeamType & targetTeam) == 0)
             {
-                base.HandleHit(col);
-                return; 
+                return;
             }
-            damageable.TakeDamage(damage);
-        }
-        base.HandleHit(col);
 
-        
+            damageable.TakeDamage(config.Damagelange);
+        }
+        hasHit = true;
+        Release();
     }
 }

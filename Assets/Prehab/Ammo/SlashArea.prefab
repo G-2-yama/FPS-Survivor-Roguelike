@@ -4969,6 +4969,8 @@ MonoBehaviour:
   lifetime: 0.25
   targetTeam: 6
   mode: 0
+  myTeam: 2
+  HP: 1
 --- !u!1 &3490447190856301633
 GameObject:
   m_ObjectHideFlags: 0

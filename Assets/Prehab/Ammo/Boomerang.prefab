@@ -110,6 +110,8 @@ MonoBehaviour:
   lifetime: 5
   targetTeam: 28
   mode: 0
+  myTeam: 2
+  HP: 1
 --- !u!135 &905868544141468379
 SphereCollider:
   m_ObjectHideFlags: 0
