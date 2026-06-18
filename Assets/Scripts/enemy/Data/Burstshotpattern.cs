@@ -13,14 +13,15 @@ public class BurstShotPattern : AttackPattern
         
         for (int i = 0; i < shotCount; i++)
         {
+            if (i < shotCount - 1)
+                yield return new WaitForSeconds(interval);
             if (context.Target == null)
                 yield break;
 
             Vector3 direction = (context.Target.position - context.ShotPoint.position).normalized;
             context.Launcher.Shoot(context.ShotPoint, direction, context.AttackPower);
 
-            if (i < shotCount - 1)
-                yield return new WaitForSeconds(interval);
+            
         }
     }
 }
