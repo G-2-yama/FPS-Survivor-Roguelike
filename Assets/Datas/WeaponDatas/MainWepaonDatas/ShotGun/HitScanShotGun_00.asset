@@ -16,3 +16,4 @@ MonoBehaviour:
   maxRange: 60
   hitRadius: 0.3
   tracerPrefab: {fileID: 2070297035038595584, guid: e085c9affb89431479351603436c0352, type: 3}
+  targetTeam: 28

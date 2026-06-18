@@ -171,5 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f691b6ae834e6a4408c231527bf2c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosiveProjectile
-  targetTeam: 0
+  myTeam: 2
+  targetTeam: 4
+  HP: 1
   damageAreaPrefab: {fileID: 4004365500606963686, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}

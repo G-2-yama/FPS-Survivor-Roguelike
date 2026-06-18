@@ -2,15 +2,29 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-public class DamageArea : PoolableObject
+public class DamageArea : PoolableObject, IDamageable
 {
     [SerializeField] private Collider areaCollider;
-
+    [SerializeField] private TeamType myTeam;
+    [SerializeField] private TeamType targetTeam;
     [SerializeField] private int damage = 10;
     [SerializeField] private float interval = 1f;
     [SerializeField] private float lifetime = 0f;
-    [SerializeField] private TeamType targetTeam;
     [SerializeField] private DamageAreaMode mode;
+
+    [SerializeField] private int HP = 1;
+    private Health health;
+    public TeamType TeamType => myTeam;
+
+    public void TakeDamage(int damage)
+    {
+        health.TakeDamage(damage);
+        if (health.IsDead)
+        {
+            Release();
+        }
+    }
+
 
     /// <summary>
     /// 各対象ごとのダメージタイマーを管理する辞書
@@ -29,6 +43,7 @@ public class DamageArea : PoolableObject
     public override void OnGet()
     {
         isReleased = false;
+        health = new Health(HP);
         if (lifetime > 0f)
             lifeRoutine = StartCoroutine(LifeTimer(lifetime));
     }

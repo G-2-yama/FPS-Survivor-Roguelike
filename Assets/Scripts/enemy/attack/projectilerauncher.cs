@@ -11,15 +11,11 @@ public class ProjectileLauncher : MonoBehaviour
 
         GameObject bullet = bulletData.Spawn(shotPoint, direction);
 
-        if (!bullet.TryGetComponent<ProjectileObject>(out var projectile))
+        if (!bullet.TryGetComponent<enemyplojectileobject>(out var projectile))
         {
-            Debug.LogError($"{name}: ProjectileObject ��������܂���B");
+            Debug.LogError($"{name}: enemyplojectileobject ��������܂���B");
             return;
         }
-
-        projectile.Initialize(
-            damage,
-            bulletData.Lifetime);
     }
 
   

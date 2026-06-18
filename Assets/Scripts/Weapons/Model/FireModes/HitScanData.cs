@@ -7,6 +7,7 @@ public class HitScanData : FireModeData
     [SerializeField] private float maxRange = 60f;
     [SerializeField] private float hitRadius = 0.1f;
     [SerializeField] private GameObject tracerPrefab;
+    [SerializeField] private TeamType targetTeam = TeamType.Enemy;
 
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
@@ -16,16 +17,32 @@ public class HitScanData : FireModeData
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
         
-        if (Physics.SphereCast(ray, hitRadius, out RaycastHit hit, maxRange))
+        RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (var hit in hits)
         {
-            endPoint = hit.point;
-
-            TryApplyDamage(weapon, hit.collider, weaponOwner);
-
-            TryEnableHitEffect(out GameObject hitEffect);
-            if (hitEffect != null)
+            if (hit.collider.TryGetComponent(out IDamageable damageable))
             {
-                hitEffect.transform.position = hit.point;
+                if ((damageable.TeamType & targetTeam) == 0)
+                {
+                    continue;
+                }
+                endPoint = hit.point;
+
+                TryEnableHitEffect(hit.point);
+
+                ApplyDamage(weapon, hit.collider, weaponOwner);
+
+                if(damageable.TeamType != TeamType.EnemyAmmo)
+                {
+                    break;
+                }
+            }
+            else
+            {
+                TryEnableHitEffect(hit.point);
+                break;
             }
         }
         
@@ -36,5 +53,17 @@ public class HitScanData : FireModeData
             tracer.GetComponent<Tracer>().Initialize(weapon.transform.position, endPoint, 0.1f);
         }
         
+    }
+
+    private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
+    {
+        if(hitCollider.TryGetComponent(out IDamageable damageable))
+        {
+            if ((damageable.TeamType & targetTeam) == 0)
+            {
+                return;
+            }
+            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
+        }
     }
 }

@@ -4993,8 +4993,10 @@ MonoBehaviour:
   damage: 10
   interval: 1
   lifetime: 1
-  targetTeam: 6
+  targetTeam: 28
   mode: 0
+  myTeam: 2
+  HP: 1
 --- !u!1 &8152183329568198972
 GameObject:
   m_ObjectHideFlags: 0

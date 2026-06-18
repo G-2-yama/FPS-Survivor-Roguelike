@@ -3,14 +3,26 @@ using System.Collections;
 /// <summary>
 /// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
 /// </summary>
-public abstract class ProjectileObject : PoolableObject
+public abstract class ProjectileObject : PoolableObject, IDamageable
 {
+    [SerializeField] protected TeamType myTeam = TeamType.None;
+    public virtual TeamType TeamType => myTeam;
+
     [SerializeField] protected TeamType targetTeam = TeamType.None;
+    [SerializeField] protected int HP = 1;
     protected System.Action<Collider> onHit;
     private Coroutine lifeRoutine;
     protected Rigidbody rb;
 
     protected int damage;
+
+    protected Health health;
+
+    public void TakeDamage(int damage)
+    {
+        health.TakeDamage(damage);
+
+    }
 
     /// <summary>
     /// 二重ヒット防止フラグ
@@ -30,6 +42,8 @@ public abstract class ProjectileObject : PoolableObject
     public void Initialize(int damage, float lifeTime)
     {
         this.damage = damage;
+        health = new Health(HP);
+        health.OnDeath += OnRelease;
         lifeRoutine = StartCoroutine(LifeTimer(lifeTime));
     }
 
@@ -43,10 +57,9 @@ public abstract class ProjectileObject : PoolableObject
     /// 物理衝突時にヒット処理を行う
     /// </summary>
     /// <param name="collision">衝突情報</param>
-    protected virtual void OnCollisionEnter(Collision collision)
+    protected void OnCollisionEnter(Collision collision)
     {
         if (hasHit) return;
-
         HandleHit(collision.collider);
     }
 
@@ -55,18 +68,17 @@ public abstract class ProjectileObject : PoolableObject
     /// Trigger侵入時にヒット処理を行う
     /// </summary>
     /// <param name="other">接触したCollider</param>
-    protected virtual void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         if (hasHit) return;
-
         HandleHit(other);
     }
 
     /// <summary>
     /// ヒットコールバックを実行し、Projectileを破棄する
     /// </summary>
-    /// <param name="col">ヒットしたCollider</param>
-    protected abstract void HandleHit(Collider col);
+    /// <param name="collider">ヒットしたCollider</param>
+    protected abstract void HandleHit(Collider collider);
 
     public override void OnGet()
     {

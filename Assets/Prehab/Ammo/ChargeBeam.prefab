@@ -4999,6 +4999,8 @@ MonoBehaviour:
   lifetime: 3
   targetTeam: -1
   mode: 1
+  myTeam: 2
+  HP: 1
 --- !u!65 &3500972516992917104
 BoxCollider:
   m_ObjectHideFlags: 0
