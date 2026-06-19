@@ -29701,6 +29701,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChargeBeam
       objectReference: {fileID: 0}
+    - target: {fileID: 6114629737088864950, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8226025999189543336, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
       propertyPath: lifetime
       value: 0
@@ -39515,7 +39519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1018864606
 Transform:
   m_ObjectHideFlags: 0
@@ -39556,8 +39560,8 @@ MonoBehaviour:
   maxSpawnTime: 2
   changeInterval: 20
   enemyPrefabs:
-  - {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
+  - {fileID: 8799001866560603096, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+  - {fileID: 8799001866560603096, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
   - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
   timerObject: {fileID: 383212502}
@@ -83142,6 +83146,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1488535136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &6922732079481181629
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.44761324
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3733618
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.2522106
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892483537362920586, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8799001866560603096, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+      propertyPath: m_Name
+      value: Handenemy 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
 --- !u!4 &6980364882435666458
 Transform:
   m_ObjectHideFlags: 0
