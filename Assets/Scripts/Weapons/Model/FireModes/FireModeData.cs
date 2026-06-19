@@ -12,30 +12,15 @@ public abstract class FireModeData : ScriptableObject
     /// <param name="weaponOwner">武器の所有者</param>
     public abstract void Fire(Weapon weapon, Player weaponOwner);
 
-    /// <summary>
-    /// 当たったコライダーからダメージ対象を取得し、必要ならダメージを適用する
-    /// </summary>
-    /// <returns>ダメージを与えた場合はtrue</returns>
-    public bool TryApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
-    {
-        var damageable = hitCollider.GetComponent<IDamageable>();
-        if (damageable == null) return false;
-        if (damageable.TeamType == TeamType.Player) return false;
-
-        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
-        return true;
-    }
-
-    public bool TryEnableHitEffect(out GameObject effectInstance)
+    public void TryEnableHitEffect(Vector3 position)
     {
         if (effectPrefab == null)
         {
-            effectInstance = null;
-            return false;
+            return;
         }
 
-        effectInstance = PoolManager.Instance.Get(effectPrefab);
-        return true;
+        var effectInstance = PoolManager.Instance.Get(effectPrefab);
+        effectInstance.transform.position = position;
     }
 
     /// <summary>

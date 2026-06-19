@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: AutoTarget
+  m_Name: StepFire_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: "\u30AA\u30FC\u30C8\u30BF\u30FC\u30B2\u30C3\u30C8"
+    displayName: "\u30B9\u30C6\u30C3\u30D7\u30D5\u30A1\u30A4\u30A2"
     description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
-    icon: {fileID: -982868785, guid: 1115e4780f901f2418cffc1311666326, type: 3}
+    icon: {fileID: 21300000, guid: 648449b1d2d8224409a646aab13d6ffe, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
   classification:
     weaponType: 2
-    fireModeData: {fileID: 11400000, guid: e936a648c02202b41bad3ae84ffb63ee, type: 2}
+    fireModeData: {fileID: 11400000, guid: 67fba9badf0c0684bbef946cf044703a, type: 2}
   trigger:
     autoFire: 1
     autoReload: 1
@@ -32,17 +32,17 @@ MonoBehaviour:
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0.1
-    burstCount: 5
+    burstCount: 1
     burstInterval: 0.05
     chargeTime: 0
   recoil:
-    pitchKick: 1.2
-    yawKick: 0.4
-    yawRandomness: 1
-    returnStrength: 20
-    damping: 18
-    maxPitch: 20
+    pitchKick: 0
+    yawKick: 0
+    yawRandomness: 0
+    returnStrength: 0
+    damping: 0
+    maxPitch: 0
   ammo:
-    magazineSize: 5
-    reloadTime: 0.5
+    magazineSize: 1
+    reloadTime: 0.8
   nextLevelData: {fileID: 0}

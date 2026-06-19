@@ -156,7 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a650e1b3dbbc64b9258c02259b1613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::basicenemyprojectile
+  myTeam: 8
   targetTeam: 1
+  HP: 1
   config: {fileID: 11400000, guid: 00a397677e7091148a6750e1a9398700, type: 2}
   exp: {fileID: 0}
   whiteFlash: {fileID: 0}

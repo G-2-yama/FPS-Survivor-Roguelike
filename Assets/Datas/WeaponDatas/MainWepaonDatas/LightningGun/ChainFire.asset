@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChainFire
   effectPrefab: {fileID: 2378314361097942396, guid: 338d719607eb7d949aad09321d6c083f, type: 3}
   maxRange: 60
+  targetTeam: 28
   chainRange: 10
   chainCount: 3

@@ -1,110 +1,81 @@
 using UnityEngine;
 using System.Collections;
 
-public class enemyplojectileobject : ProjectileObject,IDamageable
-
+public class enemyplojectileobject : PoolableObject, IDamageable
 {
     private DeathType deathType = DeathType.Normal;
-    [SerializeField] private EnemyConfig config;
+    [SerializeField] protected EnemyConfig config;
     [SerializeField] private GameObject exp;
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private float deathDelay = 0.1f;
+    protected Health health;
     public TeamType TeamType => TeamType.EnemyAmmo;
-    public Health Health { get; private set; }
+    public TeamType targetTeam => TeamType.Player;
+
+    protected bool hasHit = false;
+
     public void TakeDamage(int damage)
-
     {
-
-        if (Health == null)
+        if (health == null)
             return;
 
-        if (Health.CurrentHP > 0)
+        if (health.CurrentHP > 0)
         {
             whiteFlash?.Flash();
         }
        
-        Health?.TakeDamage(config.Damagelange*damage);
+        health?.TakeDamage(config.Damagelange*damage);
     }
-    protected override void OnCollisionEnter(Collision collision)
-    {
-        var selfDamageable = GetComponent<IDamageable>();
-        var damageable = collision.collider.GetComponentInParent<IDamageable>();
-        if (damageable == selfDamageable)
-            return;
-        if (selfDamageable != null && damageable != null)
-        {
-            if ((selfDamageable.TeamType & damageable.TeamType) != 0)
-            { return; }
-        }
-        else if (selfDamageable != null && damageable == null)
-        { return; }
-        else if (selfDamageable == null && damageable != null)
-        { return; }
 
-        base.OnCollisionEnter(collision);
-    }
-    protected override void OnTriggerEnter(Collider other)
+
+
+    protected void OnTriggerEnter(Collider other)
     {
-        var selfDamageable = GetComponent<IDamageable>();
-        var damageable = other.GetComponentInParent<IDamageable>();
-        if (damageable == selfDamageable) 
-            return; 
-        if (selfDamageable != null && damageable != null)
-        { if ((selfDamageable.TeamType & damageable.TeamType) != 0) 
-            { return; } } 
-        else if (selfDamageable != null && damageable == null) 
-        { return; } 
-        else if (selfDamageable == null && damageable != null) 
-        { return; }
-        base.OnTriggerEnter(other);
+        if (hasHit) return;
+        HandleHit(other);
     }
+
     public override void OnGet()
     {
-        base.OnGet();
+        hasHit = false;
         deathType= DeathType.Normal;
-        Health = new Health(config.MaxHp);
-        Health.OnDeath += HandleDeath;
-
+        health = new Health(config.MaxHp);
+        health.OnDeath += HandleDeath;
     }
+    
     public override void OnRelease()
     {
-        base.OnRelease();
-        if (Health != null)
+        hasHit = true;
+        
+        if (health != null)
         {
-            Health.OnDeath -= HandleDeath;
-            Health = null;
+            health.OnDeath -= HandleDeath;
+            health = null;
         }
-
-
-
     }
+
     private void HandleDeath()
     {
-
-
         if (deathType == DeathType.Normal)
         {
-
             StartCoroutine(DeathRoutine());
-
         }
         else
         {
-
             Release();
         }
     }
-    protected override void HandleHit(Collider col)
+
+    protected virtual void HandleHit(Collider collider)
     {
-        onHit?.Invoke(col);
+        hasHit = true;
         deathType = DeathType.SelfDestruct;
-        Health?.TakeDamage(9999);
+        health?.TakeDamage(9999);
     }
 
 
     private IEnumerator DeathRoutine()
     {
-
         yield return new WaitForSeconds(deathDelay);
 
         if (exp != null)
@@ -112,7 +83,6 @@ public class enemyplojectileobject : ProjectileObject,IDamageable
             GameObject expitem = PoolManager.Instance.Get(exp);
             expitem.transform.position = transform.position;
         }
-
         Release();
     }
 }
