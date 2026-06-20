@@ -13,6 +13,11 @@ public class PlayerAirborneState : PlayerBodyState
 
     public override void Update()
     {
+        if (TryChangeByCrouchActionToFastFall())
+        {
+            return;
+        }
+
         if (TryChangeByDashCommand())
         {
             return;

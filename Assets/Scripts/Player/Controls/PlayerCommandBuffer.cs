@@ -13,6 +13,7 @@ public class PlayerCommandBuffer
     /// 未処理のダッシュ要求数
     /// </summary>
     private int pendingDashRequests;
+    private int pendingCrouchActionRequests;
 
     /// <summary>
     /// ジャンプ要求を1件追加する
@@ -28,6 +29,11 @@ public class PlayerCommandBuffer
     public void EnqueueDash()
     {
         pendingDashRequests++;
+    }
+
+    public void EnqueueCrouchAction()
+    {
+        pendingCrouchActionRequests++;
     }
 
     /// <summary>
@@ -58,6 +64,17 @@ public class PlayerCommandBuffer
         return true;
     }
 
+    public bool TryConsumeCrouchAction()
+    {
+        if (pendingCrouchActionRequests <= 0)
+        {
+            return false;
+        }
+
+        pendingCrouchActionRequests--;
+        return true;
+    }
+
     /// <summary>
     /// 未処理の要求をすべて破棄する
     /// </summary>
@@ -65,5 +82,6 @@ public class PlayerCommandBuffer
     {
         pendingJumpRequests = 0;
         pendingDashRequests = 0;
+        pendingCrouchActionRequests = 0;
     }
 }

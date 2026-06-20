@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
         PlayerJumpController jumpController = new PlayerJumpController(motor, playerConfig);
         PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig);
         PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, playerConfig);
+        PlayerViewOffsetController viewOffset = new PlayerViewOffsetController(cameraLookPivotTransform, playerConfig);
         PlayerControlState controls = new PlayerControlState();
         PlayerCommandBuffer commands = new PlayerCommandBuffer();
 
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
             locomotion,
             jumpController,
             look,
+            viewOffset,
             controls,
             commands);
 
@@ -164,6 +166,11 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         inputRelay?.OnJump(context);
+    }
+
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        inputRelay?.OnCrouch(context);
     }
 
 

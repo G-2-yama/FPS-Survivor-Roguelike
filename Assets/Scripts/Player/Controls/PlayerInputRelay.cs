@@ -87,4 +87,18 @@ public class PlayerInputRelay
         }
     }
 
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            controls.SetCrouchHeld(true);
+            commands.EnqueueCrouchAction();
+        }
+
+        if (context.canceled)
+        {
+            controls.SetCrouchHeld(false);
+        }
+    }
+
 }

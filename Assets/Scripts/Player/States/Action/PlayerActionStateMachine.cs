@@ -14,6 +14,8 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     /// </summary>
     private PlayerDashActionState dashActionState;
     public PlayerDashActionState DashActionState => dashActionState;
+    private PlayerSlideActionState slideActionState;
+    private PlayerFastFallActionState fastFallActionState;
 
     /// <summary>
     /// 現在の動作ステート
@@ -32,6 +34,8 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     {
         noActionState = new PlayerNoActionState(context, this);
         dashActionState = new PlayerDashActionState(context, this);
+        slideActionState = new PlayerSlideActionState(context, this);
+        fastFallActionState = new PlayerFastFallActionState(context, this);
         ChangeState(noActionState);
     }
 
@@ -63,6 +67,28 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
         }
 
         ChangeState(dashActionState);
+        return true;
+    }
+
+    public bool TryChangeToSlideActionState()
+    {
+        if (!slideActionState.CanEnter())
+        {
+            return false;
+        }
+
+        ChangeState(slideActionState);
+        return true;
+    }
+
+    public bool TryChangeToFastFallActionState()
+    {
+        if (!fastFallActionState.CanEnter())
+        {
+            return false;
+        }
+
+        ChangeState(fastFallActionState);
         return true;
     }
 }

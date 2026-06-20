@@ -194,4 +194,20 @@ public class PlayerConfig : MonoBehaviour
     /// 次のダッシュを開始できるまでの待ち時間
     /// </summary>
     public float DashCooldown => dashCooldown;
+
+    [SerializeField, Min(0f)] private float slideSpeed = 12f;
+    [SerializeField, Min(0f)] private float slideMinInertiaSpeed = 1.5f;
+    [SerializeField, Min(0f)] private float fastFallEntrySpeed = 20f;
+    [SerializeField, Min(0f)] private float fastFallAcceleration = 90f;
+    [SerializeField, Min(0f)] private float fastFallTerminalSpeed = 35f;
+    [SerializeField, Min(0f)] private float slideCameraHeightMultiplier = 0.5f;
+    [SerializeField, Min(0f)] private float slideCameraHeightLerpSpeed = 12f;
+
+    public float SlideSpeed => slideSpeed;
+    public float SlideMinInertiaSpeed => slideMinInertiaSpeed;
+    public float FastFallEntrySpeed => fastFallEntrySpeed;
+    public float FastFallAcceleration => fastFallAcceleration;
+    public float FastFallTerminalSpeed => fastFallTerminalSpeed;
+    public float SlideCameraHeightMultiplier => slideCameraHeightMultiplier;
+    public float SlideCameraHeightLerpSpeed => slideCameraHeightLerpSpeed;
 }

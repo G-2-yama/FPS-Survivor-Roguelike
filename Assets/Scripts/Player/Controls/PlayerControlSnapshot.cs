@@ -20,6 +20,7 @@ public class PlayerControlState
     /// ジャンプボタンを押し続けているかどうか
     /// </summary>
     public bool JumpHeld { get; private set; }
+    public bool CrouchHeld { get; private set; }
 
     /// <summary>
     /// 移動入力値を更新する
@@ -45,6 +46,11 @@ public class PlayerControlState
         JumpHeld = isHeld;
     }
 
+    public void SetCrouchHeld(bool isHeld)
+    {
+        CrouchHeld = isHeld;
+    }
+
     /// <summary>
     /// 継続入力を初期状態へ戻す
     /// </summary>
@@ -53,5 +59,6 @@ public class PlayerControlState
         MoveInput = Vector2.zero;
         LookInput = Vector2.zero;
         JumpHeld = false;
+        CrouchHeld = false;
     }
 }

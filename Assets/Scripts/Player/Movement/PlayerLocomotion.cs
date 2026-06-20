@@ -150,6 +150,25 @@ public class PlayerLocomotion
         motor.MoveWithHorizontalVelocity(direction * dashSpeed, deltaTime);
     }
 
+    public void MoveSlide(Vector3 direction, float speed, float deltaTime)
+    {
+        if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
+        {
+            motor.VerticalVelocity = GroundedVerticalVelocity;
+        }
+        else
+        {
+            motor.VerticalVelocity += settings.Gravity * deltaTime;
+        }
+
+        motor.MoveWithHorizontalVelocity(direction * speed, deltaTime);
+
+        if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
+        {
+            motor.VerticalVelocity = GroundedVerticalVelocity;
+        }
+    }
+
     /// <summary>
     /// ダッシュ開始前などに水平速度を明示的に止める
     /// </summary>
