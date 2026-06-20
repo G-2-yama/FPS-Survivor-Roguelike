@@ -13270,6 +13270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 0
+  weaponIcon: {fileID: 197229299}
+  Button: {fileID: 306585407}
+  weaponNameText: {fileID: 1599175177}
 --- !u!224 &306585406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32209,6 +32213,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 3
+  weaponIcon: {fileID: 614532327}
+  Button: {fileID: 797005006}
+  weaponNameText: {fileID: 1519347403}
 --- !u!114 &797005005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43747,6 +43755,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 2
+  weaponIcon: {fileID: 834711280}
+  Button: {fileID: 1145654491}
+  weaponNameText: {fileID: 966179717}
 --- !u!114 &1145654490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43909,6 +43921,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 4
+  weaponIcon: {fileID: 644135458}
+  Button: {fileID: 1150411211}
+  weaponNameText: {fileID: 251768716}
 --- !u!114 &1150411210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59263,6 +59279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 1
+  weaponIcon: {fileID: 1105609000}
+  Button: {fileID: 1526897109}
+  weaponNameText: {fileID: 1629099111}
 --- !u!224 &1526897108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -80279,6 +80299,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
+  slotType: 5
+  weaponIcon: {fileID: 283540924}
+  Button: {fileID: 2084488929}
+  weaponNameText: {fileID: 1144000010}
 --- !u!114 &2084488928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83991,3 +84015,4 @@ SceneRoots:
   - {fileID: 836656611}
   - {fileID: 6049109865083326811}
   - {fileID: 379984968411623639}
+  - {fileID: 6922732079481181629}
