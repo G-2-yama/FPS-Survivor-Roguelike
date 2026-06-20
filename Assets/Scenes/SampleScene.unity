@@ -7271,12 +7271,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 164500398}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &164500398
 BoxCollider:
@@ -10681,12 +10681,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 269377643}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &269377643
 BoxCollider:
@@ -11448,7 +11448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
   walkSpeed: 10
-  runSpeed: 8
+  runSpeed: 15
   groundDeceleration: 30
   groundAcceleration: 24
   airDeceleration: 45
@@ -11465,9 +11465,17 @@ MonoBehaviour:
     m_Bits: 4294967295
   jumpForce: 8
   initialHP: 1000
-  dashDistance: 6
+  dashDistance: 8
   dashDuration: 0.12
   dashCooldown: 0.5
+  slideSpeed: 20
+  slideMinInertiaSpeed: 1.5
+  slideTurnRateDegreesPerSecond: 180
+  fastFallEntrySpeed: 100
+  fastFallAcceleration: 90
+  fastFallTerminalSpeed: 35
+  slideCameraHeightMultiplier: 0.1
+  slideCameraHeightLerpSpeed: 12
 --- !u!54 &275487192
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13262,10 +13270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 0
-  weaponIcon: {fileID: 197229299}
-  Button: {fileID: 306585407}
-  weaponNameText: {fileID: 1599175177}
 --- !u!224 &306585406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15203,12 +15207,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 364933316}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &364933316
 BoxCollider:
@@ -27994,12 +27998,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 675531572}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &675531572
 BoxCollider:
@@ -28149,12 +28153,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 676319133}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &676319133
 BoxCollider:
@@ -32204,10 +32208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 3
-  weaponIcon: {fileID: 614532327}
-  Button: {fileID: 797005006}
-  weaponNameText: {fileID: 1519347403}
 --- !u!114 &797005005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34043,12 +34043,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 857137607}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &857137607
 BoxCollider:
@@ -34938,12 +34938,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 880736789}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &880736789
 BoxCollider:
@@ -36440,12 +36440,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 930062883}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &930062883
 BoxCollider:
@@ -39724,12 +39724,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1023013651}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1023013651
 BoxCollider:
@@ -43746,10 +43746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 2
-  weaponIcon: {fileID: 834711280}
-  Button: {fileID: 1145654491}
-  weaponNameText: {fileID: 966179717}
 --- !u!114 &1145654490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43912,10 +43908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 4
-  weaponIcon: {fileID: 644135458}
-  Button: {fileID: 1150411211}
-  weaponNameText: {fileID: 251768716}
 --- !u!114 &1150411210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48811,12 +48803,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1251831039}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1251831039
 BoxCollider:
@@ -49580,12 +49572,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1266597776}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1266597776
 BoxCollider:
@@ -51538,12 +51530,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1309120094}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1309120094
 BoxCollider:
@@ -53187,12 +53179,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1374453921}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1374453921
 BoxCollider:
@@ -59270,10 +59262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 1
-  weaponIcon: {fileID: 1105609000}
-  Button: {fileID: 1526897109}
-  weaponNameText: {fileID: 1629099111}
 --- !u!224 &1526897108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -63062,12 +63050,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1642908213}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1642908213
 BoxCollider:
@@ -67785,12 +67773,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1767220288}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1767220288
 BoxCollider:
@@ -71409,12 +71397,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 1855933112}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &1855933112
 BoxCollider:
@@ -79104,12 +79092,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 2036966357}
+  myTeam: 0
+  targetTeam: 1
   damage: 10
   interval: 0.2
   lifetime: 0
-  targetTeam: 1
   mode: 0
-  myTeam: 0
   HP: 1
 --- !u!65 &2036966357
 BoxCollider:
@@ -80289,10 +80277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152e410d806376f4c8faddf8e4c9f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotView
-  slotType: 5
-  weaponIcon: {fileID: 283540924}
-  Button: {fileID: 2084488929}
-  weaponNameText: {fileID: 1144000010}
 --- !u!114 &2084488928
 MonoBehaviour:
   m_ObjectHideFlags: 0
