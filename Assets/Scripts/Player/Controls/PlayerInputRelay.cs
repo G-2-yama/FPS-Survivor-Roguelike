@@ -58,7 +58,13 @@ public class PlayerInputRelay
     {
         if (context.performed)
         {
+            controls.SetSprintHeld(true);
             commands.EnqueueDash();
+        }
+
+        if (context.canceled)
+        {
+            controls.SetSprintHeld(false);
         }
     }
 

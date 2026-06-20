@@ -20,6 +20,7 @@ public class PlayerControlState
     /// ジャンプボタンを押し続けているかどうか
     /// </summary>
     public bool JumpHeld { get; private set; }
+    public bool SprintHeld { get; private set; }
     public bool CrouchHeld { get; private set; }
 
     /// <summary>
@@ -46,6 +47,11 @@ public class PlayerControlState
         JumpHeld = isHeld;
     }
 
+    public void SetSprintHeld(bool isHeld)
+    {
+        SprintHeld = isHeld;
+    }
+
     public void SetCrouchHeld(bool isHeld)
     {
         CrouchHeld = isHeld;
@@ -59,6 +65,7 @@ public class PlayerControlState
         MoveInput = Vector2.zero;
         LookInput = Vector2.zero;
         JumpHeld = false;
+        SprintHeld = false;
         CrouchHeld = false;
     }
 }

@@ -67,6 +67,7 @@ public class PlayerStateCoordinator
         context.Locomotion.Move(
             context.Controls.MoveInput,
             context.Controls.JumpHeld,
+            context.Controls.SprintHeld,
             deltaTime);
     }
 
