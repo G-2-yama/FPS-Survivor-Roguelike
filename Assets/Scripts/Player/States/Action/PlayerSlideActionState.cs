@@ -59,6 +59,18 @@ public class PlayerSlideActionState : PlayerActionState
             return;
         }
 
+        if (context.Locomotion.TryGetMoveDirection(context.Controls.MoveInput, out UnityEngine.Vector3 targetDirection))
+        {
+            float maxRadiansDelta =
+                context.Config.SlideTurnRateDegreesPerSecond * UnityEngine.Mathf.Deg2Rad * UnityEngine.Time.deltaTime;
+
+            slideDirection = UnityEngine.Vector3.RotateTowards(
+                slideDirection,
+                targetDirection,
+                maxRadiansDelta,
+                0f);
+        }
+
         context.Locomotion.MoveSlide(slideDirection, context.Config.SlideSpeed, UnityEngine.Time.deltaTime);
     }
 

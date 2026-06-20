@@ -197,6 +197,7 @@ public class PlayerConfig : MonoBehaviour
 
     [SerializeField, Min(0f)] private float slideSpeed = 12f;
     [SerializeField, Min(0f)] private float slideMinInertiaSpeed = 1.5f;
+    [SerializeField, Min(0f)] private float slideTurnRateDegreesPerSecond = 180f;
     [SerializeField, Min(0f)] private float fastFallEntrySpeed = 20f;
     [SerializeField, Min(0f)] private float fastFallAcceleration = 90f;
     [SerializeField, Min(0f)] private float fastFallTerminalSpeed = 35f;
@@ -205,6 +206,7 @@ public class PlayerConfig : MonoBehaviour
 
     public float SlideSpeed => slideSpeed;
     public float SlideMinInertiaSpeed => slideMinInertiaSpeed;
+    public float SlideTurnRateDegreesPerSecond => slideTurnRateDegreesPerSecond;
     public float FastFallEntrySpeed => fastFallEntrySpeed;
     public float FastFallAcceleration => fastFallAcceleration;
     public float FastFallTerminalSpeed => fastFallTerminalSpeed;
