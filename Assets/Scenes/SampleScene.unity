@@ -11470,7 +11470,7 @@ MonoBehaviour:
   dashCooldown: 0.5
   slideSpeed: 20
   slideMinInertiaSpeed: 1.5
-  slideTurnRateDegreesPerSecond: 180
+  slideTurnRateDegreesPerSecond: 30
   fastFallEntrySpeed: 100
   fastFallAcceleration: 90
   fastFallTerminalSpeed: 35
