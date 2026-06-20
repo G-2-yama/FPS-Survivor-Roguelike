@@ -8,6 +8,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 通常移動速度の設定値
     /// </summary>
+    [Header("Movement")]
     [SerializeField] private float walkSpeed = 10f;
 
     /// <summary>
@@ -58,6 +59,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// ジャンプ長押し補正を受け付ける時間
     /// </summary>
+    [Header("Jump")]
     [SerializeField] private float jumpHoldDuration = 0.20f;
 
     /// <summary>
@@ -88,6 +90,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 視点感度の設定値
     /// </summary>
+    [Header("Look")]
     [SerializeField] private float lookSensitivity = 0.08f;
 
     /// <summary>
@@ -118,6 +121,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 地面判定レイの開始位置オフセット
     /// </summary>
+    [Header("Ground Check")]
     [SerializeField] private float groundRayStartOffset = 0.5f;
 
     /// <summary>
@@ -158,6 +162,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// プレイヤーの初期HP
     /// </summary>
+    [Header("Stats")]
     [SerializeField] private int initialHP = 100;
 
     /// <summary>
@@ -168,6 +173,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// ダッシュで移動する距離
     /// </summary>
+    [Header("Dash")]
     [SerializeField, Min(0f)] private float dashDistance = 6f;
 
     /// <summary>
@@ -195,12 +201,17 @@ public class PlayerConfig : MonoBehaviour
     /// </summary>
     public float DashCooldown => dashCooldown;
 
+    [Header("Slide")]
     [SerializeField, Min(0f)] private float slideSpeed = 12f;
     [SerializeField, Min(0f)] private float slideMinInertiaSpeed = 1.5f;
     [SerializeField, Min(0f)] private float slideTurnRateDegreesPerSecond = 180f;
+
+    [Header("Fast Fall")]
     [SerializeField, Min(0f)] private float fastFallEntrySpeed = 20f;
     [SerializeField, Min(0f)] private float fastFallAcceleration = 90f;
     [SerializeField, Min(0f)] private float fastFallTerminalSpeed = 35f;
+
+    [Header("Slide Camera")]
     [SerializeField, Min(0f)] private float slideCameraHeightMultiplier = 0.5f;
     [SerializeField, Min(0f)] private float slideCameraHeightLerpSpeed = 12f;
 
