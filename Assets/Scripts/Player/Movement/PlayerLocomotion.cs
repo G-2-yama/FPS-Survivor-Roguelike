@@ -66,26 +66,31 @@ public class PlayerLocomotion
     public void Move(Vector2 moveInput, bool jumpHeld, float deltaTime)
     {
         bool isGrounded = motor.IsGrounded();
+        bool isEffectivelyGrounded = isGrounded && motor.VerticalVelocity <= 0f;
         Vector3 move = GetMoveVector(moveInput);
         Vector3 targetHorizontalVelocity = move * settings.WalkSpeed;
 
         if (move.sqrMagnitude > StopInputDeadzoneSqr)
         {
-            if (isGrounded)
+            if (isEffectivelyGrounded)
             {
                 motor.HorizontalVelocity = targetHorizontalVelocity;
             }
             else
             {
                 float airAcceleration = settings.WalkSpeed / AirReverseToZeroTime;
+                float currentHorizontalSpeed = motor.HorizontalVelocity.magnitude;
+                float targetHorizontalSpeed = Mathf.Max(settings.WalkSpeed, currentHorizontalSpeed);
+                Vector3 airborneTargetVelocity = move * targetHorizontalSpeed;
+
                 motor.HorizontalVelocity = Vector3.MoveTowards(
                     motor.HorizontalVelocity,
-                    targetHorizontalVelocity,
+                    airborneTargetVelocity,
                     airAcceleration * deltaTime
                 );
             }
         }
-        else if (isGrounded)
+        else if (isEffectivelyGrounded)
         {
             motor.HorizontalVelocity = Vector3.MoveTowards(
                 motor.HorizontalVelocity,
@@ -94,7 +99,7 @@ public class PlayerLocomotion
             );
         }
 
-        if (isGrounded && motor.VerticalVelocity < 0f)
+        if (isEffectivelyGrounded && motor.VerticalVelocity < 0f)
         {
             motor.VerticalVelocity = GroundedVerticalVelocity;
             jumpController.ClearJumpHold();

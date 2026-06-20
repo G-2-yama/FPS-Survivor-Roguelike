@@ -59,6 +59,19 @@ public class PlayerSlideActionState : PlayerActionState
             return;
         }
 
+        if (context.Commands.TryConsumeJump() && context.TryJump())
+        {
+            context.Motor.HorizontalVelocity = slideDirection * context.Config.SlideSpeed;
+
+            if (context.Controls.CrouchHeld)
+            {
+                context.Commands.ArmSlideOnNextLand();
+            }
+
+            actionStateMachine.ChangeToNoActionState();
+            return;
+        }
+
         if (context.Locomotion.TryGetMoveDirection(context.Controls.MoveInput, out UnityEngine.Vector3 targetDirection))
         {
             float maxRadiansDelta =

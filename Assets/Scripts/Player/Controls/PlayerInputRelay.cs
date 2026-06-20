@@ -98,6 +98,7 @@ public class PlayerInputRelay
         if (context.canceled)
         {
             controls.SetCrouchHeld(false);
+            commands.DisarmSlideOnNextLand();
         }
     }
 

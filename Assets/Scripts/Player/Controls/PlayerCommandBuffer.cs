@@ -14,6 +14,7 @@ public class PlayerCommandBuffer
     /// </summary>
     private int pendingDashRequests;
     private int pendingCrouchActionRequests;
+    private bool slideOnNextLandArmed;
 
     /// <summary>
     /// ジャンプ要求を1件追加する
@@ -34,6 +35,16 @@ public class PlayerCommandBuffer
     public void EnqueueCrouchAction()
     {
         pendingCrouchActionRequests++;
+    }
+
+    public void ArmSlideOnNextLand()
+    {
+        slideOnNextLandArmed = true;
+    }
+
+    public void DisarmSlideOnNextLand()
+    {
+        slideOnNextLandArmed = false;
     }
 
     /// <summary>
@@ -75,6 +86,17 @@ public class PlayerCommandBuffer
         return true;
     }
 
+    public bool TryConsumeSlideOnNextLand(bool isReadyToConsume)
+    {
+        if (!slideOnNextLandArmed || !isReadyToConsume)
+        {
+            return false;
+        }
+
+        slideOnNextLandArmed = false;
+        return true;
+    }
+
     /// <summary>
     /// 未処理の要求をすべて破棄する
     /// </summary>
@@ -83,5 +105,6 @@ public class PlayerCommandBuffer
         pendingJumpRequests = 0;
         pendingDashRequests = 0;
         pendingCrouchActionRequests = 0;
+        slideOnNextLandArmed = false;
     }
 }

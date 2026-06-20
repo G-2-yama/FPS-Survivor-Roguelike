@@ -13,6 +13,11 @@ public class PlayerGroundedIdleState : PlayerBodyState
 
     public override void Update()
     {
+        if (TryChangeByQueuedLandingSlide())
+        {
+            return;
+        }
+
         if (TryChangeByCrouchActionToSlide())
         {
             return;
