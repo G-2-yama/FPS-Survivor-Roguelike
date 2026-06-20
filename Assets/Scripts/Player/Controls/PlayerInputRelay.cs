@@ -58,7 +58,13 @@ public class PlayerInputRelay
     {
         if (context.performed)
         {
+            controls.SetSprintHeld(true);
             commands.EnqueueDash();
+        }
+
+        if (context.canceled)
+        {
+            controls.SetSprintHeld(false);
         }
     }
 
@@ -84,6 +90,21 @@ public class PlayerInputRelay
         if (context.canceled)
         {
             controls.SetJumpHeld(false);
+        }
+    }
+
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            controls.SetCrouchHeld(true);
+            commands.EnqueueCrouchAction();
+        }
+
+        if (context.canceled)
+        {
+            controls.SetCrouchHeld(false);
+            commands.DisarmSlideOnNextLand();
         }
     }
 

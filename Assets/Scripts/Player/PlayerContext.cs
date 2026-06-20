@@ -38,6 +38,7 @@ public class PlayerContext
     /// 視点制御
     /// </summary>
     public PlayerLookController Look { get; }
+    public PlayerViewOffsetController ViewOffset { get; }
 
     /// <summary>
     /// 継続入力の現在値
@@ -60,6 +61,7 @@ public class PlayerContext
         PlayerLocomotion locomotion,
         PlayerJumpController jumpController,
         PlayerLookController look,
+        PlayerViewOffsetController viewOffset,
         PlayerControlState controls,
         PlayerCommandBuffer commands)
     {
@@ -70,6 +72,7 @@ public class PlayerContext
         Locomotion = locomotion;
         JumpController = jumpController;
         Look = look;
+        ViewOffset = viewOffset;
         Controls = controls;
         Commands = commands;
     }

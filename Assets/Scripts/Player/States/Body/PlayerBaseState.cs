@@ -92,6 +92,41 @@ public abstract class PlayerBodyState : IState
         return actionStateMachine.TryChangeToDashActionState();
     }
 
+    protected bool TryChangeByCrouchActionToSlide()
+    {
+        if (!context.Commands.TryConsumeCrouchAction())
+        {
+            return false;
+        }
+
+        return actionStateMachine.TryChangeToSlideActionState();
+    }
+
+    protected bool TryChangeByCrouchActionToFastFall()
+    {
+        if (!context.Commands.TryConsumeCrouchAction())
+        {
+            return false;
+        }
+
+        return actionStateMachine.TryChangeToFastFallActionState();
+    }
+
+    protected bool TryChangeByQueuedLandingSlide()
+    {
+        bool canResumeSlide =
+            context.Controls.CrouchHeld
+            && context.Motor.IsGrounded()
+            && context.Motor.VerticalVelocity <= 0f;
+
+        if (!context.Commands.TryConsumeSlideOnNextLand(canResumeSlide))
+        {
+            return false;
+        }
+
+        return actionStateMachine.TryChangeToSlideActionState();
+    }
+
     /// <summary>
     /// ジャンプ要求を消費し、成功した場合は空中状態へ遷移する
     /// </summary>

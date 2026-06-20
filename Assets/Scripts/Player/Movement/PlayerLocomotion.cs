@@ -63,29 +63,35 @@ public class PlayerLocomotion
     /// <summary>
     /// 通常移動を更新し、垂直方向の速度とジャンプ長押しも進める
     /// </summary>
-    public void Move(Vector2 moveInput, bool jumpHeld, float deltaTime)
+    public void Move(Vector2 moveInput, bool jumpHeld, bool sprintHeld, float deltaTime)
     {
         bool isGrounded = motor.IsGrounded();
+        bool isEffectivelyGrounded = isGrounded && motor.VerticalVelocity <= 0f;
         Vector3 move = GetMoveVector(moveInput);
-        Vector3 targetHorizontalVelocity = move * settings.WalkSpeed;
+        float moveSpeed = sprintHeld ? settings.RunSpeed : settings.WalkSpeed;
+        Vector3 targetHorizontalVelocity = move * moveSpeed;
 
         if (move.sqrMagnitude > StopInputDeadzoneSqr)
         {
-            if (isGrounded)
+            if (isEffectivelyGrounded)
             {
                 motor.HorizontalVelocity = targetHorizontalVelocity;
             }
             else
             {
-                float airAcceleration = settings.WalkSpeed / AirReverseToZeroTime;
+                float airAcceleration = moveSpeed / AirReverseToZeroTime;
+                float currentHorizontalSpeed = motor.HorizontalVelocity.magnitude;
+                float targetHorizontalSpeed = Mathf.Max(moveSpeed, currentHorizontalSpeed);
+                Vector3 airborneTargetVelocity = move * targetHorizontalSpeed;
+
                 motor.HorizontalVelocity = Vector3.MoveTowards(
                     motor.HorizontalVelocity,
-                    targetHorizontalVelocity,
+                    airborneTargetVelocity,
                     airAcceleration * deltaTime
                 );
             }
         }
-        else if (isGrounded)
+        else if (isEffectivelyGrounded)
         {
             motor.HorizontalVelocity = Vector3.MoveTowards(
                 motor.HorizontalVelocity,
@@ -94,7 +100,7 @@ public class PlayerLocomotion
             );
         }
 
-        if (isGrounded && motor.VerticalVelocity < 0f)
+        if (isEffectivelyGrounded && motor.VerticalVelocity < 0f)
         {
             motor.VerticalVelocity = GroundedVerticalVelocity;
             jumpController.ClearJumpHold();
@@ -148,6 +154,25 @@ public class PlayerLocomotion
         }
 
         motor.MoveWithHorizontalVelocity(direction * dashSpeed, deltaTime);
+    }
+
+    public void MoveSlide(Vector3 direction, float speed, float deltaTime)
+    {
+        if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
+        {
+            motor.VerticalVelocity = GroundedVerticalVelocity;
+        }
+        else
+        {
+            motor.VerticalVelocity += settings.Gravity * deltaTime;
+        }
+
+        motor.MoveWithHorizontalVelocity(direction * speed, deltaTime);
+
+        if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
+        {
+            motor.VerticalVelocity = GroundedVerticalVelocity;
+        }
     }
 
     /// <summary>

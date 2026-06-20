@@ -57,6 +57,7 @@ public class PlayerStateCoordinator
 
         Vector2 recoil = context.WeaponControllerManager.GetTotalRecoil(deltaTime);
         context.Look.ApplyView(context.Controls.LookInput, recoil);
+        context.ViewOffset.Update(deltaTime);
 
         if (actionStateMachine.IsBlockingNormalMovement)
         {
@@ -66,6 +67,7 @@ public class PlayerStateCoordinator
         context.Locomotion.Move(
             context.Controls.MoveInput,
             context.Controls.JumpHeld,
+            context.Controls.SprintHeld,
             deltaTime);
     }
 

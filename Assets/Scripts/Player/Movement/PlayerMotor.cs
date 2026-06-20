@@ -19,6 +19,8 @@ public class PlayerMotor
     /// 垂直方向の現在速度
     /// </summary>
     public float VerticalVelocity { get; set; }
+    public float ControllerHeight => characterController.height;
+    public Vector3 ControllerCenter => characterController.center;
 
     /// <summary>
     /// 移動処理に必要な参照を初期化する
@@ -80,5 +82,26 @@ public class PlayerMotor
     {
         HorizontalVelocity = Vector3.zero;
         VerticalVelocity = 0f;
+    }
+
+    public void SetControllerHeight(float newHeight, bool keepBottomAligned = true)
+    {
+        newHeight = Mathf.Max(newHeight, characterController.radius * 2f);
+
+        Vector3 center = characterController.center;
+        if (keepBottomAligned)
+        {
+            float bottom = center.y - (characterController.height * 0.5f);
+            center.y = bottom + (newHeight * 0.5f);
+        }
+
+        characterController.height = newHeight;
+        characterController.center = center;
+    }
+
+    public void SetControllerDimensions(float height, Vector3 center)
+    {
+        characterController.height = Mathf.Max(height, characterController.radius * 2f);
+        characterController.center = center;
     }
 }
