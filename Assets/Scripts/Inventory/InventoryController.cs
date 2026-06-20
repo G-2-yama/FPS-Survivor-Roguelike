@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class InventoryController : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private UIFader uiFader;
 
@@ -37,6 +38,6 @@ public class InventoryController : MonoBehaviour
     {
         if (!context.performed) return;
 
-        Toggle();
+        gameManager?.GameStateMachine?.ToggleInventoryState();
     }
 }

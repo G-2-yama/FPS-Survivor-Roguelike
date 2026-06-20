@@ -11,11 +11,15 @@ public class GameStateMachine : StateMachine<GameState>
     private GameState upgradeState;
     public GameState UpgradeState => upgradeState;
 
+    private GameState inventoryState;
+    public GameState InventoryState => inventoryState;
+
     public GameStateMachine(GameController controller)
     {
         playingState = new PlayingState(controller);
         endState = new EndState(controller);
         upgradeState = new UpgradeState(controller);
+        inventoryState = new InventoryState(controller);
 
         controller.StartTimer();
         ChangeState(playingState);
@@ -34,6 +38,25 @@ public class GameStateMachine : StateMachine<GameState>
     public void ChangeUpgradeState()
     {
         ChangeState(upgradeState);
+    }
+
+    public void ChangeInventoryState()
+    {
+        ChangeState(inventoryState);
+    }
+
+    public void ToggleInventoryState()
+    {
+        if (CurrentState == playingState)
+        {
+            ChangeState(inventoryState);
+            return;
+        }
+
+        if (CurrentState == inventoryState)
+        {
+            ChangeState(playingState);
+        }
     }
 
 }

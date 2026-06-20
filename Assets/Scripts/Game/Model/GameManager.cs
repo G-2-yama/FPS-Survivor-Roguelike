@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UpgradeManager upgradeManager;
     public UpgradeManager UpgradeManager => upgradeManager;
 
+    [SerializeField] private InventoryController inventoryController;
+    public InventoryController InventoryController => inventoryController;
+
     [SerializeField] private Sounder sounder;
     public Sounder Sounder => sounder;
 

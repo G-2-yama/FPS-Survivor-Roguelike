@@ -17773,6 +17773,7 @@ MonoBehaviour:
   timer: {fileID: 383212504}
   gameView: {fileID: 419950869}
   upgradeManager: {fileID: 1653113031}
+  inventoryController: {fileID: 1569679480}
   sounder: {fileID: 419950870}
 --- !u!4 &419950868
 Transform:
@@ -60812,6 +60813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388b6ab7df742cc45b8b51b7bbe80ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryController
+  gameManager: {fileID: 419950867}
   inventoryUI: {fileID: 1562638436}
   uiFader: {fileID: 1562638437}
 --- !u!114 &1569679481
