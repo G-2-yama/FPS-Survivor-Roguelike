@@ -2,6 +2,9 @@
 
 public class UpgradeState : GameState
 {
+    public override CursorActivationMode CursorActivationMode =>
+        CursorActivationMode.AlwaysVisible;
+
     public UpgradeState(GameController controller) : base(controller)
     {
     }

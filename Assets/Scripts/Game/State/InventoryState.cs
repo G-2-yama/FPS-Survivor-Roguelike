@@ -1,5 +1,8 @@
 public class InventoryState : GameState
 {
+    public override CursorActivationMode CursorActivationMode =>
+        CursorActivationMode.AlwaysVisible;
+
     public InventoryState(GameController controller) : base(controller)
     {
     }

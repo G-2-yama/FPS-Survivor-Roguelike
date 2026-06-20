@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private readonly GameplayCursorController gameplayCursorController = new GameplayCursorController();
+
     [SerializeField] private Player player;
     public Player Player => player;
 
@@ -30,11 +32,13 @@ public class GameManager : MonoBehaviour
         gameController = new GameController(this);
         upgradeManager.Initialize(gameController);
         gameStateMachine = new GameStateMachine(gameController);
-        sounder.Play(SoundCategory.BGM);    // 後にGameStartStateのようなものを作成してそちらに置く
+        sounder.Play(SoundCategory.BGM);
+        gameplayCursorController.UpdateCursor(gameStateMachine.CurrentState);
     }
 
     private void Update()
     {
         gameStateMachine.Update();
+        gameplayCursorController.UpdateCursor(gameStateMachine.CurrentState);
     }
 }
