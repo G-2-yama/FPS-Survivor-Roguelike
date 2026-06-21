@@ -10,10 +10,10 @@ public class EnemyConfig : ScriptableObject
 
 
     [Header("Movement")]
-    [Min(0f)] public float ChaseSpeed = 3f;
-    [Min(0f)] public float OrbitRadius = 3f;
-    [Min(0f)] public float OrbitAngularSpeed = 180f;
     [Min(0f)] public float EngageDistance = 5f;
+    public MovementPattern chaseMovedata;
+    public MovementPattern combatMovedata;
+
 
     [Header("Combat")]
     [Min(0)] public int AttackPower = 1;

@@ -7,7 +7,11 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private EnemyAttackController attackController;
     [SerializeField] private GameObject prefab;
     [SerializeField] private WhiteFlash whiteFlash;
-   
+    [SerializeField]
+    private EnemyBrain enemyBrain;
+   Transform Target;
+      
+
     [SerializeField] private float deathDelay = 0.1f;
    
     public TeamType TeamType => TeamType.Enemy;
@@ -21,12 +25,29 @@ public class EnemyHealth : PoolableObject, IDamageable
         if (Health == null || isDead)
             return;
 
+
         if (Health.CurrentHP > 0)
         {
             whiteFlash?.Flash();
         }
+        
 
         Health.TakeDamage(config.Damagelange * damage);
+        /*Target = enemyBrain.Target;
+        if (Target != null)
+        {
+            Vector3 dir =
+            transform.position -
+            Target.position;
+
+            enemyBrain.KnockbackState.SetKnockback(
+                dir,
+                8f,
+                0.2f);
+
+            enemyBrain.ChangeState(
+                enemyBrain.KnockbackState);
+        }*/
     }
 
     public override void OnGet()

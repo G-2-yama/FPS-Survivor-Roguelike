@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1950449772820121766}
   - component: {fileID: 1304819817297185972}
   - component: {fileID: 8790778771241833302}
-  - component: {fileID: 5299368076619845785}
   - component: {fileID: 2836230790004044888}
   - component: {fileID: 6689207877471317752}
   - component: {fileID: 8496615387957828556}
@@ -114,10 +113,7 @@ MonoBehaviour:
   rb: {fileID: 2836230790004044888}
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
   targetProvider: {fileID: 8790778771241833302}
-  movement: {fileID: 5299368076619845785}
   attack: {fileID: 0}
-  chaseMovementType: 0
-  combatBehaviour: 0
   animator: {fileID: 0}
 --- !u!114 &8790778771241833302
 MonoBehaviour:
@@ -133,18 +129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTargetProvider
   currentTarget: {fileID: 0}
   playerTag: Player
---- !u!114 &5299368076619845785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6710789455330182112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5b1dccbdcdb974e8700256f5c56692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementController
 --- !u!54 &2836230790004044888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -220,9 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a650e1b3dbbc64b9258c02259b1613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::basicenemyprojectile
-  myTeam: 8
-  targetTeam: 1
-  HP: 1
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
   exp: {fileID: 0}
   whiteFlash: {fileID: 8496615387957828556}

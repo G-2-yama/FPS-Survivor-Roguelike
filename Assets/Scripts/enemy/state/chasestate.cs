@@ -32,36 +32,19 @@ public class ChaseState : IState
             enemy.transform.position,
             enemy.Target.position);
 
-        if (distance <= enemy.Config.EngageDistance - 1.0f)
+        if (distance <= enemy.Config.EngageDistance)
         {
-            stateMachine.ChangeState(enemy.CombatState);
+            stateMachine.ChangeState(
+                enemy.CombatState);
+
             return;
         }
 
-        switch (enemy.ChaseMovementType)
-        {
-            case ChaseMovementType.Normal:
-
-                enemy.Movement.MoveTowards(
-                    enemy.Rb,
-                    enemy.transform,
-                    enemy.Target.position,
-                    enemy.Config.ChaseSpeed);
-
-                break;
-
-            case ChaseMovementType.Rolling:
-
-                enemy.Movement.RollTowards(
-                    enemy.Rb,
-                    enemy.transform,
-                    enemy.Target.position,
-                    enemy.Config.ChaseSpeed);
-
-                break;
-        }
+        enemy.Config.chaseMovedata.Move(
+            enemy.Rb,
+            enemy.transform,
+            enemy.Target);
     }
-
     public void Exit()
     {
     }

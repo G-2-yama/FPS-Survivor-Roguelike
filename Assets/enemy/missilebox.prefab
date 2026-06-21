@@ -704,7 +704,6 @@ GameObject:
   - component: {fileID: 7429119663115475894}
   - component: {fileID: 720501540243354655}
   - component: {fileID: 3343839264182785521}
-  - component: {fileID: 2131483456560350963}
   m_Layer: 0
   m_Name: missilebox
   m_TagString: Untagged
@@ -853,10 +852,7 @@ MonoBehaviour:
   rb: {fileID: 1126880715848881838}
   config: {fileID: 11400000, guid: 335b76842e15bb14fb8b6a35724d5584, type: 2}
   targetProvider: {fileID: 720501540243354655}
-  movement: {fileID: 2131483456560350963}
   attack: {fileID: 4758849224248555182}
-  chaseMovementType: 0
-  combatBehaviour: 0
   animator: {fileID: 3752096293260541823}
 --- !u!114 &7429119663115475894
 MonoBehaviour:
@@ -900,18 +896,6 @@ MonoBehaviour:
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
   flashDuration: 0.08
---- !u!114 &2131483456560350963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9162954730415355086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5b1dccbdcdb974e8700256f5c56692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementController
 --- !u!1001 &981940166050161207
 PrefabInstance:
   m_ObjectHideFlags: 0
