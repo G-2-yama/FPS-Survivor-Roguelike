@@ -2,6 +2,9 @@
 
 public class EndState : GameState
 {
+    public override CursorActivationMode CursorActivationMode =>
+        CursorActivationMode.AlwaysVisible;
+
     public EndState(GameController controller) : base(controller)
     {
     }

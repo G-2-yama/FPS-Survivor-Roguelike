@@ -1,28 +1,21 @@
-
-
-public class UpgradeState : GameState
+public class InventoryState : GameState
 {
     public override CursorActivationMode CursorActivationMode =>
         CursorActivationMode.AlwaysVisible;
 
-    public UpgradeState(GameController controller) : base(controller)
+    public InventoryState(GameController controller) : base(controller)
     {
     }
 
     public override void Enter()
     {
         controller.PauseGame();
-        controller.ShowUpgradeUI();
-    }
-
-    public override void Update()
-    {
-
+        controller.ShowInventoryUI();
     }
 
     public override void Exit()
     {
         controller.ResumeGame();
-        controller.HideUpgradeUI();
+        controller.HideInventoryUI();
     }
 }

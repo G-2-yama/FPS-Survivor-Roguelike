@@ -1,6 +1,8 @@
 public abstract class GameState : IState
 {
 	protected GameController controller;
+	public virtual CursorActivationMode CursorActivationMode =>
+		CursorActivationMode.HiddenUnlessModifierHeld;
 
 	public GameState(GameController controller)
 	{

@@ -20,5 +20,7 @@ public class GameController
     public void ResumeGame()     => Time.timeScale = 1f;
     public void ShowUpgradeUI()  => gameManager.UpgradeManager.ShowUpgradeUI();
     public void HideUpgradeUI()  => gameManager.UpgradeManager.HideUpgradeUI();
+    public void ShowInventoryUI() => gameManager.InventoryController.Open();
+    public void HideInventoryUI() => gameManager.InventoryController.Close();
     public void ShowGameEnd()    => gameManager.GameView.ShowGameEndCanvas();
 }
