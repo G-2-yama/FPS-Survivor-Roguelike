@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
+  m_Name: Phase_03
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
+  startTime: 100
+  spawnInterval: 1
+  enemies:
+  - prefab: {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
+    spawnWeight: 10
+  - prefab: {fileID: 9162954730415355086, guid: dbb1fa8a6a7d1914eb6638805760d660, type: 3}
+    spawnWeight: 10
+  - prefab: {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
+    spawnWeight: 2
