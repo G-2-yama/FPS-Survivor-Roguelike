@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/damageUp")]
 public class DamageUpItem : Item
 {
-    [SerializeField] private int DamageIncreaseAmount = 10;
+    [SerializeField] private float DamageIncreaseAmount = 0.1f;
 
     public override bool IsAvailable()
     {
@@ -13,11 +13,11 @@ public class DamageUpItem : Item
 
     public override void Apply()
     {
-        player.Stats.AddDamage(DamageIncreaseAmount);
+        player.Stats.AddDamageMultiplier(DamageIncreaseAmount);
     }
     
     public override void Revert()
     {
-        player.Stats.AddDamage(-DamageIncreaseAmount);
+        player.Stats.AddDamageMultiplier(-DamageIncreaseAmount);
     }
 }

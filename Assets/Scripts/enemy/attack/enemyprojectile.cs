@@ -14,7 +14,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
 
     protected bool hasHit = false;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float knockbackForce)
     {
         if (health == null)
             return;

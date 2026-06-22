@@ -17,6 +17,7 @@ public class BoomerangFire : FireModeData
 
         boomerang.Initialize(
             GetDamageAmount(weapon, weaponOwner),
+            GetKnockbackForce(weapon, weaponOwner),
             weaponOwner.transform,
             direction,
             speed,

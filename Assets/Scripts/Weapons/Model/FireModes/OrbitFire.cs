@@ -17,6 +17,7 @@ public class OrbitFireData : FireModeData
         OrbitDamageArea orbit = obj.GetComponent<OrbitDamageArea>();
 
         orbit.Initialize(GetDamageAmount(weapon, weaponOwner),
+            GetKnockbackForce(weapon, weaponOwner),
             weaponOwner.transform, radius, rotateSpeed);
     }
 }

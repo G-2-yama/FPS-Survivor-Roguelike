@@ -16,7 +16,8 @@ public class PlayerStats
     public float DashCooldown { get; private set; }
 
     // Combat
-    public int Damage { get; private set; }
+    public float DamageMultiplier { get; private set; }
+    public float KnockbackForceMultiplier { get; private set; }
 
     public PlayerStats(PlayerConfig baseStats)
     {
@@ -27,7 +28,8 @@ public class PlayerStats
         DashDistance = baseStats.DashDistance;
         DashDuration = baseStats.DashDuration;
         DashCooldown = baseStats.DashCooldown;
-        Damage = 0;
+        DamageMultiplier = 1f;
+        KnockbackForceMultiplier = 1f;
     }
 
     public void AddMaxHP(int value)
@@ -65,8 +67,13 @@ public class PlayerStats
         DashCooldown += value;
     }
 
-    public void AddDamage(int value)
+    public void AddDamageMultiplier(float multiplier)
     {
-        Damage += value;
+        DamageMultiplier += multiplier;
+    }
+
+    public void AddKnockbackForceMultiplier(float multiplier)
+    {
+        KnockbackForceMultiplier += multiplier;
     }
 }

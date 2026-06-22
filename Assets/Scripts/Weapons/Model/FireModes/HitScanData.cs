@@ -63,7 +63,7 @@ public class HitScanData : FireModeData
             {
                 return;
             }
-            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
+            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
         }
     }
 }

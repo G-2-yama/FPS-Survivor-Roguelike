@@ -29,6 +29,6 @@ public class StepFire : FireModeData
 
         area.transform.position = spawnPos;
 
-        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner));
+        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }

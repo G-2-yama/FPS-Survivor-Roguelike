@@ -72,6 +72,7 @@ public class WeaponData : ScriptableObject
     public DamageProfile DamageProfile => damage;
 
     public int Damage => damage.Damage;
+    public float KnockbackForce => damage.KnockbackForce;
     public float SpreadAngle => damage.SpreadAngle;
 
     // =========================
@@ -174,16 +175,23 @@ public sealed class DamageProfile
     public static DamageProfile Empty { get; } = new DamageProfile();
 
     [SerializeField] private int damage = 1;
+    [SerializeField] private float knockbackForce = 1f;
     [SerializeField, Range(0f, 45f)] private float spreadAngle;
 
     public int Damage => damage;
+    public float KnockbackForce => knockbackForce;
     public float SpreadAngle => spreadAngle;
 
     private DamageProfile() { }
 
     public int GetDamageAmount(Player weaponOwner)
     {
-        return damage + weaponOwner.Stats.Damage;
+        return damage + (int)(weaponOwner.Stats.DamageMultiplier * damage);
+    }
+
+    public float GetKnockbackForce(Player weaponOwner)
+    {
+        return knockbackForce + weaponOwner.Stats.KnockbackForceMultiplier * knockbackForce;
     }
 }
 

@@ -12,9 +12,9 @@ public class BoomerangDamageArea : DamageArea
 
     private bool returning;
 
-    public void Initialize(int damage, Transform owner, Vector3 direction, float speed, float maxDistance)
+    public void Initialize(int damage, float knockbackForce, Transform owner, Vector3 direction, float speed, float maxDistance)
     {
-        base.Initialize(damage);
+        base.Initialize(damage, knockbackForce);
 
         this.owner = owner;
         this.direction = direction.normalized;
