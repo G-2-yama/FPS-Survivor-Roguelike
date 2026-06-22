@@ -6,47 +6,37 @@ public class KnockbackState : IState
     private readonly StateMachine<IState> stateMachine;
 
     private Vector3 knockbackVelocity;
-    private float duration;
     private float timer;
 
-    public KnockbackState(
-        EnemyBrain enemy,
-        StateMachine<IState> stateMachine)
+    public KnockbackState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
     }
 
-    public void SetKnockback(
-        Vector3 direction,
-        float force,
-        float duration)
+    public void SetKnockback(Vector3 direction, float force)
     {
-        knockbackVelocity =
-            direction.normalized * force;
+        float finalForce = force * (1f - enemy.Config.KnockbackResistance);
 
-        this.duration = duration;
+        knockbackVelocity = direction.normalized * finalForce;
     }
 
     public void Enter()
     {
-        timer = duration;
+        timer = enemy.Config.KnockbackDuration;
     }
 
     public void Update()
     {
         timer -= Time.fixedDeltaTime;
 
-        enemy.Rb.MovePosition(
-            enemy.Rb.position +
-            knockbackVelocity * Time.fixedDeltaTime);
+        enemy.Rb.MovePosition(enemy.Rb.position + knockbackVelocity * Time.fixedDeltaTime);
 
         knockbackVelocity *= 0.9f;
 
         if (timer <= 0f)
         {
-            stateMachine.ChangeState(
-                enemy.ChaseState);
+            stateMachine.ChangeState(enemy.ChaseState);
         }
     }
 

@@ -3815,7 +3815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &90786719
 Transform:
   m_ObjectHideFlags: 0
@@ -3844,11 +3844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGenerator
   phases:
-  - {fileID: 11400000, guid: d3e9a4761afe0f2449a0087b7dd6083b, type: 2}
-  - {fileID: 11400000, guid: 68c77356379df1d46943f112385276de, type: 2}
-  - {fileID: 11400000, guid: 5437f81187cee004fad372df71c37ff8, type: 2}
-  - {fileID: 11400000, guid: 2e7315f5f15c22945ba226882b746baa, type: 2}
-  - {fileID: 11400000, guid: 9faf13c056fa4f346aeb23969fd7ab1d, type: 2}
+  - {fileID: 11400000, guid: fe862f674ad098a418d1d714f01d4592, type: 2}
   spawnRadius: 75
   timer: {fileID: 383212504}
 --- !u!1 &91439701
@@ -7326,6 +7322,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -10736,6 +10733,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -15267,6 +15265,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -28059,6 +28058,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -28214,6 +28214,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -34112,6 +34113,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -35007,6 +35009,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -36509,6 +36512,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -39597,7 +39601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1018864606
 Transform:
   m_ObjectHideFlags: 0
@@ -39793,6 +39797,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -48880,6 +48885,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -49649,6 +49655,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -51607,6 +51614,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -53256,6 +53264,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -63132,6 +63141,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -63523,6 +63533,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: efbe7b561c1337a4babad18a763bbe71, type: 2}
   - {fileID: 11400000, guid: 497d5ec25c0bab34b97c4e5d854152ec, type: 2}
   - {fileID: 11400000, guid: 0c971f2b7baaa2c43be79ebaacc0a18e, type: 2}
+  - {fileID: 11400000, guid: b1da45d32b0f0da4182b5be499431210, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -67855,6 +67866,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -71479,6 +71491,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0
@@ -79174,6 +79187,7 @@ MonoBehaviour:
   myTeam: 0
   targetTeam: 1
   damage: 10
+  knockbackForce: 5
   interval: 0.2
   lifetime: 0
   mode: 0

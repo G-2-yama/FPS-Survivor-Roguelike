@@ -31,6 +31,11 @@ public abstract class FireModeData : ScriptableObject
         return weapon.WeaponData.DamageProfile.GetDamageAmount(weaponOwner);
     }
 
+    protected float GetKnockbackForce(Weapon weapon, Player weaponOwner)
+    {
+        return weapon.WeaponData.DamageProfile.GetKnockbackForce(weaponOwner);
+    }
+
     /// <summary>
     /// 発射方向をスプレッド角度に基づいてランダムに決定するメソッド
     /// </summary>

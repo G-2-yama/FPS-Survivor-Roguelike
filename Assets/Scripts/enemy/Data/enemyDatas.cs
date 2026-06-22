@@ -6,7 +6,11 @@ public class EnemyConfig : ScriptableObject
     [Header("Status")]
     [Min(1)] public int MaxHp = 5;
     [SerializeField] private int damagelange = 1;
+    [SerializeField][Range(0f, 1f)] private float knockbackResistance = 0f;
+    [SerializeField] private float knockbackDuration = 0.2f;
     public int Damagelange => damagelange;
+    public float KnockbackResistance => knockbackResistance;
+    public float KnockbackDuration => knockbackDuration;
 
 
     [Header("Movement")]

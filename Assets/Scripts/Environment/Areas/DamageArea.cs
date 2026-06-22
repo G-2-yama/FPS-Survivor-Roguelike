@@ -8,6 +8,7 @@ public class DamageArea : PoolableObject, IDamageable
     [SerializeField] private TeamType myTeam;
     [SerializeField] private TeamType targetTeam;
     [SerializeField] private int damage = 10;
+    [SerializeField] private float knockbackForce = 5f;
     [SerializeField] private float interval = 1f;
     [SerializeField] private float lifetime = 0f;
     [SerializeField] private DamageAreaMode mode;
@@ -16,7 +17,7 @@ public class DamageArea : PoolableObject, IDamageable
     private Health health;
     public TeamType TeamType => myTeam;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float knockbackForce)
     {
         health.TakeDamage(damage);
         if (health.IsDead)
@@ -48,9 +49,10 @@ public class DamageArea : PoolableObject, IDamageable
             lifeRoutine = StartCoroutine(LifeTimer(lifetime));
     }
 
-    public void Initialize(int damage)
+    public void Initialize(int damage, float knockbackForce)
     {
         this.damage = damage;
+        this.knockbackForce = knockbackForce;
         OnGet();
     }
 
@@ -81,7 +83,7 @@ public class DamageArea : PoolableObject, IDamageable
         if ((damageable.TeamType & targetTeam) == 0)
             return;
 
-        damageable.TakeDamage(damage);
+        damageable.TakeDamage(damage, knockbackForce);
     }
 
     private void OnTriggerStay(Collider other)
@@ -104,7 +106,7 @@ public class DamageArea : PoolableObject, IDamageable
 
         if (timers[damageable] >= interval)
         {
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(damage, knockbackForce);
             timers[damageable] = 0f;
         }
     }

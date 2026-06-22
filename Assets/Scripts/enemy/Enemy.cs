@@ -1,14 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyHealth : PoolableObject, IDamageable
+public class Enemy : PoolableObject, IDamageable
 {
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyAttackController attackController;
     [SerializeField] private GameObject prefab;
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private EnemyBrain enemyBrain;
-    [SerializeField] private float Knockbackforce = 30f; 
    Transform Target;
       
 
@@ -20,8 +19,9 @@ public class EnemyHealth : PoolableObject, IDamageable
     private bool isDead = false;
 
     
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float knockbackForce)
     {
+        // Damage処理
         if (Health == null || isDead)
             return;
 
@@ -31,22 +31,17 @@ public class EnemyHealth : PoolableObject, IDamageable
             whiteFlash?.Flash();
         }
         
-
         Health.TakeDamage(config.Damagelange * damage);
+
+        // Knockback処理
         Target = enemyBrain.Target;
         if (Target != null)
         {
-            Vector3 dir =
-            transform.position -
-            Target.position;
+            Vector3 dir = transform.position - Target.position;
 
-            enemyBrain.KnockbackState.SetKnockback(
-                dir,
-                Knockbackforce,
-                0.2f);
+            enemyBrain.KnockbackState.SetKnockback(dir, knockbackForce);
 
-            enemyBrain.ChangeState(
-                enemyBrain.KnockbackState);
+            enemyBrain.ChangeState(enemyBrain.KnockbackState);
         }
     }
 

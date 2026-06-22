@@ -22,7 +22,8 @@ public class TrainingDummy : MonoBehaviour, IDamageable
     /// ダメージを受ける処理
     /// </summary>
     /// <param name="damage">受けるダメージ量</param>
-    public void TakeDamage(int damage)
+    /// <param name="knockbackForce">受けるノックバック力</param>
+    public void TakeDamage(int damage, float knockbackForce)
     {
         Health.TakeDamage(damage);
     }

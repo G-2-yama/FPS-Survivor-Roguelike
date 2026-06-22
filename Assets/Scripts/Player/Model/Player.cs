@@ -60,7 +60,7 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float knockbackForce)
     {
         Health.TakeDamage(damage);
     }

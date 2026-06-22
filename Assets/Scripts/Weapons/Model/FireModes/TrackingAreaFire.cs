@@ -20,6 +20,6 @@ public class TrackingAreaFire : FireModeData
         area.transform.rotation = Quaternion.LookRotation(direction);
         area.transform.SetParent(Camera.main.transform);
 
-        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner));
+        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }

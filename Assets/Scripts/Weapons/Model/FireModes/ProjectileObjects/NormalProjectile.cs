@@ -12,7 +12,7 @@ public class NormalProjectile : ProjectileObject
                 return;
             }
 
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(damage, knockbackForce);
 
             // 敵の弾丸の場合は貫通
             if(damageable.TeamType != TeamType.EnemyAmmo)

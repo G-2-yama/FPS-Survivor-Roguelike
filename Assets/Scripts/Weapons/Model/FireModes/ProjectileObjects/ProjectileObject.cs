@@ -15,13 +15,13 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
     protected Rigidbody rb;
 
     protected int damage;
+    protected float knockbackForce;
 
     protected Health health;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float knockbackForce)
     {
         health.TakeDamage(damage);
-
     }
 
     /// <summary>
@@ -39,9 +39,10 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
     /// </summary>
     /// <param name="onHitAction">衝突したColliderを受け取るヒット時コールバック</param>
     /// <param name="lifeTime">自動破棄までの秒数</param>
-    public void Initialize(int damage, float lifeTime)
+    public void Initialize(int damage, float knockbackForce, float lifeTime)
     {
         this.damage = damage;
+        this.knockbackForce = knockbackForce;
         health = new Health(HP);
         health.OnDeath += OnRelease;
         lifeRoutine = StartCoroutine(LifeTimer(lifeTime));

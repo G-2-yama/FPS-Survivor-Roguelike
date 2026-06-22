@@ -18,6 +18,6 @@ public class StaticAreaFire : FireModeData
         area.transform.position = spawnPos;
         area.transform.rotation = Quaternion.LookRotation(direction);
 
-        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner));
+        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }
