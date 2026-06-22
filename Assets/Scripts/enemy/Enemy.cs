@@ -7,8 +7,8 @@ public class EnemyHealth : PoolableObject, IDamageable
     [SerializeField] private EnemyAttackController attackController;
     [SerializeField] private GameObject prefab;
     [SerializeField] private WhiteFlash whiteFlash;
-    [SerializeField]
-    private EnemyBrain enemyBrain;
+    [SerializeField] private EnemyBrain enemyBrain;
+    [SerializeField] private float Knockbackforce = 30f; 
    Transform Target;
       
 
@@ -33,7 +33,7 @@ public class EnemyHealth : PoolableObject, IDamageable
         
 
         Health.TakeDamage(config.Damagelange * damage);
-        /*Target = enemyBrain.Target;
+        Target = enemyBrain.Target;
         if (Target != null)
         {
             Vector3 dir =
@@ -42,12 +42,12 @@ public class EnemyHealth : PoolableObject, IDamageable
 
             enemyBrain.KnockbackState.SetKnockback(
                 dir,
-                8f,
+                Knockbackforce,
                 0.2f);
 
             enemyBrain.ChangeState(
                 enemyBrain.KnockbackState);
-        }*/
+        }
     }
 
     public override void OnGet()
