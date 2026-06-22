@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91705da594cc72045aa9129b922fbeda, type: 3}
   m_Name: ballcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::JumpMovement
-  ChaseSpeed: 3
+  ChaseSpeed: 4
   ForwardForce: 12
   UpwardForce: 6

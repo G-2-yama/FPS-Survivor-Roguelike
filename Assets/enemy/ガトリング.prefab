@@ -407,6 +407,7 @@ MonoBehaviour:
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: -3031036075592505957}
   enemyBrain: {fileID: 6420951661385168637}
+  Knockbackforce: 30
   deathDelay: 0.3
 --- !u!114 &633176299316624300
 MonoBehaviour:
@@ -482,7 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
-  flashDuration: 0.08
+  flashDuration: 0.3
 --- !u!54 &5128404338816379899
 Rigidbody:
   m_ObjectHideFlags: 0

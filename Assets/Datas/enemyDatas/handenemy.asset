@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: handenemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  MaxHp: 10
+  MaxHp: 100
   damagelange: 1
-  ChaseSpeed: 5
-  OrbitRadius: 2
-  OrbitAngularSpeed: 20
   EngageDistance: 3
+  chaseMovedata: {fileID: 11400000, guid: 7ced4c79d461c5c4e8feec1b5f8e526b, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 50b5ad7bbb6238e42886497e2c7d6346, type: 2}
   AttackPower: 1
   AttackInterval: 1
   AttackPattern: {fileID: 11400000, guid: 58e57a83cebf8af4dbb786662069611e, type: 2}

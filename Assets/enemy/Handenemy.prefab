@@ -4023,7 +4023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
-  flashDuration: 0.08
+  flashDuration: 0.3
 --- !u!54 &8210859706457007736
 Rigidbody:
   m_ObjectHideFlags: 0

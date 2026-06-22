@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c8e8a0d1292744db19fea721ef78c0, type: 3}
   m_Name: ballchasedata
   m_EditorClassIdentifier: Assembly-CSharp::RollMovement
-  ChaseSpeed: 3
-  MoveForce: 10
+  ChaseSpeed: 1.5
+  MoveForce: 4

@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::enemyDatas
   MaxHp: 10
   damagelange: 1
-  ChaseSpeed: 8
-  OrbitRadius: 7
-  OrbitAngularSpeed: 10
   EngageDistance: 8
+  chaseMovedata: {fileID: 11400000, guid: 27c1cf6e5bbf0cf48a3d7c04e9ef47f1, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 2bbb531ba14e52e4ba3437b622b3bc0f, type: 2}
   AttackPower: 2
   AttackInterval: 3
   AttackPattern: {fileID: 11400000, guid: 2ff7f9945009f96429b76e843ccf5219, type: 2}

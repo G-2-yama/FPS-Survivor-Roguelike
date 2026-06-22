@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5edd35f8c030d14388fb1be39e415c4, type: 3}
   m_Name: handcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
-  ChaseSpeed: 3
-  OrbitRadius: 3
-  OrbitAngularSpeed: 180
+  ChaseSpeed: 4
+  OrbitRadius: 2
+  OrbitAngularSpeed: 20

@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 2
   damagelange: 1
-  ChaseSpeed: 3
-  OrbitRadius: 1
-  OrbitAngularSpeed: 1
   EngageDistance: 0
+  chaseMovedata: {fileID: 11400000, guid: 5855ce213bdfb17498bd32e18470690a, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 5855ce213bdfb17498bd32e18470690a, type: 2}
   AttackPower: 1
   AttackInterval: 1
   AttackPattern: {fileID: 0}
