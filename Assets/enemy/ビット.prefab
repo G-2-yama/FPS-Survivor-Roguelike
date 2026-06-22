@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 5154964929320662522}
   - component: {fileID: 351978529155683102}
   - component: {fileID: 4933798852626595605}
-  - component: {fileID: 2372962091248375863}
   - component: {fileID: 1800572802802244149}
   - component: {fileID: -517846635209720168}
   - component: {fileID: 7862773016890114749}
@@ -150,6 +149,8 @@ MonoBehaviour:
   attackController: {fileID: 4933798852626595605}
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: 7862773016890114749}
+  enemyBrain: {fileID: 6515575751581878923}
+  Knockbackforce: 30
   deathDelay: 0.1
 --- !u!114 &6515575751581878923
 MonoBehaviour:
@@ -166,10 +167,7 @@ MonoBehaviour:
   rb: {fileID: 5154964929320662522}
   config: {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
   targetProvider: {fileID: 1800572802802244149}
-  movement: {fileID: 2372962091248375863}
   attack: {fileID: 4933798852626595605}
-  chaseMovementType: 0
-  combatBehaviour: 0
   animator: {fileID: 0}
 --- !u!54 &5154964929320662522
 Rigidbody:
@@ -235,18 +233,6 @@ MonoBehaviour:
   targetProvider: {fileID: 1800572802802244149}
   launcher: {fileID: -517846635209720168}
   shotPoint: {fileID: 3914232940092951721}
---- !u!114 &2372962091248375863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6874736543859849084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5b1dccbdcdb974e8700256f5c56692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementController
 --- !u!114 &1800572802802244149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,4 +274,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
-  flashDuration: 0.08
+  flashDuration: 0.3

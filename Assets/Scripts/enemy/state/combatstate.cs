@@ -32,38 +32,21 @@ public class CombatState : IState
             enemy.transform.position,
             enemy.Target.position);
 
-        if (distance >= enemy.Config.EngageDistance + 1.0f)
+        if (distance >
+            enemy.Config.EngageDistance + 1f)
         {
-            stateMachine.ChangeState(enemy.ChaseState);
+            stateMachine.ChangeState(
+                enemy.ChaseState);
+
             return;
         }
 
-        switch (enemy.CombatBehaviour)
-        {
-            case CombatBehaviourType.Orbit:
+        enemy.Config.combatMovedata.Move(
+            enemy.Rb,
+            enemy.transform,
+            enemy.Target);
 
-                enemy.Movement.OrbitAround(
-                    enemy.Rb,
-                    enemy.transform,
-                    enemy.Target,
-                    enemy.Config.OrbitRadius,
-                    enemy.Config.OrbitAngularSpeed);
-
-                enemy.Attack?.TryAttack();
-
-                break;
-
-            case CombatBehaviourType.JumpAttack:
-
-                enemy.Movement.JumpToward(
-                    enemy.Rb,
-                    enemy.transform,
-                    enemy.Target,
-                    12f,
-                    6f);
-
-                break;
-        }
+        enemy.Attack?.TryAttack();
     }
 
     public void Exit()

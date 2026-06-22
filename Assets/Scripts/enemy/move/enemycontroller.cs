@@ -5,31 +5,27 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyTargetProvider targetProvider;
-    [SerializeField] private EnemyMovementController movement;
     [SerializeField] private EnemyAttackController attack;
-    [SerializeField] private ChaseMovementType chaseMovementType;
-    [SerializeField] private CombatBehaviourType combatBehaviour;
     [SerializeField] private Animator animator;
 
     private StateMachine<IState> stateMachine;
 
     private ChaseState chaseState;
     private CombatState combatState;
+    private KnockbackState knockbackState;
 
     public Rigidbody Rb => rb;
     public EnemyConfig Config => config;
     public Transform Target => targetProvider?.CurrentTarget;
-    public EnemyMovementController Movement => movement;
     public EnemyAttackController Attack => attack;
     public Animator Animator => animator;
-
-    public ChaseMovementType ChaseMovementType => chaseMovementType;
-    public CombatBehaviourType CombatBehaviour => combatBehaviour;
 
     public StateMachine<IState> StateMachine => stateMachine;
 
     public ChaseState ChaseState => chaseState;
     public CombatState CombatState => combatState;
+
+    public KnockbackState KnockbackState => knockbackState;
 
     private void Awake()
     {
@@ -37,11 +33,11 @@ public class EnemyBrain : MonoBehaviour
 
         chaseState = new ChaseState(this, stateMachine);
         combatState = new CombatState(this, stateMachine);
+        knockbackState = new KnockbackState(this, stateMachine);
     }
 
     private void OnEnable()
     {
-     
         ResetBrain();
     }
 
@@ -62,15 +58,10 @@ public class EnemyBrain : MonoBehaviour
             animator.enabled = false;
             animator.enabled = true;
 
-            
-
             animator.SetBool("Iscombat", false);
-           
-
         }
 
         stateMachine.ChangeState(chaseState);
-        
     }
 
     public void ChangeState(IState newState)

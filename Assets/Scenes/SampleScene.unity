@@ -3815,7 +3815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &90786719
 Transform:
   m_ObjectHideFlags: 0
@@ -33615,6 +33615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MolotovFire
       objectReference: {fileID: 0}
+    - target: {fileID: 4004365500606963686, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7069119147779450754, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.680691
@@ -39593,7 +39597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1018864606
 Transform:
   m_ObjectHideFlags: 0
@@ -39635,8 +39639,8 @@ MonoBehaviour:
   changeInterval: 20
   enemyPrefabs:
   - {fileID: 8799001866560603096, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
+  - {fileID: 9162954730415355086, guid: dbb1fa8a6a7d1914eb6638805760d660, type: 3}
   - {fileID: 8799001866560603096, guid: 1a43b805f0b618d4d9c1fcc7b3c8a028, type: 3}
-  - {fileID: 3621599535995762604, guid: a436b3e4469d4dc478c3dc6a709dd9fe, type: 3}
   - {fileID: 8411297557696040895, guid: e59ade53a001fd0488a65d4a9e8271b2, type: 3}
   timerObject: {fileID: 383212502}
 --- !u!1 &1020732964
@@ -82448,6 +82452,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boomerang
       objectReference: {fileID: 0}
+    - target: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -83112,6 +83120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tracer
       objectReference: {fileID: 0}
+    - target: {fileID: 2070297035038595584, guid: e085c9affb89431479351603436c0352, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8987175252929890819, guid: e085c9affb89431479351603436c0352, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.08
@@ -83740,6 +83752,10 @@ PrefabInstance:
     - target: {fileID: 4004365500606963686, guid: 9a7b45e599c0b4b4794fa3f59ae08c7d, type: 3}
       propertyPath: m_Name
       value: FireEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004365500606963686, guid: 9a7b45e599c0b4b4794fa3f59ae08c7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5750607715207682203, guid: 9a7b45e599c0b4b4794fa3f59ae08c7d, type: 3}
       propertyPath: interval

@@ -3850,7 +3850,6 @@ GameObject:
   - component: {fileID: 4818800964872357635}
   - component: {fileID: 3314495736408130372}
   - component: {fileID: 1066021274306290870}
-  - component: {fileID: 8650578064614007241}
   - component: {fileID: 2594772351240839443}
   - component: {fileID: 8427006510350509553}
   - component: {fileID: 8210859706457007736}
@@ -3947,7 +3946,9 @@ MonoBehaviour:
   attackController: {fileID: 4818800964872357635}
   prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: 8427006510350509553}
-  deathDelay: 0.1
+  enemyBrain: {fileID: 3314495736408130372}
+  Knockbackforce: 30
+  deathDelay: 0.3
 --- !u!114 &4818800964872357635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3979,10 +3980,7 @@ MonoBehaviour:
   rb: {fileID: 8210859706457007736}
   config: {fileID: 11400000, guid: 46cb9e89c1a48eb458476a0aafeb5e11, type: 2}
   targetProvider: {fileID: 1066021274306290870}
-  movement: {fileID: 8650578064614007241}
   attack: {fileID: 4818800964872357635}
-  chaseMovementType: 0
-  combatBehaviour: 0
   animator: {fileID: 2446288854180587493}
 --- !u!114 &1066021274306290870
 MonoBehaviour:
@@ -3998,18 +3996,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTargetProvider
   currentTarget: {fileID: 0}
   playerTag: Player
---- !u!114 &8650578064614007241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8799001866560603096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5b1dccbdcdb974e8700256f5c56692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementController
 --- !u!114 &2594772351240839443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4037,7 +4023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhiteFlash
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
-  flashDuration: 0.08
+  flashDuration: 0.3
 --- !u!54 &8210859706457007736
 Rigidbody:
   m_ObjectHideFlags: 0
