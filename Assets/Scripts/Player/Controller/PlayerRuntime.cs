@@ -61,4 +61,9 @@ public class PlayerRuntime
     {
         context.Motor.ResolveWallHit(wallNormal);
     }
+
+    public void HandleRecoverableGroundContact()
+    {
+        context.JumpController.RegisterRecoverableGroundContact();
+    }
 }

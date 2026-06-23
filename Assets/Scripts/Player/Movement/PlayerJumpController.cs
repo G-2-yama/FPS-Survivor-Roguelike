@@ -34,6 +34,7 @@ public class PlayerJumpController
     /// 前フレーム時点で接地していたかどうか
     /// </summary>
     private bool wasGrounded;
+    private bool hadRecoverableGroundContact;
 
     /// <summary>
     /// 現在残っているジャンプ可能回数
@@ -56,7 +57,8 @@ public class PlayerJumpController
     /// </summary>
     public void RefreshGroundState()
     {
-        bool isGrounded = motor.IsGrounded();
+        bool isGrounded = hadRecoverableGroundContact;
+        hadRecoverableGroundContact = false;
 
         if (isGrounded && !wasGrounded)
         {
@@ -68,6 +70,11 @@ public class PlayerJumpController
         }
 
         wasGrounded = isGrounded;
+    }
+
+    public void RegisterRecoverableGroundContact()
+    {
+        hadRecoverableGroundContact = true;
     }
 
     /// <summary>
@@ -136,6 +143,7 @@ public class PlayerJumpController
     {
         remainingJumpHoldBonus = 0f;
         jumpHoldTimer = 0f;
+        hadRecoverableGroundContact = false;
         wasGrounded = false;
         remainingJumpCount = 0;
     }
