@@ -80,7 +80,7 @@ public class Enemy : PoolableObject, IDamageable
 
         GameObject expitem = PoolManager.Instance.Get(prefab);
         expitem.transform.position = transform.position;
-
+        expitem.transform.rotation = transform.rotation;
         Release();
     }
 }
