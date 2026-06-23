@@ -137,6 +137,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (hit.normal.y > 0.1f && hit.collider.GetComponentInParent<Enemy>() == null)
+        {
+            runtime?.HandleRecoverableGroundContact();
+        }
+
         runtime?.HandleWallHit(hit.normal);
     }
 
