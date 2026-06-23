@@ -10,6 +10,7 @@ public class Health
 
     public event Action<int, int> OnHealthChanged;
     public event Action<int, int, int> OnDamaged;
+    public event Action<int, int, int> OnHealed;
     public event Action OnDeath;
 
     public Health(int maxHP)
@@ -42,9 +43,18 @@ public class Health
 
     public void Heal(int amount)
     {
-        if (IsDead) return;
+        if (IsDead || amount <= 0) return;
 
+        int previousHp = CurrentHP;
         CurrentHP = Mathf.Min(CurrentHP + amount, MaxHP);
+        int appliedHeal = CurrentHP - previousHp;
+
+        if (appliedHeal <= 0)
+        {
+            return;
+        }
+
+        OnHealed?.Invoke(appliedHeal, CurrentHP, MaxHP);
         OnHealthChanged?.Invoke(CurrentHP, MaxHP);
     }
 

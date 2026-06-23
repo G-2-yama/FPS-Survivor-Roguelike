@@ -56170,19 +56170,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d56d35fd196ac5f4b99698cf85c0f04a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageOverlayView
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerReactionOverlayController
   player: {fileID: 275487193}
   overlayRoot: {fileID: 1447789688}
   blackOverlayImage: {fileID: 35208175}
-  redVignetteGraphic: {fileID: 1236710239}
-  minDamageIntensity: 0.35
-  damageToIntensityScale: 2
-  stackedIntensityGain: 0.25
-  maxBlackAlpha: 0.18
-  maxRedAlpha: 0.5
-  fadeInDuration: 0.06
-  holdDuration: 0.08
-  fadeOutDuration: 0.35
+  edgeOverlayGraphic: {fileID: 1236710239}
   vignetteInnerRadius: 0.55
   vignetteOuterRadius: 1
 --- !u!1 &1448139290

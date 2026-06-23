@@ -79,16 +79,4 @@ public class ScreenVignetteGraphic : MaskableGraphic
             }
         }
     }
-
-#if UNITY_EDITOR
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        innerRadius = Mathf.Clamp01(innerRadius);
-        outerRadius = Mathf.Max(innerRadius + 0.001f, outerRadius);
-        horizontalSegments = Mathf.Max(2, horizontalSegments);
-        verticalSegments = Mathf.Max(2, verticalSegments);
-        SetVerticesDirty();
-    }
-#endif
 }
