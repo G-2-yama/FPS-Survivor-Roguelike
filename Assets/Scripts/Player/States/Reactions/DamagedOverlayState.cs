@@ -6,17 +6,6 @@ using UnityEngine;
 /// </summary>
 public class DamagedOverlayState : IOverlayState
 {
-    private const float MinIntensity = 0.35f;
-    private const float DamageToIntensityScale = 4f;
-    private const float StackedIntensityGain = 0.25f;
-    private const float FadeInDuration = 0.06f;
-    private const float HoldDuration = 0.08f;
-    private const float FadeOutDuration = 0.35f;
-    private const float MaxBlackAlpha = 0.18f;
-    private const float MaxEdgeAlpha = 0.5f;
-
-    private static readonly Color EdgeTint = new Color(0.85f, 0.1f, 0.08f, 1f);
-
     private enum Phase
     {
         Idle,
@@ -25,6 +14,8 @@ public class DamagedOverlayState : IOverlayState
         FadeOut,
     }
 
+    private readonly DamagedOverlayStateSettings settings;
+
     private float currentIntensity;
     private float startIntensity;
     private float targetIntensity;
@@ -32,6 +23,11 @@ public class DamagedOverlayState : IOverlayState
     private Phase phase = Phase.Idle;
 
     public PlayerOverlayTrigger Trigger => PlayerOverlayTrigger.Damaged;
+
+    public DamagedOverlayState(DamagedOverlayStateSettings settings)
+    {
+        this.settings = settings;
+    }
 
     public void TriggerEffect(int amount, int maxAmount)
     {
@@ -122,4 +118,22 @@ public class DamagedOverlayState : IOverlayState
             currentIntensity = 0f;
         }
     }
+
+    private float MinIntensity => settings != null ? settings.MinIntensity : 0.35f;
+
+    private float DamageToIntensityScale => settings != null ? settings.DamageToIntensityScale : 4f;
+
+    private float StackedIntensityGain => settings != null ? settings.StackedIntensityGain : 0.25f;
+
+    private float FadeInDuration => settings != null ? settings.FadeInDuration : 0.06f;
+
+    private float HoldDuration => settings != null ? settings.HoldDuration : 0.08f;
+
+    private float FadeOutDuration => settings != null ? settings.FadeOutDuration : 0.35f;
+
+    private float MaxBlackAlpha => settings != null ? settings.MaxBlackAlpha : 0.18f;
+
+    private float MaxEdgeAlpha => settings != null ? settings.MaxEdgeAlpha : 0.5f;
+
+    private Color EdgeTint => settings != null ? settings.EdgeTint : new Color(0.85f, 0.1f, 0.08f, 1f);
 }

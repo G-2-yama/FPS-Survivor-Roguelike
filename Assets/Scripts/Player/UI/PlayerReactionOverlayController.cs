@@ -15,6 +15,9 @@ public class PlayerReactionOverlayController : MonoBehaviour
     [SerializeField] private Image blackOverlayImage;
     [SerializeField] private ScreenVignetteGraphic edgeOverlayGraphic;
 
+    [Header("State Settings")]
+    [SerializeField] private DamagedOverlayStateSettings damagedOverlaySettings;
+
     [Header("Vignette Shape")]
     [SerializeField, Range(0f, 1f)] private float vignetteInnerRadius = 0.55f;
     [SerializeField, Range(0f, 1.5f)] private float vignetteOuterRadius = 1f;
@@ -38,7 +41,7 @@ public class PlayerReactionOverlayController : MonoBehaviour
 
         stateManager = new OverlayStateManager(new IOverlayState[]
         {
-            new DamagedOverlayState(),
+            new DamagedOverlayState(damagedOverlaySettings),
         });
     }
 
@@ -158,6 +161,11 @@ public class PlayerReactionOverlayController : MonoBehaviour
         if (edgeOverlayGraphic == null)
         {
             Debug.LogWarning($"{nameof(PlayerReactionOverlayController)} requires {nameof(edgeOverlayGraphic)}.", this);
+        }
+
+        if (damagedOverlaySettings == null)
+        {
+            Debug.LogWarning($"{nameof(PlayerReactionOverlayController)} has no {nameof(damagedOverlaySettings)} assigned. Using built-in defaults.", this);
         }
     }
 }
