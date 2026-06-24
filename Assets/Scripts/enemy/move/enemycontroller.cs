@@ -29,6 +29,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void Awake()
     {
+        
         stateMachine = new StateMachine<IState>();
 
         chaseState = new ChaseState(this, stateMachine);
