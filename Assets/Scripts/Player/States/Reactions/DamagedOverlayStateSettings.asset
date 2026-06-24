@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f886fd383a46e4a9d1efa3d43ba84a, type: 3}
   m_Name: DamagedOverlayStateSettings
   m_EditorClassIdentifier: 
-  minIntensity: 0.35
-  damageToIntensityScale: 2
-  stackedIntensityGain: 0.25
-  maxBlackAlpha: 0.18
-  maxEdgeAlpha: 0.75
-  edgeTint: {r: 0.85, g: 0.1, b: 0.08, a: 1}
+  minimumIntensity: 0.35
+  responseScale: 2
+  intensityCarryover: 0.25
+  overlayColor: {r: 0.85, g: 0.1, b: 0.08, a: 1}
+  screenDarknessAtFullIntensity: 0.18
+  edgeOpacityAtFullIntensity: 0.75
   fadeInDuration: 0.06
   holdDuration: 0.08
   fadeOutDuration: 0.35

@@ -1,10 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// 被ダメージ時の画面暗転と赤ビネット演出を管理する。
-/// 数値設定はこの状態自身が持つ。
+/// 回復時の画面オーバーレイ演出を管理する。
 /// </summary>
-public class DamagedOverlayState : IOverlayState
+public class HealedOverlayState : IOverlayState
 {
     private enum Phase
     {
@@ -14,7 +13,7 @@ public class DamagedOverlayState : IOverlayState
         FadeOut,
     }
 
-    private readonly DamagedOverlayStateSettings settings;
+    private readonly HealedOverlayStateSettings settings;
 
     private float currentIntensity;
     private float startIntensity;
@@ -22,9 +21,9 @@ public class DamagedOverlayState : IOverlayState
     private float timer;
     private Phase phase = Phase.Idle;
 
-    public PlayerOverlayTrigger Trigger => PlayerOverlayTrigger.Damaged;
+    public PlayerOverlayTrigger Trigger => PlayerOverlayTrigger.Healed;
 
-    public DamagedOverlayState(DamagedOverlayStateSettings settings)
+    public HealedOverlayState(HealedOverlayStateSettings settings)
     {
         this.settings = settings;
     }
@@ -119,21 +118,21 @@ public class DamagedOverlayState : IOverlayState
         }
     }
 
-    private float MinimumIntensity => settings != null ? settings.MinimumIntensity : 0.35f;
+    private float MinimumIntensity => settings != null ? settings.MinimumIntensity : 0.2f;
 
-    private float ResponseScale => settings != null ? settings.ResponseScale : 4f;
+    private float ResponseScale => settings != null ? settings.ResponseScale : 2f;
 
-    private float IntensityCarryover => settings != null ? settings.IntensityCarryover : 0.25f;
+    private float IntensityCarryover => settings != null ? settings.IntensityCarryover : 0.15f;
 
-    private float FadeInDuration => settings != null ? settings.FadeInDuration : 0.06f;
+    private float FadeInDuration => settings != null ? settings.FadeInDuration : 0.05f;
 
-    private float HoldDuration => settings != null ? settings.HoldDuration : 0.08f;
+    private float HoldDuration => settings != null ? settings.HoldDuration : 0.06f;
 
-    private float FadeOutDuration => settings != null ? settings.FadeOutDuration : 0.35f;
+    private float FadeOutDuration => settings != null ? settings.FadeOutDuration : 0.28f;
 
-    private float ScreenDarknessAtFullIntensity => settings != null ? settings.ScreenDarknessAtFullIntensity : 0.18f;
+    private float ScreenDarknessAtFullIntensity => settings != null ? settings.ScreenDarknessAtFullIntensity : 0f;
 
-    private float EdgeOpacityAtFullIntensity => settings != null ? settings.EdgeOpacityAtFullIntensity : 0.5f;
+    private float EdgeOpacityAtFullIntensity => settings != null ? settings.EdgeOpacityAtFullIntensity : 0.3f;
 
-    private Color OverlayColor => settings != null ? settings.OverlayColor : new Color(0.85f, 0.1f, 0.08f, 1f);
+    private Color OverlayColor => settings != null ? settings.OverlayColor : new Color(0.2f, 0.95f, 0.45f, 1f);
 }
