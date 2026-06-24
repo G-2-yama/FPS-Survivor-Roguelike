@@ -14,14 +14,31 @@ public class EnemyConfig : ScriptableObject
 
 
     [Header("Movement")]
-    [Min(0f)] public float EngageDistance = 5f;
+    [Min(0f)] private float engagedistance = 5f;
+    public float EngageDuration => engagedistance;
     public MovementPattern chaseMovedata;
     public MovementPattern combatMovedata;
+
+    public void IncreaseDistance(float amount)
+    {
+        engagedistance += amount;
+    }
+    public void DecreaseDistance(float amount)
+    {
+        if (engagedistance < 0)
+        {
+            Debug.Log("engagedistance < 0");
+            return;
+        }
+        engagedistance -= amount;
+    }
+
 
 
     [Header("Combat")]
     [Min(0)] public int AttackPower = 1;
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
+
     
 }
