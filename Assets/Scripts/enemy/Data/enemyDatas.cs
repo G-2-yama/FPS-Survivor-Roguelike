@@ -18,6 +18,11 @@ public class EnemyConfig : ScriptableObject
 
     [Header("Movement")]
     [Min(0f)] [SerializeField] private float engagedistance = 5f;
+    private float defaultEngageDistance;
+    private void OnEnable()
+    {
+        defaultEngageDistance = engagedistance;
+    }
     public float EngageDistance => engagedistance;
     public MovementPattern chaseMovedata;
     public MovementPattern combatMovedata;
@@ -33,6 +38,10 @@ public class EnemyConfig : ScriptableObject
     public void IncreaseDistance(float amount)
     {
         engagedistance += amount * engagedistance;
+    }
+    public void ResetDistance()
+    {
+        engagedistance = defaultEngageDistance;
     }
 
 

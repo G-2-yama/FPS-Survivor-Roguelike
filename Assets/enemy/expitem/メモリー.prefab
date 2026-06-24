@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpObject
   expAmount: 20
+  expdata: {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}
 --- !u!114 &4204375731039927515
 MonoBehaviour:
   m_ObjectHideFlags: 0
