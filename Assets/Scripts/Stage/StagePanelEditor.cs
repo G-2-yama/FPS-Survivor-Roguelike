@@ -36,11 +36,11 @@ namespace InfiniteTileWorld
             Undo.RecordObject(manager, "Setup Stage Panels");
             manager.Panels.Clear();
 
-            for (int gz = 0; gz < 3; gz++)
+            for (int gz = 0; gz < 5; gz++)
             {
-                for (int gx = 0; gx < 3; gx++)
+                for (int gx = 0; gx < 5; gx++)
                 {
-                    Vector3 pos = new Vector3((gx - 1) * size, 0f, (gz - 1) * size);
+                    Vector3 pos = new Vector3((gx - 2) * size, 0f, (gz - 2) * size);
                     GameObject go = CreatePanelObject(pos, manager.transform, gx, gz);
                     Undo.RegisterCreatedObjectUndo(go, "Create StagePanel");
 
