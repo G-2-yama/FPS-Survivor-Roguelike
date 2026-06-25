@@ -13,15 +13,33 @@ public class EnemyConfig : ScriptableObject
     public float KnockbackDuration => knockbackDuration;
 
 
+
+
+
     [Header("Movement")]
-    [Min(0f)] public float EngageDistance = 5f;
+    [Min(0f)] [SerializeField] private float engagedistance = 5f;
+    private float currentdistance;
+    public float EngageDistance => currentdistance;
     public MovementPattern chaseMovedata;
     public MovementPattern combatMovedata;
+
+   
 
 
     [Header("Combat")]
     [Min(0)] public int AttackPower = 1;
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
+
+    public void IncreaseDistance(float amount)
+    {
+        currentdistance += amount;
+    }
+    public void Initialize()
+    {
+        currentdistance = engagedistance;
+    }
     
+
+
 }

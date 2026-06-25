@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
-  m_Name: missilebox data
+  m_Name: exp
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  MaxHp: 25
+  MaxHp: 1
   damagelange: 1
-  knockbackResistance: 0.5
-  knockbackDuration: 0.2
-  engagedistance: 8
-  chaseMovedata: {fileID: 11400000, guid: 115daebdde82a7246bf3430b8af2e145, type: 2}
-  combatMovedata: {fileID: 11400000, guid: cc5fe763cbb5903469cec1709cff741e, type: 2}
-  AttackPower: 3
-  AttackInterval: 6
-  AttackPattern: {fileID: 11400000, guid: 7029c73fe1d07324dbeefe3ed84978e0, type: 2}
+  knockbackResistance: 0
+  knockbackDuration: 0
+  engagedistance: 1
+  chaseMovedata: {fileID: 11400000, guid: 8612d68ca90225a40b256241485bd07e, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 5a33647ae0eaa4b42ba2bb3f6df96810, type: 2}
+  AttackPower: 0
+  AttackInterval: 0.01
+  AttackPattern: {fileID: 0}

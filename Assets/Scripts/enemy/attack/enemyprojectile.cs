@@ -82,6 +82,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         {
             GameObject expitem = PoolManager.Instance.Get(exp);
             expitem.transform.position = transform.position;
+            expitem.transform.rotation = transform.rotation;
         }
         Release();
     }
