@@ -28,6 +28,7 @@ namespace InfiniteTileWorld
 
         /// <summary>3×3グリッドのパネルリスト。「Setup Panels」で自動登録される。</summary>
         [SerializeField] private List<StagePanel> panels = new();
+        [SerializeField] private BackgroundPanel backgroundPanel = new();
 
         /// <summary>距離判定カメラ。未設定時は Camera.main を使用。</summary>
         [SerializeField] private Transform cameraTransform;
@@ -70,6 +71,12 @@ namespace InfiniteTileWorld
         {
             if (playerTransform == null) return;
 
+            // 背景パネルをプレイヤーの位置に追従させる
+            Vector3 pos = backgroundPanel.transform.position;
+            pos.x = playerTransform.position.x;
+            pos.z = playerTransform.position.z;
+            backgroundPanel.transform.position = pos;
+
             var (curX, curZ) = WorldToGrid(playerTransform.position);
             int dx = curX - _prevGridX;
             int dz = curZ - _prevGridZ;
@@ -77,6 +84,7 @@ namespace InfiniteTileWorld
             if (dx != 0 || dz != 0)
             {
                 EnqueueOutOfBoundPanels(dx, dz);
+                //backgroundPanel.OnWarped(curX, curZ, tileSize);
                 _prevGridX = curX;
                 _prevGridZ = curZ;
             }
