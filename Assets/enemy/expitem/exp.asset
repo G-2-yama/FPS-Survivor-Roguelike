@@ -16,7 +16,7 @@ MonoBehaviour:
   damagelange: 1
   knockbackResistance: 0
   knockbackDuration: 0
-  EngageDistance: 2
+  engagedistance: 1
   chaseMovedata: {fileID: 11400000, guid: 8612d68ca90225a40b256241485bd07e, type: 2}
   combatMovedata: {fileID: 11400000, guid: 5a33647ae0eaa4b42ba2bb3f6df96810, type: 2}
   AttackPower: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525304667a0057243ab5996a351fa350, type: 3}
   m_Name: GetExp
   m_EditorClassIdentifier: Assembly-CSharp::GetItem
-  displayName: 
-  description: 
+  displayName: "\u30A2\u30A4\u30C6\u30E0\u53D6\u5F97\u7BC4\u56F2\u62E1\u5927"
+  description: "\u30A2\u30A4\u30C6\u30E0\u53D6\u5F97\u7BC4\u56F2\u304C\u5E83\u304F\u306A\u308B"
   icon: {fileID: 0}
   rarity: 0
-  target: {fileID: 0}
+  target: {fileID: 11400000, guid: 4aa33de62a66d1241b14435e5f242a50, type: 2}

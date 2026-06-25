@@ -3809,6 +3809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 90786719}
   - component: {fileID: 90786720}
+  - component: {fileID: 90786721}
   m_Layer: 0
   m_Name: EnemyGenerator
   m_TagString: Untagged
@@ -3847,6 +3848,28 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fe862f674ad098a418d1d714f01d4592, type: 2}
   spawnRadius: 75
   timer: {fileID: 383212504}
+--- !u!114 &90786721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90786718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3477a680e839eb5498e500a028ef322a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::scriptableinitiarised
+  enemylist:
+  - {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}
+  - {fileID: 11400000, guid: 00a397677e7091148a6750e1a9398700, type: 2}
+  - {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
+  - {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
+  - {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
+  - {fileID: 11400000, guid: 7e0663357ac5f754798b9e6df11f5461, type: 2}
+  - {fileID: 11400000, guid: 46cb9e89c1a48eb458476a0aafeb5e11, type: 2}
+  - {fileID: 11400000, guid: 335b76842e15bb14fb8b6a35724d5584, type: 2}
+  - {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
 --- !u!1 &91439701
 GameObject:
   m_ObjectHideFlags: 0
@@ -11639,7 +11662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::expmaneger
   levelUpRequiredExp: 100
-  levelUpRate: 1.4
+  levelUpRate: 1.2
 --- !u!1 &278744664
 GameObject:
   m_ObjectHideFlags: 0
@@ -63596,6 +63619,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c971f2b7baaa2c43be79ebaacc0a18e, type: 2}
   - {fileID: 11400000, guid: b1da45d32b0f0da4182b5be499431210, type: 2}
   - {fileID: 11400000, guid: 57c35fd5a80650741b96c446602928f8, type: 2}
+  - {fileID: 11400000, guid: d9c1cdb30895494409f046a2c87497e4, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
