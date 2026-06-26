@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,11 +38,19 @@ namespace InfiniteTileWorld
 
         [SerializeField] private string playerTag = "Player";
 
-        public Vector3 WorldCenter => transform.position;
+        [SerializeField] private float moveHeight = 3f;
+        [SerializeField] private float moveDuration = 0.3f;
+        [SerializeField] private AnimationCurve moveCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        public Vector3 WorldCenter { get; private set; }
 
         private StageManager _manager;
 
-        public void Initialize(StageManager manager) => _manager = manager;
+        public void Initialize(StageManager manager)
+        {
+            _manager = manager;
+            WorldCenter = transform.position;
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -56,9 +65,8 @@ namespace InfiniteTileWorld
         /// <param name="tileSize">コンテンツ散布範囲の算出に使用するタイルサイズ。</param>
         public virtual void OnWarped(Vector3 newWorldPosition, float tileSize)
         {
-            transform.position = newWorldPosition;
-            ScatterContents(tileSize);
-            onAfterWarp?.Invoke();
+            StopAllCoroutines();
+            StartCoroutine(WarpCoroutine(newWorldPosition, tileSize));
         }
 
         /// <summary>contentObjects をパネル内 XZ ランダム座標へ移動し、向きや表示もランダム化する。</summary>
@@ -99,6 +107,42 @@ namespace InfiniteTileWorld
                     obj.transform.localRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
                 }
             }
+        }
+
+        private IEnumerator WarpCoroutine(Vector3 newWorldPosition, float tileSize)
+        {
+            // 消える
+            yield return MoveCoroutine(transform.position, transform.position - Vector3.up * moveHeight);
+
+            // ワープ
+            transform.position = newWorldPosition;
+
+            // コンテンツ配置
+            ScatterContents(tileSize);
+
+            // 出現
+            yield return MoveCoroutine(newWorldPosition - Vector3.up * moveHeight, newWorldPosition);
+
+            onAfterWarp?.Invoke();
+        }
+
+        private IEnumerator MoveCoroutine(Vector3 startPos, Vector3 endPos)
+        {
+            float t = 0f;
+
+            while (t < moveDuration)
+            {
+                t += Time.deltaTime;
+
+                float rate = Mathf.Clamp01(t / moveDuration);
+                float curve = moveCurve.Evaluate(rate);
+
+                transform.position = Vector3.LerpUnclamped(startPos, endPos, curve);
+
+                yield return null;
+            }
+
+            transform.position = endPos;
         }
 
 
