@@ -28,6 +28,7 @@ namespace InfiniteTileWorld
 
         /// <summary>3×3グリッドのパネルリスト。「Setup Panels」で自動登録される。</summary>
         [SerializeField] private List<StagePanel> panels = new();
+        [SerializeField] private BackgroundPanel backgroundPanel = new();
 
         /// <summary>距離判定カメラ。未設定時は Camera.main を使用。</summary>
         [SerializeField] private Transform cameraTransform;
@@ -70,6 +71,12 @@ namespace InfiniteTileWorld
         {
             if (playerTransform == null) return;
 
+            // 背景パネルをプレイヤーの位置に追従させる
+            Vector3 pos = backgroundPanel.transform.position;
+            pos.x = playerTransform.position.x;
+            pos.z = playerTransform.position.z;
+            backgroundPanel.transform.position = pos;
+
             var (curX, curZ) = WorldToGrid(playerTransform.position);
             int dx = curX - _prevGridX;
             int dz = curZ - _prevGridZ;
@@ -77,6 +84,7 @@ namespace InfiniteTileWorld
             if (dx != 0 || dz != 0)
             {
                 EnqueueOutOfBoundPanels(dx, dz);
+                //backgroundPanel.OnWarped(curX, curZ, tileSize);
                 _prevGridX = curX;
                 _prevGridZ = curZ;
             }
@@ -103,10 +111,10 @@ namespace InfiniteTileWorld
 
         private StagePanel GetPanel(int logicalX, int logicalZ)
         {
-            // (% 3 + 3) % 3 で負値にも対応
-            int px = ((_gridOffsetX + logicalX) % 3 + 3) % 3;
-            int pz = ((_gridOffsetZ + logicalZ) % 3 + 3) % 3;
-            int idx = pz * 3 + px;
+            // (% 5 + 5) % 5 で負値にも対応
+            int px = ((_gridOffsetX + logicalX) % 5 + 5) % 5;
+            int pz = ((_gridOffsetZ + logicalZ) % 5 + 5) % 5;
+            int idx = pz * 5 + px;
             return (idx >= 0 && idx < panels.Count) ? panels[idx] : null;
         }
 
@@ -115,18 +123,18 @@ namespace InfiniteTileWorld
             var outdated = new HashSet<StagePanel>();
 
             // 移動方向に応じて、グリッドの端にあるパネルをワープ候補にする
-            if (dx > 0)      for (int z = 0; z < 3; z++) AddIfNotNull(outdated, GetPanel(0, z));
-            else if (dx < 0) for (int z = 0; z < 3; z++) AddIfNotNull(outdated, GetPanel(2, z));
+            if (dx > 0)      for (int z = 0; z < 5; z++) AddIfNotNull(outdated, GetPanel(0, z));
+            else if (dx < 0) for (int z = 0; z < 5; z++) AddIfNotNull(outdated, GetPanel(4, z));
 
-            if (dz > 0)      for (int x = 0; x < 3; x++) AddIfNotNull(outdated, GetPanel(x, 0));
-            else if (dz < 0) for (int x = 0; x < 3; x++) AddIfNotNull(outdated, GetPanel(x, 2));
+            if (dz > 0)      for (int x = 0; x < 5; x++) AddIfNotNull(outdated, GetPanel(x, 0));
+            else if (dz < 0) for (int x = 0; x < 5; x++) AddIfNotNull(outdated, GetPanel(x, 4));
 
             foreach (var panel in outdated)
                 if (!_warpQueue.ContainsKey(panel)) _warpQueue[panel] = 0;
 
             // オフセットを更新して論理的なグリッド位置を回転させる
-            _gridOffsetX = ((_gridOffsetX + dx) % 3 + 3) % 3;
-            _gridOffsetZ = ((_gridOffsetZ + dz) % 3 + 3) % 3;
+            _gridOffsetX = ((_gridOffsetX + dx) % 5 + 5) % 5;
+            _gridOffsetZ = ((_gridOffsetZ + dz) % 5 + 5) % 5;
         }
 
         private static void AddIfNotNull(HashSet<StagePanel> set, StagePanel panel)
@@ -174,16 +182,16 @@ namespace InfiniteTileWorld
             int physIdx = panels.IndexOf(panel);
             if (physIdx == -1) return;
 
-            int physX = physIdx % 3;
-            int physZ = physIdx / 3;
+            int physX = physIdx % 5;
+            int physZ = physIdx / 5;
 
-            // リングバッファのオフセットを考慮して、現在の論理的なグリッド位置 (0, 1, 2) を割り出す
-            int logX = (physX - _gridOffsetX + 3) % 3;
-            int logZ = (physZ - _gridOffsetZ + 3) % 3;
+            // リングバッファのオフセットを考慮して、現在の論理的なグリッド位置 (0, 1, 2, 3, 4) を割り出す
+            int logX = (physX - _gridOffsetX + 5) % 5;
+            int logZ = (physZ - _gridOffsetZ + 5) % 5;
 
             // (0,0,0) が中心なので、+0.5f は不要
-            float newX = (px + logX - 1) * tileSize;
-            float newZ = (pz + logZ - 1) * tileSize;
+            float newX = (px + logX - 2) * tileSize;
+            float newZ = (pz + logZ - 2) * tileSize;
 
             panel.OnWarped(new Vector3(newX, panel.WorldCenter.y, newZ), tileSize);
         }
