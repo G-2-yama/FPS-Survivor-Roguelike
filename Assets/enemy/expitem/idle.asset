@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89cce1ecd2a93f64585801eb332c0c36, type: 3}
-  m_Name: expidle
+  m_Name: idle
   m_EditorClassIdentifier: Assembly-CSharp::stop
   ChaseSpeed: 0
