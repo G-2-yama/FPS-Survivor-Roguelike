@@ -10,40 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: Grenade_00
+  m_Name: EvoAirStrike
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: "\u30B0\u30EC\u30CD\u30FC\u30C9"
+    displayName: "\u7A7A\u7206"
     description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
-    icon: {fileID: 21300000, guid: 4f9bdf99904bc3e4db857bbf69277cc1, type: 3}
+    icon: {fileID: 21300000, guid: 73fdc7317632dbb49aadbaacaa554acb, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
   classification:
-    weaponType: 1
-    fireModeData: {fileID: 11400000, guid: b4102ea5d3f41ed4a96b95a0900c1bc1, type: 2}
+    weaponType: 2
+    fireModeData: {fileID: 11400000, guid: ba153b87bb11e4248b5726d8b4eee22f, type: 2}
   trigger:
-    autoFire: 0
+    autoFire: 1
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 10
-    knockbackForce: 50
+    damage: 1
+    knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0.1
+    fireInterval: 0
     burstCount: 1
-    burstInterval: 0.05
+    burstInterval: 0
     chargeTime: 0
   recoil:
-    pitchKick: 1.2
-    yawKick: 0.4
-    yawRandomness: 1
-    returnStrength: 20
-    damping: 18
-    maxPitch: 20
+    pitchKick: 0
+    yawKick: 0
+    yawRandomness: 0
+    returnStrength: 0
+    damping: 0
+    maxPitch: 0
   ammo:
     magazineSize: 1
-    reloadTime: 1
-  nextLevelData: {fileID: 11400000, guid: 15b462be710dcad4a9964d231f50ffb1, type: 2}
+    reloadTime: 0.5
+  nextLevelData: {fileID: 0}

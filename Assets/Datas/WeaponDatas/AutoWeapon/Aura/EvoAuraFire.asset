@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d61962714a6ebad4aa75e0e6c4e51ef0, type: 3}
-  m_Name: Boomerang_Fire
-  m_EditorClassIdentifier: Assembly-CSharp::BoomerangFire
+  m_Script: {fileID: 11500000, guid: 89264d704040fc444a6b1cdb59a99f07, type: 3}
+  m_Name: EvoAuraFire
+  m_EditorClassIdentifier: Assembly-CSharp::ChargeBeamFire
   effectPrefab: {fileID: 0}
-  boomerangPrefab: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
-  speed: 50
-  maxDistance: 24
+  damageAreaPrefab: {fileID: 3143472144067748496, guid: 1da6bac0ae064f64295e5d3c3aeba360, type: 3}
+  distance: 0

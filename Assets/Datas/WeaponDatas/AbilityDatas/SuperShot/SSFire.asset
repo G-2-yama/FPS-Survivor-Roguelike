@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d61962714a6ebad4aa75e0e6c4e51ef0, type: 3}
-  m_Name: Boomerang_Fire
-  m_EditorClassIdentifier: Assembly-CSharp::BoomerangFire
+  m_Script: {fileID: 11500000, guid: 41e9cef17cdaffe4e89207bc592f288a, type: 3}
+  m_Name: SSFire
+  m_EditorClassIdentifier: Assembly-CSharp::NormalProjectileFire
   effectPrefab: {fileID: 0}
-  boomerangPrefab: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
-  speed: 50
-  maxDistance: 24
+  speed: 80
+  lifetime: 2
+  prefab: {fileID: 8664942034152862397, guid: 0d0efc4d20d4b6245a349adf6c6bddf2, type: 3}

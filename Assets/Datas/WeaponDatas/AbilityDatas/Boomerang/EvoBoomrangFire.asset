@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d61962714a6ebad4aa75e0e6c4e51ef0, type: 3}
-  m_Name: Boomerang_Fire
+  m_Name: EvoBoomrangFire
   m_EditorClassIdentifier: Assembly-CSharp::BoomerangFire
   effectPrefab: {fileID: 0}
-  boomerangPrefab: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
-  speed: 50
-  maxDistance: 24
+  boomerangPrefab: {fileID: 5093799806988317829, guid: 8e5dc7974b0c4ae4f8068028cec48724, type: 3}
+  boomerangCount: 8

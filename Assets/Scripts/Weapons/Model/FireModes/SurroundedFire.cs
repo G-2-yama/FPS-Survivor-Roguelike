@@ -18,12 +18,12 @@ public class SurroundedFire : FireModeData
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 center = weaponOwner.transform.position;
+        Vector3 baseDirection = GetFireDirection(weapon);
 
         for (int i = 0; i < projectileCount; i++)
         {
-            float angle = i * Mathf.PI * 2f / projectileCount;
-
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+            float angle = i * 360f / projectileCount;
+            Vector3 direction = Quaternion.AngleAxis(angle, Vector3.up) * baseDirection;
 
             GameObject bullet = PoolManager.Instance.Get(prefab);
 

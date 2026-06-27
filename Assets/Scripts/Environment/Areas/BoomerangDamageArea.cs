@@ -5,26 +5,21 @@ public class BoomerangDamageArea : DamageArea
     private Transform owner;
 
     private Vector3 direction;
-    private float speed;
-    private float maxDistance;
 
-    private Vector3 startPosition;
+    [SerializeField] private float width = 4f;      // 横方向の大きさ
+    [SerializeField] private float length = 8f;     // 前方への距離
+    [SerializeField] private float duration = 1.2f; // 1周する時間
 
-    private bool returning;
+    private float timer;
 
-    public void Initialize(int damage, float knockbackForce, Transform owner, Vector3 direction, float speed, float maxDistance)
+    public void Initialize(int damage, float knockbackForce, Transform owner, Vector3 direction)
     {
         base.Initialize(damage, knockbackForce);
 
         this.owner = owner;
         this.direction = direction.normalized;
-        this.speed = speed;
-        this.maxDistance = maxDistance;
 
-        startPosition = owner.position;
-        returning = false;
-
-        transform.position = startPosition;
+        timer = 0f;
     }
 
     private void Update()
@@ -35,30 +30,26 @@ public class BoomerangDamageArea : DamageArea
             return;
         }
 
-        if (!returning)
+        timer += Time.deltaTime;
+
+        float t = timer / duration;
+
+        if (t >= 1f)
         {
-            // 前進
-            transform.position += direction * speed * Time.deltaTime;
-
-            float distance = Vector3.Distance(startPosition, transform.position);
-
-            if (distance >= maxDistance)
-            {
-                returning = true;
-            }
+            Release();
+            return;
         }
-        else
-        {
-            // プレイヤーへ戻る
-            Vector3 returnDir = (owner.position - transform.position).normalized;
 
-            transform.position += returnDir * speed * Time.deltaTime;
+        // プレイヤーの正面方向
+        Vector3 forward = direction;
 
-            // プレイヤーに戻ったら消える
-            if (Vector3.Distance(transform.position, owner.position) < 0.5f)
-            {
-                Release();
-            }
-        }
+        // 正面に対して右方向
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+
+        // 楕円軌道
+        float x = Mathf.Sin(t * Mathf.PI * 2f) * width;
+        float z = Mathf.Sin(t * Mathf.PI) * length;
+
+        transform.position = owner.position + forward * z + right * x;
     }
 }

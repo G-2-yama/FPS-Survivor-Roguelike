@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8799390753316756408}
   - component: {fileID: 1465853722337174760}
   m_Layer: 0
-  m_Name: ExplosiveAmmo
+  m_Name: EvoAirStrikeAmmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,4 +156,6 @@ MonoBehaviour:
   myTeam: 2
   targetTeam: 0
   HP: 1
-  damageAreaPrefab: {fileID: 3371946893808914018, guid: c886250a048b6c642959caacdeae5dd1, type: 3}
+  damageAreaPrefabs:
+  - {fileID: 3371946893808914018, guid: c886250a048b6c642959caacdeae5dd1, type: 3}
+  - {fileID: 4004365500606963686, guid: 7445471907cf87542b4b6713c96c50ba, type: 3}
