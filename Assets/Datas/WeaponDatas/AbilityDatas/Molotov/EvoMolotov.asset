@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: Molotov_00
+  m_Name: EvoMolotov
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -22,7 +22,7 @@ MonoBehaviour:
   soundDB: {fileID: 0}
   classification:
     weaponType: 1
-    fireModeData: {fileID: 11400000, guid: 3edca03c820c0a3428a827a61f26ffdc, type: 2}
+    fireModeData: {fileID: 11400000, guid: 0db7954ddf70d7e43ab23967ae678a98, type: 2}
   trigger:
     autoFire: 0
     autoReload: 1
@@ -46,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 1
     reloadTime: 1
-  nextLevelData: {fileID: 11400000, guid: 76f0840ac22d16e48a4e1c52471384dc, type: 2}
+  nextLevelData: {fileID: 0}

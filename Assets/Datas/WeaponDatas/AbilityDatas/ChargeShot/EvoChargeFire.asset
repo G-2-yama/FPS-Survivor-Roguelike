@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5950111ffebe9e44e97497ace25b4a7c, type: 3}
-  m_Name: OribtFire
+  m_Name: EvoChargeFire
   m_EditorClassIdentifier: Assembly-CSharp::OrbitFireData
   effectPrefab: {fileID: 0}
-  orbitPrefab: {fileID: 4684910651031909879, guid: b81c00317f9a39143b0d3e0359ca596a, type: 3}
-  radius: 5
-  rotateSpeed: 180
-  areaCount: 1
+  orbitPrefab: {fileID: 6114629737088864950, guid: f8cda3f3c2e39e24583edb253038c8a0, type: 3}
+  radius: 3
+  rotateSpeed: 90
+  areaCount: 6

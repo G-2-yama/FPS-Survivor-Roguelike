@@ -153,10 +153,10 @@ GameObject:
   - component: {fileID: 5727641707426468711}
   - component: {fileID: 6031575588185809832}
   - component: {fileID: 6607744606924753487}
-  - component: {fileID: 8226025999189543336}
   - component: {fileID: 3500972516992917104}
+  - component: {fileID: -8695835660682218923}
   m_Layer: 0
-  m_Name: ChargeBeam
+  m_Name: EvoChargeBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4981,26 +4981,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!114 &8226025999189543336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114629737088864950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 3500972516992917104}
-  damage: 5
-  interval: 0.1
-  lifetime: 3
-  targetTeam: -1
-  mode: 1
-  myTeam: 2
-  HP: 1
 --- !u!65 &3500972516992917104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5022,3 +5002,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 15}
   m_Center: {x: 0, y: 0, z: 8}
+--- !u!114 &-8695835660682218923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114629737088864950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df700c14b59043b40b6c6163ac3bce95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitDamageArea
+  areaCollider: {fileID: 3500972516992917104}
+  myTeam: 2
+  targetTeam: 28
+  damage: 10
+  knockbackForce: 5
+  interval: 0.1
+  lifetime: 3
+  mode: 1
+  HP: 1

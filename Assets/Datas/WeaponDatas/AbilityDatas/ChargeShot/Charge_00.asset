@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: ChargeShot
+  m_Name: Charge_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -46,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 1
     reloadTime: 10
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: 1b228f5ebc7717a48abef96ff98ba965, type: 2}
