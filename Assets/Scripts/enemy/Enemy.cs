@@ -98,8 +98,9 @@ public class Enemy : PoolableObject, IDamageable
             item.transform.rotation = transform.rotation;
            
 
-            Release();
+            
         }
+        Release();
     }
 
      private GameObject GetRandomDrop()

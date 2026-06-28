@@ -410,6 +410,8 @@ MonoBehaviour:
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 80
+  - prefab: {fileID: 0}
+    weight: 20
 --- !u!114 &633176299316624300
 MonoBehaviour:
   m_ObjectHideFlags: 0

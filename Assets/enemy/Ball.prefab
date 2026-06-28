@@ -283,6 +283,8 @@ MonoBehaviour:
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 80
+  - prefab: {fileID: 0}
+    weight: 20
   config: {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
   whiteFlash: {fileID: 1146902704468627000}
   deathDelay: 0.1
