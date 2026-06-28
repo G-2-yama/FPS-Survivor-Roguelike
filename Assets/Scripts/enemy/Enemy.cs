@@ -1,24 +1,36 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+
 
 public class Enemy : PoolableObject, IDamageable
 {
+    [System.Serializable]
+    public class DropData
+    {
+        public GameObject prefab;
+        [Min(1)]
+        public int weight = 1;
+    }
     [SerializeField] private EnemyConfig config;
     [SerializeField] private EnemyAttackController attackController;
-    [SerializeField] private GameObject prefab;
+    private GameObject item;
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private EnemyBrain enemyBrain;
-   Transform Target;
-      
+    Transform Target;
+
 
     [SerializeField] private float deathDelay = 0.1f;
-   
+
+    [SerializeField] private List<DropData> dropList = new();
+
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
     private bool isDead = false;
 
-    
+
     public void TakeDamage(int damage, float knockbackForce)
     {
         // Damage処理
@@ -30,7 +42,7 @@ public class Enemy : PoolableObject, IDamageable
         {
             whiteFlash?.Flash();
         }
-        
+
         Health.TakeDamage(config.Damagelange * damage);
 
         // Knockback処理
@@ -75,12 +87,43 @@ public class Enemy : PoolableObject, IDamageable
 
     private IEnumerator DeathRoutine()
     {
-       
+
         yield return new WaitForSeconds(deathDelay);
 
-        GameObject expitem = PoolManager.Instance.Get(prefab);
-        expitem.transform.position = transform.position;
-        expitem.transform.rotation = transform.rotation;
-        Release();
+        GameObject prefab = GetRandomDrop();
+        if (prefab != null)
+        {
+            GameObject item = PoolManager.Instance.Get(prefab);
+            item.transform.position = transform.position;
+            item.transform.rotation = transform.rotation;
+           
+
+            Release();
+        }
     }
-}
+
+     private GameObject GetRandomDrop()
+        {
+            if (dropList.Count == 0)
+                return null;
+
+            int totalWeight = 0;
+
+            foreach (var drop in dropList)
+                totalWeight += drop.weight;
+
+            int rand = Random.Range(0, totalWeight);
+
+            foreach (var drop in dropList)
+            {
+                if (rand < drop.weight)
+                    return drop.prefab;
+
+                rand -= drop.weight;
+            }
+
+            return null;
+        }
+    }
+
+
