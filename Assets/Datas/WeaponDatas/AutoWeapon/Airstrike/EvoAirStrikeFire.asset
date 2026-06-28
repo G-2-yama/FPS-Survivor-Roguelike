@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: EvoAirStrikeFire
   m_EditorClassIdentifier: Assembly-CSharp::AreaFireData
   effectPrefab: {fileID: 0}
-  areaSize: {x: 25, y: 25}
+  areaSize: {x: 40, y: 40}
   spawnHeight: 20
   projectileCount: 1
-  prefab: {fileID: 6556299627688077866, guid: 99c3420cc3b69924c8b534d4a06e7b6f, type: 3}
+  prefab: {fileID: 6556299627688077866, guid: c90c4300e2126cb43958a80fca28af78, type: 3}
   lifetime: 3
   speed: 20

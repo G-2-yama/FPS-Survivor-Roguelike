@@ -14526,12 +14526,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   areaCollider: {fileID: 4347899695715437930}
+  myTeam: 2
+  targetTeam: 28
   damage: 10
+  knockbackForce: 5
   interval: 0.5
   lifetime: 10
-  targetTeam: 28
   mode: 1
-  myTeam: 2
   HP: 1
 --- !u!65 &4347899695715437930
 BoxCollider:

@@ -10953,7 +10953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  weaponData: {fileID: 11400000, guid: a4ac7403775f27c4ca33b0ed6f289d0c, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 240814481}
   weaponView: {fileID: 240814480}
@@ -19941,7 +19941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 0342bf74cd26aa842a939345ad9ee046, type: 2}
+  weaponData: {fileID: 11400000, guid: c24cc3a544bb3a04db8d9e38e06242ab, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 445505115}
   weaponView: {fileID: 445505114}
@@ -60753,7 +60753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: ed2e0fb318a276044a0cb7d94245056f, type: 2}
+  weaponData: {fileID: 11400000, guid: 723b44eb40a1151438420a60c1004a1a, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1461869977}
   weaponView: {fileID: 1461869976}
@@ -79418,7 +79418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 0c02298b2cf7c574fa55c8d7d394d964, type: 2}
+  weaponData: {fileID: 11400000, guid: 731bd2eb6466fc64b97489e82d9f20c3, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
@@ -87904,7 +87904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: c24cc3a544bb3a04db8d9e38e06242ab, type: 2}
+  weaponData: {fileID: 11400000, guid: 28715eb317d5a8c4daf20323071ded22, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 2019895854}
   weaponView: {fileID: 2019895853}
@@ -88097,7 +88097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 921927bd8483f9d48baa84d5d130aa69, type: 2}
+  weaponData: {fileID: 11400000, guid: e877e022a73f1de4d8e2810862584cd7, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 2022669246}
   weaponView: {fileID: 2022669245}

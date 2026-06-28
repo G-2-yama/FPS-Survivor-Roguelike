@@ -10,40 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: EvoAR
+  m_Name: EvoStepFire
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: New Weapon
+    displayName: "\u30B9\u30C6\u30C3\u30D7\u30D5\u30A1\u30A4\u30A2"
     description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
-    icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
+    icon: {fileID: 21300000, guid: 648449b1d2d8224409a646aab13d6ffe, type: 3}
   visual:
-    weaponModelPrefab: {fileID: 8901486088743407685, guid: 912a76644fa8f7b40a039c7387504941, type: 3}
-  soundDB: {fileID: 11400000, guid: 84ca592a61f96dd4b8aac00ef4bbecaa, type: 2}
+    weaponModelPrefab: {fileID: 0}
+  soundDB: {fileID: 0}
   classification:
-    weaponType: 0
-    fireModeData: {fileID: 11400000, guid: eb05f04e180a7fa4faf24d267e891afe, type: 2}
+    weaponType: 2
+    fireModeData: {fileID: 11400000, guid: 697c44bef6c78de49983874b6450ae37, type: 2}
   trigger:
-    autoFire: 0
+    autoFire: 1
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 30
-    knockbackForce: 10
+    damage: 10
+    knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0.025
+    fireInterval: 0
     burstCount: 1
-    burstInterval: 0.025
+    burstInterval: 0
     chargeTime: 0
   recoil:
-    pitchKick: 0.6
-    yawKick: 0.2
-    yawRandomness: 0.5
-    returnStrength: 20
-    damping: 9
-    maxPitch: 10
+    pitchKick: 0
+    yawKick: 0
+    yawRandomness: 0
+    returnStrength: 0
+    damping: 0
+    maxPitch: 0
   ammo:
-    magazineSize: 999
-    reloadTime: 1.2
+    magazineSize: 1
+    reloadTime: 0.4
   nextLevelData: {fileID: 0}
