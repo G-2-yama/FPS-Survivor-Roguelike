@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: SwordData
+  m_Name: SwordData_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -46,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 3
     reloadTime: 1.5
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: 0a273c5d0483a5e4988fed13e6bc03e2, type: 2}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: "\u30B9\u30FC\u30D1\u30FC\u30B7\u30E7\u30C3\u30C8"
-    description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
+    displayName: "Evoi\u30B9\u30FC\u30D1\u30FC\u30B7\u30E7\u30C3\u30C8"
+    description: "\u6575\u3092\u8FFD\u5C3E\u3059\u308B\u30ED\u30B1\u30C3\u30C8\u3092\u5C04\u51FA\u3059\u308B"
     icon: {fileID: -844295045, guid: 7b2f7d1833bb04b48bca0276377f5dc5, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}

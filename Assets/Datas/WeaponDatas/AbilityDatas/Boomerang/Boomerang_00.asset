@@ -29,6 +29,7 @@ MonoBehaviour:
     triggerType: 0
   damage:
     damage: 5
+    knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0.1
@@ -45,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 1
     reloadTime: 1
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: 0c02298b2cf7c574fa55c8d7d394d964, type: 2}

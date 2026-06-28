@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: ShotGunData
+  m_Name: ShotGunData_00
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -29,6 +29,7 @@ MonoBehaviour:
     triggerType: 0
   damage:
     damage: 20
+    knockbackForce: 1
     spreadAngle: 15
   fireRhythm:
     fireInterval: 0.75
@@ -45,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 80
     reloadTime: 2
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: e877e022a73f1de4d8e2810862584cd7, type: 2}

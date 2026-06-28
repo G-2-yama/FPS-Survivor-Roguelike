@@ -25,6 +25,8 @@ public class ItemLevelUp : UpgradeBase
         {
             return;
         }
-        description = nextItem.DisplayName + "のレベルが上がる" + "\n" + nextItem.Description;
+        icon = nextItem.Icon;
+        displayName = nextItem.DisplayName + " 強化";
+        description = nextItem.Description;
     }
 }

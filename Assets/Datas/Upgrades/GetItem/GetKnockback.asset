@@ -16,4 +16,5 @@ MonoBehaviour:
   description: 
   icon: {fileID: 21300000, guid: 83be528f2ee301041b4f9809ee2c8f16, type: 3}
   rarity: 1
+  weight: 10
   target: {fileID: 11400000, guid: 22e3d64ee86e9ce4faaad378fc892711, type: 2}

@@ -46,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 1
     reloadTime: 5
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: 731bd2eb6466fc64b97489e82d9f20c3, type: 2}

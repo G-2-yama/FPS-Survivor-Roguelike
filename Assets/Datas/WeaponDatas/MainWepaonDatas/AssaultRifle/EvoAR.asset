@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: New Weapon
-    description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
+    displayName: EvoAR
+    description: "\u30DE\u30AC\u30B8\u30F3\u30B5\u30A4\u30BA\u304C\u975E\u5E38\u306B\u5927\u304D\u3044\u9AD8\u901F\u9023\u5C04\u53EF\u80FD\u306A\u9283"
     icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
   visual:
     weaponModelPrefab: {fileID: 8901486088743407685, guid: f0173f1a825a21640a07f71dae12a6ba, type: 3}

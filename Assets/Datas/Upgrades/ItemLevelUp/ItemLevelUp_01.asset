@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a40fe58c98aa96e4a981e7d05c2318a5, type: 3}
   m_Name: ItemLevelUp_01
   m_EditorClassIdentifier: Assembly-CSharp::ItemLevelUp
-  displayName: "\u30B9\u30ED\u30C3\u30C82\u30A2\u30A4\u30C6\u30E0\u5F37\u5316"
-  description: "\u30B9\u30ED\u30C3\u30C82\u306E\u30A2\u30A4\u30C6\u30E0\u306E\u30EC\u30D9\u30EB\u304C\uFF11\u4E0A\u304C\u308B"
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  displayName: "\u30A2\u30A4\u30C6\u30E0\u53D6\u5F97\u7BC4\u56F2\u62E1\u5927\u306E\u5F37\u5316"
+  description: "\u62E1\u5927\u7BC4\u56F2\u5897\u52A0"
+  icon: {fileID: 0}
   rarity: 0
+  weight: 120
   itemIndex: 1
