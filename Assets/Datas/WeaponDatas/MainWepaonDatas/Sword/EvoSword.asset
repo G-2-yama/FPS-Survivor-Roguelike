@@ -18,7 +18,7 @@ MonoBehaviour:
     description: "\u8FD1\u63A5\u7BC4\u56F2\u653B\u6483"
     icon: {fileID: 21300000, guid: 4618367f8968837459477522f0d38564, type: 3}
   visual:
-    weaponModelPrefab: {fileID: 7353697110361124127, guid: bb6bd7a520397a144bd9c571d31647ec, type: 3}
+    weaponModelPrefab: {fileID: 7353697110361124127, guid: f4807e77999a2e14f83b3668be1f99c0, type: 3}
   soundDB: {fileID: 11400000, guid: 5b3d80c3db5cc244b9e92b86e44cd063, type: 2}
   classification:
     weaponType: 0
