@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 4078576367751541831}
   - component: {fileID: 8605327344671441158}
   - component: {fileID: 645649402808023166}
-  - component: {fileID: 1347854364951275974}
   - component: {fileID: 8162666516430899436}
   - component: {fileID: 5010117434686078316}
   - component: {fileID: 446570625007560332}
@@ -205,10 +204,8 @@ MonoBehaviour:
   rb: {fileID: 8162666516430899436}
   config: {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
   targetProvider: {fileID: 645649402808023166}
-  movement: {fileID: 1347854364951275974}
   attack: {fileID: 0}
-  chaseMovementType: 1
-  combatBehaviour: 1
+  animator: {fileID: 0}
 --- !u!114 &645649402808023166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,18 +220,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTargetProvider
   currentTarget: {fileID: 0}
   playerTag: Player
---- !u!114 &1347854364951275974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8411297557696040895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5b1dccbdcdb974e8700256f5c56692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovementController
 --- !u!54 &8162666516430899436
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -295,8 +280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 371c9bb0d7c6af14ba9a8e8adc755ce8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ballprojectile
+  dropList:
+  - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
+    weight: 80
+  - prefab: {fileID: 0}
+    weight: 20
   config: {fileID: 11400000, guid: 08812454f1d32bf41891755453f9bc03, type: 2}
-  exp: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: 1146902704468627000}
   deathDelay: 0.1
   prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
