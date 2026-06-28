@@ -9938,7 +9938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 208856129}
   m_Layer: 0
-  m_Name: enemygenelate (1)
+  m_Name: genelatepoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14769,7 +14769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 328223106}
   m_Layer: 0
-  m_Name: enemygenelate (2)
+  m_Name: genelatepoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19277,7 +19277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 430907017}
   m_Layer: 0
-  m_Name: enemygenelate
+  m_Name: generatepoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42499,7 +42499,7 @@ GameObject:
   - component: {fileID: 1018864606}
   - component: {fileID: 1018864607}
   m_Layer: 0
-  m_Name: enemygenelater
+  m_Name: itemgenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74425,7 +74425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1800776559}
   m_Layer: 0
-  m_Name: enemygenelate
+  m_Name: genelatepoint(3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93209,63 +93209,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7959960734683627601}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1833288502546847627
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2603205645147408396, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_Name
-      value: healitem
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -8.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -11.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5.76525
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943449558069195642, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
 --- !u!4 &1834676752776113484
 Transform:
   m_ObjectHideFlags: 0
@@ -94983,4 +94926,3 @@ SceneRoots:
   - {fileID: 6049109865083326811}
   - {fileID: 379984968411623639}
   - {fileID: 373041596}
-  - {fileID: 1833288502546847627}

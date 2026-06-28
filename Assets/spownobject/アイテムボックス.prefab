@@ -161,10 +161,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   config: {fileID: 11400000, guid: 6c1fe0f39d47a58458550cc632a2cd7e, type: 2}
   attackController: {fileID: 0}
-  prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
   whiteFlash: {fileID: 5730256966100818832}
   enemyBrain: {fileID: 1643217037688791818}
   deathDelay: 0.1
+  dropList:
+  - prefab: {fileID: 2603205645147408396, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
+    weight: 60
+  - prefab: {fileID: 163772318673162832, guid: 0938af6bce06aa74fa46dd22d13a670e, type: 3}
+    weight: 40
 --- !u!114 &1643217037688791818
 MonoBehaviour:
   m_ObjectHideFlags: 0
