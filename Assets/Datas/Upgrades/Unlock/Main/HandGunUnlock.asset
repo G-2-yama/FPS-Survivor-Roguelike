@@ -16,4 +16,5 @@ MonoBehaviour:
   description: "\u30CF\u30F3\u30C9\u30AC\u30F3\u3092\u30E1\u30A4\u30F3\u6B66\u5668\u306B\u88C5\u5099\u3059\u308B"
   icon: {fileID: 21300000, guid: fce6330d3d4187344b8ebc779da3bd02, type: 3}
   rarity: 0
+  weight: 10
   target: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}

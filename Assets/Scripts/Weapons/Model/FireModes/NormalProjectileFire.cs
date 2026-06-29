@@ -11,6 +11,7 @@ public class NormalProjectileFire : FireModeData
 
     [SerializeField] private GameObject prefab;
     public GameObject Prefab => prefab;
+    [SerializeField] private Vector3 Offset = new Vector3(0f, 0f, 0.0f);
 
 
     /// <inheritdoc />
@@ -20,7 +21,7 @@ public class NormalProjectileFire : FireModeData
 
         GameObject bullet = PoolManager.Instance.Get(prefab);
 
-        bullet.transform.position = Camera.main.transform.position + direction * 0.5f;
+        bullet.transform.position = Camera.main.transform.position + direction * 0.5f + Offset;
         bullet.transform.rotation = Quaternion.LookRotation(direction);
 
         var projectile = bullet.GetComponent<ProjectileObject>();

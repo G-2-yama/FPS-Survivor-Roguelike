@@ -22,6 +22,9 @@ public abstract class UpgradeBase : ScriptableObject
     [SerializeField] protected Rarity rarity;
     public Rarity Rarity => rarity;
 
+    [SerializeField][Min(0)] protected int weight = 100;
+    public int Weight => weight;
+
     protected Player player;
 
     public void Initialize(Player player)

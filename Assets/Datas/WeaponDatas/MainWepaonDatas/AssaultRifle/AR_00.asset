@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: New Weapon
+    displayName: AR
     description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
     icon: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
   visual:
@@ -29,6 +29,7 @@ MonoBehaviour:
     triggerType: 1
   damage:
     damage: 20
+    knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0.05
@@ -45,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 36
     reloadTime: 1.6
-  nextLevelData: {fileID: 0}
+  nextLevelData: {fileID: 11400000, guid: a4ac7403775f27c4ca33b0ed6f289d0c, type: 2}

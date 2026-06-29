@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ExplosiveProjectile : ProjectileObject
 {
-    [SerializeField] private GameObject damageAreaPrefab;
+    [SerializeField] private List<GameObject> damageAreaPrefabs;
 
     protected override void HandleHit(Collider collider)
     {
@@ -13,19 +14,24 @@ public class ExplosiveProjectile : ProjectileObject
                 return;
             }
 
-            GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
-            area.transform.position = transform.position;
-            area.GetComponent<DamageArea>().Initialize(damage, knockbackForce);
-
+            foreach (var damageAreaPrefab in damageAreaPrefabs)
+            {
+                GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
+                area.transform.position = transform.position;
+                area.GetComponent<DamageArea>().Initialize(damage, knockbackForce);
+            }
             Release();
             hasHit = true;
             
         }
         else
         {
-            GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
-            area.transform.position = transform.position;
-            area.GetComponent<DamageArea>().Initialize(damage, knockbackForce);
+            foreach (var damageAreaPrefab in damageAreaPrefabs)
+            {
+                GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
+                area.transform.position = transform.position;
+                area.GetComponent<DamageArea>().Initialize(damage, knockbackForce);
+            }
 
             Release();
             hasHit = true;

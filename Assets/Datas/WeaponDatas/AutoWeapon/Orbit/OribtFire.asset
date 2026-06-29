@@ -16,4 +16,4 @@ MonoBehaviour:
   orbitPrefab: {fileID: 4684910651031909879, guid: b81c00317f9a39143b0d3e0359ca596a, type: 3}
   radius: 5
   rotateSpeed: 180
-  lifetime: 5
+  areaCount: 1

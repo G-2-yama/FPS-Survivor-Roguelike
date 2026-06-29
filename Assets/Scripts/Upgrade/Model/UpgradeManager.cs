@@ -64,17 +64,19 @@ public class UpgradeManager : MonoBehaviour
     {
         currentChoices.Clear();
 
-        // 利用可能なアップグレードのプールからランダムに3つ選ぶ
-        List<UpgradeBase> poolCopy = upgradePool
-            .Where(u => u.IsAvailable()).ToList();
+        List<UpgradeBase> poolCopy = upgradePool.Where(u => u.IsAvailable()).ToList();
 
         for (int i = 0; i < 3; i++)
         {
-            if (poolCopy.Count == 0) break;
+            if (poolCopy.Count == 0)
+                break;
 
-            int index = Random.Range(0, poolCopy.Count);
-            currentChoices.Add(poolCopy[index]);
-            poolCopy.RemoveAt(index);
+            UpgradeBase selected = GetWeightedRandom(poolCopy);
+
+            currentChoices.Add(selected);
+
+            // 重複しないよう削除
+            poolCopy.Remove(selected);
         }
     }
 
@@ -84,5 +86,27 @@ public class UpgradeManager : MonoBehaviour
         {
             upgrade.Initialize(player);
         }
+    }
+
+    private UpgradeBase GetWeightedRandom(List<UpgradeBase> pool)
+    {
+        int totalWeight = 0;
+
+        foreach (var upgrade in pool)
+        {
+            totalWeight += upgrade.Weight;
+        }
+
+        int random = Random.Range(0, totalWeight);
+
+        foreach (var upgrade in pool)
+        {
+            random -= upgrade.Weight;
+
+            if (random < 0)
+                return upgrade;
+        }
+
+        return pool[0];
     }
 }

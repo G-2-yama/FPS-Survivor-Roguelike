@@ -15,4 +15,4 @@ MonoBehaviour:
   effectPrefab: {fileID: 0}
   boomerangPrefab: {fileID: 5093799806988317829, guid: 6b53e1f002decd7498f29fa56b254e7f, type: 3}
   speed: 50
-  maxDistance: 12
+  maxDistance: 24
