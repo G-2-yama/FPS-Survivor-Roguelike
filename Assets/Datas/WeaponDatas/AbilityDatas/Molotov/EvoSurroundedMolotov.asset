@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a0424c3921be44f9a205a473fea901, type: 3}
+  m_Name: EvoSurroundedMolotov
+  m_EditorClassIdentifier: Assembly-CSharp::SurroundedFire
+  effectPrefab: {fileID: 0}
+  prefab: {fileID: 4305417644922424915, guid: a1218ae1c683afd40b737520d1df1729, type: 3}
+  speed: 30
+  lifetime: 2
+  projectileCount: 8
+  spawnRadius: 1.5

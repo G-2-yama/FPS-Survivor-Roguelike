@@ -27,6 +27,8 @@ public class LevelUp : UpgradeBase
         {
             return;
         }
-        description = nextData.DisplayName + "のレベルが上がる" + "\n" + nextData.Description;
+        icon = nextData.Icon;
+        displayName = nextData.DisplayName + " 強化";
+        description = nextData.Description;
     }
 }

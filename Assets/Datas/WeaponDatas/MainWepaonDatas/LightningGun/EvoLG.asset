@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
+  m_Name: EvoLG
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  identity:
+    weaponId: weapon_default
+    displayName: "Evo\u30E9\u30A4\u30C8\u30CB\u30F3\u30B0\u30AC\u30F3"
+    description: "\u6575\u306B\u9023\u9396\u3057\u3066\u30C0\u30E1\u30FC\u30B8\u3092\u4E0E\u3048\u308B\u96FB\u6483\u9283"
+    icon: {fileID: 21300000, guid: e1d9ae16319bf3048a5c4a17e01d10e4, type: 3}
+  visual:
+    weaponModelPrefab: {fileID: 125668353827341869, guid: f975cee99c9f4504cbb2bdc44e7a0b3b, type: 3}
+  soundDB: {fileID: 11400000, guid: 1572c3a9362f1524bbfb907554094945, type: 2}
+  classification:
+    weaponType: 0
+    fireModeData: {fileID: 11400000, guid: 8146d9d5a8dc22346b74dd2243b2242a, type: 2}
+  trigger:
+    autoFire: 0
+    autoReload: 1
+    triggerType: 1
+  damage:
+    damage: 30
+    knockbackForce: 1
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.2
+    burstCount: 1
+    burstInterval: 0.05
+    chargeTime: 0
+  recoil:
+    pitchKick: 2
+    yawKick: 1
+    yawRandomness: 2
+    returnStrength: 10
+    damping: 18
+    maxPitch: 20
+  ammo:
+    magazineSize: 36
+    reloadTime: 3
+  nextLevelData: {fileID: 0}

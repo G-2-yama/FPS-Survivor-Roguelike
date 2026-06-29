@@ -7,13 +7,14 @@ public class OrbitDamageArea : DamageArea
     private float speed;
     private float angle;
 
-    public void Initialize(int damage, float knockbackForce, Transform center, float radius, float speed)
+    public void Initialize(int damage, float knockbackForce, Transform center, float radius, float speed, float angle = 0f)
     {
         base.Initialize(damage, knockbackForce);
 
         this.center = center;
         this.radius = radius;
         this.speed = speed;
+        this.angle = angle;
     }
 
     protected virtual void Update()
@@ -28,5 +29,7 @@ public class OrbitDamageArea : DamageArea
         Vector3 offset = new Vector3( Mathf.Cos(rad), 0, Mathf.Sin(rad)) * radius;
 
         transform.position = center.position + offset;
+        
+        transform.rotation = Quaternion.LookRotation(offset.normalized, Vector3.up);
     }
 }
