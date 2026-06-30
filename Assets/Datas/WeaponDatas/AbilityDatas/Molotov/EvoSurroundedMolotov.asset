@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurroundedFire
   effectPrefab: {fileID: 0}
   prefab: {fileID: 4305417644922424915, guid: a1218ae1c683afd40b737520d1df1729, type: 3}
-  speed: 30
-  lifetime: 2
+  Offset: {x: 0, y: 0, z: 1}
   projectileCount: 8
-  spawnRadius: 1.5
+  isTracking: 0

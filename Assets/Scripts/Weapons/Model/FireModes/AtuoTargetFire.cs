@@ -4,37 +4,27 @@ using UnityEngine;
 public class AutoTargetFire : FireModeData
 {
     [SerializeField] private float searchRadius = 20f;
-    [SerializeField] private float speed = 80f;
-    [SerializeField] private float lifetime = 2f;
     [SerializeField] private GameObject prefab;
-    [SerializeField] private Vector3 spawnOffset = new Vector3(0, 1f, 0);
-    
+    [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1f, 0f);
 
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Collider target = FindNearestEnemy(weaponOwner.transform.position);
 
-        Vector3 direction;
+        Vector3 direction = target != null
+            ? (target.transform.position - Camera.main.transform.position).normalized
+            : GetFireDirection(weapon);
 
-        if (target != null)
-        {
-            direction = (target.transform.position - Camera.main.transform.position).normalized;
-        }
-        else
-        {
-            direction = GetFireDirection(weapon);
-        }
+        Quaternion rotation = Quaternion.LookRotation(direction);
 
         GameObject bullet = PoolManager.Instance.Get(prefab);
+        bullet.transform.SetPositionAndRotation(Camera.main.transform.position + rotation * spawnOffset, rotation);
 
-        bullet.transform.position = Camera.main.transform.position + direction * 0.5f + spawnOffset;
-        bullet.transform.rotation = Quaternion.LookRotation(direction);
+        var damage = bullet.GetComponent<DamageBase>();
+        damage.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce);
 
-        var projectile = bullet.GetComponent<ProjectileObject>();
-        projectile.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce, lifetime);
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = direction * speed;
+        var movement = bullet.GetComponent<MovementBase>();
+        movement?.Initialize(weaponOwner.transform, direction);
     }
 
     private Collider FindNearestEnemy(Vector3 center)
@@ -46,19 +36,17 @@ public class AutoTargetFire : FireModeData
 
         foreach (Collider col in colliders)
         {
-            IDamageable damageable = col.GetComponent<IDamageable>();
-
-            if (damageable == null)
+            if (!col.TryGetComponent(out IDamageable damageable))
                 continue;
 
-            if (damageable.TeamType != TeamType.Enemy && damageable.TeamType != TeamType.Boss)
+            if ((damageable.TeamType & (TeamType.Enemy | TeamType.Boss)) == 0)
                 continue;
 
-            float distance = Vector3.Distance(center, col.transform.position);
+            float sqrDistance = (col.transform.position - center).sqrMagnitude;
 
-            if (distance < nearestDistance)
+            if (sqrDistance < nearestDistance)
             {
-                nearestDistance = distance;
+                nearestDistance = sqrDistance;
                 nearest = col;
             }
         }

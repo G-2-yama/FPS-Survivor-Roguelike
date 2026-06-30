@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EvoAuraFire
   m_EditorClassIdentifier: Assembly-CSharp::ChargeBeamFire
   effectPrefab: {fileID: 0}
-  damageAreaPrefab: {fileID: 3143472144067748496, guid: 1da6bac0ae064f64295e5d3c3aeba360, type: 3}
-  distance: 0
+  prefab: {fileID: 3143472144067748496, guid: 1da6bac0ae064f64295e5d3c3aeba360, type: 3}
+  Offset: {x: 0, y: 0, z: 0}

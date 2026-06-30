@@ -3,23 +3,26 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Weapons/FireMode/TrackingAreaFire")]
 public class TrackingAreaFire : FireModeData
 {
-    [SerializeField] private GameObject damageAreaPrefab;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private Vector3 Offset;
 
-    [SerializeField] private float distance = 0.1f;
-
+    /// <inheritdoc />
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
-        Vector3 direction = Camera.main.transform.forward;
+        Vector3 direction = GetFireDirection(weapon);
 
-        Vector3 spawnPos = Camera.main.transform.position - Camera.main.transform.up * distance;
+        GameObject bullet = PoolManager.Instance.Get(prefab);
 
-        GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
+        var damage = bullet.GetComponent<DamageBase>();
+        damage.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce);
 
+        var movement = bullet.GetComponent<MovementBase>();
+        movement?.Initialize(weaponOwner.transform, direction);
 
-        area.transform.position = spawnPos;
-        area.transform.rotation = Quaternion.LookRotation(direction);
-        area.transform.SetParent(Camera.main.transform);
-
-        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        bullet.transform.rotation = rotation;
+        bullet.transform.position =Camera.main.transform.position + rotation * Offset;
+        bullet.transform.SetParent(Camera.main.transform);
     }
+    
 }
