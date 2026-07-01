@@ -31,10 +31,17 @@ public abstract class DamageBase : PoolableObject, IDamageable
 
     public void TakeDamage(int damage, float knockback)
     {
+        if (isReleased)
+            return;
+            
         health.TakeDamage(damage);
 
         if (health.IsDead)
+        {
+            isReleased = true;
             Release();
+        }
+
     }
 
     protected bool TryDamage(Collider other, out IDamageable target)
