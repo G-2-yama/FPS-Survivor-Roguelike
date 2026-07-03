@@ -22,7 +22,7 @@ MonoBehaviour:
   soundDB: {fileID: 11400000, guid: c4921d9b9fce0ef41ba733944a8b269c, type: 2}
   classification:
     weaponType: 1
-    fireModeData: {fileID: 11400000, guid: a5e9a7abc10091945be52644660cefbf, type: 2}
+    fireModeData: {fileID: 11400000, guid: 2c03acac65b1e344090e2d1747b33a53, type: 2}
   trigger:
     autoFire: 0
     autoReload: 1

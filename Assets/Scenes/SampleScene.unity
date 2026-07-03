@@ -7911,15 +7911,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 164500398}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &164500398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11730,15 +11729,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 269377643}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &269377643
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16392,15 +16390,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 364933316}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &364933316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29936,15 +29933,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 675531572}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &675531572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30092,15 +30088,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 676319133}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &676319133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36425,15 +36420,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 857137607}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &857137607
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37348,15 +37342,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 880736789}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &880736789
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39155,15 +39148,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 930062883}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &930062883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52163,15 +52155,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1251831039}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1251831039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52933,15 +52924,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1266597776}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1266597776
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54996,15 +54986,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1309120094}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1309120094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57002,15 +56991,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1374453921}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1374453921
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67719,15 +67707,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1642908213}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1642908213
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72967,15 +72954,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1767220288}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1767220288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -76722,15 +76708,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 1855933112}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &1855933112
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89644,15 +89629,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 2036966357}
   myTeam: 0
   targetTeam: 1
   damage: 10
   knockbackForce: 5
-  interval: 0.2
   lifetime: 0
-  mode: 0
   HP: 1
+  mode: 0
+  interval: 0.2
 --- !u!65 &2036966357
 BoxCollider:
   m_ObjectHideFlags: 0

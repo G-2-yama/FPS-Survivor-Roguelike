@@ -4963,12 +4963,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 7513494310837430362}
-  damage: 10
-  interval: 10
-  lifetime: 0.25
+  myTeam: 8
   targetTeam: 3
+  damage: 10
+  knockbackForce: 5
+  lifetime: 0.25
+  HP: 1
   mode: 0
+  interval: 10
 --- !u!1 &3921017756022240821
 GameObject:
   m_ObjectHideFlags: 0

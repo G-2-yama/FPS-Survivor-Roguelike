@@ -154,7 +154,8 @@ GameObject:
   - component: {fileID: 6031575588185809832}
   - component: {fileID: 6607744606924753487}
   - component: {fileID: 3500972516992917104}
-  - component: {fileID: -8695835660682218923}
+  - component: {fileID: 1024191589599941312}
+  - component: {fileID: 6480806535963747535}
   m_Layer: 0
   m_Name: EvoChargeBeam
   m_TagString: Untagged
@@ -5002,7 +5003,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 15}
   m_Center: {x: 0, y: 0, z: 8}
---- !u!114 &-8695835660682218923
+--- !u!114 &1024191589599941312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5011,15 +5012,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6114629737088864950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df700c14b59043b40b6c6163ac3bce95, type: 3}
+  m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrbitDamageArea
-  areaCollider: {fileID: 3500972516992917104}
+  m_EditorClassIdentifier: Assembly-CSharp::DamageArea
   myTeam: 2
   targetTeam: 28
-  damage: 10
+  damage: 30
   knockbackForce: 5
-  interval: 0.1
-  lifetime: 3
-  mode: 1
+  lifetime: 5
   HP: 1
+  mode: 0
+  interval: 0.1
+--- !u!114 &6480806535963747535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114629737088864950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e3c832063f118499adc380aeac5f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RotateMovement
+  speed: 90

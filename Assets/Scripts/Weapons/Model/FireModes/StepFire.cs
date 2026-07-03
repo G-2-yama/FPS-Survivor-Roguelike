@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Weapons/FireMode/StepFire")]
 public class StepFire : FireModeData
 {
-    [SerializeField] private GameObject damageAreaPrefab;
-    [SerializeField] private float distance = 2f;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private Vector3 Offset;
     [SerializeField] private float stepInterval = 0.5f;
 
     private Vector3 previousPosition;
@@ -23,12 +23,18 @@ public class StepFire : FireModeData
 
     private void CreateDamageArea(Weapon weapon, Player weaponOwner)
     {
-        Vector3 spawnPos = Camera.main.transform.position - Camera.main.transform.up * distance;
+        Vector3 direction = weaponOwner.transform.up;
 
-        GameObject area = PoolManager.Instance.Get(damageAreaPrefab);
+        GameObject bullet = PoolManager.Instance.Get(prefab);
 
-        area.transform.position = spawnPos;
+        var damage = bullet.GetComponent<DamageBase>();
+        damage.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce);
 
-        area.GetComponent<DamageArea>().Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
+        var movement = bullet.GetComponent<MovementBase>();
+        movement?.Initialize(weaponOwner.transform, direction);
+
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        bullet.transform.rotation = rotation;
+        bullet.transform.position = Camera.main.transform.position + rotation * Offset;
     }
 }
