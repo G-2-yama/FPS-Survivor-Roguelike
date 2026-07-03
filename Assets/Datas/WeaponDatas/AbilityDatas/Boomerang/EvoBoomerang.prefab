@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2179758852267092791}
-  - component: {fileID: 3111281365517436622}
   - component: {fileID: 905868544141468379}
+  - component: {fileID: 2158205473129074201}
+  - component: {fileID: 4157405329924400139}
   m_Layer: 0
   m_Name: EvoBoomerang
   m_TagString: Untagged
@@ -34,30 +35,6 @@ Transform:
   - {fileID: 2345399621150849120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3111281365517436622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5093799806988317829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0af4e62792700a74cbaa1c76f2a8f04f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoomerangDamageArea
-  areaCollider: {fileID: 905868544141468379}
-  myTeam: 2
-  targetTeam: 28
-  damage: 10
-  knockbackForce: 5
-  interval: 1
-  lifetime: 5
-  mode: 0
-  HP: 1
-  width: 4
-  length: 16
-  duration: 1.2
 --- !u!135 &905868544141468379
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -79,6 +56,41 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.020500004
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2158205473129074201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093799806988317829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageArea
+  myTeam: 2
+  targetTeam: 28
+  damage: 10
+  knockbackForce: 5
+  lifetime: 2.4
+  HP: 1
+  mode: 0
+  interval: 1.2
+--- !u!114 &4157405329924400139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093799806988317829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 024ac147e75a73148b2fa230e931ece8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoomerangMovement
+  width: 8
+  length: 12
+  duration: 1.2
 --- !u!1 &5949643831317139297
 GameObject:
   m_ObjectHideFlags: 0

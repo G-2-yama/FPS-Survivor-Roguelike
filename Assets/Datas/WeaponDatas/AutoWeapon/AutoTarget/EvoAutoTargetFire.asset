@@ -14,7 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AutoTargetFire
   effectPrefab: {fileID: 0}
   searchRadius: 50
-  speed: 30
-  lifetime: 5
   prefab: {fileID: 3338841769763293187, guid: 6f00b3d3760079c418baee39b430a92c, type: 3}
-  spawnOffset: {x: 0, y: 0.5, z: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}

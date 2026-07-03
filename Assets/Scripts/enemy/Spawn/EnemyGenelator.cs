@@ -12,6 +12,7 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private float spawnRadius = 15f;
 
     [SerializeField] private Timer timer;
+    [SerializeField] private int maxSpawnTry = 5;
 
     private void Start()
     {
@@ -57,14 +58,28 @@ public class EnemyGenerator : MonoBehaviour
     {
         EnemySpawnData enemyData = GetRandomEnemy(phase);
 
-        if (enemyData != null)
+        if (enemyData == null)
+            return;
+        
+        
+        for (int i = 0; i < maxSpawnTry; i++)
         {
-            GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
-            
+            // スポーンできる位置を決定する
             Vector2 direction = Random.insideUnitCircle.normalized;
             Vector3 spawnPosition = transform.position + new Vector3(direction.x, 0, direction.y) * spawnRadius;
-            enemy.transform.position = spawnPosition;
+
+            if(IsSpawnable(spawnPosition))
+            {
+                GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
+                enemy.transform.position = spawnPosition;
+                return;
+            }
         }
+    }
+
+    private bool IsSpawnable(Vector3 position)
+    {
+        return Physics.OverlapSphere(position, 0.5f).Length == 0;
     }
 
     private EnemySpawnData GetRandomEnemy(PhaseData phase)

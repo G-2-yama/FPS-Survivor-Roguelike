@@ -13,7 +13,5 @@ MonoBehaviour:
   m_Name: EvoARFire
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileData
   effectPrefab: {fileID: 0}
-  speed: 100
-  lifetime: 2
-  prefab: {fileID: 8664942034152862397, guid: 0d0efc4d20d4b6245a349adf6c6bddf2, type: 3}
+  prefab: {fileID: 8664942034152862397, guid: ea07f8b0f41bf56418270e177d16c355, type: 3}
   Offset: {x: 0, y: 0, z: 0}

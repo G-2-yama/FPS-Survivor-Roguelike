@@ -14519,8 +14519,8 @@ GameObject:
   - component: {fileID: 7069119147779450754}
   - component: {fileID: 1986340883755066617}
   - component: {fileID: 5607478753718360184}
-  - component: {fileID: 5750607715207682203}
   - component: {fileID: 4347899695715437930}
+  - component: {fileID: 5750607715207682203}
   m_Layer: 0
   m_Name: EvoStepFire
   m_TagString: Untagged
@@ -19350,27 +19350,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!114 &5750607715207682203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4004365500606963686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageArea
-  areaCollider: {fileID: 4347899695715437930}
-  myTeam: 2
-  targetTeam: 28
-  damage: 10
-  knockbackForce: 5
-  interval: 0.5
-  lifetime: 20
-  mode: 1
-  HP: 1
 --- !u!65 &4347899695715437930
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19392,6 +19371,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.5, y: 7.5, z: 6}
   m_Center: {x: 0, y: 0, z: 2.5000005}
+--- !u!114 &5750607715207682203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4004365500606963686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21b59908716f9a42a18ac6b2b22cdce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageArea
+  myTeam: 2
+  targetTeam: 28
+  damage: 10
+  knockbackForce: 5
+  lifetime: 20
+  HP: 1
+  mode: 1
+  interval: 0.5
 --- !u!1 &5317249399628293583
 GameObject:
   m_ObjectHideFlags: 0

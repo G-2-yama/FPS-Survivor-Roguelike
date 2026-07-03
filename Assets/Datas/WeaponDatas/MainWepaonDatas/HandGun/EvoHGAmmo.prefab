@@ -177,7 +177,8 @@ GameObject:
   - component: {fileID: 1926643361339326114}
   - component: {fileID: 4835066179259757909}
   - component: {fileID: 6995750176957242906}
-  - component: {fileID: -4741376090214610618}
+  - component: {fileID: 1125085710326520904}
+  - component: {fileID: 3864722256053646906}
   m_Layer: 0
   m_Name: EvoHGAmmo
   m_TagString: Untagged
@@ -249,7 +250,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.015117536
   m_Center: {x: 0.0007745719, y: 0.0019060763, z: -0.0046112863}
---- !u!114 &-4741376090214610618
+--- !u!114 &1125085710326520904
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,12 +259,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 8260587519104356623}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 877caff1e1d6c9f4cb9e80573a2468f6, type: 3}
+  m_Script: {fileID: 11500000, guid: b572350a599145047b2ab0edbcdfc5ca, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrackingProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::DamageObject
   myTeam: 2
   targetTeam: 28
+  damage: 10
+  knockbackForce: 5
+  lifetime: 0
   HP: 1
+--- !u!114 &3864722256053646906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8260587519104356623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2944d9495c0a740b716c7bbb9ecdf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrackingMovement
   trackingRange: 15
   rotateSpeed: 360
   moveSpeed: 20
