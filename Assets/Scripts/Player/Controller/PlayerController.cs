@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     /// プレイヤー全体設定
     /// </summary>
     [SerializeField] private PlayerConfig playerConfig;
+    [SerializeField] private PlayerStats playerStats;
 
     /// <summary>
     /// 物理挙動を無効化してCharacterController移動へ寄せるためのRigidbody
@@ -70,8 +71,8 @@ public class PlayerController : MonoBehaviour
         ConfigureRigidbodyForCharacterController();
 
         PlayerMotor motor = new PlayerMotor(playerCharacterController);
-        PlayerJumpController jumpController = new PlayerJumpController(motor, playerConfig);
-        PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig);
+        PlayerJumpController jumpController = new PlayerJumpController(motor, playerConfig,playerStats);
+        PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig,playerStats);
         PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, playerConfig);
         PlayerViewOffsetController viewOffset = new PlayerViewOffsetController(cameraLookPivotTransform, playerConfig);
         PlayerControlState controls = new PlayerControlState();
