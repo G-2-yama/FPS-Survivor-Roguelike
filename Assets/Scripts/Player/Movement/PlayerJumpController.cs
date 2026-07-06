@@ -19,6 +19,7 @@ public class PlayerJumpController
     /// プレイヤー移動設定
     /// </summary>
     private PlayerConfig settings;
+    private PlayerStats stats;
 
     /// <summary>
     /// 長押しジャンプで追加できる残り上向き速度
@@ -46,10 +47,11 @@ public class PlayerJumpController
     /// </summary>
     /// <param name="motor">速度を適用するモーター</param>
     /// <param name="settings">ジャンプ設定</param>
-    public PlayerJumpController(PlayerMotor motor, PlayerConfig settings)
+    public PlayerJumpController(PlayerMotor motor, PlayerConfig settings,PlayerStats stats)
     {
         this.motor = motor;
         this.settings = settings;
+        this.stats = stats;
     }
 
     /// <summary>
@@ -98,8 +100,8 @@ public class PlayerJumpController
     /// </summary>
     public void Jump()
     {
-        motor.VerticalVelocity = settings.JumpForce;
-        remainingJumpHoldBonus = settings.JumpForce * (settings.JumpHoldMaxMultiplier - 1f);
+        motor.VerticalVelocity = stats.JumpForce;
+        remainingJumpHoldBonus = stats.JumpForce * (settings.JumpHoldMaxMultiplier - 1f);
         jumpHoldTimer = settings.JumpHoldDuration;
     }
 
