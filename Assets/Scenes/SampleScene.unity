@@ -4205,6 +4205,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fe862f674ad098a418d1d714f01d4592, type: 2}
   spawnRadius: 75
   timer: {fileID: 383212504}
+  maxSpawnTry: 5
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
