@@ -47,6 +47,15 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        InitializeIfNeeded();
+    }
+    public void InitializeIfNeeded()
+    {
+        if (Stats != null)
+        {
+            return;
+        }
+
         Stats = new PlayerStats(config);
         Health = new Health(Stats.MaxHP);
         Health.OnDeath += HandleDeath;

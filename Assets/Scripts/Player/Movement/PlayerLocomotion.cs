@@ -40,6 +40,7 @@ public class PlayerLocomotion
     /// プレイヤー移動設定
     /// </summary>
     private PlayerConfig settings;
+    private PlayerStats stats;
 
     /// <summary>
     /// 移動制御に必要な参照を初期化する
@@ -52,12 +53,14 @@ public class PlayerLocomotion
         Transform playerTransform,
         PlayerMotor motor,
         PlayerJumpController jumpController,
-        PlayerConfig settings)
+        PlayerConfig settings,
+        PlayerStats stats)
     {
         this.playerTransform = playerTransform;
         this.motor = motor;
         this.jumpController = jumpController;
         this.settings = settings;
+        this.stats = stats;
     }
 
     /// <summary>
@@ -68,7 +71,7 @@ public class PlayerLocomotion
         bool isGrounded = motor.IsGrounded();
         bool isEffectivelyGrounded = isGrounded && motor.VerticalVelocity <= 0f;
         Vector3 move = GetMoveVector(moveInput);
-        float moveSpeed = sprintHeld ? settings.RunSpeed : settings.WalkSpeed;
+        float moveSpeed = sprintHeld ? stats.RunSpeed : stats.WalkSpeed;
         Vector3 targetHorizontalVelocity = move * moveSpeed;
 
         if (move.sqrMagnitude > StopInputDeadzoneSqr)
