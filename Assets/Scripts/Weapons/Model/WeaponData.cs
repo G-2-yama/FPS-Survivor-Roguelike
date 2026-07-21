@@ -96,35 +96,6 @@ public class WeaponData : ScriptableObject
     // =========================
 
     public Recoil Recoil => recoil ?? Recoil.Empty;
-
-    /// <summary>
-    /// リロード込みの平均DPS
-    /// </summary>
-    public float AverageDPS
-    {
-        get
-        {
-            if (MagazineSize <= 0)
-            {
-                return 0f;
-            }
-
-            // マガジンを撃ち切る時間
-            float firingTime = (MagazineSize - 1) * FireInterval;
-
-            // 撃ち切り + リロード
-            float cycleTime = firingTime + ReloadTime;
-
-            if (cycleTime <= 0f)
-            {
-                return 0f;
-            }
-
-            float totalDamage = Damage * MagazineSize;
-
-            return totalDamage / cycleTime;
-        }
-    }
 }
 
 /// <summary>

@@ -3,42 +3,60 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// WeaponDataのバランス調整用ウィンドウ
+/// WeaponDataのバランス調整用EditorWindow。
+/// ゲーム本体のデータには影響を与えず、Editor上でDPS調整を行う。
 /// </summary>
 public class WeaponBalanceWindow : EditorWindow
 {
     /// <summary>
-    /// Editor専用バランス調整データ
+    /// Editor専用の調整値。
+    /// WeaponDataには保存せずEditorPrefsで管理する。
     /// </summary>
     private class BalanceInfo
     {
-        public float HitRate = 1f;
-        public int HitCount = 1;
+        /// <summary>
+        /// 1サイクル中のヒット回数。
+        /// 例:
+        /// ライフル30発 → 30
+        /// ショットガン8ペレット×6発 → 48
+        /// </summary>
+        public int CycleHitCount = 1;
 
-        public float ExpectedDPS(WeaponData weapon)
-        {
-            return weapon.AverageDPS * HitRate * HitCount;
-        }
+        /// <summary>
+        /// 攻撃全体の命中率。
+        /// 0～1で管理する。
+        /// </summary>
+        public float HitRate = 1f;
+
+        /// <summary>
+        /// 同時に攻撃できる敵数。
+        /// 範囲攻撃などで使用する。
+        /// </summary>
+        public int EnemyCount = 1;
     }
+
 
     private readonly List<WeaponData> _weapons = new();
     private readonly Dictionary<WeaponData, BalanceInfo> _balanceInfos = new();
 
     private Vector2 _scrollPosition;
 
-    private const float IndexWidth = 100f;
-    private const float NameWidth = 180f;
-    private const float TypeWidth = 80f;
+
+    // 表示幅
+    private const float DataWidth = 100f;
+    private const float NameWidth = 150f;
     private const float DamageWidth = 60f;
-    private const float AverageDpsWidth = 80f;
-    private const float FireWidth = 70f;
-    private const float MagazineWidth = 70f;
-    private const float ReloadWidth = 70f;
+    private const float KnockbackWidth = 90f;
+    private const float NormalDpsWidth = 90f;
+    private const float CycleTimeWidth = 90f;
     private const float HitRateWidth = 100f;
-    private const float HitCountWidth = 80f;
-    private const float ExpectedDpsWidth = 100f;
+    private const float EnemyWidth = 70f;
+    private const float EffectiveDpsWidth = 110f;
 
 
+    /// <summary>
+    /// Weapon Balance Windowを開く。
+    /// </summary>
     [MenuItem("Tools/Weapon Balance Viewer")]
     private static void Open()
     {
@@ -46,6 +64,9 @@ public class WeaponBalanceWindow : EditorWindow
     }
 
 
+    /// <summary>
+    /// Window生成時にWeaponDataを取得する。
+    /// </summary>
     private void OnEnable()
     {
         ReloadWeapons();
@@ -53,7 +74,7 @@ public class WeaponBalanceWindow : EditorWindow
 
 
     /// <summary>
-    /// WeaponDataを取得
+    /// プロジェクト内のWeaponDataを取得する。
     /// </summary>
     private void ReloadWeapons()
     {
@@ -81,17 +102,16 @@ public class WeaponBalanceWindow : EditorWindow
 
 
     /// <summary>
-    /// WeaponDataのGUID取得
+    /// WeaponData固有の保存キー取得用GUIDを取得する。
     /// </summary>
-    private static string GetGuid(WeaponData weapon)
+    private string GetGuid(WeaponData weapon)
     {
-        string path = AssetDatabase.GetAssetPath(weapon);
-        return AssetDatabase.AssetPathToGUID(path);
+        return AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(weapon));
     }
 
 
     /// <summary>
-    /// 保存済み調整値を取得
+    /// EditorPrefsから調整値を読み込む。
     /// </summary>
     private BalanceInfo LoadBalanceInfo(WeaponData weapon)
     {
@@ -99,24 +119,27 @@ public class WeaponBalanceWindow : EditorWindow
 
         return new BalanceInfo
         {
+            CycleHitCount = EditorPrefs.GetInt($"{guid}_CycleHitCount", 1),
             HitRate = EditorPrefs.GetFloat($"{guid}_HitRate", 1f),
-            HitCount = EditorPrefs.GetInt($"{guid}_HitCount", 1)
+            EnemyCount = EditorPrefs.GetInt($"{guid}_EnemyCount", 1)
         };
     }
 
 
     /// <summary>
-    /// 調整値を保存
+    /// 調整値をEditorPrefsへ保存する。
     /// </summary>
     private void SaveBalanceInfo(WeaponData weapon, BalanceInfo info)
     {
         string guid = GetGuid(weapon);
 
+        EditorPrefs.SetInt($"{guid}_CycleHitCount", info.CycleHitCount);
         EditorPrefs.SetFloat($"{guid}_HitRate", info.HitRate);
-        EditorPrefs.SetInt($"{guid}_HitCount", info.HitCount);
+        EditorPrefs.SetInt($"{guid}_EnemyCount", info.EnemyCount);
     }
-
-
+        /// <summary>
+    /// Window描画処理。
+    /// </summary>
     private void OnGUI()
     {
         if (GUILayout.Button("Reload"))
@@ -132,7 +155,7 @@ public class WeaponBalanceWindow : EditorWindow
 
         foreach (WeaponData weapon in _weapons)
         {
-            DrawWeaponRow(weapon);
+            DrawRow(weapon);
         }
 
         EditorGUILayout.EndScrollView();
@@ -140,75 +163,130 @@ public class WeaponBalanceWindow : EditorWindow
 
 
     /// <summary>
-    /// 表ヘッダー表示
+    /// 表のヘッダーを描画する。
     /// </summary>
     private void DrawHeader()
     {
         EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
 
-        GUILayout.Label("Data", GUILayout.Width(IndexWidth));
+        GUILayout.Label("Data", GUILayout.Width(DataWidth));
         GUILayout.Label("Name", GUILayout.Width(NameWidth));
-        GUILayout.Label("Type", GUILayout.Width(TypeWidth));
         GUILayout.Label("Damage", GUILayout.Width(DamageWidth));
-        GUILayout.Label("Avg DPS", GUILayout.Width(AverageDpsWidth));
-        GUILayout.Label("Fire", GUILayout.Width(FireWidth));
-        GUILayout.Label("Magazine", GUILayout.Width(MagazineWidth));
-        GUILayout.Label("Reload", GUILayout.Width(ReloadWidth));
+        GUILayout.Label("Knockback", GUILayout.Width(KnockbackWidth));
+        GUILayout.Label("Normal DPS", GUILayout.Width(NormalDpsWidth));
+        GUILayout.Label("Cycle Time", GUILayout.Width(CycleTimeWidth));
         GUILayout.Label("Hit Rate", GUILayout.Width(HitRateWidth));
-        GUILayout.Label("Hit Count", GUILayout.Width(HitCountWidth));
-        GUILayout.Label("Expected DPS", GUILayout.Width(ExpectedDpsWidth));
+        GUILayout.Label("Enemy", GUILayout.Width(EnemyWidth));
+        GUILayout.Label("Effective DPS", GUILayout.Width(EffectiveDpsWidth));
 
         EditorGUILayout.EndHorizontal();
     }
 
+
     /// <summary>
-    /// 武器1行分を表示
+    /// 武器1行分を描画する。
     /// </summary>
-    private void DrawWeaponRow(WeaponData weapon)
+    private void DrawRow(WeaponData weapon)
     {
         BalanceInfo info = _balanceInfos[weapon];
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button(weapon.name, GUILayout.Width(IndexWidth)))
+        // ScriptableObject名
+        if (GUILayout.Button(weapon.name, GUILayout.Width(DataWidth)))
         {
             Selection.activeObject = weapon;
             EditorGUIUtility.PingObject(weapon);
         }
 
+        // 表示名
         GUILayout.Label(weapon.DisplayName, GUILayout.Width(NameWidth));
-        GUILayout.Label(weapon.WeaponType.ToString(), GUILayout.Width(TypeWidth));
-        GUILayout.Label(weapon.Damage.ToString(), GUILayout.Width(DamageWidth));
-        GUILayout.Label(weapon.AverageDPS.ToString("F1"), GUILayout.Width(AverageDpsWidth));
-        GUILayout.Label(weapon.FireInterval.ToString("F2"), GUILayout.Width(FireWidth));
-        GUILayout.Label(weapon.MagazineSize.ToString(), GUILayout.Width(MagazineWidth));
-        GUILayout.Label(weapon.ReloadTime.ToString("F2"), GUILayout.Width(ReloadWidth));
 
-        float hitRate = EditorGUILayout.Slider(
+        // 基本ステータス
+        GUILayout.Label(weapon.Damage.ToString(), GUILayout.Width(DamageWidth));
+        GUILayout.Label(weapon.KnockbackForce.ToString("F1"), GUILayout.Width(KnockbackWidth));
+
+        // 通常DPS
+        GUILayout.Label(CalculateNormalDPS(weapon).ToString("F1"), GUILayout.Width(NormalDpsWidth));
+
+        // 1サイクル時間
+        GUILayout.Label(CalculateCycleTime(weapon).ToString("F2"), GUILayout.Width(CycleTimeWidth));
+
+        info.HitRate = EditorGUILayout.Slider(
             info.HitRate,
             0f,
             1f,
             GUILayout.Width(HitRateWidth));
 
-        if (!Mathf.Approximately(hitRate, info.HitRate))
-        {
-            info.HitRate = hitRate;
-            SaveBalanceInfo(weapon, info);
-        }
+        info.EnemyCount = Mathf.Max(
+            1,
+            EditorGUILayout.IntField(info.EnemyCount, GUILayout.Width(EnemyWidth)));
 
-        int hitCount = EditorGUILayout.IntField(info.HitCount, GUILayout.Width(HitCountWidth));
-        hitCount = Mathf.Max(1, hitCount);
-
-        if (hitCount != info.HitCount)
-        {
-            info.HitCount = hitCount;
-            SaveBalanceInfo(weapon, info);
-        }
-
+        // 実戦想定DPS
         GUILayout.Label(
-            info.ExpectedDPS(weapon).ToString("F1"),
-            GUILayout.Width(ExpectedDpsWidth));
+            CalculateEffectiveDPS(weapon, info).ToString("F1"),
+            GUILayout.Width(EffectiveDpsWidth));
+
+
+        SaveBalanceInfo(weapon, info);
 
         EditorGUILayout.EndHorizontal();
+    }
+
+
+    /// <summary>
+    /// 通常DPSを計算する。
+    /// 命中率や敵数補正は含まない。
+    /// </summary>
+    private float CalculateNormalDPS(WeaponData weapon)
+    {
+        float cycleTime = CalculateCycleTime(weapon);
+
+        if (cycleTime <= 0f)
+        {
+            return 0f;
+        }
+
+        float cycleDamage = weapon.Damage * weapon.MagazineSize;
+
+        return cycleDamage / cycleTime;
+    }
+
+
+
+    /// <summary>
+    /// 1マガジン撃ち切りからリロード完了までの時間を計算する。
+    /// </summary>
+    private float CalculateCycleTime(WeaponData weapon)
+    {
+        float fireTime =(weapon.MagazineSize - 1) * weapon.BurstInterval;
+
+        return weapon.ChargeTime + fireTime + weapon.FireInterval +weapon.ReloadTime;
+    }
+
+
+    /// <summary>
+    /// 命中率などを考慮した1サイクルダメージを計算する。
+    /// </summary>
+    private float CalculateCycleDamage(WeaponData weapon, BalanceInfo info)
+    {
+        return weapon.Damage * weapon.MagazineSize * 
+            info.CycleHitCount * info.HitRate * info.EnemyCount;
+    }
+
+
+    /// <summary>
+    /// 実戦を想定したDPSを計算する。
+    /// </summary>
+    private float CalculateEffectiveDPS(WeaponData weapon, BalanceInfo info)
+    {
+        float cycleTime = CalculateCycleTime(weapon);
+
+        if (cycleTime <= 0f)
+        {
+            return 0f;
+        }
+
+        return CalculateCycleDamage(weapon, info) / cycleTime;
     }
 }
