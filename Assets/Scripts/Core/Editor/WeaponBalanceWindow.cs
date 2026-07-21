@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,12 +16,9 @@ public class WeaponBalanceWindow : EditorWindow
     private class BalanceInfo
     {
         /// <summary>
-        /// 1サイクル中のヒット回数。
-        /// 例:
-        /// ライフル30発 → 30
-        /// ショットガン8ペレット×6発 → 48
+        /// 敵1体あたりの1サイクル中のヒット回数。
         /// </summary>
-        public int CycleHitCount = 1;
+        public float HitsPerEnemy = 1;
 
         /// <summary>
         /// 攻撃全体の命中率。
@@ -32,7 +30,7 @@ public class WeaponBalanceWindow : EditorWindow
         /// 同時に攻撃できる敵数。
         /// 範囲攻撃などで使用する。
         /// </summary>
-        public int EnemyCount = 1;
+        public float EnemyCount = 1;
     }
 
 
@@ -50,7 +48,8 @@ public class WeaponBalanceWindow : EditorWindow
     private const float NormalDpsWidth = 90f;
     private const float CycleTimeWidth = 90f;
     private const float HitRateWidth = 100f;
-    private const float EnemyWidth = 70f;
+    private const float HitsPerEnemyWidth = 120f;
+    private const float EnemyWidth = 120f;
     private const float EffectiveDpsWidth = 110f;
 
 
@@ -119,9 +118,9 @@ public class WeaponBalanceWindow : EditorWindow
 
         return new BalanceInfo
         {
-            CycleHitCount = EditorPrefs.GetInt($"{guid}_CycleHitCount", 1),
+            HitsPerEnemy = EditorPrefs.GetFloat($"{guid}_HitsPerEnemy", 1f),
             HitRate = EditorPrefs.GetFloat($"{guid}_HitRate", 1f),
-            EnemyCount = EditorPrefs.GetInt($"{guid}_EnemyCount", 1)
+            EnemyCount = EditorPrefs.GetFloat($"{guid}_EnemyCount", 1f)
         };
     }
 
@@ -133,9 +132,9 @@ public class WeaponBalanceWindow : EditorWindow
     {
         string guid = GetGuid(weapon);
 
-        EditorPrefs.SetInt($"{guid}_CycleHitCount", info.CycleHitCount);
+        EditorPrefs.SetFloat($"{guid}_HitsPerEnemy", info.HitsPerEnemy);
         EditorPrefs.SetFloat($"{guid}_HitRate", info.HitRate);
-        EditorPrefs.SetInt($"{guid}_EnemyCount", info.EnemyCount);
+        EditorPrefs.SetFloat($"{guid}_EnemyCount", info.EnemyCount);
     }
         /// <summary>
     /// Window描画処理。
@@ -176,7 +175,8 @@ public class WeaponBalanceWindow : EditorWindow
         GUILayout.Label("Normal DPS", GUILayout.Width(NormalDpsWidth));
         GUILayout.Label("Cycle Time", GUILayout.Width(CycleTimeWidth));
         GUILayout.Label("Hit Rate", GUILayout.Width(HitRateWidth));
-        GUILayout.Label("Enemy", GUILayout.Width(EnemyWidth));
+        GUILayout.Label("Enemy Count", GUILayout.Width(EnemyWidth));
+        GUILayout.Label("Hits per Enemy", GUILayout.Width(HitsPerEnemyWidth));
         GUILayout.Label("Effective DPS", GUILayout.Width(EffectiveDpsWidth));
 
         EditorGUILayout.EndHorizontal();
@@ -212,27 +212,47 @@ public class WeaponBalanceWindow : EditorWindow
         // 1サイクル時間
         GUILayout.Label(CalculateCycleTime(weapon).ToString("F2"), GUILayout.Width(CycleTimeWidth));
 
-        info.HitRate = EditorGUILayout.Slider(
-            info.HitRate,
-            0f,
-            1f,
-            GUILayout.Width(HitRateWidth));
+        info.HitRate = EditorGUILayout.Slider(info.HitRate, 0f, 1f, GUILayout.Width(HitRateWidth));
 
-        info.EnemyCount = Mathf.Max(
-            1,
-            EditorGUILayout.IntField(info.EnemyCount, GUILayout.Width(EnemyWidth)));
+        info.EnemyCount = Mathf.Max(1, EditorGUILayout.FloatField(info.EnemyCount, GUILayout.Width(EnemyWidth)));
+
+        info.HitsPerEnemy = Mathf.Max(1, EditorGUILayout.FloatField(info.HitsPerEnemy, GUILayout.Width(HitsPerEnemyWidth)));
 
         // 実戦想定DPS
-        GUILayout.Label(
-            CalculateEffectiveDPS(weapon, info).ToString("F1"),
-            GUILayout.Width(EffectiveDpsWidth));
-
-
+        GUILayout.Label(CalculateEffectiveDPS(weapon, info).ToString("F1"),GUILayout.Width(EffectiveDpsWidth));
+        
         SaveBalanceInfo(weapon, info);
 
         EditorGUILayout.EndHorizontal();
     }
 
+
+
+
+
+    /// <summary>
+    /// 1マガジン撃ち切りからリロード完了までの時間を計算する。
+    /// </summary>
+    private float CalculateCycleTime(WeaponData weapon)
+    {
+        float time = 0f;
+        for(int currentMagazine = weapon.MagazineSize; 0 < currentMagazine;)
+        {
+            if (weapon.BurstCount > 1)
+            {
+                int burstShots = Mathf.Min(currentMagazine, weapon.BurstCount);
+                time += weapon.ChargeTime + (burstShots - 1) * weapon.BurstInterval + weapon.FireInterval;
+                currentMagazine -= burstShots;
+            }
+            else
+            {
+                time +=  weapon.ChargeTime + weapon.FireInterval;
+                currentMagazine--;
+            }
+        }
+
+        return time + weapon.ReloadTime;
+    }
 
     /// <summary>
     /// 通常DPSを計算する。
@@ -252,29 +272,6 @@ public class WeaponBalanceWindow : EditorWindow
         return cycleDamage / cycleTime;
     }
 
-
-
-    /// <summary>
-    /// 1マガジン撃ち切りからリロード完了までの時間を計算する。
-    /// </summary>
-    private float CalculateCycleTime(WeaponData weapon)
-    {
-        float fireTime =(weapon.MagazineSize - 1) * weapon.BurstInterval;
-
-        return weapon.ChargeTime + fireTime + weapon.FireInterval +weapon.ReloadTime;
-    }
-
-
-    /// <summary>
-    /// 命中率などを考慮した1サイクルダメージを計算する。
-    /// </summary>
-    private float CalculateCycleDamage(WeaponData weapon, BalanceInfo info)
-    {
-        return weapon.Damage * weapon.MagazineSize * 
-            info.CycleHitCount * info.HitRate * info.EnemyCount;
-    }
-
-
     /// <summary>
     /// 実戦を想定したDPSを計算する。
     /// </summary>
@@ -287,6 +284,8 @@ public class WeaponBalanceWindow : EditorWindow
             return 0f;
         }
 
-        return CalculateCycleDamage(weapon, info) / cycleTime;
+        float cycleDamage = weapon.Damage * weapon.MagazineSize;
+
+        return cycleDamage * info.HitsPerEnemy  * info.EnemyCount * info.HitRate / cycleTime;
     }
 }
