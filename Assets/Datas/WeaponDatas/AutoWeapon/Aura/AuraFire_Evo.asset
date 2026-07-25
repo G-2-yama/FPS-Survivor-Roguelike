@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41e9cef17cdaffe4e89207bc592f288a, type: 3}
-  m_Name: Evo_AuraFire
+  m_Name: AuraFire_Evo
   m_EditorClassIdentifier: Assembly-CSharp::NormalProjectileFire
   effectPrefab: {fileID: 0}
   prefab: {fileID: 3143472144067748496, guid: 1da6bac0ae064f64295e5d3c3aeba360, type: 3}

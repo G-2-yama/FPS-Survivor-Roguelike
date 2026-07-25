@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: EvoStepFire
+  m_Name: AirStrike_05
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: "Evo\u30B9\u30C6\u30C3\u30D7\u30D5\u30A1\u30A4\u30A2"
-    description: "\u5E83\u7BC4\u56F2\u306E\u708E\u3092\u8DB3\u5143\u306B\u751F\u6210\u3057\u307E\u3059"
-    icon: {fileID: 21300000, guid: 648449b1d2d8224409a646aab13d6ffe, type: 3}
+    displayName: "\u7A7A\u7206"
+    description: "\u30EA\u30ED\u30FC\u30C9\u6642\u95932->1"
+    icon: {fileID: 21300000, guid: 73fdc7317632dbb49aadbaacaa554acb, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
   classification:
     weaponType: 2
-    fireModeData: {fileID: 11400000, guid: 697c44bef6c78de49983874b6450ae37, type: 2}
+    fireModeData: {fileID: 11400000, guid: a57f55e250b675f40a14d62e83165707, type: 2}
   trigger:
     autoFire: 1
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 10
+    damage: 20
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0
-    burstCount: 1
-    burstInterval: 0
+    fireInterval: 0.1
+    burstCount: 5
+    burstInterval: 0.05
     chargeTime: 0
   recoil:
     pitchKick: 0
@@ -44,6 +44,6 @@ MonoBehaviour:
     damping: 0
     maxPitch: 0
   ammo:
-    magazineSize: 1
-    reloadTime: 0.4
-  nextLevelData: {fileID: 0}
+    magazineSize: 5
+    reloadTime: 1
+  nextLevelData: {fileID: 11400000, guid: c24cc3a544bb3a04db8d9e38e06242ab, type: 2}
