@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: 00_Orbit
+  m_Name: Orbit_01
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: "\u30AA\u30FC\u30D3\u30C3\u30C8"
-    description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
+    description: "\u30DE\u30AC\u30B8\u30F3\u30B5\u30A4\u30BA2->4/\u30C0\u30E1\u30FC\u30B815->20"
     icon: {fileID: 21300000, guid: b2b9f13f320a3ed4d955d5c26bfa894f, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
@@ -28,13 +28,13 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 10
+    damage: 20
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0
-    burstCount: 2
-    burstInterval: 1
+    burstCount: 4
+    burstInterval: 0.5
     chargeTime: 0
   recoil:
     pitchKick: 1
@@ -44,6 +44,6 @@ MonoBehaviour:
     damping: 1
     maxPitch: 1
   ammo:
-    magazineSize: 2
+    magazineSize: 4
     reloadTime: 5
-  nextLevelData: {fileID: 11400000, guid: 0cdbabc4b6442e347a39c1b94575880d, type: 2}
+  nextLevelData: {fileID: 11400000, guid: 99cd0ca771d7d8741bc3c3cddda058ee, type: 2}

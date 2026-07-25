@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a0424c3921be44f9a205a473fea901, type: 3}
-  m_Name: EvoSurroundedMolotov
-  m_EditorClassIdentifier: Assembly-CSharp::SurroundedFire
+  m_Script: {fileID: 11500000, guid: 41e9cef17cdaffe4e89207bc592f288a, type: 3}
+  m_Name: 01_MolotovFire
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileData
   effectPrefab: {fileID: 0}
-  prefab: {fileID: 4004365500606963686, guid: ef2ed2dff300e2047a021b74889305b8, type: 3}
+  prefab: {fileID: 4305417644922424915, guid: 553e9c4434cc6614bb81db7120da29eb, type: 3}
   Offset: {x: 0, y: 0, z: 1}
-  projectileCount: 4
   isTracking: 0
