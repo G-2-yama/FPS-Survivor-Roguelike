@@ -10,14 +10,14 @@ public class ProjectileLauncher : MonoBehaviour
             return;
 
         GameObject bullet = bulletData.Spawn(shotPoint, direction);
-        var projectile = bullet.GetComponent<ProjectileObject>();
+        var projectile = bullet.GetComponent<enemyplojectileobject>();
 
         if (projectile!=null)
         {
             projectile.Initialize(
            damage,
-           0f,
-           bulletData.Lifetime);
+           0f
+           );
 
         }
 

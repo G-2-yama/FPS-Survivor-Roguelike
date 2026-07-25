@@ -23,6 +23,15 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     public TeamType targetTeam => TeamType.Player;
 
     protected bool hasHit = false;
+    protected int damage;
+    protected float knockbackForce;
+    public void Initialize(int damage, float knockbackForce)
+    {
+        this.damage = damage;
+        this.knockbackForce = knockbackForce;
+      
+    }
+
 
     public void TakeDamage(int damage, float knockbackForce)
     {
