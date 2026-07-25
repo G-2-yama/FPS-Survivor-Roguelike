@@ -12,7 +12,7 @@ public class UIFader : MonoBehaviour
 
     public void FadeIn()
     {
-        brockImage.SetActive(true);
+        brockImage?.SetActive(true);
         StartFade(1f, null);
     }
 
@@ -50,6 +50,6 @@ public class UIFader : MonoBehaviour
         canvasGroup.alpha = targetAlpha;
 
         onComplete?.Invoke();
-        brockImage.SetActive(false);
+        brockImage?.SetActive(false);
     }
 }
