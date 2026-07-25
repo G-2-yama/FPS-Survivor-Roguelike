@@ -4267,6 +4267,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11287e014a1d671438b5353cac02d0f2, type: 2}
   - {fileID: 11400000, guid: d2f1f57a33ee36440aa7827a1278ea2a, type: 2}
   - {fileID: 11400000, guid: 0c1bfd4e5a3d42e42956696402785e7f, type: 2}
+  - {fileID: 11400000, guid: 52ef2cd57cf39034fbcad16ae610efb3, type: 2}
+  - {fileID: 11400000, guid: d302ddba1f3f8304494648fedc8d4b61, type: 2}
+  - {fileID: 11400000, guid: ea90d5a0f093be84dbb9c117d8accacc, type: 2}
+  - {fileID: 11400000, guid: d747e206242fe2548ab058076adda3a6, type: 2}
+  - {fileID: 11400000, guid: 5566db088f292cb41b3755bd7ab6a35a, type: 2}
   spawnRadius: 75
   timer: {fileID: 383212504}
   maxSpawnTry: 5
@@ -17633,7 +17638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394d8199d1256d94690fbf88f272948a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
-  timeLimit: 1000
+  timeLimit: 600
 --- !u!4 &383212505
 Transform:
   m_ObjectHideFlags: 0
@@ -38414,6 +38419,7 @@ RectTransform:
   - {fileID: 100424964}
   - {fileID: 1727859575}
   - {fileID: 22881031}
+  - {fileID: 1085122654}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -38434,7 +38440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIFade
   canvasGroup: {fileID: 902955991}
-  fadeDuration: 0.05
+  brockImage: {fileID: 1085122653}
+  fadeDuration: 1
 --- !u!225 &902955991
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -42598,9 +42605,9 @@ MonoBehaviour:
   - {fileID: 1800776559}
   - {fileID: 208856129}
   - {fileID: 328223106}
-  minSpawnTime: 30
-  maxSpawnTime: 60
-  changeInterval: 30
+  minSpawnTime: 180
+  maxSpawnTime: 200
+  changeInterval: 180
   enemyPrefabs:
   - {fileID: 6317347510099702208, guid: c71f23186d3081f44af32548939bf2fd, type: 3}
   timerObject: {fileID: 383212502}
@@ -45304,6 +45311,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083508646}
+  m_CullTransparentMesh: 1
+--- !u!1 &1085122653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085122654}
+  - component: {fileID: 1085122656}
+  - component: {fileID: 1085122655}
+  m_Layer: 5
+  m_Name: brockImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1085122654
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085122653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 902955989}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1085122655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085122653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 61201416, guid: 1115e4780f901f2418cffc1311666326, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1085122656
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085122653}
   m_CullTransparentMesh: 1
 --- !u!1001 &1102575026
 PrefabInstance:
@@ -65022,6 +65104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIFade
   canvasGroup: {fileID: 1562638438}
+  brockImage: {fileID: 0}
   fadeDuration: 0.05
 --- !u!225 &1562638438
 CanvasGroup:
