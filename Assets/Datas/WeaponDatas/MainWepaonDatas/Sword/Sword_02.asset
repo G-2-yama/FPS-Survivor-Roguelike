@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: 00_Sword
+  m_Name: Sword_02
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: "\u5263"
-    description: "\u8FD1\u63A5\u7BC4\u56F2\u653B\u6483"
+    description: "\u53CD\u52D5\u8EFD\u6E1B"
     icon: {fileID: 21300000, guid: 4618367f8968837459477522f0d38564, type: 3}
   visual:
     weaponModelPrefab: {fileID: 7353697110361124127, guid: bb6bd7a520397a144bd9c571d31647ec, type: 3}
@@ -28,7 +28,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 0
   damage:
-    damage: 25
+    damage: 15
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
@@ -38,7 +38,7 @@ MonoBehaviour:
     chargeTime: 0
   recoil:
     pitchKick: 0
-    yawKick: 24
+    yawKick: 12
     yawRandomness: 1
     returnStrength: 30
     damping: 18
@@ -46,4 +46,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 3
     reloadTime: 1.5
-  nextLevelData: {fileID: 11400000, guid: 0a273c5d0483a5e4988fed13e6bc03e2, type: 2}
+  nextLevelData: {fileID: 11400000, guid: 7273664b659bce64eaf7b06012930d8f, type: 2}
