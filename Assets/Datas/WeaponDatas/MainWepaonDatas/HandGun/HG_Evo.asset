@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: EvcHG
+  m_Name: HG_Evo
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
@@ -28,7 +28,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 15
+    damage: 50
     knockbackForce: 10
     spreadAngle: 0
   fireRhythm:
@@ -44,6 +44,6 @@ MonoBehaviour:
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 12
-    reloadTime: 1.5
+    magazineSize: 32
+    reloadTime: 1.2
   nextLevelData: {fileID: 0}

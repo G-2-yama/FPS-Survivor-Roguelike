@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: HG_01
+  m_Name: HG_04
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: "\u30CF\u30F3\u30C9\u30AC\u30F3"
-    description: "\u30C0\u30E1\u30FC\u30B8->17/\u30DE\u30AC\u30B8\u30F3\u30B5\u30A4\u30BA
-      12 \u2192 15"
+    description: "\u30C0\u30E1\u30FC\u30B8 25->30/ \u30DE\u30AC\u30B8\u30F3\u30B5\u30A4\u30BA
+      17"
     icon: {fileID: 21300000, guid: fce6330d3d4187344b8ebc779da3bd02, type: 3}
   visual:
     weaponModelPrefab: {fileID: 3637342788740244059, guid: 452274f2432a6d34d8b2732670808f74, type: 3}
@@ -29,7 +29,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 0
   damage:
-    damage: 17
+    damage: 30
     knockbackForce: 10
     spreadAngle: 0
   fireRhythm:
@@ -45,6 +45,6 @@ MonoBehaviour:
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 15
-    reloadTime: 1.5
-  nextLevelData: {fileID: 11400000, guid: c6d879d31275a754b8fbb135575fba7e, type: 2}
+    magazineSize: 17
+    reloadTime: 1.4
+  nextLevelData: {fileID: 11400000, guid: 9991d3441f516b8449690fa0edef1f15, type: 2}
