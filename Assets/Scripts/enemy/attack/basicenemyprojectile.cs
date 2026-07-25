@@ -11,7 +11,7 @@ public class basicenemyprojectile : enemyplojectileobject
                 return;
             }
 
-            damageable.TakeDamage(config.Damagelange);
+            damageable.TakeDamage(config.Damagelange*damage);
         }
         hasHit = true;
         Release();
