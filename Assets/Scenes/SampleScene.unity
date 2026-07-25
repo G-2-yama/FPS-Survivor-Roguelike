@@ -4259,7 +4259,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGenerator
   phases:
-  - {fileID: 11400000, guid: fe862f674ad098a418d1d714f01d4592, type: 2}
+  - {fileID: 11400000, guid: d3e9a4761afe0f2449a0087b7dd6083b, type: 2}
+  - {fileID: 11400000, guid: 68c77356379df1d46943f112385276de, type: 2}
+  - {fileID: 11400000, guid: 5437f81187cee004fad372df71c37ff8, type: 2}
+  - {fileID: 11400000, guid: 2e7315f5f15c22945ba226882b746baa, type: 2}
+  - {fileID: 11400000, guid: 9faf13c056fa4f346aeb23969fd7ab1d, type: 2}
+  - {fileID: 11400000, guid: 11287e014a1d671438b5353cac02d0f2, type: 2}
+  - {fileID: 11400000, guid: d2f1f57a33ee36440aa7827a1278ea2a, type: 2}
+  - {fileID: 11400000, guid: 0c1bfd4e5a3d42e42956696402785e7f, type: 2}
   spawnRadius: 75
   timer: {fileID: 383212504}
   maxSpawnTry: 5
@@ -12695,7 +12702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf568c6c4fa27e64dbacd8e37d5db45a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::expmaneger
-  levelUpRequiredExp: 100
+  levelUpRequiredExp: 50
   levelUpRate: 1.2
 --- !u!1 &278744664
 GameObject:
@@ -42591,9 +42598,9 @@ MonoBehaviour:
   - {fileID: 1800776559}
   - {fileID: 208856129}
   - {fileID: 328223106}
-  minSpawnTime: 10
-  maxSpawnTime: 20
-  changeInterval: 20
+  minSpawnTime: 30
+  maxSpawnTime: 60
+  changeInterval: 30
   enemyPrefabs:
   - {fileID: 6317347510099702208, guid: c71f23186d3081f44af32548939bf2fd, type: 3}
   timerObject: {fileID: 383212502}

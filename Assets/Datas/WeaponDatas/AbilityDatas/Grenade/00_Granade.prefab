@@ -168,4 +168,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ParabolaMovement
   speed: 15
   gravity: 20
-  upwardSpeed: 8
+  upwardSpeed: 1

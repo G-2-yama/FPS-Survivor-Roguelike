@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
-  m_Name: Phase_02
+  m_Name: Phase_07
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
-  startTime: 60
-  spawnInterval: 0.6
+  startTime: 360
+  spawnInterval: 0.45
   enemies:
-  - prefab: {fileID: 9162954730415355086, guid: 1a08dd8a7c8a6e14d8ac96abd22dd353, type: 3}
-    spawnWeight: 9
   - prefab: {fileID: 3621599535995762604, guid: 14de4e8cc36654e4e8e6d5a4ff5e841b, type: 3}
+    spawnWeight: 5
+  - prefab: {fileID: 8799001866560603096, guid: f4a97038584292646bca30b836db504e, type: 3}
+    spawnWeight: 5
+  - prefab: {fileID: 8411297557696040895, guid: 8f6625c999332bd4187da886d0734666, type: 3}
     spawnWeight: 1
