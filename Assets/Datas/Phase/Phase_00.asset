@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Phase_00
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   startTime: 0
-  spawnInterval: 1
+  spawnInterval: 0.6
   enemies:
-  - prefab: {fileID: 6874736543859849084, guid: 9fada8459536bdb4e93bc994bf3aea33, type: 3}
+  - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
     spawnWeight: 1

@@ -166,6 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7710e43c16d485e42b8a2c399b0125ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParabolaMovement
-  speed: 15
+  speed: 30
   gravity: 20
-  upwardSpeed: 8
+  upwardSpeed: 1
