@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
+  m_Name: LightningGun_04
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  identity:
+    weaponId: weapon_default
+    displayName: "\u30E9\u30A4\u30C8\u30CB\u30F3\u30B0\u30AC\u30F3"
+    description: "\u30C0\u30E1\u30FC\u30B815->20"
+    icon: {fileID: 21300000, guid: e1d9ae16319bf3048a5c4a17e01d10e4, type: 3}
+  visual:
+    weaponModelPrefab: {fileID: 125668353827341869, guid: d5fdc6cbe8c2ad04cb571cdc4b193d3a, type: 3}
+  soundDB: {fileID: 11400000, guid: 1572c3a9362f1524bbfb907554094945, type: 2}
+  classification:
+    weaponType: 0
+    fireModeData: {fileID: 11400000, guid: fc1f797baa1062e40b5d7c8cdda591cb, type: 2}
+  trigger:
+    autoFire: 0
+    autoReload: 1
+    triggerType: 0
+  damage:
+    damage: 20
+    knockbackForce: 1
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.3
+    burstCount: 1
+    burstInterval: 0.05
+    chargeTime: 0
+  recoil:
+    pitchKick: 4
+    yawKick: 1
+    yawRandomness: 2
+    returnStrength: 10
+    damping: 36
+    maxPitch: 40
+  ammo:
+    magazineSize: 14
+    reloadTime: 3
+  nextLevelData: {fileID: 11400000, guid: 3d136de4a98dabd459b595431e195708, type: 2}

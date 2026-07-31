@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
+  m_Name: ChargeBeam_04
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  identity:
+    weaponId: weapon_default
+    displayName: "\u30C1\u30E3\u30FC\u30B8\u30D3\u30FC\u30E0"
+    description: "\u30C0\u30E1\u30FC\u30B85->7"
+    icon: {fileID: 21300000, guid: 1444d9d3be8da1a4e91afd3404f267b8, type: 3}
+  visual:
+    weaponModelPrefab: {fileID: 0}
+  soundDB: {fileID: 11400000, guid: c4921d9b9fce0ef41ba733944a8b269c, type: 2}
+  classification:
+    weaponType: 1
+    fireModeData: {fileID: 11400000, guid: 237edfd8a4ca6a143ae8bab60b593021, type: 2}
+  trigger:
+    autoFire: 0
+    autoReload: 1
+    triggerType: 1
+  damage:
+    damage: 7
+    knockbackForce: 20
+    spreadAngle: 0
+  fireRhythm:
+    fireInterval: 0.1
+    burstCount: 1
+    burstInterval: 0
+    chargeTime: 1
+  recoil:
+    pitchKick: 1.2
+    yawKick: 0.4
+    yawRandomness: 1
+    returnStrength: 20
+    damping: 18
+    maxPitch: 20
+  ammo:
+    magazineSize: 1
+    reloadTime: 5
+  nextLevelData: {fileID: 11400000, guid: cda23879dd4bb944f9dd5a7abfda8d50, type: 2}

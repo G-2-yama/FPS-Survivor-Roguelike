@@ -186,12 +186,12 @@ public sealed class DamageProfile
 
     public int GetDamageAmount(Player weaponOwner)
     {
-        return damage + (int)(weaponOwner.Stats.DamageMultiplier * damage);
+        return (int)(weaponOwner.Stats.DamageMultiplier * damage);
     }
 
     public float GetKnockbackForce(Player weaponOwner)
     {
-        return knockbackForce + weaponOwner.Stats.KnockbackForceMultiplier * knockbackForce;
+        return weaponOwner.Stats.KnockbackForceMultiplier * knockbackForce;
     }
 }
 

@@ -5,12 +5,14 @@ using UnityEngine;
 public class UIFader : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private GameObject brockImage;
     [SerializeField] private float fadeDuration = 1f;
 
     private Coroutine fadeCoroutine;
 
     public void FadeIn()
     {
+        brockImage?.SetActive(true);
         StartFade(1f, null);
     }
 
@@ -48,5 +50,6 @@ public class UIFader : MonoBehaviour
         canvasGroup.alpha = targetAlpha;
 
         onComplete?.Invoke();
+        brockImage?.SetActive(false);
     }
 }

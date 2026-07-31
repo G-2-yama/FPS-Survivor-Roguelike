@@ -34,7 +34,7 @@ MonoBehaviour:
   fireRhythm:
     fireInterval: 0.1
     burstCount: 1
-    burstInterval: 0.05
+    burstInterval: 0
     chargeTime: 0
   recoil:
     pitchKick: 1.2
