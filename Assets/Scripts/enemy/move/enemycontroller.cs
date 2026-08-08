@@ -7,7 +7,6 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyTargetProvider targetProvider;
     [SerializeField] private EnemyAttackController attack;
     [SerializeField] private Animator animator;
-
     private StateMachine<IState> stateMachine;
 
     private ChaseState chaseState;
@@ -26,6 +25,7 @@ public class EnemyBrain : MonoBehaviour
     public CombatState CombatState => combatState;
 
     public KnockbackState KnockbackState => knockbackState;
+   
 
     private void Awake()
     {

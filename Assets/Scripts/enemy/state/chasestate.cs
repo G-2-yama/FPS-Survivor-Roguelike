@@ -31,7 +31,7 @@ public class ChaseState : IState
         float distance = Vector3.Distance(
             enemy.transform.position,
             enemy.Target.position);
-
+      
         if (distance <= enemy.Config.EngageDistance)
         {
             stateMachine.ChangeState(

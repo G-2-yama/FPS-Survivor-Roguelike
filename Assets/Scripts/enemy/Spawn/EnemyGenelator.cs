@@ -13,6 +13,9 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField] private Timer timer;
     [SerializeField] private int maxSpawnTry = 5;
+    private List<GameObject> activeEnemies
+    = new List<GameObject>();
+    [SerializeField] private int maxEnemyCount = 10;
 
     private void Start()
     {
@@ -72,7 +75,16 @@ public class EnemyGenerator : MonoBehaviour
             {
                 GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
                 enemy.transform.position = spawnPosition;
+                activeEnemies.Add(enemy);
                 return;
+            }
+            if (activeEnemies.Count >= maxEnemyCount)
+            {
+                GameObject oldEnemy = GetFarthestEnemy();
+
+                activeEnemies.Remove(oldEnemy);
+
+                oldEnemy.GetComponent<PoolableObject>()?.Release();
             }
         }
     }
@@ -103,6 +115,28 @@ public class EnemyGenerator : MonoBehaviour
         }
 
         return null;
+    }
+    private GameObject GetFarthestEnemy()
+    {
+        GameObject farthestEnemy = null;
+        float maxSqrDistance = -1f;
+
+        foreach (GameObject enemy in activeEnemies)
+        {
+            if (enemy == null || !enemy.activeSelf)
+                continue;
+
+            float sqrDistance =
+                (enemy.transform.position - this.transform.position).sqrMagnitude;
+
+            if (sqrDistance > maxSqrDistance)
+            {
+                maxSqrDistance = sqrDistance;
+                farthestEnemy = enemy;
+            }
+        }
+
+        return farthestEnemy;
     }
 
 }
