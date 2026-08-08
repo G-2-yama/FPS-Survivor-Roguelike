@@ -15,6 +15,7 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private int maxSpawnTry = 5;
     private List<GameObject> activeEnemies
     = new List<GameObject>();
+    //敵生成上限数
     [SerializeField] private int maxEnemyCount = 10;
 
     private void Start()
@@ -63,6 +64,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private void SpawnEnemy(PhaseData phase)
     {
+
         EnemySpawnData enemyData = GetRandomEnemy(phase);
 
         if (enemyData == null)
@@ -74,15 +76,6 @@ public class EnemyGenerator : MonoBehaviour
             // スポーンできる位置を決定する
             Vector2 direction = Random.insideUnitCircle.normalized;
             Vector3 spawnPosition = transform.position + new Vector3(direction.x, 0, direction.y) * spawnRadius;
-
-            if(IsSpawnable(spawnPosition))
-            {
-                GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
-                enemy.transform.position = spawnPosition;
-                activeEnemies.Add(enemy);
-                enemy.GetComponent<Enemy>()?.SetSpawner(this);
-                return;
-            }
             //最も遠い敵を非アクティブにする
             if (activeEnemies.Count >= maxEnemyCount)
             {
@@ -92,6 +85,16 @@ public class EnemyGenerator : MonoBehaviour
 
                 oldEnemy.GetComponent<Enemy>()?.Release();
             }
+            if (IsSpawnable(spawnPosition))
+            {
+
+                GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
+                enemy.transform.position = spawnPosition;
+                activeEnemies.Add(enemy);
+                enemy.GetComponent<Enemy>()?.SetSpawner(this);
+                return;
+            }
+          
         }
     }
 
