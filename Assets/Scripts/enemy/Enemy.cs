@@ -29,6 +29,12 @@ public class Enemy : PoolableObject, IDamageable
     public Health Health { get; private set; }
 
     private bool isDead = false;
+    private EnemyGenerator generator;
+
+    public void SetSpawner(EnemyGenerator generator)
+    {
+        this.generator = generator;
+    }
 
 
     public void TakeDamage(int damage, float knockbackForce)
@@ -100,6 +106,7 @@ public class Enemy : PoolableObject, IDamageable
 
             
         }
+        generator.RemoveActiveEnemy(this.gameObject);
         Release();
     }
 

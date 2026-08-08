@@ -56,6 +56,10 @@ public class EnemyGenerator : MonoBehaviour
             yield return new WaitForSeconds(currentPhase.SpawnInterval);
         }
     }
+    public void RemoveActiveEnemy(GameObject enemy)
+    {
+        activeEnemies.Remove(enemy);
+    }
 
     private void SpawnEnemy(PhaseData phase)
     {
@@ -76,15 +80,17 @@ public class EnemyGenerator : MonoBehaviour
                 GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
                 enemy.transform.position = spawnPosition;
                 activeEnemies.Add(enemy);
+                enemy.GetComponent<Enemy>()?.SetSpawner(this);
                 return;
             }
+            //最も遠い敵を非アクティブにする
             if (activeEnemies.Count >= maxEnemyCount)
             {
                 GameObject oldEnemy = GetFarthestEnemy();
 
-                activeEnemies.Remove(oldEnemy);
+                RemoveActiveEnemy(oldEnemy);
 
-                oldEnemy.GetComponent<PoolableObject>()?.Release();
+                oldEnemy.GetComponent<Enemy>()?.Release();
             }
         }
     }

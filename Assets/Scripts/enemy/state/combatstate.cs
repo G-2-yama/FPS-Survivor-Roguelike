@@ -15,7 +15,7 @@ public class CombatState : IState
 
     public void Enter()
     {
-        Debug.Log("enter");
+       
         if (enemy.Animator != null)
         {
            
