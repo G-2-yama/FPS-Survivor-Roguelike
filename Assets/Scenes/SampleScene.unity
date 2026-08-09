@@ -4244,7 +4244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &90786719
 Transform:
   m_ObjectHideFlags: 0
@@ -4289,6 +4289,7 @@ MonoBehaviour:
   spawnRadius: 75
   timer: {fileID: 383212504}
   maxSpawnTry: 5
+  maxEnemyCount: 100
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42730,7 +42731,7 @@ Transform:
   m_GameObject: {fileID: 1018864605}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.95883, y: -1.5, z: 1.49892}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42749,20 +42750,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1018864605}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0492a5dce3843246b5afdacb83e7feb, type: 3}
+  m_Script: {fileID: 11500000, guid: 546d25cec1123e54387780849bd88a84, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::enemygenelatemaneger
-  enemyGenerators:
-  - {fileID: 430907017}
-  - {fileID: 1800776559}
-  - {fileID: 208856129}
-  - {fileID: 328223106}
-  minSpawnTime: 180
-  maxSpawnTime: 200
-  changeInterval: 180
-  enemyPrefabs:
-  - {fileID: 6317347510099702208, guid: c71f23186d3081f44af32548939bf2fd, type: 3}
-  timerObject: {fileID: 383212502}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyGenerator
+  phases:
+  - {fileID: 11400000, guid: 2e8f890439674f849bb85f16581312c4, type: 2}
+  spawnRadius: 30
+  timer: {fileID: 383212504}
+  maxSpawnTry: 1
+  maxEnemyCount: 3
 --- !u!1 &1020732964
 GameObject:
   m_ObjectHideFlags: 0

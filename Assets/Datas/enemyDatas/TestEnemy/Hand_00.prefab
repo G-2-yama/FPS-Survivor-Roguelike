@@ -1338,6 +1338,46 @@ Transform:
   - {fileID: 5908661839841084710}
   m_Father: {fileID: 4045337585673701754}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3902610075770651845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3381671889197771551}
+  - component: {fileID: 7390384186080708346}
+  m_Layer: 0
+  m_Name: shotpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3381671889197771551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902610075770651845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -7.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5892483537362920586}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7390384186080708346
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902610075770651845}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4349431163088051552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3906,6 +3946,7 @@ Transform:
   - {fileID: 2583755316915717241}
   - {fileID: 7714312217869069124}
   - {fileID: 5841084430686637957}
+  - {fileID: 3381671889197771551}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2446288854180587493
@@ -3967,7 +4008,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 46cb9e89c1a48eb458476a0aafeb5e11, type: 2}
   targetProvider: {fileID: 1066021274306290870}
   launcher: {fileID: 2594772351240839443}
-  shotPoint: {fileID: 4970137723921190548}
+  shotPoint: {fileID: 3381671889197771551}
 --- !u!114 &3314495736408130372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4035,7 +4076,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8799001866560603096}
   serializedVersion: 5
-  m_Mass: 5
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
