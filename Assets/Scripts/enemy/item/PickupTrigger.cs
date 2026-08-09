@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class PickupTriggerItem : PoolableObject
 {
     private bool pickedUp = false;
+  
 
     private void OnEnable()
     {
@@ -25,6 +26,10 @@ public abstract class PickupTriggerItem : PoolableObject
         OnPickup(player);
 
         Release();
+    }
+    private void Update()
+    {
+        
     }
 
     protected abstract void OnPickup(Player player);
