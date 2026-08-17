@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: handenemyshotpattern
   m_EditorClassIdentifier: Assembly-CSharp::BurstShotPattern
   shotCount: 1
-  interval: 0.2
+  interval: 0.45
