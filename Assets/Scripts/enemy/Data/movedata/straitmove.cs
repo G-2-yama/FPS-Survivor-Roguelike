@@ -19,6 +19,7 @@ public class TowardMovement : MovementPattern
             Time.fixedDeltaTime;
 
         Vector3 nextPos = rb.position + move;
+        nextPos.y = Mathf.Min(nextPos.y, MaxHeight);
 
         rb.MovePosition(nextPos);
 
