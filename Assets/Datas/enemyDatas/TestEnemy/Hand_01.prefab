@@ -1664,7 +1664,7 @@ SkinnedMeshRenderer:
   - {fileID: -9130586711530211351, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
   - {fileID: 5874639415424179301, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
   - {fileID: 2100000, guid: cac053d2a3ff823448f9310e1524ae1b, type: 2}
-  - {fileID: -7028119523964437518, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
+  - {fileID: 2100000, guid: 848f7efbeafd63b4192ac81ff6c7cbb5, type: 2}
   - {fileID: 9023527330954092183, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
   - {fileID: -7413388790946173358, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
   - {fileID: -2444193232130161652, guid: a38a3f6c721714d46a66efaf91407eef, type: 3}
