@@ -4232,7 +4232,7 @@ MonoBehaviour:
   spawnRadius: 75
   timer: {fileID: 383212504}
   maxSpawnTry: 5
-  maxEnemyCount: 100
+  maxEnemyCount: 1000
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12549,8 +12549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01b959c56312064aa8208e7523a91b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
-  walkSpeed: 10
-  runSpeed: 15
+  walkSpeed: 7.5
+  runSpeed: 10
   groundDeceleration: 30
   groundAcceleration: 24
   airDeceleration: 45
@@ -12567,10 +12567,10 @@ MonoBehaviour:
     m_Bits: 4294967295
   jumpForce: 8
   initialHP: 1000
-  dashDistance: 8
+  dashDistance: 6
   dashDuration: 0.12
   dashCooldown: 0.5
-  slideSpeed: 20
+  slideSpeed: 12.5
   slideMinInertiaSpeed: 1.5
   slideTurnRateDegreesPerSecond: 30
   fastFallEntrySpeed: 100

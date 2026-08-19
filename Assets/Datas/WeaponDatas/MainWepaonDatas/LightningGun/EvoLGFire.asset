@@ -17,4 +17,4 @@ MonoBehaviour:
   hitRadius: 0.1
   targetTeam: 28
   chainRange: 15
-  chainCount: 5
+  chainCount: 3
