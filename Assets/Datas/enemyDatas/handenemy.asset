@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   MaxHp: 100
   damagelange: 1
-  knockbackResistance: 1
+  knockbackResistance: 0.5
   knockbackDuration: 0
   engagedistance: 7
   chaseMovedata: {fileID: 11400000, guid: 7ced4c79d461c5c4e8feec1b5f8e526b, type: 2}

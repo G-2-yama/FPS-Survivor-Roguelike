@@ -4232,7 +4232,7 @@ MonoBehaviour:
   spawnRadius: 75
   timer: {fileID: 383212504}
   maxSpawnTry: 5
-  maxEnemyCount: 100
+  maxEnemyCount: 300
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88481,7 +88481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  weaponData: {fileID: 11400000, guid: 84b9664e77a22404ea31f018d4fbf0fc, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 2022669246}
   weaponView: {fileID: 2022669245}
