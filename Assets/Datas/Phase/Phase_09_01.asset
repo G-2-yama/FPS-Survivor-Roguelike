@@ -15,7 +15,7 @@ MonoBehaviour:
   startTime: 500
   spawnInterval: 0.025
   enemies:
-  - prefab: {fileID: 9162954730415355086, guid: 1a08dd8a7c8a6e14d8ac96abd22dd353, type: 3}
+  - prefab: {fileID: 4262321851066489838, guid: a1ce2a00c56b60c488bf19f03ad13892, type: 3}
     spawnWeight: 3
   - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
     spawnWeight: 5

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
   ChaseSpeed: 4
   MaxHeight: 2
-  OrbitRadius: 3
+  OrbitRadius: 4
   OrbitAngularSpeed: 20
