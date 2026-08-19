@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: handcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
   ChaseSpeed: 4
-  OrbitRadius: 2
+  MaxHeight: 2
+  OrbitRadius: 4
   OrbitAngularSpeed: 20
