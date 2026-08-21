@@ -73,7 +73,8 @@ public class PlayerInputRelay
     /// </summary>
     public void OnLook(InputAction.CallbackContext context)
     {
-        controls.SetLookInput(context.ReadValue<Vector2>());
+        bool isGamepadInput = context.control?.device is Gamepad;
+        controls.SetLookInput(context.ReadValue<Vector2>(), isGamepadInput);
     }
 
     /// <summary>

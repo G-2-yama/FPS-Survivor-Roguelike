@@ -17,6 +17,11 @@ public class PlayerControlState
     public Vector2 LookInput { get; private set; }
 
     /// <summary>
+    /// 現在の視点入力がゲームパッド由来かどうか
+    /// </summary>
+    public bool IsGamepadLookInput { get; private set; }
+
+    /// <summary>
     /// ジャンプボタンを押し続けているかどうか
     /// </summary>
     public bool JumpHeld { get; private set; }
@@ -34,9 +39,10 @@ public class PlayerControlState
     /// <summary>
     /// 視点入力値を更新する
     /// </summary>
-    public void SetLookInput(Vector2 input)
+    public void SetLookInput(Vector2 input, bool isGamepadInput)
     {
         LookInput = input;
+        IsGamepadLookInput = isGamepadInput;
     }
 
     /// <summary>
@@ -64,6 +70,7 @@ public class PlayerControlState
     {
         MoveInput = Vector2.zero;
         LookInput = Vector2.zero;
+        IsGamepadLookInput = false;
         JumpHeld = false;
         SprintHeld = false;
         CrouchHeld = false;
