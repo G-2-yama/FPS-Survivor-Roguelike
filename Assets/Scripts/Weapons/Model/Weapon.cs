@@ -12,18 +12,16 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private Sounder sounder;
     public Sounder Sounder => sounder;
+    [SerializeField] private WeaponView weaponView;
+    public WeaponView WeaponView => weaponView;
 
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
     
     private WeaponStateMachine stateMachine;
     public WeaponStateMachine StateMachine => stateMachine;
-    [SerializeField] private WeaponView weaponView;
-    public WeaponView WeaponView => weaponView;
 
-    public bool HasWeapon => weaponData != null && !weaponData.IsEmpty;
-
-    public bool IsEmpty => !HasWeapon;
+    public bool HasWeapon => !weaponData.IsEmpty;
 
     private void Awake()
     {
@@ -44,17 +42,26 @@ public class Weapon : MonoBehaviour
     /// 新しい武器を装備するメソッド
     /// </summary>
     /// <param name="newData">新しい武器データ</param>
-    /// <param name="newLevel">新しいレベル</param>
     /// <param name="ammo">新しい残弾数</param>
-    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
+    public void Equip(WeaponData newData, int ammo = -1)
     {
         if (newData == null || newData.IsEmpty)
         {
-            ClearWeapon();
-            return;
+            weaponData = EmptyWeaponData.Instance;
+            currentAmmo = 0;
         }
-        sounder.SetSoundDB(newData.SoundDB);    
-        InitializeWeapon(newData, newLevel, ammo);
+        else
+        {
+            weaponData = newData;
+
+            // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
+            currentAmmo = (ammo < 0) ? weaponData.MagazineSize : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
+            sounder.SetSoundDB(newData.SoundDB);    
+        }
+
+
+        stateMachine.ChangeState<WeaponIdleState>();
+        weaponView.RefreshView(this);
     }
 
     /// <summary>
@@ -78,7 +85,7 @@ public class Weapon : MonoBehaviour
     /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
     public bool Fire()
     {
-        if (!HasWeapon || weaponData == null || currentAmmo <= 0)
+        if (!HasWeapon || currentAmmo <= 0)
         {
             return false;
         }
@@ -95,49 +102,12 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Reload()
     {
-        if (!HasWeapon || weaponData == null)
+        if (!HasWeapon)
         {
             return;
         }
 
         currentAmmo = weaponData.MagazineSize;
-        weaponView.RefreshView(this);
-    }
-    
-    /// <summary>
-    /// オートリロードをするべきかどうかを判断するメソッド
-    /// </summary>
-    /// <returns></returns>
-    public bool ShouldStartAutoReload()
-    {
-        return HasWeapon &&
-               weaponData.AutoReload &&
-               currentAmmo <= 0;
-    }
-
-    private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
-    {
-        weaponData = data;
-
-
-        // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-        currentAmmo = (ammo < 0)
-            ? weaponData.MagazineSize
-            : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
-
-        stateMachine.ChangeIdleState();
-        weaponView.RefreshView(this);
-    }
-
-    /// <summary>
-    /// 武器をクリアして非装備状態にする内部処理メソッド
-    /// </summary>
-    private void ClearWeapon()
-    {
-        weaponData = EmptyWeaponData.Instance;
-        currentAmmo = 0;
-
-        stateMachine.ChangeIdleState();
         weaponView.RefreshView(this);
     }
 }

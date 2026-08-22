@@ -8,25 +8,34 @@ public class WeaponCooldownState : WeaponState
 
     public override void Enter()
     {
-        // Debug.Log("Weapon Cooldown Stateに入りました");
-        timer = weapon.WeaponData.FireInterval;
+        timer = _weapon.WeaponData.FireInterval;
     }
 
     public override void Update(bool isPressed)
     {
         timer -= Time.deltaTime;
 
-        if (timer <= 0f)
+        if (timer >= 0f)
         {
-            if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+            return;
+        }
+
+        if (_weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+        {
+            stateMachine.ChangeState<WeaponFiringState>();
+        }
+        else
+        {
+            if (_weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
             {
-                stateMachine.ChangeFiringState();
+                stateMachine.ChangeState<WeaponReloadingState>();
             }
             else
             {
-                Transition();
+                stateMachine.ChangeState<WeaponIdleState>();
             }
         }
+
     }
 
     public override void Exit()
@@ -48,17 +57,6 @@ public class WeaponCooldownState : WeaponState
 	public override void OnReload()
     {
         // Debug.Log($"クールダウン中にはリロードはできません");
-    }
-
-    private void Transition()
-    {
-        if (weapon.ShouldStartAutoReload())
-        {
-            stateMachine.ChangeReloadingState();
-            return;
-        }
-
-        stateMachine.ChangeIdleState();
     }
 
 }

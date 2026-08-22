@@ -32,7 +32,7 @@ MonoBehaviour:
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0.4
+    fireInterval: 0.6
     burstCount: 1
     burstInterval: 0.05
     chargeTime: 0

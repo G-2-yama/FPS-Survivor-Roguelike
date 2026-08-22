@@ -15,4 +15,5 @@ MonoBehaviour:
   effectPrefab: {fileID: 0}
   prefab: {fileID: 5093799806988317829, guid: 8e5dc7974b0c4ae4f8068028cec48724, type: 3}
   Offset: {x: 0, y: 0, z: 0}
-  projectileCount: 8
+  projectileCount: 4
+  isTracking: 1

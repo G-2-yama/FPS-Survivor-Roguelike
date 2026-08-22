@@ -2,71 +2,76 @@ using UnityEngine;
 
 public class WeaponFiringState : WeaponState
 {
-    public WeaponFiringState(Weapon weapon) : base(weapon) { }
-
     private int burstRemaining;
-    private float timer;
+    private float nextFireTime;
     private bool hasFired;
+
+    public WeaponFiringState(Weapon weapon) : base(weapon)
+    {
+    }
 
     public override void Enter()
     {
-        // Debug.Log("Weapon Firing Stateに入りました");
-
-        burstRemaining = weapon.WeaponData.BurstCount;
+        burstRemaining = _weapon.WeaponData.BurstCount;
         hasFired = false;
-        timer = 0f;
+        nextFireTime = Time.time;
     }
 
     public override void Update(bool isPressed)
     {
-        // 全弾撃ち終わった場合
         if (burstRemaining <= 0)
         {
-            stateMachine.ChangeCooldownState();
+            stateMachine.ChangeState<WeaponCooldownState>();
             return;
         }
 
-        timer -= Time.deltaTime;
-        if (timer > 0f) return;
+        // 射撃タイミングに達していなければ何もしない
+        if (Time.time < nextFireTime)
+            return;
 
-        if (weapon.Fire())
+        float interval = _weapon.WeaponData.BurstInterval;
+
+        // 遅れていた射撃を可能な限り消化する
+        while (Time.time >= nextFireTime && burstRemaining > 0)
         {
+            // 弾が撃てなかった
+            if (!_weapon.Fire())
+            {
+                stateMachine.ChangeState<WeaponCooldownState>();
+                return;
+            }
+
+            // バースト開始時の演出
             if (!hasFired)
             {
-                weapon.WeaponView.PlayFireAnimation();
-                weapon.Sounder.Play(SoundCategory.Fire);
+                _weapon.WeaponView.PlayFireAnimation();
+                _weapon.Sounder.Play(SoundCategory.Fire);
                 hasFired = true;
             }
-            weapon.WeaponData.Recoil.AddRecoil();
+
+            _weapon.WeaponData.Recoil.AddRecoil();
+
             burstRemaining--;
-            timer = weapon.WeaponData.BurstInterval;
+
+            // 本来予定されていた時刻から進める
+            nextFireTime += interval;
         }
-        else
+
+        if (burstRemaining <= 0)
         {
-            stateMachine.ChangeCooldownState();
+            stateMachine.ChangeState<WeaponCooldownState>();
         }
     }
-
-
 
     public override void Exit()
     {
-        // Debug.Log("Weapon Firing Stateから退出します");
     }
 
-    /// <summary>
-	/// 攻撃入力を受け取る
-	/// </summary>
-	public override void OnFire()
+    public override void OnFire()
     {
-        // Debug.Log($"銃撃中に再度銃撃はできません");
     }
 
-	/// <summary>
-	/// リロード入力を受け取る
-	/// </summary>
-	public override void OnReload()
+    public override void OnReload()
     {
-        // Debug.Log($"銃撃中にリロードはできません");
     }
 }
