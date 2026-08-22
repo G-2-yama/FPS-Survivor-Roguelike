@@ -21,6 +21,10 @@ public class ChaseState : IState
             enemy.Animator.SetBool("Iscombat", false);
             
         }
+        if(enemy.UniqueAnimation != null)
+        {
+            enemy.UniqueAnimation.enabled = false;
+        }
     }
 
     public void Update()

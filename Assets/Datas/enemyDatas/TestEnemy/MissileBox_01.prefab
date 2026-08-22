@@ -244,7 +244,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -321,6 +321,7 @@ MonoBehaviour:
   targetProvider: {fileID: 8667526325595851811}
   attack: {fileID: 4566530008282914671}
   animator: {fileID: 6843431205161098292}
+  uniqueAnimation: {fileID: 9135571308329541617}
 --- !u!114 &4566530008282914671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,7 +686,7 @@ GameObject:
   - component: {fileID: 6145066220680588435}
   - component: {fileID: 9135571308329541617}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -700,9 +701,9 @@ Transform:
   m_GameObject: {fileID: 7727089163318231370}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 0.3, z: -2.8272223}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.318, y: 0.381, z: -2.8272223}
+  m_LocalScale: {x: 4.16, y: 4.16, z: 4.16}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4545036599879760003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

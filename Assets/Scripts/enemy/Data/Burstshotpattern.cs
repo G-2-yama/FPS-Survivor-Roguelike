@@ -8,6 +8,7 @@ public class BurstShotPattern : AttackPattern
     [SerializeField, Min(0f)] private float interval = 0.2f;
     [SerializeField, Min(0f)] private float firstshotintervalrate = 3f;
     public float Interval => interval;
+    public float FirstshotInterval => firstshotintervalrate;
 
     public override IEnumerator Execute(AttackContext context)
     {

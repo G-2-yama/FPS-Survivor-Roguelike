@@ -11,6 +11,7 @@ public class CombatState : IState
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
+
     }
 
     public void Enter()
@@ -20,6 +21,10 @@ public class CombatState : IState
         {
            
             enemy.Animator.SetBool("Iscombat", true);
+        }
+        if(enemy.UniqueAnimation != null)
+        {
+            enemy.UniqueAnimation.enabled = true;
         }
     }
 

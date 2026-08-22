@@ -7,6 +7,7 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyTargetProvider targetProvider;
     [SerializeField] private EnemyAttackController attack;
     [SerializeField] private Animator animator;
+    [SerializeField] private MonoBehaviour uniqueAnimation;
     private StateMachine<IState> stateMachine;
 
     private ChaseState chaseState;
@@ -18,6 +19,8 @@ public class EnemyBrain : MonoBehaviour
     public Transform Target => targetProvider?.CurrentTarget;
     public EnemyAttackController Attack => attack;
     public Animator Animator => animator;
+
+    public MonoBehaviour UniqueAnimation => uniqueAnimation;
 
     public StateMachine<IState> StateMachine => stateMachine;
 

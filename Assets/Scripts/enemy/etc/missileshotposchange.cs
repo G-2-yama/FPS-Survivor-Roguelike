@@ -9,12 +9,22 @@ public class missileshotposchange : MonoBehaviour
 
     private GameObject previousTarget = null;
 
-    private void Start()
+    
+    private void OnEnable()
     {
         StartCoroutine(MoveRoutine());
     }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        if (previousTarget != null)
+        {
+            previousTarget.SetActive(true);
+            previousTarget = null;
+        }
+    }
 
-    IEnumerator MoveRoutine()
+        IEnumerator MoveRoutine()
     {
         int i = 0;
 
@@ -30,6 +40,11 @@ public class missileshotposchange : MonoBehaviour
             {
                 i = 0;
             }
+            if (i == 0)
+            {
+                yield return new WaitForSeconds(Bp.Interval*Bp.FirstshotInterval);
+            }
+            yield return new WaitForSeconds(Bp.Interval);
 
             GameObject target = missiles[i];
 
@@ -50,7 +65,7 @@ public class missileshotposchange : MonoBehaviour
                 previousTarget = target;
             }
 
-            yield return new WaitForSeconds(Bp.Interval+0.5f);
+           
 
             i++;
         }
