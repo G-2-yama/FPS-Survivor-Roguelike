@@ -1,101 +1,108 @@
-// WeaponController.cs
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] private Weapon weapon;
-
-    public Weapon Weapon => weapon;
-
-    private bool isFirePressed;
-    public bool IsFirePressed => isFirePressed;
-
-    private bool isInputEnabled = true;
-    public bool IsInputEnabled => isInputEnabled;
-
     [SerializeField] private WeaponControllerManager manager;
 
-    void Start()
+    public Weapon Weapon => weapon;
+    public bool IsFirePressed { get; private set; }
+    public bool CanControlWeapon() => weapon.HasWeapon && !weapon.WeaponData.IsEmpty;
+
+    private void Start()
     {
         manager.Register(this);
     }
 
     private void OnDestroy()
     {
-        manager.Unregister(this);
+        if (manager != null)
+        {
+            manager.Unregister(this);
+        }
     }
 
-    public void Update()
+    private void Update()
     {
-        weapon.StateMachine.Update(isFirePressed);
+        weapon.StateMachine.Update(IsFirePressed);
     }
 
-    public void EnableInput()  => isInputEnabled = true;
-    public void DisableInput() => isInputEnabled = false;
-
-
+    /// <summary>
+    /// 武器の発射入力を受け取る
+    /// </summary>
+    /// <param name="context">入力情報</param>
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !isInputEnabled) return;
+        if (!CanControlWeapon())
+            return;
 
-        if (context.phase == InputActionPhase.Started)
+        // Fireボタンが押されたときの処理
+        if (context.started)
         {
-            FireInternal();
+            Fire();
             manager.OnWeaponFired(this);
         }
-        else if (context.phase == InputActionPhase.Canceled)
+        else if (context.canceled)
         {
-            ReleaseInternal();
+            Release();
             manager.OnWeaponReleased(this);
         }
     }
 
+    /// <summary>
+    /// 武器のリロード入力を受け取る
+    /// </summary>
+    /// <param name="context">入力情報</param>
     public void OnReload(InputAction.CallbackContext context)
     {
-        if (!weapon.HasWeapon || !isInputEnabled) return;
+        if (!CanControlWeapon())
+            return;
 
-        if (context.phase == InputActionPhase.Performed)
+        if (context.performed)
         {
-            ReloadInternal();
+            Reload();
             manager.OnWeaponReloaded(this);
         }
     }
 
-    // ────── Manager から呼ばれる同期メソッド ──────
-    // publicだが、直接Inputからは呼ばれない
-
     public void FireSync()
     {
-        if (!weapon.HasWeapon || !isInputEnabled || isFirePressed) return;
-        FireInternal();
+        if (!CanControlWeapon())
+            return;
+
+        Fire();
     }
 
     public void ReleaseSync()
     {
-        if (!isFirePressed) return;
-        ReleaseInternal();
+        if (!IsFirePressed)
+            return;
+
+        Release();
     }
 
     public void ReloadSync()
     {
-        if (!weapon.HasWeapon || !isInputEnabled) return;
-        ReloadInternal();
+        if (!CanControlWeapon())
+            return;
+
+        Reload();
     }
 
 
-    private void FireInternal()
+    private void Fire()
     {
-        isFirePressed = true;
+        IsFirePressed = true;
         weapon.StateMachine.OnFire();
     }
 
-    private void ReleaseInternal()
+    private void Release()
     {
-        isFirePressed = false;
+        IsFirePressed = false;
     }
 
-    private void ReloadInternal()
+    private void Reload()
     {
         weapon.StateMachine.OnReload();
     }

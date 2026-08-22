@@ -15,3 +15,13 @@ public class PhaseData : ScriptableObject
     [SerializeField] private List<EnemySpawnData> enemies;
     public IReadOnlyList<EnemySpawnData> Enemies => enemies;
 }
+
+[System.Serializable]
+public class SpawnDirectionData
+{
+    [Range(0f, 180f)]
+    public float angle;
+
+    [Min(0f)]
+    public float weight;
+}

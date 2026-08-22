@@ -5,51 +5,44 @@ public class WeaponReloadingState : WeaponState
     /// <summary>
     /// リロードのタイマー
     /// </summary>
-    private float timer;
+    private float _timer;
 
     public WeaponReloadingState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
         Debug.Log("Weapon Reloading Stateに入りました");
-        weapon.WeaponView.PlayReloadAnimation();
-        timer = weapon.WeaponData.ReloadTime;
-        weapon.Sounder.Play(SoundCategory.ReloadEnter);
+        _weapon.WeaponView.PlayReloadAnimation();
+        _timer = _weapon.WeaponData.ReloadTime;
+        _weapon.Sounder.Play(SoundCategory.ReloadEnter);
     }
 
     public override void Update(bool isPressed)
     {
-        timer -= Time.deltaTime;
+        _timer -= Time.deltaTime;
 
-        weapon.WeaponView.SetReloadProgress(1f - timer / weapon.WeaponData.ReloadTime);
+        _weapon.WeaponView.SetReloadProgress(1f - _timer / _weapon.WeaponData.ReloadTime);
         // リロードの完了
-        if (timer <= 0f)
+        if (_timer <= 0f)
         {
-            weapon.WeaponView.SetReloadProgress(0f);
-            weapon.Reload();
-            weapon.Sounder.Play(SoundCategory.ReloadEnd);
-            stateMachine.ChangeIdleState();
+            _weapon.WeaponView.SetReloadProgress(0f);
+            _weapon.Reload();
+            _weapon.Sounder.Play(SoundCategory.ReloadEnd);
+            stateMachine.ChangeState<WeaponIdleState>();
         }
     }
 
     public override void Exit()
     {
-        // Debug.Log("Weapon Reloading Stateから退出します");
+        
     }
 
-    /// <summary>
-	/// 攻撃入力を受け取る
-	/// </summary>
+
 	public override void OnFire()
     {
-        // Debug.Log("リロード中には攻撃できません");
     }
 
-	/// <summary>
-	/// リロード入力を受け取る
-	/// </summary>
 	public override void OnReload()
     {
-        Debug.Log("リロード中には再度リロードできません");
     }
 }

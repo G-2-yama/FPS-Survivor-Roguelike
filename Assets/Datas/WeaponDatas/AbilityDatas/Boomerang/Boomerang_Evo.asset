@@ -45,5 +45,5 @@ MonoBehaviour:
     maxPitch: 20
   ammo:
     magazineSize: 1
-    reloadTime: 3
+    reloadTime: 2
   nextLevelData: {fileID: 0}

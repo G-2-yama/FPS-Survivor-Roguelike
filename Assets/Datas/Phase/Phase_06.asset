@@ -18,6 +18,6 @@ MonoBehaviour:
   - prefab: {fileID: 3601273489759220852, guid: b049b5001385a9c4ea99d94588fda0c3, type: 3}
     spawnWeight: 5
   - prefab: {fileID: 3264956460053762192, guid: d55893581ad27b84ebc1a1008cc1dd50, type: 3}
-    spawnWeight: 5
+    spawnWeight: 1
   - prefab: {fileID: 8411297557696040895, guid: 8f6625c999332bd4187da886d0734666, type: 3}
     spawnWeight: 1

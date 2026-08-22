@@ -99,6 +99,20 @@ public class PlayerConfig : MonoBehaviour
     public float LookSensitivity => lookSensitivity;
 
     /// <summary>
+    /// ゲームパッド右スティックの旋回速度（度/秒）
+    /// </summary>
+    [SerializeField, Min(0f)] private float gamepadLookSensitivity = 60f;
+
+    public float GamepadLookSensitivity => gamepadLookSensitivity;
+
+    /// <summary>
+    /// 右スティックのニュートラル付近を無視する範囲
+    /// </summary>
+    [SerializeField, Range(0f, 0.95f)] private float gamepadLookDeadzone = 0.25f;
+
+    public float GamepadLookDeadzone => gamepadLookDeadzone;
+
+    /// <summary>
     /// ピッチ最小角度の設定値
     /// </summary>
     [SerializeField] private float minPitch = -80f;

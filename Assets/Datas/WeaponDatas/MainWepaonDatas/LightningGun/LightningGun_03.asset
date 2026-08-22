@@ -15,7 +15,7 @@ MonoBehaviour:
   identity:
     weaponId: weapon_default
     displayName: "\u30E9\u30A4\u30C8\u30CB\u30F3\u30B0\u30AC\u30F3"
-    description: "\u5C04\u6483\u30A4\u30F3\u30BF\u30FC\u30D0\u30EB0.4->0.3"
+    description: "\u5C04\u6483\u30A4\u30F3\u30BF\u30FC\u30D0\u30EB0.6->0.5"
     icon: {fileID: 21300000, guid: e1d9ae16319bf3048a5c4a17e01d10e4, type: 3}
   visual:
     weaponModelPrefab: {fileID: 125668353827341869, guid: d5fdc6cbe8c2ad04cb571cdc4b193d3a, type: 3}
@@ -32,7 +32,7 @@ MonoBehaviour:
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
-    fireInterval: 0.3
+    fireInterval: 0.5
     burstCount: 1
     burstInterval: 0.05
     chargeTime: 0
