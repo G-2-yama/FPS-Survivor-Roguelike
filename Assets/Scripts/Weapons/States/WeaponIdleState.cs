@@ -14,28 +14,21 @@ public class WeaponIdleState : WeaponState
 
         weapon.WeaponView.SetReloadProgress(0f);
 
-        if (weapon.ShouldStartAutoReload())
+
+        if (weapon.WeaponData.AutoFire)
         {
-            if(stateMachine == null)
-            {
-                return;
-            }
-            stateMachine.ChangeReloadingState();
-        }
-        else if (weapon.WeaponData.AutoFire)
-        {
-            stateMachine.ChangeChargeState();
+            stateMachine.ChangeState<WeaponFiringState>();
         }
     }
 
     public override void Update(bool isPressed)
     {
-        // 待機状態の更新処理をここに実装
+
     }
 
     public override void Exit()
     {
-        // Debug.Log("Weapon Idle Stateから退出します");
+
     }
 
     /// <summary>
@@ -43,7 +36,7 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnFire()
     {
-        stateMachine.ChangeChargeState();
+        stateMachine.ChangeState<WeaponFiringState>();
     }
 
 	/// <summary>
@@ -51,6 +44,6 @@ public class WeaponIdleState : WeaponState
 	/// </summary>
 	public override void OnReload()
     {
-        stateMachine.ChangeReloadingState();
+        stateMachine.ChangeState<WeaponReloadingState>();
     }
 }

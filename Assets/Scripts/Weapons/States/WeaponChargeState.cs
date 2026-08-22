@@ -18,29 +18,21 @@ public class WeaponChargeState : WeaponState
 
         if (timer <= 0f)
         {
-            stateMachine.ChangeFiringState();
+            stateMachine.ChangeState<WeaponFiringState>();
         }
     }
 
     public override void Exit()
     {
-        // Debug.Log("Weapon Charge Stateから退出します");
+
     }
 
-    /// <summary>
-	/// 攻撃入力を受け取る
-	/// </summary>
 	public override void OnFire()
     {
-        // Debug.Log($"チャージ中には銃撃はできません");
     }
 
-    /// <summary>
-	/// リロード入力を受け取る
-	/// </summary>
 	public override void OnReload()
     {
-        // Debug.Log($"チャージ中にはリロードはできません");
     }
 
 }

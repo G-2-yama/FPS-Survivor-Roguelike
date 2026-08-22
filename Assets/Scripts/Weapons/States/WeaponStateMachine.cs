@@ -1,73 +1,66 @@
 using Unity.VisualScripting;
-
+using UnityEngine;
+using System.Collections.Generic;
+using System;
 public class WeaponStateMachine
 {
-    public WeaponState currentState;
-    private WeaponState idleState;
+    private WeaponState _currentState;
+    private Dictionary<Type, WeaponState> _states = new Dictionary<Type, WeaponState>();
+    private WeaponState _idleState;
 
-    private WeaponState firingState;
+    private WeaponState _firingState;
 
-    private WeaponState cooldownState;
+    private WeaponState _cooldownState;
 
-    private WeaponState reloadingState;
-    private WeaponState chargeState;
+    private WeaponState _reloadingState;
+    private WeaponState _chargeState;
 
 
     public WeaponStateMachine(Weapon weapon)
     {
-        idleState = new WeaponIdleState(weapon);
-        firingState = new WeaponFiringState(weapon);
-        cooldownState = new WeaponCooldownState(weapon);
-        reloadingState = new WeaponReloadingState(weapon);
-        chargeState = new WeaponChargeState(weapon);
+        _idleState = new WeaponIdleState(weapon);
+        _firingState = new WeaponFiringState(weapon);
+        _cooldownState = new WeaponCooldownState(weapon);
+        _reloadingState = new WeaponReloadingState(weapon);
+        _chargeState = new WeaponChargeState(weapon);
 
-        ChangeState(idleState);
+        _states = new Dictionary<Type, WeaponState>
+        {
+            { typeof(WeaponIdleState), _idleState },
+            { typeof(WeaponFiringState), _firingState },
+            { typeof(WeaponCooldownState), _cooldownState },
+            { typeof(WeaponReloadingState), _reloadingState },
+            { typeof(WeaponChargeState), _chargeState }
+        };
+
+        _currentState = _idleState;
+        _currentState.Enter();
     }
 
     public void Update(bool isPressed)
     {
-        currentState?.Update(isPressed);
+        _currentState?.Update(isPressed);
     }
 
     public void OnFire()
     {
-        currentState?.OnFire();
+        _currentState?.OnFire();
     }
 
     public void OnReload()
     {
-        currentState?.OnReload();
+        _currentState?.OnReload();
     }
 
-    public void ChangeIdleState()
+    public void ChangeState<T>() where T : WeaponState
     {
-        ChangeState(idleState);
-    }
-
-    public void ChangeFiringState()
-    {
-        ChangeState(firingState);
-    }
-
-    public void ChangeCooldownState()
-    {
-        ChangeState(cooldownState);
-    }
-
-    public void ChangeReloadingState()
-    {
-        ChangeState(reloadingState);
-    }
-
-    public void ChangeChargeState()
-    {
-        ChangeState(chargeState);
+        ChangeState(_states[typeof(T)]);
     }
 
     private void ChangeState(WeaponState newState)
     {
-        currentState?.Exit();
-        currentState = newState;
-        currentState.Enter();
+        _currentState?.Exit();
+        _currentState = newState;
+        _currentState.Enter();
     }
 }

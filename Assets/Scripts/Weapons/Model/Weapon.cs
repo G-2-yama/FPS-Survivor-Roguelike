@@ -23,8 +23,6 @@ public class Weapon : MonoBehaviour
 
     public bool HasWeapon => weaponData != null && !weaponData.IsEmpty;
 
-    public bool IsEmpty => !HasWeapon;
-
     private void Awake()
     {
         stateMachine = new WeaponStateMachine(this);
@@ -44,9 +42,8 @@ public class Weapon : MonoBehaviour
     /// 新しい武器を装備するメソッド
     /// </summary>
     /// <param name="newData">新しい武器データ</param>
-    /// <param name="newLevel">新しいレベル</param>
     /// <param name="ammo">新しい残弾数</param>
-    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
+    public void Equip(WeaponData newData, int ammo = -1)
     {
         if (newData == null || newData.IsEmpty)
         {
@@ -54,7 +51,7 @@ public class Weapon : MonoBehaviour
             return;
         }
         sounder.SetSoundDB(newData.SoundDB);    
-        InitializeWeapon(newData, newLevel, ammo);
+        InitializeWeapon(newData, ammo);
     }
 
     /// <summary>
@@ -103,29 +100,15 @@ public class Weapon : MonoBehaviour
         currentAmmo = weaponData.MagazineSize;
         weaponView.RefreshView(this);
     }
-    
-    /// <summary>
-    /// オートリロードをするべきかどうかを判断するメソッド
-    /// </summary>
-    /// <returns></returns>
-    public bool ShouldStartAutoReload()
-    {
-        return HasWeapon &&
-               weaponData.AutoReload &&
-               currentAmmo <= 0;
-    }
 
-    private void InitializeWeapon(WeaponData data, int newLevel, int ammo)
+    private void InitializeWeapon(WeaponData data, int ammo)
     {
         weaponData = data;
 
-
         // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-        currentAmmo = (ammo < 0)
-            ? weaponData.MagazineSize
-            : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
+        currentAmmo = (ammo < 0) ? weaponData.MagazineSize : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
 
-        stateMachine.ChangeIdleState();
+        stateMachine.ChangeState<WeaponIdleState>();
         weaponView.RefreshView(this);
     }
 
@@ -137,7 +120,7 @@ public class Weapon : MonoBehaviour
         weaponData = EmptyWeaponData.Instance;
         currentAmmo = 0;
 
-        stateMachine.ChangeIdleState();
+        stateMachine.ChangeState<WeaponIdleState>();
         weaponView.RefreshView(this);
     }
 }

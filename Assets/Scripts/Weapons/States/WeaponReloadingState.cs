@@ -28,28 +28,21 @@ public class WeaponReloadingState : WeaponState
             weapon.WeaponView.SetReloadProgress(0f);
             weapon.Reload();
             weapon.Sounder.Play(SoundCategory.ReloadEnd);
-            stateMachine.ChangeIdleState();
+            stateMachine.ChangeState<WeaponIdleState>();
         }
     }
 
     public override void Exit()
     {
-        // Debug.Log("Weapon Reloading Stateから退出します");
+
     }
 
-    /// <summary>
-	/// 攻撃入力を受け取る
-	/// </summary>
+
 	public override void OnFire()
     {
-        // Debug.Log("リロード中には攻撃できません");
     }
 
-	/// <summary>
-	/// リロード入力を受け取る
-	/// </summary>
 	public override void OnReload()
     {
-        Debug.Log("リロード中には再度リロードできません");
     }
 }
