@@ -1,11 +1,11 @@
 public abstract class WeaponState
 {
-	protected Weapon weapon;
-	protected WeaponStateMachine stateMachine => weapon.StateMachine;
+	protected Weapon _weapon;
+	protected WeaponStateMachine stateMachine => _weapon.StateMachine;
 
 	public WeaponState(Weapon weapon)
 	{
-		this.weapon = weapon;
+		this._weapon = weapon;
 	}
 
 	/// <summary>

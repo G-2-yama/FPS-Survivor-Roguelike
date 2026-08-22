@@ -7,15 +7,15 @@ public class WeaponIdleState : WeaponState
 
     public override void Enter()
     {
-        if (!weapon.HasWeapon)
+        if (!_weapon.HasWeapon)
         {
             return;
         }
 
-        weapon.WeaponView.SetReloadProgress(0f);
+        _weapon.WeaponView.SetReloadProgress(0f);
 
 
-        if (weapon.WeaponData.AutoFire)
+        if (_weapon.WeaponData.AutoFire)
         {
             stateMachine.ChangeState<WeaponFiringState>();
         }

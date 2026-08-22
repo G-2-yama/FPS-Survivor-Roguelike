@@ -8,8 +8,8 @@ public class WeaponChargeState : WeaponState
 
     public override void Enter()
     {
-        timer = weapon.WeaponData.ChargeTime;
-        weapon.Sounder.Play(SoundCategory.Charge);
+        timer = _weapon.WeaponData.ChargeTime;
+        _weapon.Sounder.Play(SoundCategory.Charge);
     }
 
     public override void Update(bool isPressed)

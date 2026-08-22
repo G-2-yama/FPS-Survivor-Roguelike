@@ -12,7 +12,7 @@ public class WeaponFiringState : WeaponState
 
     public override void Enter()
     {
-        burstRemaining = weapon.WeaponData.BurstCount;
+        burstRemaining = _weapon.WeaponData.BurstCount;
         hasFired = false;
         nextFireTime = Time.time;
     }
@@ -29,13 +29,13 @@ public class WeaponFiringState : WeaponState
         if (Time.time < nextFireTime)
             return;
 
-        float interval = weapon.WeaponData.BurstInterval;
+        float interval = _weapon.WeaponData.BurstInterval;
 
         // 遅れていた射撃を可能な限り消化する
         while (Time.time >= nextFireTime && burstRemaining > 0)
         {
             // 弾が撃てなかった
-            if (!weapon.Fire())
+            if (!_weapon.Fire())
             {
                 stateMachine.ChangeState<WeaponCooldownState>();
                 return;
@@ -44,12 +44,12 @@ public class WeaponFiringState : WeaponState
             // バースト開始時の演出
             if (!hasFired)
             {
-                weapon.WeaponView.PlayFireAnimation();
-                weapon.Sounder.Play(SoundCategory.Fire);
+                _weapon.WeaponView.PlayFireAnimation();
+                _weapon.Sounder.Play(SoundCategory.Fire);
                 hasFired = true;
             }
 
-            weapon.WeaponData.Recoil.AddRecoil();
+            _weapon.WeaponData.Recoil.AddRecoil();
 
             burstRemaining--;
 

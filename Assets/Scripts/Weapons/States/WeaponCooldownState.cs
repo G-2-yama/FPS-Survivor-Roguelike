@@ -8,7 +8,7 @@ public class WeaponCooldownState : WeaponState
 
     public override void Enter()
     {
-        timer = weapon.WeaponData.FireInterval;
+        timer = _weapon.WeaponData.FireInterval;
     }
 
     public override void Update(bool isPressed)
@@ -20,13 +20,13 @@ public class WeaponCooldownState : WeaponState
             return;
         }
 
-        if (weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+        if (_weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
         {
             stateMachine.ChangeState<WeaponFiringState>();
         }
         else
         {
-            if (weapon.WeaponData.AutoReload && weapon.CurrentAmmo <= 0)
+            if (_weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
             {
                 stateMachine.ChangeState<WeaponReloadingState>();
             }

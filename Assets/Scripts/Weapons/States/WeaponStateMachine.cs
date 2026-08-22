@@ -6,12 +6,10 @@ public class WeaponStateMachine
 {
     private WeaponState _currentState;
     private Dictionary<Type, WeaponState> _states = new Dictionary<Type, WeaponState>();
+    
     private WeaponState _idleState;
-
     private WeaponState _firingState;
-
     private WeaponState _cooldownState;
-
     private WeaponState _reloadingState;
     private WeaponState _chargeState;
 

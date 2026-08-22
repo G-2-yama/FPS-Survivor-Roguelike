@@ -1,6 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -14,113 +14,172 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private Weapon rightAutoWeapon;
 
     private Dictionary<SlotType, Weapon> weaponSlots;
+
     public IReadOnlyDictionary<SlotType, Weapon> WeaponSlots => weaponSlots;
+
+    /// <summary>
+    /// Weaponスロットの内容が変更されたときに通知する。
+    /// </summary>
     public event Action<SlotType, WeaponData> OnSlotChanged;
 
-    private Item[] items = new Item[6];
-    public IReadOnlyList<Item> Items => items;
-    public event Action<Item>    OnItemAdded;
 
-    /// <summary>廃棄されたアイテムのインデックスを通知する</summary>
-    public event Action<int> OnItemRemoved;
+    private Item[] items = new Item[6];
+
+    public IReadOnlyList<Item> Items => items;
+
+    /// <summary>
+    /// Itemの状態が変更されたときに通知する。
+    /// </summary>
+    public event Action OnItemsChanged;
+
 
     private void Awake()
     {
         weaponSlots = new Dictionary<SlotType, Weapon>
         {
-            { SlotType.LeftMain,        leftWeapon      },
-            { SlotType.RightMain,       rightWeapon     },
-            { SlotType.LeftAbility,     leftAbility     },
-            { SlotType.RightAbility,    rightAbility    },
-            { SlotType.LeftAutoWeapon,  leftAutoWeapon  },
+            { SlotType.LeftMain,        leftWeapon },
+            { SlotType.RightMain,       rightWeapon },
+            { SlotType.LeftAbility,     leftAbility },
+            { SlotType.RightAbility,    rightAbility },
+            { SlotType.LeftAutoWeapon,  leftAutoWeapon },
             { SlotType.RightAutoWeapon, rightAutoWeapon },
         };
     }
 
-    // -------------------------------------------------------
+
+    // =====================================================
     // Weapon
-    // -------------------------------------------------------
+    // =====================================================
 
     public bool HasWeapon(SlotType slot)
-        => weaponSlots.TryGetValue(slot, out var w) && w?.HasWeapon == true;
-
-    public void EquipWeapon(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
     {
-        if (weaponSlots.TryGetValue(slot, out var weapon))
-            weapon.Equip(data, level, ammo);
+        return weaponSlots.TryGetValue(slot, out var weapon)
+            && weapon != null
+            && weapon.HasWeapon;
     }
 
+
+    public WeaponData GetWeaponData(SlotType slot)
+    {
+        if (!weaponSlots.TryGetValue(slot, out var weapon))
+            return null;
+
+        return weapon?.WeaponData;
+    }
+
+
+    public void EquipWeapon(SlotType slot, WeaponData data, int ammo = -1)
+    {
+        if (!weaponSlots.TryGetValue(slot, out var weapon))
+            return;
+
+        weapon.Equip(data, ammo);
+
+        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
+    }
+
+
     /// <summary>
-    /// 指定したスロット同士の装備を入れ替える
+    /// 指定したスロット同士の装備を入れ替える。
     /// </summary>
     public bool Swap(SlotType slotA, SlotType slotB)
     {
         if (!weaponSlots.ContainsKey(slotA) || !weaponSlots.ContainsKey(slotB))
+        {
             return false;
+        }
 
         if (!slotA.IsCompatibleWith(slotB))
             return false;
 
-        SwapLoadout(weaponSlots[slotA], weaponSlots[slotB]);
+        // スロットの武器を入れ替える
+        Weapon weaponA = weaponSlots[slotA];
+        Weapon weaponB = weaponSlots[slotB];
 
-        OnSlotChanged?.Invoke(slotA, weaponSlots[slotA].WeaponData);
-        OnSlotChanged?.Invoke(slotB, weaponSlots[slotB].WeaponData);
-        return true;
-    }
-
-    private void SwapLoadout(Weapon weaponA, Weapon weaponB)
-    {
         WeaponData dataA = weaponA.WeaponData;
         int ammoA = weaponA.CurrentAmmo;
-
         WeaponData dataB = weaponB.WeaponData;
         int ammoB = weaponB.CurrentAmmo;
 
-        weaponA.Equip(dataB, 0, ammoB);
-        weaponB.Equip(dataA, 0, ammoA);
-    }
+        weaponA.Equip(dataB, ammoB);
+        weaponB.Equip(dataA, ammoA);
 
-    public bool DiscardWeapon(SlotType slot)
-    {
-        if (!weaponSlots.TryGetValue(slot, out var weapon)) return false;
+        OnSlotChanged?.Invoke(slotA, weaponA.WeaponData);
+        OnSlotChanged?.Invoke(slotB, weaponB.WeaponData);
 
-        weapon.Equip(null);
-        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
         return true;
     }
 
-    // -------------------------------------------------------
-    // Item
-    // -------------------------------------------------------
 
-    public void EquipItem(Item item)
+    public bool DiscardWeapon(SlotType slot)
     {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i] == null)
-            {
-                items[i] = item;
-                item.Initialize(player);
-                item.Apply();
-                OnItemAdded?.Invoke(item);
-                return;
-            }
-        }
+        if (!weaponSlots.TryGetValue(slot, out var weapon))
+            return false;
+
+        if (weapon == null)
+            return false;
+
+        weapon.Equip(null);
+
+        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
+
+        return true;
     }
 
-    /// <summary>
-    /// 指定インデックスのアイテムを廃棄する。
-    /// Item.Revert() を呼んだあとリストから除去し OnItemRemoved を発火する。
-    /// </summary>
-    /// <param name="index">Items リスト上のインデックス</param>
-    /// <returns>廃棄に成功した場合 true</returns>
+
+    // =====================================================
+    // Item
+    // =====================================================
+
+    public bool EquipItem(Item item)
+    {
+        if (item == null)
+            return false;
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] != null)
+                continue;
+
+            items[i] = item;
+
+            item.Initialize(player);
+            item.Apply();
+
+            OnItemsChanged?.Invoke();
+
+            return true;
+        }
+
+        // インベントリが満杯
+        return false;
+    }
+
+
     public bool DiscardItem(int index)
     {
-        if (index < 0 || index >= items.Length) return false;
+        if (index < 0 || index >= items.Length)
+            return false;
+
+        if (items[index] == null)
+            return false;
 
         items[index].Revert();
+
+        // アイテムを削除
         items[index] = null;
-        OnItemRemoved?.Invoke(index);
+
+        // 後ろのアイテムを前に詰める
+        for (int i = index; i < items.Length - 1; i++)
+        {
+            items[i] = items[i + 1];
+        }
+
+        // 最後を空にする
+        items[^1] = null;
+
+        OnItemsChanged?.Invoke();
+
         return true;
     }
 }
