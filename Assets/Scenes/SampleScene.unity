@@ -6726,6 +6726,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_0_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -100
@@ -15249,6 +15253,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_4_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 100
@@ -15922,6 +15930,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_4_4
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 100
@@ -16466,6 +16478,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18231,6 +18247,9 @@ MonoBehaviour:
   reloadIndicator: {fileID: 1175798750}
   currentAmmoText: {fileID: 512261117}
   magazineSizeText: {fileID: 1167786399}
+  idleMoveAmount: 0.03
+  idleMoveSpeed: 2
+  idleRotationAmount: 2
 --- !u!114 &240814481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18353,6 +18372,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_3_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34830,6 +34853,7 @@ MonoBehaviour:
   tileSize: 50
   fogEndDistance: 30
   warpConfirmFrames: 10
+  gridSize: 5
   panels:
   - {fileID: 63218695}
   - {fileID: 777976545}
@@ -34868,7 +34892,7 @@ Transform:
   m_GameObject: {fileID: 467297657}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -18.45, z: 0}
+  m_LocalPosition: {x: 0, y: -20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46440,6 +46464,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_1_2
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -50
@@ -54252,6 +54280,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_3_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -66925,6 +66957,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_1_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -50
@@ -73509,6 +73545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_2_3
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -74624,6 +74664,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_1_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -50
@@ -74754,6 +74798,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_3_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -76761,6 +76809,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_3_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93770,6 +93822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_1_4
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -50
@@ -94553,6 +94609,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_0_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -96965,6 +97025,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -101156,6 +101220,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_4_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -111430,6 +111498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_2_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -112981,6 +113053,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_4_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -114642,6 +114718,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_2_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -116974,6 +117054,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_2_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -123327,6 +123411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_3_3
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50
@@ -123950,6 +124038,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_2_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -130112,6 +130204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StagePanel_0_4
       objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
       value: -100
@@ -131677,6 +131773,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_0_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -153617,6 +153717,9 @@ MonoBehaviour:
   reloadIndicator: {fileID: 286274470}
   currentAmmoText: {fileID: 454838536}
   magazineSizeText: {fileID: 207828317}
+  idleMoveAmount: 0.03
+  idleMoveSpeed: 2
+  idleRotationAmount: 2
 --- !u!114 &2022669246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164521,6 +164624,10 @@ PrefabInstance:
     - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_Name
       value: StagePanel_0_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039883393836548376, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765990588464808829, guid: cf8c0a885e2353e4f9ec6fcbeabdf448, type: 3}
       propertyPath: m_LocalPosition.x

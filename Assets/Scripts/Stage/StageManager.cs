@@ -4,7 +4,7 @@ using UnityEngine;
 namespace InfiniteTileWorld
 {
     /// <summary>
-    /// 3×3グリッドの StagePanel を循環再利用する無限ワールドの中央司令塔。
+    /// gridSize×gridSizeのStagePanelを循環再利用する無限ワールドの中央司令塔。
     /// </summary>
     /// <remarks>
     /// セットアップ:
@@ -26,7 +26,16 @@ namespace InfiniteTileWorld
         /// <summary>ワープ確定に必要な視界外継続フレーム数。チャタリング防止用（デフォルト10≒0.17秒@60fps）。</summary>
         [SerializeField] private int warpConfirmFrames = 10;
 
-        /// <summary>3×3グリッドのパネルリスト。「Setup Panels」で自動登録される。</summary>
+        /// <summary>
+        /// グリッドのサイズ
+        /// </summary>
+        /// <remarks>
+        /// gridSize は奇数である必要があります
+        /// </remarks>
+        [SerializeField] private int gridSize = 5;
+        public int GridSize => gridSize;
+
+        /// <summary>gridSize×gridSizeのパネルリスト。「Setup Panels」で自動登録される。</summary>
         [SerializeField] private List<StagePanel> panels = new();
         [SerializeField] private BackgroundPanel backgroundPanel = new();
 
@@ -104,17 +113,17 @@ namespace InfiniteTileWorld
 
         private (int gx, int gz) WorldToGrid(Vector3 worldPos)
         {
-            // (0,0,0) を中心とする場合、-25～25 をグリッド0にするため半タイル分オフセットを加える
+            // タイルの中心を基準にグリッド座標へ変換するため、半タイル分オフセットを加える
             return (Mathf.FloorToInt((worldPos.x + tileSize * 0.5f) / tileSize),
                     Mathf.FloorToInt((worldPos.z + tileSize * 0.5f) / tileSize));
         }
 
         private StagePanel GetPanel(int logicalX, int logicalZ)
         {
-            // (% 5 + 5) % 5 で負値にも対応
-            int px = ((_gridOffsetX + logicalX) % 5 + 5) % 5;
-            int pz = ((_gridOffsetZ + logicalZ) % 5 + 5) % 5;
-            int idx = pz * 5 + px;
+            // 剰余が負値にならないように補正する
+            int px = ((_gridOffsetX + logicalX) % gridSize + gridSize) % gridSize;
+            int pz = ((_gridOffsetZ + logicalZ) % gridSize + gridSize) % gridSize;
+            int idx = pz * gridSize + px;
             return (idx >= 0 && idx < panels.Count) ? panels[idx] : null;
         }
 
@@ -123,18 +132,18 @@ namespace InfiniteTileWorld
             var outdated = new HashSet<StagePanel>();
 
             // 移動方向に応じて、グリッドの端にあるパネルをワープ候補にする
-            if (dx > 0)      for (int z = 0; z < 5; z++) AddIfNotNull(outdated, GetPanel(0, z));
-            else if (dx < 0) for (int z = 0; z < 5; z++) AddIfNotNull(outdated, GetPanel(4, z));
+            if (dx > 0)      for (int z = 0; z < gridSize; z++) AddIfNotNull(outdated, GetPanel(0, z));
+            else if (dx < 0) for (int z = 0; z < gridSize; z++) AddIfNotNull(outdated, GetPanel(gridSize - 1, z));
 
-            if (dz > 0)      for (int x = 0; x < 5; x++) AddIfNotNull(outdated, GetPanel(x, 0));
-            else if (dz < 0) for (int x = 0; x < 5; x++) AddIfNotNull(outdated, GetPanel(x, 4));
+            if (dz > 0)      for (int x = 0; x < gridSize; x++) AddIfNotNull(outdated, GetPanel(x, 0));
+            else if (dz < 0) for (int x = 0; x < gridSize; x++) AddIfNotNull(outdated, GetPanel(x, gridSize - 1));
 
             foreach (var panel in outdated)
                 if (!_warpQueue.ContainsKey(panel)) _warpQueue[panel] = 0;
 
             // オフセットを更新して論理的なグリッド位置を回転させる
-            _gridOffsetX = ((_gridOffsetX + dx) % 5 + 5) % 5;
-            _gridOffsetZ = ((_gridOffsetZ + dz) % 5 + 5) % 5;
+            _gridOffsetX = ((_gridOffsetX + dx) % gridSize + gridSize) % gridSize;
+            _gridOffsetZ = ((_gridOffsetZ + dz) % gridSize + gridSize) % gridSize;
         }
 
         private static void AddIfNotNull(HashSet<StagePanel> set, StagePanel panel)
@@ -182,16 +191,18 @@ namespace InfiniteTileWorld
             int physIdx = panels.IndexOf(panel);
             if (physIdx == -1) return;
 
-            int physX = physIdx % 5;
-            int physZ = physIdx / 5;
+            int physX = physIdx % gridSize;
+            int physZ = physIdx / gridSize;
 
-            // リングバッファのオフセットを考慮して、現在の論理的なグリッド位置 (0, 1, 2, 3, 4) を割り出す
-            int logX = (physX - _gridOffsetX + 5) % 5;
-            int logZ = (physZ - _gridOffsetZ + 5) % 5;
+            // リングバッファのオフセットを考慮して、現在の論理的なグリッド位置を割り出す
+            int logX = (physX - _gridOffsetX + gridSize) % gridSize;
+            int logZ = (physZ - _gridOffsetZ + gridSize) % gridSize;
 
-            // (0,0,0) が中心なので、+0.5f は不要
-            float newX = (px + logX - 2) * tileSize;
-            float newZ = (pz + logZ - 2) * tileSize;
+            // グリッド中央のインデックスを求める
+            int centerOffset = gridSize / 2;
+
+            float newX = (px + logX - centerOffset) * tileSize;
+            float newZ = (pz + logZ - centerOffset) * tileSize;
 
             panel.OnWarped(new Vector3(newX, panel.WorldCenter.y, newZ), tileSize);
         }
