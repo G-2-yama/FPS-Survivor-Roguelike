@@ -24,8 +24,8 @@ MonoBehaviour:
     loop: 0
   - category: 3
     index: 0
-    clip: {fileID: 8300000, guid: 56d68f3ceb67bf74c88040a5d3897615, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: b0d11db93dec5e2488b3f0ebb444750e, type: 3}
+    volume: 0.6
     pitch: 1
     playType: 0
     is3D: 0
