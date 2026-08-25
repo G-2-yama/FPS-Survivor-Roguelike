@@ -8,6 +8,8 @@ public class PhaseData : ScriptableObject
 {
     [SerializeField] private float startTime;
     public float StartTime => startTime;
+    [SerializeField] private int minSpawnCount = 1;
+    public int MinSpawnCount => minSpawnCount;
 
     [SerializeField] private float spawnInterval = 1f;
     public float SpawnInterval => spawnInterval;
