@@ -7,6 +7,7 @@ public class BurstShotPattern : AttackPattern
     [SerializeField, Min(1)] private int shotCount = 3;
     [SerializeField, Min(0f)] private float interval = 0.2f;
     [SerializeField, Min(0f)] private float firstshotintervalrate = 3f;
+    
     public float Interval => interval;
     public float FirstshotInterval => firstshotintervalrate;
 
@@ -26,7 +27,10 @@ public class BurstShotPattern : AttackPattern
 
             Vector3 direction = (context.Target.position - context.ShotPoint.position).normalized;
             context.Launcher.Shoot(context.ShotPoint, direction, context.AttackPower);
-
+            if(context.Launcher.Sounder != null)
+            {
+                context.Launcher.Sounder.Play(SoundCategory.Enemy);
+            }
             
         }
     }
