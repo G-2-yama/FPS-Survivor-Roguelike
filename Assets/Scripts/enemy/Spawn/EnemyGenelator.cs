@@ -49,11 +49,25 @@ public class EnemyGenerator : MonoBehaviour
     {
         while (true)
         {
-            SpawnEnemy(currentPhase);
+            // 最低スポーン数を満たすように生成
+            if (activeEnemies.Count < currentPhase.MinSpawnCount)
+            {
+                int spawnCount = currentPhase.MinSpawnCount - activeEnemies.Count;
+
+                for (int i = 0; i < spawnCount; i++)
+                {
+                    SpawnEnemy(currentPhase);
+                }
+            }
+            else
+            {
+                SpawnEnemy(currentPhase);
+            }
 
             yield return new WaitForSeconds(currentPhase.SpawnInterval);
         }
     }
+
     public void RemoveActiveEnemy(GameObject enemy)
     {
         activeEnemies.Remove(enemy);

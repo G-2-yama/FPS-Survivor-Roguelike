@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace InfiniteTileWorld
 {
     [CustomEditor(typeof(StageManager))]
@@ -36,11 +37,14 @@ namespace InfiniteTileWorld
             Undo.RecordObject(manager, "Setup Stage Panels");
             manager.Panels.Clear();
 
-            for (int gz = 0; gz < 5; gz++)
+            int gridSize = manager.GridSize;
+            int center = gridSize / 2;
+
+            for (int gz = 0; gz < manager.GridSize; gz++)
             {
-                for (int gx = 0; gx < 5; gx++)
+                for (int gx = 0; gx < manager.GridSize; gx++)
                 {
-                    Vector3 pos = new Vector3((gx - 2) * size, 0f, (gz - 2) * size);
+                    Vector3 pos = new Vector3((gx - center) * size, 0f, (gz - center) * size);
                     GameObject go = CreatePanelObject(pos, manager.transform, gx, gz);
                     Undo.RegisterCreatedObjectUndo(go, "Create StagePanel");
 
@@ -83,3 +87,4 @@ namespace InfiniteTileWorld
         }
     }
 }
+#endif
