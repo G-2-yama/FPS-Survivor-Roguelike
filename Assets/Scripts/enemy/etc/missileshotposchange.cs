@@ -2,19 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class missileshotposchange : MonoBehaviour
+public class missileshotposchange : EnemyAnimationEffect
 {
     public List<GameObject> missiles = new List<GameObject>();
     [SerializeField] private BurstShotPattern Bp;
 
     private GameObject previousTarget = null;
 
-    private void Start()
+    
+    public override void Play()
     {
         StartCoroutine(MoveRoutine());
     }
+    public override void Stop()
+    {
+        StopAllCoroutines();
+        if (previousTarget != null)
+        {
+            previousTarget.SetActive(true);
+            previousTarget = null;
+        }
+    }
 
-    IEnumerator MoveRoutine()
+        IEnumerator MoveRoutine()
     {
         int i = 0;
 
@@ -30,6 +40,11 @@ public class missileshotposchange : MonoBehaviour
             {
                 i = 0;
             }
+            if (i == 0)
+            {
+                yield return new WaitForSeconds(Bp.Interval*Bp.FirstshotInterval);
+            }
+            yield return new WaitForSeconds(Bp.Interval);
 
             GameObject target = missiles[i];
 
@@ -50,7 +65,7 @@ public class missileshotposchange : MonoBehaviour
                 previousTarget = target;
             }
 
-            yield return new WaitForSeconds(Bp.Interval+0.5f);
+           
 
             i++;
         }

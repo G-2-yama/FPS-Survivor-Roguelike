@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: gatlingcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
   ChaseSpeed: 3
-  OrbitRadius: 4
+  MaxHeight: 2
+  OrbitRadius: 5
   OrbitAngularSpeed: 15

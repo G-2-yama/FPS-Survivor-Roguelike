@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BurstShotPattern
   shotCount: 12
   interval: 0.05
+  firstshotintervalrate: 60

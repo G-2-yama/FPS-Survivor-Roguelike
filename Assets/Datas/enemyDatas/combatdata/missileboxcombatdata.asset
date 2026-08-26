@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: missileboxcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
   ChaseSpeed: 3
-  OrbitRadius: 7
+  MaxHeight: 2
+  OrbitRadius: 6
   OrbitAngularSpeed: 15

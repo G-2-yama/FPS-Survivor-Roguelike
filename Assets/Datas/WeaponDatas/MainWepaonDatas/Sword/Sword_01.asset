@@ -29,7 +29,7 @@ MonoBehaviour:
     triggerType: 0
   damage:
     damage: 15
-    knockbackForce: 1
+    knockbackForce: 30
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0.1
