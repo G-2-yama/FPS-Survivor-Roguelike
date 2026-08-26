@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class missileshotposchange : MonoBehaviour
+public class missileshotposchange : EnemyAnimationEffect
 {
     public List<GameObject> missiles = new List<GameObject>();
     [SerializeField] private BurstShotPattern Bp;
@@ -10,11 +10,11 @@ public class missileshotposchange : MonoBehaviour
     private GameObject previousTarget = null;
 
     
-    private void OnEnable()
+    public override void Play()
     {
         StartCoroutine(MoveRoutine());
     }
-    private void OnDisable()
+    public override void Stop()
     {
         StopAllCoroutines();
         if (previousTarget != null)

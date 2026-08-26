@@ -24,7 +24,7 @@ public class CombatState : IState
         }
         if(enemy.UniqueAnimation != null)
         {
-            enemy.UniqueAnimation.enabled = true;
+            enemy.UniqueAnimation.Play();
         }
     }
 

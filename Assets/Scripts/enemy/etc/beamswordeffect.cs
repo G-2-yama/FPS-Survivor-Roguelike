@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class BeamSwordEffect : MonoBehaviour
+public class BeamSwordEffect : EnemyAnimationEffect
 {
+    [SerializeField]private GameObject beamSword;
+    [SerializeField]private Transform beamSwordTransform;
     private Vector3 defaultScale;
 
     [SerializeField]
@@ -11,12 +13,25 @@ public class BeamSwordEffect : MonoBehaviour
 
     [SerializeField]
     private float scaleChangeTime = 0.1f;
-
-    private void Start()
+    private void Awake()
     {
-        defaultScale = transform.localScale;
+        beamSword.SetActive(false);
+        defaultScale = beamSwordTransform.localScale;
+    }
+
+    public override void Play()
+    {
+        
+        beamSword.SetActive(true);
+        defaultScale = beamSwordTransform.localScale;
 
         StartCoroutine(EffectCoroutine());
+    }
+    public override void Stop()
+    {
+        beamSword.SetActive(false);
+        StopAllCoroutines();
+        beamSwordTransform.localScale = defaultScale;
     }
 
     private IEnumerator EffectCoroutine()
@@ -30,12 +45,12 @@ public class BeamSwordEffect : MonoBehaviour
         while (true)
         {
             // å≥ÇÃëÂÇ´Ç≥
-            transform.localScale = defaultScale;
+            beamSwordTransform.localScale = defaultScale;
 
             yield return new WaitForSeconds(scaleChangeTime);
 
             // è≠Çµè¨Ç≥Ç¢ëÂÇ´Ç≥
-            transform.localScale = smallScale;
+            beamSwordTransform.localScale = smallScale;
 
             yield return new WaitForSeconds(scaleChangeTime);
         }

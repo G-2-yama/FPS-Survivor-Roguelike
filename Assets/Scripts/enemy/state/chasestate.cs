@@ -23,7 +23,7 @@ public class ChaseState : IState
         }
         if(enemy.UniqueAnimation != null)
         {
-            enemy.UniqueAnimation.enabled = false;
+            enemy.UniqueAnimation.Stop();
         }
     }
 
