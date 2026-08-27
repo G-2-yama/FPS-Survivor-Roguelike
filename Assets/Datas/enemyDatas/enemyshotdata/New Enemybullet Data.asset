@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::enemybulletData
   Speed: 15
   Lifetime: 2
-  Prefab: {fileID: 3338841769763293187, guid: a80825ce676f962408f6127ceb116df1, type: 3}
+  AmmpPrefab: {fileID: 3338841769763293187, guid: a80825ce676f962408f6127ceb116df1, type: 3}
+  EffectPrefab: {fileID: 0}

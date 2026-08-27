@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
   m_Name: Bit_sound
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
-  sounds: []
+  sounds:
+  - category: 6
+    index: 0
+    clip: {fileID: 8300000, guid: 25678c85469446f40ac91a63fee92743, type: 3}
+    volume: 0.38
+    pitch: 1.19
+    playType: 0
+    is3D: 1
+    spatialBlend: 0
+    loop: 0

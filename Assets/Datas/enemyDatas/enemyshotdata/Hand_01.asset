@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BulletData
   Speed: 0
   Lifetime: 3
-  Prefab: {fileID: 974238199191178681, guid: 1e2a8a529113c4c43bef443e7473b367, type: 3}
+  AmmpPrefab: {fileID: 2941202608053666838, guid: 81c12ea1f79b3b34699cb1d91e1662aa, type: 3}
+  EffectPrefab: {fileID: 0}

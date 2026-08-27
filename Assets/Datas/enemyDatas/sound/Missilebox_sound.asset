@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
   m_Name: Missilebox_sound
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
-  sounds: []
+  sounds:
+  - category: 6
+    index: 0
+    clip: {fileID: 8300000, guid: 9c3a87ee4b059434cbaa2fca2d9286f2, type: 3}
+    volume: 0.54
+    pitch: 0.89
+    playType: 0
+    is3D: 1
+    spatialBlend: 0
+    loop: 0

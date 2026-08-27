@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5edd35f8c030d14388fb1be39e415c4, type: 3}
   m_Name: missileboxcombatdata
   m_EditorClassIdentifier: Assembly-CSharp::OrbitMovement
-  ChaseSpeed: 3
+  ChaseSpeed: 1.5
   MaxHeight: 2
-  OrbitRadius: 6
+  OrbitRadius: 7
   OrbitAngularSpeed: 15
