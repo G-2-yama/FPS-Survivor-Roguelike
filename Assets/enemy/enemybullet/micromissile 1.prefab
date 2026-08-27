@@ -115,6 +115,7 @@ MonoBehaviour:
   targetProvider: {fileID: 8790778771241833302}
   attack: {fileID: 0}
   animator: {fileID: 0}
+  uniqueAnimation: {fileID: 0}
 --- !u!114 &8790778771241833302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,8 +205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a650e1b3dbbc64b9258c02259b1613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::basicenemyprojectile
+  dropList: []
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
-  exp: {fileID: 0}
   whiteFlash: {fileID: 8496615387957828556}
   deathDelay: 0.1
 --- !u!1001 &5079089486708136024
