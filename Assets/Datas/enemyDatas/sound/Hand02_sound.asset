@@ -16,7 +16,7 @@ MonoBehaviour:
   - category: 6
     index: 0
     clip: {fileID: 8300000, guid: f81721732529235458d0b1af0fa17bfc, type: 3}
-    volume: 0.38
+    volume: 0.55
     pitch: 0.95
     playType: 0
     is3D: 1
