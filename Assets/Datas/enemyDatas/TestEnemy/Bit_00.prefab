@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 7862773016890114749}
   - component: {fileID: 3273962408429500559}
   - component: {fileID: 4657746142798485403}
+  - component: {fileID: 255385233847080976}
   m_Layer: 0
   m_Name: Bit_00
   m_TagString: Untagged
@@ -221,8 +222,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 11.649921, y: 8.2555895, z: 17.391575}
-  m_Center: {x: -0.06919802, y: 0.67549175, z: -5.3450766}
+  m_Size: {x: 11.649921, y: 8.2555895, z: 22.842052}
+  m_Center: {x: -0.06919789, y: 0.6754919, z: -8.070312}
 --- !u!114 &4933798852626595605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,3 +394,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: d87485e3e3c39d74eb41e542062fe924, type: 2}
   audioSource: {fileID: 3273962408429500559}
+--- !u!114 &255385233847080976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874736543859849084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab8cd6f0b9eff47459e5c9f3df8b7ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToutchDamageController
+  damageAmount: 100
