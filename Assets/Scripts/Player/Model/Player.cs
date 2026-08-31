@@ -84,7 +84,7 @@ public class Player : MonoBehaviour, IDamageable
         // 経験値を加算
         exp += amount;
         OnExpGained?.Invoke(amount);
-        sounder.Play(SoundCategory.GetItem);
+        sounder.Play(SoundCategory.GetExp);
 
         // レベルアップ処理
         if (exp >= expmanager.LevelUpRequiredExp)

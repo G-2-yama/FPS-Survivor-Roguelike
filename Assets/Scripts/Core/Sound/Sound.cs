@@ -20,6 +20,7 @@ public enum SoundCategory
     UI,
     Voice,
     GetItem,
+    GetExp
 }
 
 [System.Serializable]
