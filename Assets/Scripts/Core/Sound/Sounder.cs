@@ -36,16 +36,49 @@ public class Sounder : MonoBehaviour
         InitializeDictionary();
     }
 
-    public void Play(SoundCategory category, int index = 0)
+    /// <summary>
+    /// 指定したSoundCategoryの音を再生する
+    /// </summary>
+    /// <param name="category">再生する音のカテゴリ</param>
+    /// <param name="index">再生する音のインデックス</param>
+    public void Play(SoundCategory category, int index = -1)
     {
-        if (!soundDictionary.TryGetValue((category, index), out SoundData data))
+
+        SoundData data;
+
+        // indexが-1なら、そのCategoryからランダム選択
+        if (index == -1)
         {
-            Debug.LogWarning($"Sound Not Found : {category} : {index}");
-            return;
+            List<SoundData> candidates = new();
+
+            foreach (SoundData sound in soundDictionary.Values)
+            {
+                if (sound.category == category)
+                {
+                    candidates.Add(sound);
+                }
+            }
+
+            if (candidates.Count == 0)
+            {
+                Debug.LogWarning($"Sound Not Found : {category}");
+                return;
+            }
+
+            data = candidates[Random.Range(0, candidates.Count)];
+        }
+        else
+        {
+            if (!soundDictionary.TryGetValue((category, index), out data))
+            {
+                Debug.LogWarning($"Sound Not Found : {category} : {index}");
+                return;
+            }
         }
 
         ApplySetting(data);
 
+        // 再生方法に応じて再生
         switch (data.playType)
         {
             case SoundPlayType.OneShot:
@@ -68,6 +101,10 @@ public class Sounder : MonoBehaviour
         audioSource.Stop();
     }
 
+    /// <summary>
+    /// SoundDataの設定をAudioSourceに適用する
+    /// </summary>
+    /// <param name="data">適用するSoundData</param>
     private void ApplySetting(SoundData data)
     {
         audioSource.volume = data.volume;
