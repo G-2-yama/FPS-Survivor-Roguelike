@@ -19,6 +19,7 @@ public enum SoundCategory
     Environment,
     UI,
     Voice,
+    GetItem,
 }
 
 [System.Serializable]
