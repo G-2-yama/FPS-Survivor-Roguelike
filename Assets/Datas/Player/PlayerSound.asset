@@ -76,3 +76,21 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
+  - category: 10
+    index: 6
+    clip: {fileID: 8300000, guid: b03416b21db398c41ae22f3ff445e5d5, type: 3}
+    volume: 1
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 7
+    clip: {fileID: 8300000, guid: 0f60961b9bd03684e92e7cf29fd30d33, type: 3}
+    volume: 1
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
