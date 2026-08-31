@@ -15,8 +15,8 @@ MonoBehaviour:
   sounds:
   - category: 1
     index: 0
-    clip: {fileID: 8300000, guid: 69a25e4de13d7be47b1e1d2c18ef36c9, type: 3}
-    volume: 0.2
+    clip: {fileID: 8300000, guid: e65804ba859197749b98d4b5ddb71d04, type: 3}
+    volume: 0.225
     pitch: 1
     playType: 0
     is3D: 0

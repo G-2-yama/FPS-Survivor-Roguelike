@@ -15,4 +15,4 @@ MonoBehaviour:
   effectPrefab: {fileID: 0}
   prefab: {fileID: 4004365500606963686, guid: 9a7b45e599c0b4b4794fa3f59ae08c7d, type: 3}
   Offset: {x: 0, y: -2, z: 0}
-  stepInterval: 0.5
+  stepInterval: 5

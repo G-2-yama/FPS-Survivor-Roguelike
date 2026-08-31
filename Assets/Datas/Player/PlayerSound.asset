@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
+  m_Name: PlayerSound
+  m_EditorClassIdentifier: Assembly-CSharp::SoundDB
+  sounds:
+  - category: 10
+    index: 0
+    clip: {fileID: 8300000, guid: 3512a78b988051f4198362c82400aea0, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 1
+    clip: {fileID: 8300000, guid: 53bf6fb402d1aa14986b238c3d50074b, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 2
+    clip: {fileID: 8300000, guid: f6ad17dd1b6714b4eb9f0547f1313205, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 2
+    clip: {fileID: 8300000, guid: e805db64fab92674db38e2c6b19afca4, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 3
+    clip: {fileID: 8300000, guid: 244082c0162c94443a46eed1abbfbe32, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 4
+    clip: {fileID: 8300000, guid: 482454563823476429f26834368b50d8, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
+  - category: 10
+    index: 5
+    clip: {fileID: 8300000, guid: 956bd511214c40249b88cd5057178bfa, type: 3}
+    volume: 0.45
+    pitch: 1
+    playType: 0
+    is3D: 0
+    spatialBlend: 0
+    loop: 0
