@@ -21,6 +21,9 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private PlayerInventory inventory;
     public PlayerInventory Inventory => inventory;
 
+    [SerializeField] private Sounder sounder;
+    public Sounder Sounder => sounder;
+
     public TeamType TeamType => TeamType.Player;
 
     public event Action OnDeath;
@@ -75,16 +78,20 @@ public class Player : MonoBehaviour, IDamageable
     }
     public void AddExp(float amount)
     {
+        // 経験値を加算
         exp += amount;
         OnExpGained?.Invoke(amount);
+        sounder.Play(SoundCategory.GetItem);
 
-        while (exp >= expmanager.LevelUpRequiredExp)
+        // レベルアップ処理
+        if (exp >= expmanager.LevelUpRequiredExp)
         {
-           
             exp -= expmanager.LevelUpRequiredExp;
-            LevelUp();
-            
 
+            level++;
+            pendingLevelUps++;
+            expmanager.IncreaseRequiredExp();
+            OnLevelUp?.Invoke();
         }
     }
     public void ConsumePendingLevelUp()
@@ -93,14 +100,6 @@ public class Player : MonoBehaviour, IDamageable
         {
             pendingLevelUps--;
         }
-    }
-
-    public void LevelUp()
-    {
-        level++;
-        pendingLevelUps++;
-        expmanager.IncreaseRequiredExp();
-        OnLevelUp?.Invoke();
     }
 
     private void HandleDeath() => OnDeath?.Invoke();
