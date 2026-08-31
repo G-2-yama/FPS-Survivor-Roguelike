@@ -78,6 +78,7 @@ MonoBehaviour:
   targetProvider: {fileID: 5926673517059604558}
   attack: {fileID: 0}
   animator: {fileID: 0}
+  uniqueAnimation: {fileID: 0}
 --- !u!114 &5926673517059604558
 MonoBehaviour:
   m_ObjectHideFlags: 0

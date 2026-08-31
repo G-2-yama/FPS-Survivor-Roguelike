@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class speedupitem : PickupTriggerItem
 {
-    [SerializeField] float upspeedrate = 5f;
-    [SerializeField] float duration = 5f;
+    [SerializeField] float upspeedrate = 100f;
+    [SerializeField] float duration = 3f;
 
     protected override void OnPickup(Player player)
     {
+        player.Sounder.Play(SoundCategory.GetItem, 7);
         TimedBuffManager timedBuffManager = player.GetComponent<TimedBuffManager>();
         TimedBuff buff = new TimedBuff(
             duration,
@@ -24,5 +25,6 @@ public class speedupitem : PickupTriggerItem
             }
         );
         timedBuffManager.AddBuff(buff);
+        
     }
 }

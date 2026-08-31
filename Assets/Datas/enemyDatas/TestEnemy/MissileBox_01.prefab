@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8cd6f0b9eff47459e5c9f3df8b7ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToutchDamageController
-  damageAmount: 40
+  damageAmount: 10
 --- !u!1 &4609001843089238200
 GameObject:
   m_ObjectHideFlags: 0

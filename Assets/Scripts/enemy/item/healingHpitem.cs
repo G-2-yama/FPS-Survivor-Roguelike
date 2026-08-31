@@ -7,7 +7,9 @@ public class healingHpitem : PickupTriggerItem
 
     protected override void OnPickup(Player player)
     {
+        
         player.Health.Heal(healamount);
+        player.Sounder.Play(SoundCategory.GetItem,6);
 
     }
 
