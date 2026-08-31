@@ -7,7 +7,7 @@ public class ToutchDamageController : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         Player player = other.gameObject.GetComponent<Player>();
-        Debug.Log("Collision with: " + other.gameObject.name);
+       
         if (player == null)
         {
             return;

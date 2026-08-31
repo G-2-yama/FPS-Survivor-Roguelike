@@ -27,10 +27,6 @@ public abstract class PickupTriggerItem : PoolableObject
 
         Release();
     }
-    private void Update()
-    {
-        
-    }
-
+    
     protected abstract void OnPickup(Player player);
 }
