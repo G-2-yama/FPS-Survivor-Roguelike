@@ -337,6 +337,7 @@ MonoBehaviour:
     weight: 80
   - prefab: {fileID: 0}
     weight: 20
+  sounder: {fileID: 0}
 --- !u!114 &1936066900203965556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: d8669ca9ac9806e4bba49a858dfa123d, type: 2}
   audioSource: {fileID: 3839275556258984677}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!1 &823147450051703574
 GameObject:
   m_ObjectHideFlags: 0
