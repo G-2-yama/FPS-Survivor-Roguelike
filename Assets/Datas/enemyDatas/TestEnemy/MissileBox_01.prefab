@@ -307,7 +307,7 @@ MonoBehaviour:
     weight: 80
   - prefab: {fileID: 0}
     weight: 20
-  sounder: {fileID: 0}
+  sounder: {fileID: 4342199728072193920}
 --- !u!114 &4982471896514901258
 MonoBehaviour:
   m_ObjectHideFlags: 0
