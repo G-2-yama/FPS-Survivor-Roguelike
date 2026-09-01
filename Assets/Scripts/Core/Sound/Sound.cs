@@ -5,6 +5,7 @@ public enum SoundPlayType
     OneShot,
     Loop,
     BGM,
+    PlayClipAtPoint
 }
 
 public enum SoundCategory
@@ -20,6 +21,9 @@ public enum SoundCategory
     UI,
     Voice,
     GetItem,
+    GetExp,
+    Damage
+
 }
 
 [System.Serializable]

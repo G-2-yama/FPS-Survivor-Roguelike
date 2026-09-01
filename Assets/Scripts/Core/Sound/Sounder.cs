@@ -84,6 +84,9 @@ public class Sounder : MonoBehaviour
             case SoundPlayType.OneShot:
                 audioSource.PlayOneShot(data.clip, data.volume);
                 break;
+            case SoundPlayType.PlayClipAtPoint:
+                AudioSource.PlayClipAtPoint(data.clip, transform.position, data.volume);
+                break;
 
             case SoundPlayType.Loop:
             case SoundPlayType.BGM:

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: missiledata
   m_EditorClassIdentifier: Assembly-CSharp::BulletData
   Speed: 0
-  Lifetime: 100000
-  Prefab: {fileID: 6710789455330182112, guid: 722b039551aaae8408fc758f76a42815, type: 3}
+  Lifetime: 7
+  AmmpPrefab: {fileID: 6710789455330182112, guid: 722b039551aaae8408fc758f76a42815, type: 3}
+  EffectPrefab: {fileID: 6580556989881904790, guid: a3855f8c6ea137345ba476b23c1f035e, type: 3}

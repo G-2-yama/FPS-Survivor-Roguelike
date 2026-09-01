@@ -5,9 +5,11 @@ public abstract class PickupTriggerItem : PoolableObject
     private bool pickedUp = false;
   
 
+
     private void OnEnable()
     {
         pickedUp = false;
+         
     }
 
     private void OnTriggerEnter(Collider other)
@@ -24,13 +26,10 @@ public abstract class PickupTriggerItem : PoolableObject
 
         // Œp³æ‚Å’è‹`‚·‚éˆ—
         OnPickup(player);
+      
 
         Release();
     }
-    private void Update()
-    {
-        
-    }
-
+    
     protected abstract void OnPickup(Player player);
 }

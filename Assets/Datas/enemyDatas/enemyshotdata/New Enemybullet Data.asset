@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4805234922ec5d243a0e384fc2e3c2e4, type: 3}
   m_Name: New Enemybullet Data
   m_EditorClassIdentifier: Assembly-CSharp::enemybulletData
-  Speed: 15
+  Speed: 25
   Lifetime: 2
-  Prefab: {fileID: 3338841769763293187, guid: a80825ce676f962408f6127ceb116df1, type: 3}
+  AmmpPrefab: {fileID: 3338841769763293187, guid: a80825ce676f962408f6127ceb116df1, type: 3}
+  EffectPrefab: {fileID: 3435534232544491543, guid: 96f52975b0053094ebf85dfab4ced38e, type: 3}

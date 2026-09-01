@@ -168,6 +168,7 @@ MonoBehaviour:
   targetProvider: {fileID: 6764737531609444669}
   attack: {fileID: 0}
   animator: {fileID: 0}
+  uniqueAnimation: {fileID: 0}
 --- !u!114 &6764737531609444669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279aedafa8ede0b4db32db234d7d2b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::speedupitem
-  upspeedrate: 2
+  upspeedrate: 10
+  duration: 2.5
 --- !u!54 &2361475402351978197
 Rigidbody:
   m_ObjectHideFlags: 0

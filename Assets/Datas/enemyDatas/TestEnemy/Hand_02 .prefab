@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16c3445e0a1f78418d2f81cffff0814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLauncher
-  bulletData: {fileID: 11400000, guid: f53662d68f80c8e418e2d1430de892e8, type: 2}
+  bulletData: {fileID: 11400000, guid: e0b3556902a8f5e4faf09ca81e598798, type: 2}
   sounder: {fileID: 2874553990117837733}
 --- !u!65 &6097715764400652782
 BoxCollider:

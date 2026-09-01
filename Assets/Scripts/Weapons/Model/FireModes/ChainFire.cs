@@ -119,6 +119,7 @@ public class ChainFire : FireModeData
                 return;
             }
             damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
+           
         }
     }
 }

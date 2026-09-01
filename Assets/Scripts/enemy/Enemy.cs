@@ -24,12 +24,15 @@ public class Enemy : PoolableObject, IDamageable
     [SerializeField] private float deathDelay = 0.1f;
 
     [SerializeField] private List<DropData> dropList = new();
+    [SerializeField] private Sounder sounder;
+    public Sounder Sounder => sounder;
 
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
     private bool isDead = false;
     private EnemyGenerator generator;
+
 
     public void SetSpawner(EnemyGenerator generator)
     {
@@ -39,15 +42,19 @@ public class Enemy : PoolableObject, IDamageable
 
     public void TakeDamage(int damage, float knockbackForce)
     {
+        
+        
         // Damage処理
         if (Health == null || isDead)
             return;
 
+        sounder?.Play(SoundCategory.Damage);
 
         if (Health.CurrentHP > 0)
         {
             whiteFlash?.Flash();
         }
+       
 
         Health.TakeDamage(config.Damagelange * damage);
 

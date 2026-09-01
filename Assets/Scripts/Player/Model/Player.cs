@@ -48,6 +48,8 @@ public class Player : MonoBehaviour, IDamageable
     
     public PlayerStats Stats { get; private set; }
 
+    public TimedBuffManager TimedBuffManager { get; private set; } 
+
     private void Awake()
     {
         InitializeIfNeeded();
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour, IDamageable
 
         Stats = new PlayerStats(config);
         Health = new Health(Stats.MaxHP);
+        TimedBuffManager = new TimedBuffManager();
         Health.OnDeath += HandleDeath;
     }
 
@@ -81,7 +84,7 @@ public class Player : MonoBehaviour, IDamageable
         // 経験値を加算
         exp += amount;
         OnExpGained?.Invoke(amount);
-        sounder.Play(SoundCategory.GetItem);
+        sounder.Play(SoundCategory.GetExp);
 
         // レベルアップ処理
         if (exp >= expmanager.LevelUpRequiredExp)

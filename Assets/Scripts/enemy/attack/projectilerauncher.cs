@@ -8,7 +8,7 @@ public class ProjectileLauncher : MonoBehaviour
 
     public void Shoot(Transform shotPoint, Vector3 direction, int damage)
     {
-        if (bulletData == null || bulletData.Prefab == null)
+        if (bulletData == null || bulletData.AmmpPrefab == null)
             return;
 
         GameObject bullet = bulletData.Spawn(shotPoint, direction);
