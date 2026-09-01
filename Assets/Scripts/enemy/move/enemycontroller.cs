@@ -40,11 +40,7 @@ public class EnemyBrain : MonoBehaviour
         knockbackState = new KnockbackState(this, stateMachine);
     }
 
-    private void OnEnable()
-    {
-        ResetBrain();
-    }
-
+   
     private void FixedUpdate()
     {
         stateMachine.Update();
@@ -63,6 +59,10 @@ public class EnemyBrain : MonoBehaviour
             animator.enabled = true;
 
             animator.SetBool("Iscombat", false);
+        }
+        if(uniqueAnimation != null)
+        {
+            uniqueAnimation.Stop();
         }
 
         stateMachine.ChangeState(chaseState);

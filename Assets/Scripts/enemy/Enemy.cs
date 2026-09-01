@@ -72,6 +72,7 @@ public class Enemy : PoolableObject, IDamageable
 
     public override void OnGet()
     {
+        enemyBrain.ResetBrain();
         isDead = false;
 
         Health = new Health(config.MaxHp);
