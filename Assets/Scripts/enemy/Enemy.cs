@@ -26,6 +26,7 @@ public class Enemy : PoolableObject, IDamageable
     [SerializeField] private List<DropData> dropList = new();
     [SerializeField] private Sounder sounder;
     public Sounder Sounder => sounder;
+    private DamagePopupManager damagePopupManager;
 
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
@@ -54,7 +55,8 @@ public class Enemy : PoolableObject, IDamageable
         {
             whiteFlash?.Flash();
         }
-       
+        damagePopupManager?.ShowDamage(damage, transform.position);
+
 
         Health.TakeDamage(config.Damagelange * damage);
 
@@ -72,10 +74,14 @@ public class Enemy : PoolableObject, IDamageable
 
     public override void OnGet()
     {
+        damagePopupManager = DamagePopupManager.Instance;
+        enemyBrain.ResetBrain();
         isDead = false;
 
         Health = new Health(config.MaxHp);
         Health.OnDeath += HandleDeath;
+      
+
     }
 
     public override void OnRelease()

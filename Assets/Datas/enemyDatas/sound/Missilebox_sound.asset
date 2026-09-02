@@ -16,9 +16,18 @@ MonoBehaviour:
   - category: 6
     index: 0
     clip: {fileID: 8300000, guid: 9c3a87ee4b059434cbaa2fca2d9286f2, type: 3}
-    volume: 0.614
-    pitch: 0.89
+    volume: 0.441
+    pitch: 0.64
     playType: 0
+    is3D: 1
+    spatialBlend: 0
+    loop: 0
+  - category: 12
+    index: 0
+    clip: {fileID: 8300000, guid: 10aa58f9f8f07874aa89d104584cdd2e, type: 3}
+    volume: 0.602
+    pitch: 0.89
+    playType: 3
     is3D: 1
     spatialBlend: 0
     loop: 0

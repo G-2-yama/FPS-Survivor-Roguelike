@@ -209,6 +209,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 5253d8f25d6b368469136a21ea489844, type: 2}
   whiteFlash: {fileID: 8496615387957828556}
   deathDelay: 0.1
+  enemyBrain: {fileID: 1304819817297185972}
 --- !u!1001 &5079089486708136024
 PrefabInstance:
   m_ObjectHideFlags: 0

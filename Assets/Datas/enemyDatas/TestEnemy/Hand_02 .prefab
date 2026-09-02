@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 5941123857821769466}
   - component: {fileID: 3839275556258984677}
   - component: {fileID: 2874553990117837733}
+  - component: {fileID: 6396180397066288861}
   m_Layer: 0
   m_Name: 'Hand_02 '
   m_TagString: Untagged
@@ -337,6 +338,7 @@ MonoBehaviour:
     weight: 80
   - prefab: {fileID: 0}
     weight: 20
+  sounder: {fileID: 2874553990117837733}
 --- !u!114 &1936066900203965556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +372,7 @@ MonoBehaviour:
   targetProvider: {fileID: 3717147003459117227}
   attack: {fileID: 1936066900203965556}
   animator: {fileID: 161052292175979836}
-  uniqueAnimation: {fileID: 5935241820249564570}
+  uniqueAnimation: {fileID: 6396180397066288861}
 --- !u!114 &3717147003459117227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +575,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: d8669ca9ac9806e4bba49a858dfa123d, type: 2}
   audioSource: {fileID: 3839275556258984677}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
+--- !u!114 &6396180397066288861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400521930760165144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ac108e82acaf84185dc77e682c1723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BeamSwordEffect
+  beamSword: {fileID: 8873333913924248282}
+  beamSwordTransform: {fileID: 7223637017462878741}
+  scaleChangeRate: 0.9
+  scaleChangeTime: 0.2
 --- !u!1 &823147450051703574
 GameObject:
   m_ObjectHideFlags: 0
@@ -8634,7 +8653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7223637017462878741
 Transform:
   m_ObjectHideFlags: 0
@@ -8717,7 +8736,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 197791767399235210}
-  - component: {fileID: 5935241820249564570}
   m_Layer: 0
   m_Name: "\u30DC\u30FC\u30F3.020"
   m_TagString: Untagged
@@ -8742,22 +8760,6 @@ Transform:
   - {fileID: 7223637017462878741}
   m_Father: {fileID: 4161803114984708084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5935241820249564570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8896485489037495667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22ac108e82acaf84185dc77e682c1723, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeamSwordEffect
-  beamSword: {fileID: 8873333913924248282}
-  beamSwordTransform: {fileID: 7223637017462878741}
-  scaleChangeRate: 0.9
-  scaleChangeTime: 0.2
 --- !u!1 &9044093572631681632
 GameObject:
   m_ObjectHideFlags: 0

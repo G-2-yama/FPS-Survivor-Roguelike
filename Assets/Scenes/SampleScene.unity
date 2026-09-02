@@ -9048,6 +9048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 240814482}
+  soundprefab: {fileID: 0}
 --- !u!82 &240814482
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9067,7 +9068,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -15207,6 +15208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: d04f16176b320f945addfd57ac42b0f1, type: 2}
   audioSource: {fileID: 419950871}
+  soundprefab: {fileID: 0}
 --- !u!82 &419950871
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15226,7 +15228,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -15845,6 +15847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 445505116}
+  soundprefab: {fileID: 0}
 --- !u!82 &445505116
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15864,7 +15867,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -24534,6 +24537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: 69f754493cebb314fbbab4b63a59098e, type: 2}
   audioSource: {fileID: 709705777}
+  soundprefab: {fileID: 0}
 --- !u!82 &709705777
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24553,7 +24557,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -45348,6 +45352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 1461869978}
+  soundprefab: {fileID: 0}
 --- !u!82 &1461869978
 AudioSource:
   m_ObjectHideFlags: 0
@@ -45367,7 +45372,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -58373,6 +58378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 1909986808}
+  soundprefab: {fileID: 0}
 --- !u!82 &1909986808
 AudioSource:
   m_ObjectHideFlags: 0
@@ -58392,7 +58398,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -61574,6 +61580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 2019895855}
+  soundprefab: {fileID: 0}
 --- !u!82 &2019895855
 AudioSource:
   m_ObjectHideFlags: 0
@@ -61593,7 +61600,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -61772,6 +61779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 0}
   audioSource: {fileID: 2022669247}
+  soundprefab: {fileID: 0}
 --- !u!82 &2022669247
 AudioSource:
   m_ObjectHideFlags: 0
@@ -61791,7 +61799,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 70
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

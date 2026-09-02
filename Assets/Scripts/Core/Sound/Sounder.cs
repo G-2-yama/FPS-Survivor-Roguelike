@@ -7,6 +7,7 @@ public class Sounder : MonoBehaviour
     [SerializeField] private SoundDB soundDatabase;
 
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject soundprefab;
 
     private Dictionary<(SoundCategory, int), SoundData> soundDictionary;
 
@@ -35,7 +36,19 @@ public class Sounder : MonoBehaviour
         soundDatabase = newDB;
         InitializeDictionary();
     }
+    private void PlayPooledSound(SoundData data)
+    {
+        GameObject obj =
+            PoolManager.Instance.Get(soundprefab);
 
+        obj.transform.position = transform.position;
+        obj.transform.rotation = Quaternion.identity;
+
+        PooledSoundPlayer player =
+            obj.GetComponent<PooledSoundPlayer>();
+
+        player.Play(data);
+    }
     /// <summary>
     /// 指定したSoundCategoryの音を再生する
     /// </summary>
@@ -85,7 +98,7 @@ public class Sounder : MonoBehaviour
                 audioSource.PlayOneShot(data.clip, data.volume);
                 break;
             case SoundPlayType.PlayClipAtPoint:
-                AudioSource.PlayClipAtPoint(data.clip, transform.position, data.volume);
+                PlayPooledSound(data);
                 break;
 
             case SoundPlayType.Loop:

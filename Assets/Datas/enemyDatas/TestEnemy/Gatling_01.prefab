@@ -329,6 +329,7 @@ MonoBehaviour:
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 100
+  sounder: {fileID: 7884487320096986353}
 --- !u!114 &3109805712287345634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sounder
   soundDatabase: {fileID: 11400000, guid: 8132664c527b667469a909542aa48ff0, type: 2}
   audioSource: {fileID: 2331569486650839668}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!114 &1881425027292726100
 MonoBehaviour:
   m_ObjectHideFlags: 0

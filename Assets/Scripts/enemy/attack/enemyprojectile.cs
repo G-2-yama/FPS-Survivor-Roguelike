@@ -18,6 +18,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     [SerializeField] protected EnemyConfig config;
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private float deathDelay = 0.1f;
+    [SerializeField] private EnemyBrain enemyBrain;
     protected Health health;
     public TeamType TeamType => TeamType.EnemyAmmo;
     public TeamType targetTeam => TeamType.Player;
@@ -60,6 +61,11 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         deathType= DeathType.Normal;
         health = new Health(config.MaxHp);
         health.OnDeath += HandleDeath;
+        if (enemyBrain != null)
+        {
+            enemyBrain.ResetBrain();
+        }
+
     }
     
     public override void OnRelease()
