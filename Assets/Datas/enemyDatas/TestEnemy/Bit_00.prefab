@@ -159,6 +159,7 @@ MonoBehaviour:
   - prefab: {fileID: 0}
     weight: 20
   sounder: {fileID: 4657746142798485403}
+  damagePopupManager: {fileID: 0}
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0
