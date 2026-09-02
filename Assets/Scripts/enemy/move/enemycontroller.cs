@@ -40,10 +40,7 @@ public class EnemyBrain : MonoBehaviour
         knockbackState = new KnockbackState(this, stateMachine);
     }
 
-    private void OnEnable()
-    {
-        ResetBrain();
-    }
+  
 
     private void FixedUpdate()
     {

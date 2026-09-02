@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3172506460584370585}
   - component: {fileID: 4993208716790330887}
   - component: {fileID: 9222615736734720355}
+  - component: {fileID: 8291455734953658602}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -206,3 +207,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4993208716790330887}
   m_maskType: 0
+--- !u!33 &8291455734953658602
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017424990723599846}
+  m_Mesh: {fileID: 0}
