@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class DamagePopupManager : MonoBehaviour
+public class DamageEffectManager : MonoBehaviour
 {
-    public static DamagePopupManager Instance { get; private set; }
+    public static DamageEffectManager Instance { get; private set; }
 
     [SerializeField] private GameObject damagePopupPrefab;
+    [SerializeField] private GameObject damageEffectPrefab;
 
     [SerializeField] private Transform player;
 
@@ -18,32 +19,25 @@ public class DamagePopupManager : MonoBehaviour
         Instance = this;
     }
 
-    public void ShowDamage(
-        int damage,
-        Vector3 enemyPosition)
+    public void ShowDamage(int damage, Vector3 enemyPosition)
     {
-        GameObject obj =
-            PoolManager.Instance.Get(damagePopupPrefab);
+        Vector3 position = enemyPosition + Vector3.up * heightOffset;
 
-        Vector3 position =
-            enemyPosition + Vector3.up * heightOffset;
+        // ダメージポップアップ
+        position.x += Random.Range(-randomOffsetX, randomOffsetX);
 
-        // �����U�炷
-        position.x += Random.Range(
-            -randomOffsetX,
-            randomOffsetX);
+        position.z += Random.Range(-randomOffsetZ, randomOffsetZ);
 
-        position.z += Random.Range(
-            -randomOffsetZ,
-            randomOffsetZ);
+        GameObject popupObj = PoolManager.Instance.Get(damagePopupPrefab);
 
-        DamagePopup popup =
-            obj.GetComponent<DamagePopup>();
+        DamagePopup popup = popupObj.GetComponent<DamagePopup>();
 
-        popup.Setup(
-            damage,
-            position,
-            player
-        );
+        popup.Setup(damage,position, player);
+
+        // ダメージエフェクト
+        GameObject effectObj = PoolManager.Instance.Get(damageEffectPrefab);
+
+        effectObj.transform.position = enemyPosition;
+        effectObj.transform.rotation = Quaternion.identity;
     }
 }
