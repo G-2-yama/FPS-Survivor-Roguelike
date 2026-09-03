@@ -17370,7 +17370,7 @@ GameObject:
   - component: {fileID: 479329660}
   - component: {fileID: 479329659}
   m_Layer: 0
-  m_Name: DamagePopupManager
+  m_Name: DamageEffectManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17389,6 +17389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupManager
   damagePopupPrefab: {fileID: 6017424990723599846, guid: a01320fdb613c6d46adb7044af9fe7f6, type: 3}
+  damageEffectPrefab: {fileID: 5131132216050497334, guid: e7366cc72eaf2044a84ce10bde190315, type: 3}
   player: {fileID: 275487189}
   heightOffset: 1.5
   randomOffsetX: 0.3
