@@ -131,7 +131,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Intensity: 0.42
-    - _Metalic: 0
+    - _Metalic: 0.8
     - _Metallic: 0
     - _NoiseSide1: 5
     - _NoiseSide2: 8

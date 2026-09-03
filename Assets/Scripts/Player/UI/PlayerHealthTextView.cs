@@ -17,6 +17,8 @@ public class PlayerHealthTextView : MonoBehaviour
     [SerializeField] private Text currentHealthText;
 
     [SerializeField] private Image currentHealthBar;
+    [SerializeField] private Image characterImage;
+    [SerializeField] private Sprite[] characterSprites;
 
     /// <summary>
     /// HP変更通知を購読する
@@ -36,6 +38,7 @@ public class PlayerHealthTextView : MonoBehaviour
     {
         currentHealthText.text = $"{current}/{max}";
         currentHealthBar.fillAmount = (float)current / max;
+        UpdateCharacterSprite();
     }
 
     /// <summary>
@@ -44,5 +47,30 @@ public class PlayerHealthTextView : MonoBehaviour
     private void OnDestroy()
     {
         player.Health.OnHealthChanged -= UpdateHealthText;
+    }
+
+    /// <summary>
+    /// 現在のHPに応じてキャラクター画像を更新する
+    /// </summary>
+    private void UpdateCharacterSprite()
+    {
+        float healthPercentage = (float)player.Health.CurrentHP / player.Health.MaxHP;
+
+        if (healthPercentage > 0.75f)
+        {
+            characterImage.sprite = characterSprites[0];
+        }
+        else if (healthPercentage > 0.5f)
+        {
+            characterImage.sprite = characterSprites[1];
+        }
+        else if (healthPercentage > 0.25f)
+        {
+            characterImage.sprite = characterSprites[2];
+        }
+        else
+        {
+            characterImage.sprite = characterSprites[3];
+        }
     }
 }
