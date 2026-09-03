@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06f507736eec744aa9f378b03a6ae3a, type: 3}
   m_Name: itemmovement
   m_EditorClassIdentifier: Assembly-CSharp::ItemMovement
-  ChaseSpeed: 50
+  ChaseSpeed: 80
   MaxHeight: 2
   acceleration: 15
-  maxSpeed: 50
+  maxSpeed: 100
