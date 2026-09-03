@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3172506460584370585}
   - component: {fileID: 4993208716790330887}
   - component: {fileID: 9222615736734720355}
+  - component: {fileID: 1659772329510148362}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -29,7 +30,7 @@ RectTransform:
   m_GameObject: {fileID: 6017424990723599846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 28.91335}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -206,3 +207,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4993208716790330887}
   m_maskType: 0
+--- !u!33 &1659772329510148362
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017424990723599846}
+  m_Mesh: {fileID: 0}

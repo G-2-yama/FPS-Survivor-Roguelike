@@ -4906,7 +4906,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 21ad9876419749b48aceed3ac4ce8a2e, type: 2}
+  - {fileID: 2100000, guid: 119296d70d3bc7840bf59088a3312b3a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4994,3 +4994,4 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
   whiteFlash: {fileID: 0}
   deathDelay: 0.1
+  enemyBrain: {fileID: 0}
