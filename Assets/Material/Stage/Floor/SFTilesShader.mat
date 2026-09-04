@@ -138,7 +138,7 @@ Material:
     - _Metalic: 1
     - _Metallic: 0
     - _NoiseSide1: 5
-    - _NoiseSide2: 8
+    - _NoiseSide2: 6.4
     - _NoiseSpeed: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.005

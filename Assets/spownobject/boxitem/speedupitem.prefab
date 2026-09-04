@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279aedafa8ede0b4db32db234d7d2b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::speedupitem
+  enemyBrain: {fileID: 3063875979176916502}
   upspeedrate: 10
   duration: 2.5
 --- !u!54 &2361475402351978197
