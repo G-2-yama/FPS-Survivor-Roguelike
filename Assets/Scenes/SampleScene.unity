@@ -8186,7 +8186,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75, y: -10}
+  m_AnchoredPosition: {x: 76, y: -10}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &207828317
@@ -11332,7 +11332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.95, g: 0.04750001, b: 0.04750001, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17322,7 +17322,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -370, y: -430}
-  m_SizeDelta: {x: 350, y: 200}
+  m_SizeDelta: {x: 400, y: 420}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470303781
 MonoBehaviour:
@@ -17336,7 +17336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 7b3edea120077f34793159176811a8af, type: 2}
   m_Color: {r: 0.3726415, g: 0.4817473, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -17344,7 +17344,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -844295045, guid: 7b2f7d1833bb04b48bca0276377f5dc5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21013,7 +21013,6 @@ GameObject:
   - component: {fileID: 582409328}
   - component: {fileID: 582409330}
   - component: {fileID: 582409329}
-  - component: {fileID: 582409331}
   m_Layer: 0
   m_Name: RightAutoAttackUI
   m_TagString: Untagged
@@ -21052,7 +21051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: b9a260cf9ce00684983f9340d78d96a1, type: 2}
   m_Color: {r: 0.9150943, g: 0.66081935, b: 0.20287468, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -21060,7 +21059,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1672052952, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21078,22 +21077,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582409327}
   m_CullTransparentMesh: 1
---- !u!114 &582409331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582409327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be7ed70819725347a64342dec54e2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ImageRotator
-  rotationSpeed: 5
-  speedVariation: 0
-  variationSpeed: 8
-  rectTransform: {fileID: 582409328}
 --- !u!1 &583885107
 GameObject:
   m_ObjectHideFlags: 0
@@ -28607,12 +28590,12 @@ RectTransform:
   - {fileID: 1858578405}
   - {fileID: 1654631600}
   - {fileID: 307928568}
+  - {fileID: 995093538}
   - {fileID: 1067647111}
   - {fileID: 296001862}
   - {fileID: 170879960}
   - {fileID: 1082225619}
   - {fileID: 1447789688}
-  - {fileID: 995093538}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -30172,8 +30155,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -655, y: -425}
-  m_SizeDelta: {x: 250, y: 250}
+  m_AnchoredPosition: {x: -654.5725, y: -425}
+  m_SizeDelta: {x: 251.0687, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938795696
 MonoBehaviour:
@@ -31466,7 +31449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31478,7 +31461,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.85
+  m_FillAmount: 0.75
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -40251,7 +40234,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 370, y: -430}
-  m_SizeDelta: {x: 350, y: 200}
+  m_SizeDelta: {x: 400, y: 420}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1254369219
 MonoBehaviour:
@@ -40265,7 +40248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 46844f3bac13862499f09549db14a02b, type: 2}
   m_Color: {r: 0.9150943, g: 0.66081935, b: 0.20287468, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -40273,7 +40256,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -844295045, guid: 7b2f7d1833bb04b48bca0276377f5dc5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -43625,7 +43608,6 @@ GameObject:
   - component: {fileID: 1406515095}
   - component: {fileID: 1406515097}
   - component: {fileID: 1406515096}
-  - component: {fileID: 1406515098}
   m_Layer: 0
   m_Name: LeftAbilityUI
   m_TagString: Untagged
@@ -43664,7 +43646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6dd23ecc1a0fb8940aa049ace774aee5, type: 2}
   m_Color: {r: 0.3726415, g: 0.4817473, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -43672,7 +43654,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1672052952, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -43690,22 +43672,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1406515094}
   m_CullTransparentMesh: 1
---- !u!114 &1406515098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1406515094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be7ed70819725347a64342dec54e2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ImageRotator
-  rotationSpeed: -5
-  speedVariation: 0
-  variationSpeed: 8
-  rectTransform: {fileID: 1406515095}
 --- !u!1001 &1408135103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46004,7 +45970,6 @@ GameObject:
   - component: {fileID: 1466109269}
   - component: {fileID: 1466109271}
   - component: {fileID: 1466109270}
-  - component: {fileID: 1466109272}
   m_Layer: 0
   m_Name: RightAbilityUI
   m_TagString: Untagged
@@ -46043,7 +46008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: b9a260cf9ce00684983f9340d78d96a1, type: 2}
   m_Color: {r: 0.9150943, g: 0.66081935, b: 0.20287468, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -46051,7 +46016,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1672052952, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -46069,22 +46034,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1466109268}
   m_CullTransparentMesh: 1
---- !u!114 &1466109272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466109268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be7ed70819725347a64342dec54e2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ImageRotator
-  rotationSpeed: 5
-  speedVariation: 0
-  variationSpeed: 8
-  rectTransform: {fileID: 1466109269}
 --- !u!1 &1468363445
 GameObject:
   m_ObjectHideFlags: 0
@@ -55975,7 +55924,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1672052952, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -60638,7 +60587,6 @@ GameObject:
   - component: {fileID: 1961989196}
   - component: {fileID: 1961989198}
   - component: {fileID: 1961989197}
-  - component: {fileID: 1961989199}
   m_Layer: 0
   m_Name: 'LeftAutoAttackUI '
   m_TagString: Untagged
@@ -60677,15 +60625,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6dd23ecc1a0fb8940aa049ace774aee5, type: 2}
   m_Color: {r: 0.3726415, g: 0.4817473, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1672052952, guid: 670a7f0c2288d9e4f86be651fa2d324d, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -60703,22 +60651,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1961989195}
   m_CullTransparentMesh: 1
---- !u!114 &1961989199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961989195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be7ed70819725347a64342dec54e2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ImageRotator
-  rotationSpeed: -5
-  speedVariation: 0
-  variationSpeed: 8
-  rectTransform: {fileID: 1961989196}
 --- !u!1 &1966356838
 GameObject:
   m_ObjectHideFlags: 0
