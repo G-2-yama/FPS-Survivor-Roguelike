@@ -20,11 +20,11 @@ public class DamagePopup : PoolableObject
 
         damageText.text = damage.ToString();
 
-        // Player�̕���������
+        
         Vector3 direction =
             player.position - transform.position;
 
-        // �㉺�����ɌX�������Ȃ��ꍇ
+        
         direction.y = 0f;
 
         if (direction != Vector3.zero)
@@ -48,11 +48,11 @@ public class DamagePopup : PoolableObject
         {
             timer += Time.deltaTime;
 
-            // ��ɕ���
+            
             transform.position +=
                 Vector3.up * moveSpeed * Time.deltaTime;
 
-            // ���X�ɓ�����
+           
             color.a = 1f - timer / lifeTime;
             damageText.color = color;
 

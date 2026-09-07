@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e61a3112b539a4f81b63aaf86e3d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpObject
+  enemyBrain: {fileID: 1956998720970350553}
   expAmount: 100
 --- !u!114 &1956998720970350553
 MonoBehaviour:
@@ -149,6 +150,7 @@ MonoBehaviour:
   targetProvider: {fileID: 4761110829904891083}
   attack: {fileID: 0}
   animator: {fileID: 0}
+  uniqueAnimation: {fileID: 0}
 --- !u!114 &4761110829904891083
 MonoBehaviour:
   m_ObjectHideFlags: 0

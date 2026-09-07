@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6139f63bb98c26843842e69dab697dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::healingHpitem
+  enemyBrain: {fileID: 4743161227430214358}
   healamount: 300
 --- !u!1 &3395144781589724021
 GameObject:

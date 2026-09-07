@@ -3,13 +3,15 @@ using UnityEngine;
 public abstract class PickupTriggerItem : PoolableObject
 {
     private bool pickedUp = false;
+    [SerializeField] private EnemyBrain enemyBrain;
   
 
 
-    private void OnEnable()
+    
+    public override void OnGet()
     {
         pickedUp = false;
-         
+        enemyBrain?.ResetBrain();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -19,7 +19,10 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     [SerializeField] private WhiteFlash whiteFlash;
     [SerializeField] private float deathDelay = 0.1f;
     [SerializeField] private EnemyBrain enemyBrain;
+    [SerializeField] private Sounder sounder;
+    [SerializeField] private DamageEffectManager damageEffectManager;
     protected Health health;
+    public Sounder Sounder => sounder;
     public TeamType TeamType => TeamType.EnemyAmmo;
     public TeamType targetTeam => TeamType.Player;
 
@@ -38,6 +41,11 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     {
         if (health == null)
             return;
+        if (deathType != DeathType.SelfDestruct)
+        {
+            sounder?.Play(SoundCategory.Damage);
+        }
+        damageEffectManager?.ShowDamage(damage,transform.position);
 
         if (health.CurrentHP > 0)
         {
@@ -57,6 +65,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
 
     public override void OnGet()
     {
+        damageEffectManager=DamageEffectManager.Instance;
         hasHit = false;
         deathType= DeathType.Normal;
         health = new Health(config.MaxHp);

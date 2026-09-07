@@ -109,8 +109,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 848f7efbeafd63b4192ac81ff6c7cbb5, type: 2}
-  - {fileID: 2100000, guid: 0e94af45aa7585a4bb3fe55364f7dc49, type: 2}
+  - {fileID: 2100000, guid: 5f269d4c952dd224fb52e34638d7df51, type: 2}
+  - {fileID: 2100000, guid: 1f26693f7633a684bb83f1f6e3f7b21c, type: 2}
   - {fileID: 2100000, guid: 2fde8b0dab0a19c4e99f16603b176d14, type: 2}
   - {fileID: 2100000, guid: b0bc35c379bbe8347b9ae0e0cfdd7f75, type: 2}
   m_StaticBatchInfo:
@@ -159,7 +159,6 @@ MonoBehaviour:
   - prefab: {fileID: 0}
     weight: 20
   sounder: {fileID: 4657746142798485403}
-  damagePopupManager: {fileID: 0}
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0

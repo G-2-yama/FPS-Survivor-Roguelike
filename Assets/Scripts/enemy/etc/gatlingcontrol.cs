@@ -1,14 +1,31 @@
 using UnityEngine;
 
-public class gatlingcontrol : MonoBehaviour
+public class gatlingcontrol : EnemyAnimationEffect
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public float rotationSpeed = 50f;
+    private bool isRotating = false;
+    private void OnEnable()
+    {
+        isRotating = false;
 
+    }
+
+
+    public override void Play()
+    {
+        isRotating = true;
+    }
+    public override void Stop()
+    {
+        isRotating = false;
+    }
     void Update()
     {
-        // YŽ²Žü‚è‚É‰ñ“]
-        transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+        if (isRotating)
+        {
+            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+        }
     }
 }
