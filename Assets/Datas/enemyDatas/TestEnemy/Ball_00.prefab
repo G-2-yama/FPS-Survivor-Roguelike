@@ -66,8 +66,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7186765404628016228, guid: 7b4b31fe0e1a51341894eb09b3827023, type: 3}
-  - {fileID: 8370990898485310482, guid: 7b4b31fe0e1a51341894eb09b3827023, type: 3}
+  - {fileID: 2100000, guid: 5f269d4c952dd224fb52e34638d7df51, type: 2}
+  - {fileID: 2100000, guid: fca894d3bffd938468b8e921fc00c686, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,8 +166,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7521417751525332651, guid: 7b4b31fe0e1a51341894eb09b3827023, type: 3}
-  - {fileID: -6432775758378877703, guid: 7b4b31fe0e1a51341894eb09b3827023, type: 3}
+  - {fileID: 2100000, guid: b0bc35c379bbe8347b9ae0e0cfdd7f75, type: 2}
+  - {fileID: 2100000, guid: 5f269d4c952dd224fb52e34638d7df51, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -292,8 +292,9 @@ MonoBehaviour:
   whiteFlash: {fileID: 1146902704468627000}
   deathDelay: 0.1
   enemyBrain: {fileID: 8605327344671441158}
-  prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
   sounder: {fileID: 2046484930153894469}
+  damageEffectManager: {fileID: 0}
+  prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
 --- !u!114 &1146902704468627000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +329,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 124
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
