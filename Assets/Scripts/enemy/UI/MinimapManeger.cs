@@ -3,91 +3,155 @@ using UnityEngine;
 
 public class MinimapManager : MonoBehaviour
 {
-    [SerializeField] private EnemyGenerator enemyGenerator;
-    [SerializeField] private Transform player;
+    [System.Serializable]
+    public class MinimapSource
+    {
+        public EnemyGenerator generator;
+        public GameObject iconPrefab;
+    }
 
-    [SerializeField] private GameObject enemyIconPrefab;
+    [SerializeField] private List<MinimapSource> sources = new();
+
+    [SerializeField] private Transform player;
     [SerializeField] private RectTransform iconParent;
+    [SerializeField] private RectTransform playerIcon;
 
     [SerializeField] private float displayRange = 20f;
     [SerializeField] private float minimapRadius = 100f;
 
-    // Enemy → MinimapIcon
-    private Dictionary<GameObject, MinimapIcon> enemyIcons = new();
+
+    // 対象Object → 対応するIcon
+    private Dictionary<GameObject, MinimapIcon> targetIcons = new();
+
+    // 現在存在している全対象
+    private HashSet<GameObject> activeTargets = new();
+
+    // 対象 → 使用するPrefab
+    private Dictionary<GameObject, GameObject> targetPrefabs = new();
 
     private List<GameObject> removeList = new();
 
+
     private void Update()
     {
-        var enemies = enemyGenerator.ActiveEnemies;
+        CollectActiveTargets();
 
-        CreateIcons(enemies);
-        RemoveIcons(enemies);
+        CreateIcons();
+        RemoveIcons();
         UpdateIconPositions();
+        UpdatePlayerIcon();
     }
 
-    private void CreateIcons(IReadOnlyList<GameObject> enemies)
+
+    /// <summary>
+    /// 全Generatorから現在ActiveなObjectを集める
+    /// </summary>
+    private void CollectActiveTargets()
     {
-        foreach (GameObject enemy in enemies)
+        activeTargets.Clear();
+        targetPrefabs.Clear();
+
+        foreach (MinimapSource source in sources)
         {
-            if (enemy == null)
+            if (source.generator == null ||
+                source.iconPrefab == null)
+            {
+                continue;
+            }
+
+            var targets = source.generator.ActiveEnemies;
+
+            foreach (GameObject target in targets)
+            {
+                if (target == null ||
+                    !target.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                activeTargets.Add(target);
+
+                // このObjectがどのIconPrefabを使うか
+                targetPrefabs[target] = source.iconPrefab;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Iconを持っていない対象にPoolからIconを割り当てる
+    /// </summary>
+    private void CreateIcons()
+    {
+        foreach (GameObject target in activeTargets)
+        {
+            if (targetIcons.ContainsKey(target))
                 continue;
 
-            // すでにIconが存在していたら何もしない
-            if (enemyIcons.ContainsKey(enemy))
-                continue;
+            GameObject prefab = targetPrefabs[target];
 
             GameObject iconObj =
-                PoolManager.Instance.Get(enemyIconPrefab);
+                PoolManager.Instance.Get(prefab);
 
-            // Canvas内に移動
+            // Canvas配下へ
             iconObj.transform.SetParent(iconParent, false);
 
             MinimapIcon icon =
                 iconObj.GetComponent<MinimapIcon>();
 
-            enemyIcons.Add(enemy, icon);
+            targetIcons.Add(target, icon);
         }
     }
 
-    private void RemoveIcons(IReadOnlyList<GameObject> enemies)
+
+    /// <summary>
+    /// Generatorから消えた対象のIconをPoolへ返す
+    /// </summary>
+    private void RemoveIcons()
     {
         removeList.Clear();
 
-        foreach (var pair in enemyIcons)
+        foreach (var pair in targetIcons)
         {
-            GameObject enemy = pair.Key;
+            GameObject target = pair.Key;
 
-            if (enemy == null ||
-                !enemy.activeInHierarchy ||
-                !ContainsEnemy(enemies, enemy))
+            if (target == null ||
+                !target.activeInHierarchy ||
+                !activeTargets.Contains(target))
             {
-                removeList.Add(enemy);
+                removeList.Add(target);
             }
         }
 
-        foreach (GameObject enemy in removeList)
+        foreach (GameObject target in removeList)
         {
-            MinimapIcon icon = enemyIcons[enemy];
+            MinimapIcon icon = targetIcons[target];
 
             icon.Release();
 
-            enemyIcons.Remove(enemy);
+            targetIcons.Remove(target);
         }
     }
 
+
+    /// <summary>
+    /// 各Iconのミニマップ上の位置を更新
+    /// </summary>
     private void UpdateIconPositions()
     {
-        foreach (var pair in enemyIcons)
+        foreach (var pair in targetIcons)
         {
-            GameObject enemy = pair.Key;
+            GameObject target = pair.Key;
             MinimapIcon icon = pair.Value;
 
             Vector3 offset =
-                enemy.transform.position - player.position;
+                target.transform.position - player.position;
 
             Vector2 mapPosition =
-                new Vector2(offset.x, offset.z);
+                new Vector2(
+                    offset.x,
+                    offset.z
+                );
 
             mapPosition =
                 mapPosition / displayRange * minimapRadius;
@@ -100,19 +164,58 @@ public class MinimapManager : MonoBehaviour
 
             icon.RectTransform.anchoredPosition =
                 mapPosition;
+
+
+            // アイコン上方向をPlayerへ向ける
+            Vector2 directionToPlayer = -mapPosition;
+
+            if (directionToPlayer.sqrMagnitude > 0.001f)
+            {
+                float angle =
+                    Mathf.Atan2(
+                        directionToPlayer.y,
+                        directionToPlayer.x
+                    )
+                    * Mathf.Rad2Deg
+                    - 90f;
+
+                icon.RectTransform.localRotation =
+                    Quaternion.Euler(
+                        0f,
+                        0f,
+                        angle
+                    );
+            }
         }
     }
 
-    private bool ContainsEnemy(
-        IReadOnlyList<GameObject> enemies,
-        GameObject target)
-    {
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            if (enemies[i] == target)
-                return true;
-        }
 
-        return false;
+    /// <summary>
+    /// PlayerIconだけ実際のPlayer方向に合わせる
+    /// </summary>
+    private void UpdatePlayerIcon()
+    {
+        Vector3 forward = player.forward;
+
+        forward.y = 0f;
+
+        if (forward.sqrMagnitude < 0.001f)
+            return;
+
+        forward.Normalize();
+
+        float angle =
+            Vector3.SignedAngle(
+                Vector3.forward,
+                forward,
+                Vector3.up
+            );
+
+        playerIcon.localRotation =
+            Quaternion.Euler(
+                0f,
+                0f,
+                -angle
+            );
     }
 }
