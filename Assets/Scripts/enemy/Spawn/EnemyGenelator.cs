@@ -15,7 +15,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private SpawnDirectionData[] spawnDirections;
     [SerializeField] private Timer timer;
     [SerializeField] private int maxSpawnTry = 5;
-    private List<GameObject> activeEnemies = new List<GameObject>();
+    [SerializeField]private List<GameObject> activeEnemies = new List<GameObject>();
+    public IReadOnlyList<GameObject> ActiveEnemies => activeEnemies;
 
     //敵生成上限数
     [SerializeField] private int maxEnemyCount = 10;
