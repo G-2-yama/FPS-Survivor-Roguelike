@@ -21,6 +21,10 @@ public class LevelUp : UpgradeBase
         target.LevelUp();
     }
 
+    /// <summary>
+    /// 武器のレベルアップの説明更新
+    /// </summary>
+    /// <param name="nextData"></param>
     private void UpdateDesription(WeaponData nextData)
     {
         if (nextData == null)

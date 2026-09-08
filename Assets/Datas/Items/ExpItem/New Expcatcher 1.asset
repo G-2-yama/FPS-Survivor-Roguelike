@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Expcatcher 1
   m_EditorClassIdentifier: Assembly-CSharp::Expcatcher
   displayName: "\u30A2\u30A4\u30C6\u30E0\u53D6\u5F97\u7BC4\u56F2\u62E1\u5927"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: be97b668ed70d8447b018c2ddf00ec88, type: 3}
   description: "\u62E1\u5927\u7BC4\u56F2\u5897\u52A0"
   nextLevelItem: {fileID: 0}
   expdata: {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}

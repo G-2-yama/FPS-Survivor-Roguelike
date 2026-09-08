@@ -7,6 +7,7 @@ public class Unlock : UpgradeBase
 
     public override bool IsAvailable()
     {
+        UpdateDescription();
         if(target.WeaponType == WeaponType.Main)
         {
             return !player.Inventory.HasWeapon(SlotType.RightMain) || !player.Inventory.HasWeapon(SlotType.LeftMain);
@@ -58,5 +59,20 @@ public class Unlock : UpgradeBase
                 player.Inventory.EquipWeapon(SlotType.RightAutoWeapon, target);
             }
         }
+    }
+
+    /// <summary>
+    /// 武器取得の説明更新
+    /// </summary>
+    private void UpdateDescription()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        icon = target.Icon;
+        displayName = target.DisplayName + " 解放";
+        description = target.Description;
     }
 }

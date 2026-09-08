@@ -16,7 +16,7 @@ MonoBehaviour:
     weaponId: weapon_default
     displayName: "Evo\u30AA\u30FC\u30C8\u30BF\u30FC\u30B2\u30C3\u30C8"
     description: "\u6575\u306B\u5411\u304B\u3066\u767A\u5C04\u3059\u308B\u30D3\u30FC\u30E0\u3092\u7D76\u3048\u9593\u306A\u304F\u5C04\u51FA\u3057\u307E\u3059"
-    icon: {fileID: -982868785, guid: 1115e4780f901f2418cffc1311666326, type: 3}
+    icon: {fileID: 21300000, guid: 67f8555eca0e9884b9d61cdc2d61f695, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
-    displayName: "\u7A7A\u7206"
+    displayName: "\u30A8\u30A2\u30B9\u30C8\u30E9\u30A4\u30AF"
     description: "\u30DE\u30AC\u30B8\u30F3\u30B5\u30A4\u30BA3->5"
-    icon: {fileID: 21300000, guid: 73fdc7317632dbb49aadbaacaa554acb, type: 3}
+    icon: {fileID: 21300000, guid: add84d1dcfee32848b6023781a1918dd, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
