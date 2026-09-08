@@ -51156,6 +51156,7 @@ GameObject:
   - component: {fileID: 1662431706}
   - component: {fileID: 1662431708}
   - component: {fileID: 1662431707}
+  - component: {fileID: 1662431709}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -51194,8 +51195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.34999108, g: 0.4438115, b: 0.5188679, a: 1}
+  m_Material: {fileID: 2100000, guid: 25dd87cf33ab71343ba95b34718333c6, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -51220,6 +51221,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662431705}
   m_CullTransparentMesh: 1
+--- !u!114 &1662431709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662431705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c6770894654c945a4e33e53c79dc14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnScaleShader
 --- !u!1 &1664683021
 GameObject:
   m_ObjectHideFlags: 0
