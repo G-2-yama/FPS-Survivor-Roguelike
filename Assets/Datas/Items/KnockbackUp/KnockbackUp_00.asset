@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KnockbackUp_00
   m_EditorClassIdentifier: Assembly-CSharp::KnockbackUpItem
   displayName: "\u30CE\u30C3\u30AF\u30D0\u30C3\u30AF\u5897\u5F37"
-  icon: {fileID: 21300000, guid: 83be528f2ee301041b4f9809ee2c8f16, type: 3}
+  icon: {fileID: 21300000, guid: ca0e1f97e64111f4aac9a3225da253e8, type: 3}
   description: "\u30CE\u30C3\u30AF\u30D0\u30C3\u30AF\u309210%\u5897\u5F37\u3059\u308B"
   nextLevelItem: {fileID: 0}
   KnockbackIncreaseAmount: 0.1
