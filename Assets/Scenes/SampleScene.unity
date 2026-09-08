@@ -41260,8 +41260,8 @@ MonoBehaviour:
   player: {fileID: 275487189}
   iconParent: {fileID: 553230706}
   playerIcon: {fileID: 1088341490}
-  displayRange: 100
-  minimapRadius: 50
+  displayRange: 70
+  minimapRadius: 40
 --- !u!1 &1274284089
 GameObject:
   m_ObjectHideFlags: 0
