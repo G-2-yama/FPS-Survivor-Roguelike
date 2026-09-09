@@ -9,7 +9,7 @@ public class PlayerConfig : MonoBehaviour
     /// 通常移動速度の設定値
     /// </summary>
     [Header("Movement")]
-    [SerializeField] private float walkSpeed = 10f;
+    [SerializeField] private float walkSpeed = 7.5f;
 
     /// <summary>
     /// 通常移動時の速度
@@ -19,7 +19,7 @@ public class PlayerConfig : MonoBehaviour
     /// <summary>
     /// 走行速度の設定値
     /// </summary>
-    [SerializeField] private float runSpeed = 8f;
+    [SerializeField] private float runSpeed = 10f;
 
     /// <summary>
     /// 走行時の速度
@@ -229,6 +229,12 @@ public class PlayerConfig : MonoBehaviour
     [SerializeField, Min(0f)] private float slideCameraHeightMultiplier = 0.5f;
     [SerializeField, Min(0f)] private float slideCameraHeightLerpSpeed = 12f;
 
+    [Header("Speed Field Of View")]
+    [SerializeField, Min(0f)] private float sprintFieldOfViewIncrease = 6f;
+    [SerializeField, Min(0f)] private float slideFieldOfViewIncrease = 12f;
+    [SerializeField, Min(0f)] private float fieldOfViewIncreaseLerpSpeed = 10f;
+    [SerializeField, Min(0f)] private float fieldOfViewDecreaseLerpSpeed = 6f;
+
     public float SlideSpeed => slideSpeed;
     public float SlideMinInertiaSpeed => slideMinInertiaSpeed;
     public float SlideTurnRateDegreesPerSecond => slideTurnRateDegreesPerSecond;
@@ -237,4 +243,8 @@ public class PlayerConfig : MonoBehaviour
     public float FastFallTerminalSpeed => fastFallTerminalSpeed;
     public float SlideCameraHeightMultiplier => slideCameraHeightMultiplier;
     public float SlideCameraHeightLerpSpeed => slideCameraHeightLerpSpeed;
+    public float SprintFieldOfViewIncrease => sprintFieldOfViewIncrease;
+    public float SlideFieldOfViewIncrease => slideFieldOfViewIncrease;
+    public float FieldOfViewIncreaseLerpSpeed => fieldOfViewIncreaseLerpSpeed;
+    public float FieldOfViewDecreaseLerpSpeed => fieldOfViewDecreaseLerpSpeed;
 }

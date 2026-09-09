@@ -36,6 +36,16 @@ public class PlayerController : MonoBehaviour
     [FormerlySerializedAs("cameraPitchTransform")]
     [SerializeField] private Transform cameraLookPivotTransform;
 
+    [SerializeField] private Camera playerCamera;
+
+    [Tooltip("ダッシュ・スライド・急降下時の軌跡 未設定の場合は軌跡を表示しません")]
+    [SerializeField] private PlayerActionTrail actionTrail;
+
+    /// <summary>
+    /// ダッシュやスライディングなどのアクション中に集中線を表示するコンポーネント
+    /// </summary>
+    [SerializeField] private PlayerActionConcentrationLine actionConcentrationLine;
+
     /// <summary>
     /// プレイヤー移動に使用するCharacterController
     /// </summary>
@@ -61,6 +71,8 @@ public class PlayerController : MonoBehaviour
         player = ResolvePlayer();
         playerConfig = ResolvePlayerConfig();
         cameraLookPivotTransform = ResolveCameraLookPivotTransform();
+        playerCamera = ResolvePlayerCamera();
+        actionTrail = ResolveActionTrail();
 
         if (!ValidateReferences())
         {
@@ -77,6 +89,7 @@ public class PlayerController : MonoBehaviour
         PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig,stats);
         PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, playerConfig);
         PlayerViewOffsetController viewOffset = new PlayerViewOffsetController(cameraLookPivotTransform, playerConfig);
+        PlayerFovController fov = new PlayerFovController(playerCamera, playerConfig);
         PlayerControlState controls = new PlayerControlState();
         PlayerCommandBuffer commands = new PlayerCommandBuffer();
 
@@ -89,6 +102,9 @@ public class PlayerController : MonoBehaviour
             jumpController,
             look,
             viewOffset,
+            fov,
+            actionTrail,
+            actionConcentrationLine,
             controls,
             commands);
 
@@ -251,6 +267,16 @@ public class PlayerController : MonoBehaviour
         return null;
     }
 
+    private Camera ResolvePlayerCamera()
+    {
+        if (playerCamera != null)
+        {
+            return playerCamera;
+        }
+
+        return GetComponentInChildren<Camera>(true);
+    }
+
     /// <summary>
     /// プレイヤーモデルを解決する
     /// </summary>
@@ -275,5 +301,18 @@ public class PlayerController : MonoBehaviour
         }
 
         return GetComponent<PlayerConfig>();
+    }
+
+    /// <summary>
+    /// 同じ GameObject に付与された軌跡コンポーネントを自動取得する
+    /// </summary>
+    private PlayerActionTrail ResolveActionTrail()
+    {
+        if (actionTrail != null)
+        {
+            return actionTrail;
+        }
+
+        return GetComponent<PlayerActionTrail>();
     }
 }

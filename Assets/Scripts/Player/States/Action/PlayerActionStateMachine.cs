@@ -27,6 +27,8 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     /// </summary>
     public bool IsBlockingNormalMovement => currentState?.BlocksNormalMovement ?? false;
 
+    public bool IsSliding => currentState == slideActionState;
+
     /// <summary>
     /// 動作ステートを生成し、特殊動作なし状態へ遷移する
     /// </summary>

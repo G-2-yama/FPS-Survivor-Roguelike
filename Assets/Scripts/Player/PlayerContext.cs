@@ -39,6 +39,17 @@ public class PlayerContext
     /// </summary>
     public PlayerLookController Look { get; }
     public PlayerViewOffsetController ViewOffset { get; }
+    public PlayerFovController Fov { get; }
+
+    /// <summary>
+    /// アクションごとのプレイヤー軌跡を制御するコンポーネント 未設定でもゲームプレイは継続する
+    /// </summary>
+    public PlayerActionTrail ActionTrail { get; }
+
+    /// <summary>
+    /// アクション状態に合わせた集中線表示を制御するコンポーネント 未設定でもゲームプレイは継続する
+    /// </summary>
+    public PlayerActionConcentrationLine ActionConcentrationLine { get; }
 
     /// <summary>
     /// 継続入力の現在値
@@ -62,6 +73,9 @@ public class PlayerContext
         PlayerJumpController jumpController,
         PlayerLookController look,
         PlayerViewOffsetController viewOffset,
+        PlayerFovController fov,
+        PlayerActionTrail actionTrail,
+        PlayerActionConcentrationLine actionConcentrationLine,
         PlayerControlState controls,
         PlayerCommandBuffer commands)
     {
@@ -73,6 +87,9 @@ public class PlayerContext
         JumpController = jumpController;
         Look = look;
         ViewOffset = viewOffset;
+        Fov = fov;
+        ActionTrail = actionTrail;
+        ActionConcentrationLine = actionConcentrationLine;
         Controls = controls;
         Commands = commands;
     }

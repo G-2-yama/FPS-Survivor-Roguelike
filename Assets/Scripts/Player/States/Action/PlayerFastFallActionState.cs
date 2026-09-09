@@ -20,6 +20,8 @@ public class PlayerFastFallActionState : PlayerActionState
         context.Motor.VerticalVelocity = Mathf.Min(
             context.Motor.VerticalVelocity,
             -context.Config.FastFallEntrySpeed);
+        context.ActionTrail?.Begin(PlayerActionTrail.ActionType.FastFall);
+        context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.FastFall);
     }
 
     public override void Update()
@@ -39,5 +41,11 @@ public class PlayerFastFallActionState : PlayerActionState
         context.Motor.VerticalVelocity = Mathf.Max(
             context.Motor.VerticalVelocity - extraDownwardVelocity,
             -context.Config.FastFallTerminalSpeed);
+    }
+
+    public override void Exit()
+    {
+        context.ActionTrail?.End(PlayerActionTrail.ActionType.FastFall);
+        context.ActionConcentrationLine?.End(PlayerActionConcentrationLine.ActionType.FastFall);
     }
 }
