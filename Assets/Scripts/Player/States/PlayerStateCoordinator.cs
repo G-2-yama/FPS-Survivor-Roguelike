@@ -63,6 +63,13 @@ public class PlayerStateCoordinator
             deltaTime);
         context.ViewOffset.Update(deltaTime);
 
+        bool hasMoveInput = context.Controls.MoveInput.sqrMagnitude > 0.0001f;
+        bool isSprinting = !actionStateMachine.IsBlockingNormalMovement
+            && context.Controls.SprintHeld
+            && hasMoveInput
+            && context.Motor.IsGrounded();
+        context.Fov.Update(isSprinting, actionStateMachine.IsSliding, deltaTime);
+
         if (actionStateMachine.IsBlockingNormalMovement)
         {
             return;
@@ -81,6 +88,7 @@ public class PlayerStateCoordinator
     public void ChangeToDeadState()
     {
         actionStateMachine.ChangeToNoActionState();
+        context.Fov.Reset();
         bodyStateMachine.ChangeToDeadState();
     }
 }

@@ -39,6 +39,7 @@ public class PlayerContext
     /// </summary>
     public PlayerLookController Look { get; }
     public PlayerViewOffsetController ViewOffset { get; }
+    public PlayerFovController Fov { get; }
 
     /// <summary>
     /// アクションごとのプレイヤー軌跡を制御するコンポーネント 未設定でもゲームプレイは継続する
@@ -67,6 +68,7 @@ public class PlayerContext
         PlayerJumpController jumpController,
         PlayerLookController look,
         PlayerViewOffsetController viewOffset,
+        PlayerFovController fov,
         PlayerActionTrail actionTrail,
         PlayerControlState controls,
         PlayerCommandBuffer commands)
@@ -79,6 +81,7 @@ public class PlayerContext
         JumpController = jumpController;
         Look = look;
         ViewOffset = viewOffset;
+        Fov = fov;
         ActionTrail = actionTrail;
         Controls = controls;
         Commands = commands;
