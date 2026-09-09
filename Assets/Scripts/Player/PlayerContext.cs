@@ -41,6 +41,11 @@ public class PlayerContext
     public PlayerViewOffsetController ViewOffset { get; }
 
     /// <summary>
+    /// アクションごとのプレイヤー軌跡を制御するコンポーネント 未設定でもゲームプレイは継続する
+    /// </summary>
+    public PlayerActionTrail ActionTrail { get; }
+
+    /// <summary>
     /// 継続入力の現在値
     /// </summary>
     public PlayerControlState Controls { get; }
@@ -62,6 +67,7 @@ public class PlayerContext
         PlayerJumpController jumpController,
         PlayerLookController look,
         PlayerViewOffsetController viewOffset,
+        PlayerActionTrail actionTrail,
         PlayerControlState controls,
         PlayerCommandBuffer commands)
     {
@@ -73,6 +79,7 @@ public class PlayerContext
         JumpController = jumpController;
         Look = look;
         ViewOffset = viewOffset;
+        ActionTrail = actionTrail;
         Controls = controls;
         Commands = commands;
     }
