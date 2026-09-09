@@ -21,6 +21,7 @@ public class PlayerFastFallActionState : PlayerActionState
             context.Motor.VerticalVelocity,
             -context.Config.FastFallEntrySpeed);
         context.ActionTrail?.Begin(PlayerActionTrail.ActionType.FastFall);
+        context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.FastFall);
     }
 
     public override void Update()
@@ -45,5 +46,6 @@ public class PlayerFastFallActionState : PlayerActionState
     public override void Exit()
     {
         context.ActionTrail?.End(PlayerActionTrail.ActionType.FastFall);
+        context.ActionConcentrationLine?.End(PlayerActionConcentrationLine.ActionType.FastFall);
     }
 }

@@ -50,6 +50,7 @@ public class PlayerSlideActionState : PlayerActionState
         context.Motor.SetControllerHeight(originalControllerHeight * 0.5f);
         context.ViewOffset.SetSlideActive(true);
         context.ActionTrail?.Begin(PlayerActionTrail.ActionType.Slide);
+        context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.Slide);
     }
 
     public override void Update()
@@ -94,5 +95,6 @@ public class PlayerSlideActionState : PlayerActionState
         context.Motor.SetControllerDimensions(originalControllerHeight, originalControllerCenter);
         slideDirection = UnityEngine.Vector3.zero;
         context.ActionTrail?.End(PlayerActionTrail.ActionType.Slide);
+        context.ActionConcentrationLine?.End(PlayerActionConcentrationLine.ActionType.Slide);
     }
 }

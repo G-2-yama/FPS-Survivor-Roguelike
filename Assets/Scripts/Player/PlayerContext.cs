@@ -47,6 +47,11 @@ public class PlayerContext
     public PlayerActionTrail ActionTrail { get; }
 
     /// <summary>
+    /// アクション状態に合わせた集中線表示を制御するコンポーネント 未設定でもゲームプレイは継続する
+    /// </summary>
+    public PlayerActionConcentrationLine ActionConcentrationLine { get; }
+
+    /// <summary>
     /// 継続入力の現在値
     /// </summary>
     public PlayerControlState Controls { get; }
@@ -70,6 +75,7 @@ public class PlayerContext
         PlayerViewOffsetController viewOffset,
         PlayerFovController fov,
         PlayerActionTrail actionTrail,
+        PlayerActionConcentrationLine actionConcentrationLine,
         PlayerControlState controls,
         PlayerCommandBuffer commands)
     {
@@ -83,6 +89,7 @@ public class PlayerContext
         ViewOffset = viewOffset;
         Fov = fov;
         ActionTrail = actionTrail;
+        ActionConcentrationLine = actionConcentrationLine;
         Controls = controls;
         Commands = commands;
     }

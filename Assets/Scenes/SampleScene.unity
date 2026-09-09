@@ -9846,6 +9846,7 @@ MonoBehaviour:
   cameraLookPivotTransform: {fileID: 330585546}
   playerCamera: {fileID: 0}
   actionTrail: {fileID: 418823479}
+  actionConcentrationLine: {fileID: 1693584001}
 --- !u!136 &275487186
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -52343,6 +52344,7 @@ GameObject:
   - component: {fileID: 1693583998}
   - component: {fileID: 1693584000}
   - component: {fileID: 1693583999}
+  - component: {fileID: 1693584001}
   m_Layer: 5
   m_Name: ConcentrationLine
   m_TagString: Untagged
@@ -52396,6 +52398,19 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &1693584001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693583997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29a3e00dcc149af870b3d7c7b73b2df, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerActionConcentrationLine
+  concentrationLine: {fileID: 1693583999}
 --- !u!222 &1693584000
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerActionTrail actionTrail;
 
     /// <summary>
+    /// ダッシュやスライディングなどのアクション中に集中線を表示するコンポーネント
+    /// </summary>
+    [SerializeField] private PlayerActionConcentrationLine actionConcentrationLine;
+
+    /// <summary>
     /// プレイヤー移動に使用するCharacterController
     /// </summary>
     private CharacterController playerCharacterController;
@@ -99,6 +104,7 @@ public class PlayerController : MonoBehaviour
             viewOffset,
             fov,
             actionTrail,
+            actionConcentrationLine,
             controls,
             commands);
 
