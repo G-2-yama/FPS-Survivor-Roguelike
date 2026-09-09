@@ -15403,14 +15403,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfdd9d40c8a48b1b4d8d1c7e6ad3186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActionTrail
-  trailRenderer: {fileID: 0}
+  primaryTrailRenderer: {fileID: 0}
   stateBindings:
   - action: 0
     settings: {fileID: 11400000, guid: d39ea248790c30341b4c476a5f301617, type: 2}
+    trailRenderer: {fileID: 0}
   - action: 1
     settings: {fileID: 11400000, guid: 55630021e65d35e4e877d206ff886227, type: 2}
+    trailRenderer: {fileID: 0}
   - action: 2
     settings: {fileID: 11400000, guid: 8436733ac1de49b419f20d84e392ef0b, type: 2}
+    trailRenderer: {fileID: 0}
 --- !u!1 &419558333
 GameObject:
   m_ObjectHideFlags: 0
@@ -45499,7 +45502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1447789688
 RectTransform:
   m_ObjectHideFlags: 0

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfe45d62f2a4ecf8ec85fd85095b3c0, type: 3}
   m_Name: HealedOverlayStateSettings
   m_EditorClassIdentifier: 
-  minimumIntensity: 0.2
+  minimumIntensity: 0.35
   responseScale: 2
-  intensityCarryover: 0.15
+  intensityCarryover: 0.25
   overlayColor: {r: 0.2, g: 0.95, b: 0.45, a: 1}
-  screenDarknessAtFullIntensity: 0
-  edgeOpacityAtFullIntensity: 0.3
+  screenDarknessAtFullIntensity: 0.18
+  edgeOpacityAtFullIntensity: 0.75
   fadeInDuration: 0.05
   holdDuration: 0.06
   fadeOutDuration: 0.28
