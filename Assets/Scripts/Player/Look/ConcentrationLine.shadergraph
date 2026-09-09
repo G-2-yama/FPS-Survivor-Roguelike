@@ -1216,7 +1216,7 @@
     "m_ObjectId": "792f8f101c3345ebb63b2c6c3afe82f0",
     "m_Version": 0,
     "m_AlphaClip": true,
-    "m_DisableTint": false
+    "m_DisableTint": true
 }
 
 {
@@ -1420,7 +1420,7 @@
     "m_AlphaClip": false,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
-    "m_DisableTint": false,
+    "m_DisableTint": true,
     "m_Sort3DAs2DCompatible": false,
     "m_AdditionalMotionVectorMode": 0,
     "m_AlembicMotionVectors": false,
