@@ -4,7 +4,7 @@ using UnityEngine;
 /// プレイヤーの1操作分の軌跡設定を保持する ScriptableObject
 /// ダッシュ用・スライド用など、操作ごとにアセットを作成して使用する
 /// </summary>
-[CreateAssetMenu(fileName = "PlayerTrailSettings", menuName = "FPS Survivor/Player/Trail Settings")]
+[CreateAssetMenu(fileName = "PlayerTrailSettings", menuName = "Player/Trail Settings")]
 public class PlayerTrailSettings : ScriptableObject, IPlayerTrailSettings
 {
     [SerializeField] private bool isEnabled = true;
