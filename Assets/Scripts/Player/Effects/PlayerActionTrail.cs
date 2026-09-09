@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
-/// プレイヤーのアクション中だけ TrailRenderer を発生させるコンポーネント
-/// Inspector でステートと PlayerTrailSettings アセットを対応付ける
+/// プレイヤーのアクション中だけ軌跡を発生させるコンポーネント
+/// ステートごとに別の TrailRenderer を使用するため、残っている軌跡の見た目は切り替わらない
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(TrailRenderer))]
@@ -16,9 +17,6 @@ public class PlayerActionTrail : MonoBehaviour
         FastFall
     }
 
-    /// <summary>
-    /// アクションステートと軌跡設定アセットの対応
-    /// </summary>
     [Serializable]
     public class StateBinding
     {
@@ -27,90 +25,180 @@ public class PlayerActionTrail : MonoBehaviour
 
         [Tooltip("このステート中に使う軌跡設定 ScriptableObject")]
         public PlayerTrailSettings settings;
+
+        [Tooltip("このステート専用の TrailRenderer 未設定の場合は実行時に自動生成されます")]
+        public TrailRenderer trailRenderer;
     }
 
-    [SerializeField] private TrailRenderer trailRenderer;
+    [FormerlySerializedAs("trailRenderer")]
+    [SerializeField] private TrailRenderer primaryTrailRenderer;
 
     [Tooltip("アクションステートごとの軌跡設定 アクションは重複させないでください")]
     [SerializeField] private StateBinding[] stateBindings;
 
-    private ActionType? activeAction;
-
-    public TrailRenderer TrailRenderer => trailRenderer;
+    private StateBinding activeBinding;
 
     private void Reset()
     {
-        trailRenderer = GetComponent<TrailRenderer>();
+        primaryTrailRenderer = GetComponent<TrailRenderer>();
     }
 
     private void Awake()
     {
-        if (trailRenderer == null)
+        if (primaryTrailRenderer == null)
         {
-            trailRenderer = GetComponent<TrailRenderer>();
+            primaryTrailRenderer = GetComponent<TrailRenderer>();
         }
 
-        StopEmitting(clear: true);
+        EnsureTrailRenderers();
+        StopEmitting();
     }
 
     private void OnDisable()
     {
-        StopEmitting(clear: true);
+        StopEmitting();
     }
 
     /// <summary>
-    /// 指定したアクションステートに紐付いた設定を適用して、軌跡の発生を開始する
+    /// 指定したアクションステートに紐付いた設定を適用して、専用軌跡の発生を開始する
     /// </summary>
     public void Begin(ActionType action)
     {
-        IPlayerTrailSettings settings = FindSettings(action);
-        activeAction = action;
-
-        if (settings == null || !settings.IsEnabled || trailRenderer == null)
+        StateBinding binding = FindBinding(action);
+        if (binding == null || binding.settings == null || !binding.settings.IsEnabled)
         {
-            StopEmitting(clear: false);
+            StopEmitting();
             return;
         }
 
-        settings.ApplyTo(trailRenderer);
-        trailRenderer.Clear();
-        trailRenderer.emitting = true;
+        TrailRenderer targetTrailRenderer = GetOrCreateTrailRenderer(binding);
+        if (targetTrailRenderer == null)
+        {
+            StopEmitting();
+            return;
+        }
+
+        if (activeBinding != null
+            && activeBinding != binding
+            && activeBinding.trailRenderer != null)
+        {
+            activeBinding.trailRenderer.emitting = false;
+        }
+
+        activeBinding = binding;
+        binding.settings.ApplyTo(targetTrailRenderer);
+        targetTrailRenderer.emitting = true;
     }
 
     /// <summary>
-    /// 指定したアクションの軌跡を停止する すでに生成された軌跡は設定アセットの Time だけ残る
+    /// 指定したアクションの軌跡だけを停止する
+    /// すでに生成された部分はそのステート専用の設定のまま Time が経過するまで残る
     /// </summary>
     public void End(ActionType action)
     {
-        if (activeAction != action)
+        if (activeBinding == null || activeBinding.action != action)
         {
             return;
         }
 
-        activeAction = null;
-        StopEmitting(clear: false);
+        if (activeBinding.trailRenderer != null)
+        {
+            activeBinding.trailRenderer.emitting = false;
+        }
+
+        activeBinding = null;
     }
 
     /// <summary>
     /// すべての軌跡の発生を停止する
     /// </summary>
-    public void StopEmitting(bool clear)
+    public void StopEmitting()
     {
-        activeAction = null;
+        activeBinding = null;
 
-        if (trailRenderer == null)
+        if (stateBindings == null)
         {
             return;
         }
 
-        trailRenderer.emitting = false;
-        if (clear)
+        for (int i = 0; i < stateBindings.Length; i++)
         {
-            trailRenderer.Clear();
+            TrailRenderer targetTrailRenderer = stateBindings[i]?.trailRenderer;
+            if (targetTrailRenderer != null)
+            {
+                targetTrailRenderer.emitting = false;
+            }
         }
     }
 
-    private IPlayerTrailSettings FindSettings(ActionType action)
+    private void EnsureTrailRenderers()
+    {
+        if (stateBindings == null)
+        {
+            return;
+        }
+
+        bool isPrimaryTrailRendererAssigned = false;
+        for (int i = 0; i < stateBindings.Length; i++)
+        {
+            StateBinding binding = stateBindings[i];
+            if (binding?.trailRenderer == primaryTrailRenderer)
+            {
+                isPrimaryTrailRendererAssigned = true;
+                break;
+            }
+        }
+
+        for (int i = 0; i < stateBindings.Length; i++)
+        {
+            StateBinding binding = stateBindings[i];
+            if (binding == null || binding.trailRenderer != null)
+            {
+                continue;
+            }
+
+            if (!isPrimaryTrailRendererAssigned && primaryTrailRenderer != null)
+            {
+                binding.trailRenderer = primaryTrailRenderer;
+                isPrimaryTrailRendererAssigned = true;
+                continue;
+            }
+
+            binding.trailRenderer = CreateTrailRenderer(binding.action);
+        }
+    }
+
+    private TrailRenderer GetOrCreateTrailRenderer(StateBinding binding)
+    {
+        if (binding.trailRenderer != null)
+        {
+            return binding.trailRenderer;
+        }
+
+        EnsureTrailRenderers();
+        return binding.trailRenderer;
+    }
+
+    private TrailRenderer CreateTrailRenderer(ActionType action)
+    {
+        string objectName = $"Player Trail - {action}";
+        Transform existingChild = transform.Find(objectName);
+        if (existingChild != null && existingChild.TryGetComponent(out TrailRenderer existingTrailRenderer))
+        {
+            return existingTrailRenderer;
+        }
+
+        GameObject trailObject = new GameObject(objectName);
+        trailObject.transform.SetParent(transform, false);
+
+        TrailRenderer newTrailRenderer = trailObject.AddComponent<TrailRenderer>();
+        newTrailRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        newTrailRenderer.receiveShadows = false;
+        newTrailRenderer.emitting = false;
+        return newTrailRenderer;
+    }
+
+    private StateBinding FindBinding(ActionType action)
     {
         if (stateBindings == null)
         {
@@ -120,9 +208,9 @@ public class PlayerActionTrail : MonoBehaviour
         for (int i = 0; i < stateBindings.Length; i++)
         {
             StateBinding binding = stateBindings[i];
-            if (binding != null && binding.action == action && binding.settings != null)
+            if (binding != null && binding.action == action)
             {
-                return binding.settings;
+                return binding;
             }
         }
 
