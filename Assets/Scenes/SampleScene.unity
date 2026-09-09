@@ -28988,6 +28988,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1693583998}
   - {fileID: 306952230}
   - {fileID: 1973331626}
   - {fileID: 1254369218}
@@ -29003,7 +29004,6 @@ RectTransform:
   - {fileID: 1082225619}
   - {fileID: 1447789688}
   - {fileID: 1273647710}
-  - {fileID: 1693583998}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -52398,6 +52398,14 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!222 &1693584000
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693583997}
+  m_CullTransparentMesh: 1
 --- !u!114 &1693584001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52408,17 +52416,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b29a3e00dcc149af870b3d7c7b73b2df, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActionConcentrationLine
   concentrationLine: {fileID: 1693583999}
---- !u!222 &1693584000
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693583997}
-  m_CullTransparentMesh: 1
 --- !u!1001 &1694783527
 PrefabInstance:
   m_ObjectHideFlags: 0
