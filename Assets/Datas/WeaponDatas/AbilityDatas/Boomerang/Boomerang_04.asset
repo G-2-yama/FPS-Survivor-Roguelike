@@ -19,7 +19,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 06d075db707b13d4883335cc19422a0e, type: 3}
   visual:
     weaponModelPrefab: {fileID: 0}
-  soundDB: {fileID: 0}
+  soundDB: {fileID: 11400000, guid: 09e663df7255dee46b2e50b3141bd6a8, type: 2}
   classification:
     weaponType: 1
     fireModeData: {fileID: 11400000, guid: 9e119f85b2102c64aac73e53e0f0119d, type: 2}

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
-  m_Name: Shiled_soundDB
+  m_Name: StepFire_soundDB
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
   - category: 1
     index: 0
-    clip: {fileID: 8300000, guid: 5f55d58d51236ed49b7924fc75dd2875, type: 3}
-    volume: 0.559
-    pitch: 1.04
-    playType: 0
-    is3D: 0
+    clip: {fileID: 8300000, guid: 5594b57212fc8464bb771d0c2f9e1143, type: 3}
+    volume: 1
+    pitch: 1.51
+    playType: 3
+    is3D: 1
     spatialBlend: 0
     loop: 0

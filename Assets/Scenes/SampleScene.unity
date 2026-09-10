@@ -59634,7 +59634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   weaponOwner: {fileID: 275487193}
-  weaponData: {fileID: 11400000, guid: ed2e0fb318a276044a0cb7d94245056f, type: 2}
+  weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
   sounder: {fileID: 1909986807}
   weaponView: {fileID: 1909986806}
