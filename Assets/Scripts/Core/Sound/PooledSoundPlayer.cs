@@ -18,6 +18,15 @@ public class PooledSoundPlayer : PoolableObject
 
     public void Play(SoundData data)
     {
+       
+        if (playCoroutine != null)
+        {
+            StopCoroutine(playCoroutine);
+            playCoroutine = null;
+        }
+
+        audioSource.Stop();
+
         if (data == null || data.clip == null)
         {
             Release();
@@ -29,6 +38,8 @@ public class PooledSoundPlayer : PoolableObject
         audioSource.clip = data.clip;
         audioSource.loop = false;
 
+       
+
         audioSource.Play();
 
         playCoroutine = StartCoroutine(WaitForSoundEnd());
@@ -36,10 +47,11 @@ public class PooledSoundPlayer : PoolableObject
 
     private IEnumerator WaitForSoundEnd()
     {
-        // AudioSource‚ªÄ¶I—¹‚·‚é‚Ü‚Å‘Ò‚Â
         yield return new WaitWhile(() => audioSource.isPlaying);
 
         playCoroutine = null;
+
+      
 
         Release();
     }
@@ -55,9 +67,18 @@ public class PooledSoundPlayer : PoolableObject
 
     public override void OnGet()
     {
+       
+        if (playCoroutine != null)
+        {
+            StopCoroutine(playCoroutine);
+            playCoroutine = null;
+        }
+
         audioSource.Stop();
         audioSource.clip = null;
         audioSource.loop = false;
+
+       
     }
 
     public override void OnRelease()
@@ -71,5 +92,7 @@ public class PooledSoundPlayer : PoolableObject
         audioSource.Stop();
         audioSource.clip = null;
         audioSource.loop = false;
+
+       
     }
 }

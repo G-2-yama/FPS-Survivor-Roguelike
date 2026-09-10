@@ -12,6 +12,7 @@ public enum SoundCategory
 {
     BGM,
     Fire,
+    Generate,
     Charge,
     ReloadEnter,
     ReloadEnd,

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSound
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
-  - category: 11
+  - category: 12
     index: 0
     clip: {fileID: 8300000, guid: 3512a78b988051f4198362c82400aea0, type: 3}
     volume: 0.45
@@ -22,7 +22,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 11
+  - category: 12
     index: 1
     clip: {fileID: 8300000, guid: 53bf6fb402d1aa14986b238c3d50074b, type: 3}
     volume: 0.45
@@ -31,7 +31,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 11
+  - category: 12
     index: 2
     clip: {fileID: 8300000, guid: f6ad17dd1b6714b4eb9f0547f1313205, type: 3}
     volume: 0.45
@@ -49,7 +49,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 11
+  - category: 12
     index: 3
     clip: {fileID: 8300000, guid: 244082c0162c94443a46eed1abbfbe32, type: 3}
     volume: 0.45
@@ -67,7 +67,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 11
+  - category: 12
     index: 5
     clip: {fileID: 8300000, guid: 956bd511214c40249b88cd5057178bfa, type: 3}
     volume: 0.45
@@ -76,7 +76,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 10
+  - category: 11
     index: 6
     clip: {fileID: 8300000, guid: b03416b21db398c41ae22f3ff445e5d5, type: 3}
     volume: 1
@@ -85,7 +85,7 @@ MonoBehaviour:
     is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 10
+  - category: 11
     index: 7
     clip: {fileID: 8300000, guid: 0f60961b9bd03684e92e7cf29fd30d33, type: 3}
     volume: 1

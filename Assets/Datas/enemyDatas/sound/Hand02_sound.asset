@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hand02_sound
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
-  - category: 6
+  - category: 7
     index: 0
     clip: {fileID: 8300000, guid: f81721732529235458d0b1af0fa17bfc, type: 3}
     volume: 0.55
@@ -22,7 +22,7 @@ MonoBehaviour:
     is3D: 1
     spatialBlend: 0
     loop: 0
-  - category: 12
+  - category: 13
     index: 0
     clip: {fileID: 8300000, guid: 10aa58f9f8f07874aa89d104584cdd2e, type: 3}
     volume: 0.551

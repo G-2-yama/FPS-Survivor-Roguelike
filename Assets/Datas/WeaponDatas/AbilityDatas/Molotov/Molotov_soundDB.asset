@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
-  m_Name: Hand01_sound
+  m_Name: Molotov_soundDB
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
-  - category: 7
+  - category: 2
     index: 0
-    clip: {fileID: 8300000, guid: e99c67189e01dad498971394b35d4eff, type: 3}
-    volume: 0.56
-    pitch: 0.92
-    playType: 0
-    is3D: 1
+    clip: {fileID: 8300000, guid: 47fdb9a704cd2ec428cb0fb9d700d497, type: 3}
+    volume: 0.502
+    pitch: 0.48
+    playType: 3
+    is3D: 0
     spatialBlend: 0
     loop: 0
-  - category: 13
+  - category: 1
     index: 0
-    clip: {fileID: 8300000, guid: 10aa58f9f8f07874aa89d104584cdd2e, type: 3}
-    volume: 0.627
-    pitch: 0.92
-    playType: 3
+    clip: {fileID: 8300000, guid: ff5db5aebb557584385aa768daa89c46, type: 3}
+    volume: 0.616
+    pitch: 0.94
+    playType: 0
     is3D: 1
     spatialBlend: 0
     loop: 0
