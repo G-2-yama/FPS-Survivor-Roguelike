@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class DamageGenerator : DamageBase
 {
     [SerializeField] private List<GameObject> explosionPrefabs;
+    [SerializeField] private Sounder sounder;
 
     public override void Initialize(int damage, float knockback)
     {
@@ -44,6 +45,7 @@ public class DamageGenerator : DamageBase
 
     private void Explode()
     {
+        sounder?.Play(SoundCategory.Generate);
         foreach (GameObject prefab in explosionPrefabs)
         {
             GameObject obj = PoolManager.Instance.Get(prefab);

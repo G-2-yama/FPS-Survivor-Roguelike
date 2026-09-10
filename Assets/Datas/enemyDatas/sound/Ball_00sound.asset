@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Ball_00sound
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
   sounds:
-  - category: 6
+  - category: 7
     index: 0
     clip: {fileID: 8300000, guid: 854af41ebacbd3249925f1b2c7359aec, type: 3}
-    volume: 0.442
+    volume: 0.57
     pitch: 1.14
-    playType: 0
+    playType: 3
     is3D: 1
     spatialBlend: 0
     loop: 0
-  - category: 12
+  - category: 13
     index: 0
     clip: {fileID: 8300000, guid: 10aa58f9f8f07874aa89d104584cdd2e, type: 3}
     volume: 0.662
