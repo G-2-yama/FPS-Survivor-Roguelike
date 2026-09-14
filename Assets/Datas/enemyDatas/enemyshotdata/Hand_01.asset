@@ -15,4 +15,4 @@ MonoBehaviour:
   Speed: 0
   Lifetime: 3
   AmmpPrefab: {fileID: 2941202608053666838, guid: 81c12ea1f79b3b34699cb1d91e1662aa, type: 3}
-  EffectPrefab: {fileID: 0}
+  EffectPrefab: {fileID: 1660801490469918796, guid: d9d57df664dc15a4784aa2054d63f033, type: 3}

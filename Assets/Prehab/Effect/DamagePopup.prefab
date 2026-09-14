@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3172506460584370585}
   - component: {fileID: 4993208716790330887}
   - component: {fileID: 9222615736734720355}
-  - component: {fileID: 1659772329510148362}
+  - component: {fileID: 1718048175153205437}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopup
   damageText: {fileID: 9222615736734720355}
-  lifeTime: 0.8
-  moveSpeed: 2
+  lifeTime: 1
+  moveSpeed: 3
 --- !u!222 &3172506460584370585
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -141,8 +141,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283158570
-  m_fontColor: {r: 0.16340236, g: 0.8167115, b: 0.2956631, a: 1}
+    rgba: 4280960208
+  m_fontColor: {r: 0.8156863, g: 0.2653829, b: 0.16470589, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4993208716790330887}
   m_maskType: 0
---- !u!33 &1659772329510148362
+--- !u!33 &1718048175153205437
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

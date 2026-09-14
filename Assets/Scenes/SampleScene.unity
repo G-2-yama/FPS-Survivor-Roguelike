@@ -17759,9 +17759,17 @@ MonoBehaviour:
   damagePopupPrefab: {fileID: 6017424990723599846, guid: a01320fdb613c6d46adb7044af9fe7f6, type: 3}
   damageEffectPrefab: {fileID: 5131132216050497334, guid: e7366cc72eaf2044a84ce10bde190315, type: 3}
   player: {fileID: 275487189}
-  heightOffset: 1.5
+  heightOffset: 1
   randomOffsetX: 0.3
   randomOffsetZ: 0.3
+  defaultDamageColor: {r: 0.7211839, g: 0.8284733, b: 0.7276297, a: 0}
+  changeDamagePopupMaterials:
+  - damageColor: {r: 0.75255525, g: 0.98039216, b: 0.0705882, a: 0.5294118}
+    damageRange: 10
+  - damageColor: {r: 0.9696152, g: 0.057140965, b: 0.057140965, a: 0.5568628}
+    damageRange: 20
+  - damageColor: {r: 0.7918418, g: 0.11371077, b: 0.8049497, a: 0.52156866}
+    damageRange: 30
 --- !u!4 &479329660
 Transform:
   m_ObjectHideFlags: 0
