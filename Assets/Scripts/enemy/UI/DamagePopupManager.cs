@@ -13,6 +13,7 @@ public class DamageEffectManager : MonoBehaviour
 
     [SerializeField] private float randomOffsetX = 0.3f;
     [SerializeField] private float randomOffsetZ = 0.3f;
+    [SerializeField] private Color defaultDamageColor;
 
     [System.Serializable]
     private class ChangeDamagePopupMaterial
@@ -70,7 +71,7 @@ public class DamageEffectManager : MonoBehaviour
 
     private Color GetDamageColor(int damage)
     {
-        Color resultColor = Color.white;
+        Color resultColor = defaultDamageColor;
         int highestThreshold = int.MinValue;
 
         foreach (var setting in changeDamagePopupMaterials)
