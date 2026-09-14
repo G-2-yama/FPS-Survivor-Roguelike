@@ -114,7 +114,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Speed: -0.5
-    - _SplitCount: 4
+    - _SplitCount: 2
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
