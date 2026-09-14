@@ -12,6 +12,7 @@ public class DamagePopup : PoolableObject
     private Coroutine popupCoroutine;
 
     public void Setup(
+        Color color,
         int damage,
         Vector3 position,
         Transform player)
@@ -20,11 +21,13 @@ public class DamagePopup : PoolableObject
 
         damageText.text = damage.ToString();
 
-        
+        // éÛÇØéÊÇ¡ÇΩêFÇê›íË
+        color.a = 1f;
+        damageText.color = color;
+
         Vector3 direction =
             player.position - transform.position;
 
-        
         direction.y = 0f;
 
         if (direction != Vector3.zero)
@@ -48,11 +51,9 @@ public class DamagePopup : PoolableObject
         {
             timer += Time.deltaTime;
 
-            
             transform.position +=
                 Vector3.up * moveSpeed * Time.deltaTime;
 
-           
             color.a = 1f - timer / lifeTime;
             damageText.color = color;
 

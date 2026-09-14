@@ -17762,6 +17762,13 @@ MonoBehaviour:
   heightOffset: 1.5
   randomOffsetX: 0.3
   randomOffsetZ: 0.3
+  changeDamagePopupMaterials:
+  - damageColor: {r: 0.06937703, g: 0.981377, b: 0.1574391, a: 1}
+    damageRange: 10
+  - damageColor: {r: 0.9696152, g: 0.057140965, b: 0.057140965, a: 1}
+    damageRange: 20
+  - damageColor: {r: 0.80459493, g: 0.8343543, b: 0.024636036, a: 0}
+    damageRange: 30
 --- !u!4 &479329660
 Transform:
   m_ObjectHideFlags: 0
