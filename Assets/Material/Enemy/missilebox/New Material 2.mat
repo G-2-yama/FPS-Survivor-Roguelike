@@ -97,7 +97,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AmbientOcclusion: 1
+    - _AmbientOcclusion: 0.58
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -113,18 +113,18 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Intensity: 0.174
-    - _Metalic: 0.361
+    - _Intensity: 0.2
+    - _Metalic: 0.45
     - _Metallic: 0
-    - _NoiseSide1: 5
-    - _NoiseSide2: 8
-    - _NoiseSpeed: 1
+    - _NoiseSide1: 36
+    - _NoiseSide2: 32
+    - _NoiseSpeed: 34
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.795
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -134,12 +134,12 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 0.5638323, g: 0.1890724, b: 0.1890724, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightColor: {r: 0, g: 0.6108586, b: 5.335085, a: 1}
-    - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Size: {r: 1, g: 1, b: 0, a: 0}
+    - _LightColor: {r: 6.780669, g: 2.2383673, b: 0.55910236, a: 1}
+    - _Offset: {r: 0.58, g: -0.03, b: 0, a: 0}
+    - _Size: {r: 1.86, g: 0.23, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
