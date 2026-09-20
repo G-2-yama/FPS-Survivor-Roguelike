@@ -308,6 +308,7 @@ MonoBehaviour:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 100
   sounder: {fileID: 7884487320096986353}
+  DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
 --- !u!114 &3411233702528744966
 MonoBehaviour:
   m_ObjectHideFlags: 0

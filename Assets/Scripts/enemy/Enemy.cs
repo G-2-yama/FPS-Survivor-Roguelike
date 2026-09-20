@@ -25,6 +25,7 @@ public class Enemy : PoolableObject, IDamageable
 
     [SerializeField] private List<DropData> dropList = new();
     [SerializeField] private Sounder sounder;
+    [SerializeField] private GameObject DestroyDamagePrefab;
     public Sounder Sounder => sounder;
     private DamageEffectManager damageEffectManager;
 
@@ -108,14 +109,18 @@ public class Enemy : PoolableObject, IDamageable
         yield return new WaitForSeconds(deathDelay);
 
         GameObject prefab = GetRandomDrop();
+
         if (prefab != null)
         {
             GameObject item = PoolManager.Instance.Get(prefab);
             item.transform.position = transform.position;
             item.transform.rotation = transform.rotation;
-           
-
-            
+        }
+        if(DestroyDamagePrefab != null)
+        {
+            GameObject destroyDamage = PoolManager.Instance.Get(DestroyDamagePrefab);
+            destroyDamage.transform.position = transform.position;
+            destroyDamage.transform.rotation = transform.rotation;
         }
         generator.RemoveActiveEnemy(this.gameObject);
         Release();

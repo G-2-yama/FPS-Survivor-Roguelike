@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3172506460584370585}
   - component: {fileID: 4993208716790330887}
   - component: {fileID: 9222615736734720355}
+  - component: {fileID: 1861966583553523348}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -140,8 +141,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280960208
-  m_fontColor: {r: 0.8156863, g: 0.2653829, b: 0.16470589, a: 1}
+    rgba: 4291838762
+  m_fontColor: {r: 0.16470589, g: 0.26430923, b: 0.8156863, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -206,3 +207,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4993208716790330887}
   m_maskType: 0
+--- !u!33 &1861966583553523348
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017424990723599846}
+  m_Mesh: {fileID: 0}
