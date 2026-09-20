@@ -56,8 +56,7 @@ public class missileshotposchange : EnemyAnimationEffect
 
             if (target != null)
             {
-                transform.position = target.transform.position;
-
+                transform.position = new Vector3(target.transform.position.x, target.transform.position.y, transform.position.z);
                 // 今のターゲットを非表示
                 target.SetActive(false);
 
