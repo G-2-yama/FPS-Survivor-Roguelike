@@ -148,7 +148,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4122991606844656850
 MonoBehaviour:
@@ -175,6 +175,7 @@ MonoBehaviour:
   - prefab: {fileID: 2347276547269274607, guid: 413dad27dca89824b9dc780ac6568b5b, type: 3}
     weight: 20
   sounder: {fileID: 661444327848213338}
+  DestroyDamagePrefab: {fileID: 0}
 --- !u!114 &1643217037688791818
 MonoBehaviour:
   m_ObjectHideFlags: 0
