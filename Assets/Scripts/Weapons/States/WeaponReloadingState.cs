@@ -6,14 +6,15 @@ public class WeaponReloadingState : WeaponState
     /// リロードのタイマー
     /// </summary>
     private float _timer;
+    private float _duration;
 
     public WeaponReloadingState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
-        Debug.Log("Weapon Reloading Stateに入りました");
-        _weapon.WeaponView.PlayReloadAnimation();
-        _timer = _weapon.WeaponData.ReloadTime;
+        _duration = Mathf.Max(_weapon.WeaponData.ReloadTime, 0.01f);
+        _timer = _duration;
+        _weapon.WeaponView.PlayReloadAnimation(_duration);
         _weapon.Sounder.Play(SoundCategory.ReloadEnter);
     }
 
@@ -21,7 +22,7 @@ public class WeaponReloadingState : WeaponState
     {
         _timer -= Time.deltaTime;
 
-        _weapon.WeaponView.SetReloadProgress(1f - _timer / _weapon.WeaponData.ReloadTime);
+        _weapon.WeaponView.SetReloadProgress(Mathf.Clamp01(1f - _timer / _duration));
         // リロードの完了
         if (_timer <= 0f)
         {

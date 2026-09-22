@@ -266,7 +266,7 @@ MonoBehaviour:
   targetTeam: 28
   damage: 10
   knockbackForce: 5
-  lifetime: 0
+  lifetime: 5
   HP: 1
 --- !u!114 &3864722256053646906
 MonoBehaviour:

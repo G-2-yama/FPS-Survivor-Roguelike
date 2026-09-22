@@ -91,7 +91,7 @@ public class Weapon : MonoBehaviour
         }
 
         currentAmmo--;
-        weaponView.RefreshView(this);
+        weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
         weaponData.FireModeData.Fire(this, weaponOwner);
 
         return true;
@@ -108,6 +108,6 @@ public class Weapon : MonoBehaviour
         }
 
         currentAmmo = weaponData.MagazineSize;
-        weaponView.RefreshView(this);
+        weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
     }
 }

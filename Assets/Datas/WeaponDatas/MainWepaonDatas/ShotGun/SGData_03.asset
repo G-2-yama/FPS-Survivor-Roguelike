@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bcbf3e222c64194589eb7d175a57990, type: 3}
-  m_Name: ShotGunData_00
+  m_Name: SGData_03
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   identity:
     weaponId: weapon_default
     displayName: "\u30B7\u30E7\u30C3\u30C8\u30AC\u30F3"
-    description: "\u5E83\u7BC4\u56F2\u306B\u5C04\u6483\u304C\u53EF\u80FD\u306A\u6563\u5F3E\u9283"
+    description: "\u30C0\u30E1\u30FC\u30B810->15"
     icon: {fileID: 21300000, guid: c07ac73f62f41614cbac94d0421b680d, type: 3}
   visual:
     weaponModelPrefab: {fileID: 5205645611520847389, guid: b123c7c2715a42e48b2e1568aa76357b, type: 3}
@@ -28,7 +28,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 0
   damage:
-    damage: 20
+    damage: 15
     knockbackForce: 1
     spreadAngle: 15
   fireRhythm:
@@ -37,13 +37,13 @@ MonoBehaviour:
     burstInterval: 0
     chargeTime: 0
   recoil:
-    pitchKick: 0.8
-    yawKick: 0.4
+    pitchKick: 0.4
+    yawKick: 0.2
     yawRandomness: 1
     returnStrength: 20
     damping: 18
     maxPitch: 20
   ammo:
-    magazineSize: 80
+    magazineSize: 120
     reloadTime: 2
-  nextLevelData: {fileID: 11400000, guid: e877e022a73f1de4d8e2810862584cd7, type: 2}
+  nextLevelData: {fileID: 11400000, guid: 5cc0a3c2671368e4caaf7c7996dac462, type: 2}

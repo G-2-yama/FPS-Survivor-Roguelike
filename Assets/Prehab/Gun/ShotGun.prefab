@@ -70,6 +70,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f9d4137ee73f8d746a17dd009f019143, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8294017105271963001}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f9d4137ee73f8d746a17dd009f019143, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8088412113853312484}
   m_SourcePrefab: {fileID: 100100000, guid: f9d4137ee73f8d746a17dd009f019143, type: 3}
 --- !u!1 &5205645611520847389 stripped
@@ -99,3 +102,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8294017105271963001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205645611520847389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427c51f8f0f44939900869445961d3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponAnimationTiming
+  fireClip: {fileID: 7400000, guid: b485212bb13778d4085ae7f11d406078, type: 2}
+  reloadClip: {fileID: 7400000, guid: ec3332a2e4361024cac91983e7396ab4, type: 2}
