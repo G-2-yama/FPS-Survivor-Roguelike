@@ -73,7 +73,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8657442495611329697, guid: 49b04ba28e50b7741a72fc09c07d59ca, type: 3}
+  - {fileID: 2100000, guid: f39163344472e4f40a496dc3a569f485, type: 2}
   - {fileID: 2377376760783321371, guid: 49b04ba28e50b7741a72fc09c07d59ca, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -210,6 +210,8 @@ MonoBehaviour:
   whiteFlash: {fileID: 8496615387957828556}
   deathDelay: 0.1
   enemyBrain: {fileID: 1304819817297185972}
+  sounder: {fileID: 0}
+  damageEffectManager: {fileID: 0}
 --- !u!1001 &5079089486708136024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -264,15 +266,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.07043529
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.046731483
+      value: 0.1260587
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5260443
+      value: 1.4190104
       objectReference: {fileID: 0}
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -313,6 +315,10 @@ PrefabInstance:
     - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
