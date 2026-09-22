@@ -4935,6 +4935,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 8294017105271963001}
   - component: {fileID: 9209592428553250451}
   - component: {fileID: 6253483564325738319}
   - component: {fileID: 6590354415318548015}
@@ -5136,3 +5137,17 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8294017105271963001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901486088743407685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427c51f8f0f44939900869445961d3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponAnimationTiming
+  fireClip: {fileID: 7400000, guid: fdadb2debf441834b8aebc34ab12fe66, type: 2}
+  reloadClip: {fileID: 7400000, guid: 1e510532c58ef834aa275512d54347c6, type: 2}

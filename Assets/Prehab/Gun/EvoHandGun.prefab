@@ -4930,6 +4930,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 223f042a9d44576439b46df49105daf8, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8294017105271963001}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 223f042a9d44576439b46df49105daf8, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 3019814662031316695}
   m_SourcePrefab: {fileID: 100100000, guid: 223f042a9d44576439b46df49105daf8, type: 3}
 --- !u!1 &3637342788740244059 stripped
@@ -4964,3 +4967,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 223f042a9d44576439b46df49105daf8, type: 3}
   m_PrefabInstance: {fileID: 4520213451359772426}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8294017105271963001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637342788740244059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427c51f8f0f44939900869445961d3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponAnimationTiming
+  fireClip: {fileID: 7400000, guid: 6d61ba51c6746bd40b45729f4f14dd69, type: 2}
+  reloadClip: {fileID: 7400000, guid: 44aa98ace6f030e43ac5333ba44b3019, type: 2}

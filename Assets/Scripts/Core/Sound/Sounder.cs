@@ -56,7 +56,6 @@ public class Sounder : MonoBehaviour
     /// <param name="index">再生する音のインデックス</param>
     public void Play(SoundCategory category, int index = -1)
     {
-
         SoundData data;
 
         // indexが-1なら、そのCategoryからランダム選択
@@ -72,9 +71,9 @@ public class Sounder : MonoBehaviour
                 }
             }
 
+            // 候補がない場合は何もせずに終了
             if (candidates.Count == 0)
             {
-                Debug.LogWarning($"Sound Not Found : {category}");
                 return;
             }
 
