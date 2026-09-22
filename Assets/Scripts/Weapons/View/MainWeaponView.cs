@@ -46,13 +46,17 @@ public class MainWeaponView : WeaponView
         );
     }
 
-    public override void PlayReloadAnimation()
+    public override void PlayReloadAnimation(float duration)
     {
+        animationTiming?.SetReloadDuration(duration);
+        animator?.ResetTrigger("Fire");
         animator?.SetTrigger("Reload");
     }
 
-    public override void PlayFireAnimation()
+    public override void PlayFireAnimation(float duration)
     {
+        animationTiming?.SetFireDuration(duration);
+        animator?.ResetTrigger("Reload");
         animator?.SetTrigger("Fire");
     }
 

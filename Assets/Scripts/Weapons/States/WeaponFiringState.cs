@@ -41,10 +41,13 @@ public class WeaponFiringState : WeaponState
                 return;
             }
 
-            // バースト開始時の演出
+            // 各弾のモーションを、次の発射までの時間に収める。
+            float animationDuration = burstRemaining > 1 ? interval : _weapon.WeaponData.FireInterval;
+            _weapon.WeaponView.PlayFireAnimation(animationDuration);
+
+            // 発射音は従来どおりバースト開始時に再生する。
             if (!hasFired)
             {
-                _weapon.WeaponView.PlayFireAnimation();
                 _weapon.Sounder.Play(SoundCategory.Fire);
                 hasFired = true;
             }

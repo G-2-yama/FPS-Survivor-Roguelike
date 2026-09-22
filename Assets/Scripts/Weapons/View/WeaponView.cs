@@ -9,6 +9,7 @@ public abstract class WeaponView : MonoBehaviour
 
     protected GameObject weaponModelInstance;
     protected Animator animator;
+    protected WeaponAnimationTiming animationTiming;
     private GameObject currentModelPrefab;
 
     protected virtual void Start()
@@ -49,9 +50,9 @@ public abstract class WeaponView : MonoBehaviour
         reloadIndicator.fillAmount = progress;
     }
 
-    public virtual void PlayReloadAnimation() { }
+    public virtual void PlayReloadAnimation(float duration) { }
 
-    public virtual void PlayFireAnimation() { }
+    public virtual void PlayFireAnimation(float duration) { }
 
 
     protected void SetWeaponModel(WeaponData data)
@@ -68,6 +69,7 @@ public abstract class WeaponView : MonoBehaviour
         weaponModelInstance = Instantiate(prefab, transform);
         currentModelPrefab = prefab;
         animator = weaponModelInstance.GetComponent<Animator>();
+        animationTiming = weaponModelInstance.GetComponent<WeaponAnimationTiming>();
     }
 
     protected void ClearWeaponModel()
@@ -79,6 +81,7 @@ public abstract class WeaponView : MonoBehaviour
         }
 
         animator = null;
+        animationTiming = null;
         currentModelPrefab = null;
     }
 
