@@ -82,7 +82,7 @@ public class MainWeaponView : WeaponView
         magazineSizeText.gameObject.SetActive(visible);
     }
 
-    private void UpdateAmmo(int current, int max)
+    public override void UpdateAmmo(int current, int max)
     {
         currentAmmoText.text = current.ToString();
         magazineSizeText.text = "/" + max;

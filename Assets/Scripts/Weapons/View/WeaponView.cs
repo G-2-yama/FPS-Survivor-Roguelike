@@ -9,6 +9,7 @@ public abstract class WeaponView : MonoBehaviour
 
     protected GameObject weaponModelInstance;
     protected Animator animator;
+    private GameObject currentModelPrefab;
 
     protected virtual void Start()
     {
@@ -41,6 +42,8 @@ public abstract class WeaponView : MonoBehaviour
         SetWeaponModel(weapon.WeaponData);
     }
 
+    public virtual void UpdateAmmo(int current, int max) { }
+
     public virtual void SetReloadProgress(float progress)
     {
         reloadIndicator.fillAmount = progress;
@@ -53,12 +56,17 @@ public abstract class WeaponView : MonoBehaviour
 
     protected void SetWeaponModel(WeaponData data)
     {
-        ClearWeaponModel();
-
-        if (data == null || data.WeaponModelPrefab == null)
+        GameObject prefab = data != null ? data.WeaponModelPrefab : null;
+        if (weaponModelInstance != null && currentModelPrefab == prefab)
             return;
 
-        weaponModelInstance = Instantiate(data.WeaponModelPrefab, transform);
+        ClearWeaponModel();
+
+        if (prefab == null)
+            return;
+
+        weaponModelInstance = Instantiate(prefab, transform);
+        currentModelPrefab = prefab;
         animator = weaponModelInstance.GetComponent<Animator>();
     }
 
@@ -71,6 +79,7 @@ public abstract class WeaponView : MonoBehaviour
         }
 
         animator = null;
+        currentModelPrefab = null;
     }
 
     private void SetWeaponInactive()
