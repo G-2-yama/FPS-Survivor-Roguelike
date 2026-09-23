@@ -16693,6 +16693,7 @@ GameObject:
   - component: {fileID: 445505113}
   - component: {fileID: 445505112}
   - component: {fileID: 445505114}
+  - component: {fileID: 445505117}
   - component: {fileID: 445505116}
   m_Layer: 0
   m_Name: LeftAuto
@@ -16745,7 +16746,7 @@ MonoBehaviour:
   weaponOwner: {fileID: 275487193}
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 0}
+  sounder: {fileID: 445505117}
   weaponView: {fileID: 445505114}
 --- !u!114 &445505114
 MonoBehaviour:
@@ -16859,6 +16860,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &445505117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445505109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e4b1b198a43c64bae8c814b13a2d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sounder
+  soundDatabase: {fileID: 0}
+  audioSource: {fileID: 445505116}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!1 &446043672
 GameObject:
   m_ObjectHideFlags: 0
@@ -47561,8 +47577,8 @@ GameObject:
   - component: {fileID: 1461869975}
   - component: {fileID: 1461869974}
   - component: {fileID: 1461869976}
-  - component: {fileID: 1461869978}
   - component: {fileID: 1461869979}
+  - component: {fileID: 1461869978}
   m_Layer: 0
   m_Name: LeftAbility
   m_TagString: Untagged
@@ -47614,7 +47630,7 @@ MonoBehaviour:
   weaponOwner: {fileID: 275487193}
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 0}
+  sounder: {fileID: 1461869979}
   weaponView: {fileID: 1461869976}
 --- !u!114 &1461869976
 MonoBehaviour:
@@ -47737,12 +47753,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1461869972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d8da2df0112254ca2c07bef24fa8d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 69e4b1b198a43c64bae8c814b13a2d5c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::KeyBindingView
-  keyBindingText: {fileID: 1205638509}
-  inputAction: {fileID: -3971207529280880629, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  playerInput: {fileID: 275487190}
+  m_EditorClassIdentifier: Assembly-CSharp::Sounder
+  soundDatabase: {fileID: 0}
+  audioSource: {fileID: 1461869978}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!1 &1463043571
 GameObject:
   m_ObjectHideFlags: 0
@@ -61320,8 +61336,8 @@ GameObject:
   - component: {fileID: 1909986805}
   - component: {fileID: 1909986804}
   - component: {fileID: 1909986806}
-  - component: {fileID: 1909986808}
   - component: {fileID: 1909986809}
+  - component: {fileID: 1909986808}
   m_Layer: 0
   m_Name: RightAbility
   m_TagString: Untagged
@@ -61373,7 +61389,7 @@ MonoBehaviour:
   weaponOwner: {fileID: 275487193}
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 0}
+  sounder: {fileID: 1909986809}
   weaponView: {fileID: 1909986806}
 --- !u!114 &1909986806
 MonoBehaviour:
@@ -61496,12 +61512,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1909986802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d8da2df0112254ca2c07bef24fa8d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 69e4b1b198a43c64bae8c814b13a2d5c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::KeyBindingView
-  keyBindingText: {fileID: 1479233195}
-  inputAction: {fileID: -8464585985926323209, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  playerInput: {fileID: 275487190}
+  m_EditorClassIdentifier: Assembly-CSharp::Sounder
+  soundDatabase: {fileID: 0}
+  audioSource: {fileID: 1909986808}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!1 &1913136981
 GameObject:
   m_ObjectHideFlags: 0
@@ -64631,6 +64647,7 @@ GameObject:
   - component: {fileID: 2019895852}
   - component: {fileID: 2019895851}
   - component: {fileID: 2019895853}
+  - component: {fileID: 2019895856}
   - component: {fileID: 2019895855}
   m_Layer: 0
   m_Name: RightAuto
@@ -64683,7 +64700,7 @@ MonoBehaviour:
   weaponOwner: {fileID: 275487193}
   weaponData: {fileID: 11400000, guid: c675be72f31613845a2638664511b730, type: 2}
   muzzle: {fileID: 83808289}
-  sounder: {fileID: 0}
+  sounder: {fileID: 2019895856}
   weaponView: {fileID: 2019895853}
 --- !u!114 &2019895853
 MonoBehaviour:
@@ -64797,6 +64814,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2019895856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019895848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e4b1b198a43c64bae8c814b13a2d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sounder
+  soundDatabase: {fileID: 0}
+  audioSource: {fileID: 2019895855}
+  soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
 --- !u!1 &2022669240
 GameObject:
   m_ObjectHideFlags: 0
