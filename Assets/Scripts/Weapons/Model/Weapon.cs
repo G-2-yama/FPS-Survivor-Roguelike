@@ -26,16 +26,7 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         stateMachine = new WeaponStateMachine(this);
-        if (!HasWeapon)
-        {
-            weaponData = EmptyWeaponData.Instance;
-            currentAmmo = 0;
-            weaponView.RefreshView(this);
-            return;
-        }
-
-        currentAmmo = weaponData.MagazineSize;
-        sounder.SetSoundDB(weaponData.SoundDB);
+        Equip(weaponData);
     }
 
     /// <summary>
@@ -59,9 +50,8 @@ public class Weapon : MonoBehaviour
             sounder.SetSoundDB(newData.SoundDB);    
         }
 
-
-        stateMachine.ChangeState<WeaponIdleState>();
         weaponView.RefreshView(this);
+        stateMachine.ChangeState<WeaponIdleState>();
     }
 
     /// <summary>

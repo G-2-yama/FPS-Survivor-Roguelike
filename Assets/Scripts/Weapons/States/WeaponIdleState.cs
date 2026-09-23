@@ -11,9 +11,7 @@ public class WeaponIdleState : WeaponState
         {
             return;
         }
-
-        _weapon.WeaponView.SetReloadProgress(0f);
-
+        _weapon.WeaponView.SetReloadProgress(1f);
 
         if (_weapon.WeaponData.AutoFire)
         {
