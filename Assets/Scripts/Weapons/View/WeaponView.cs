@@ -54,7 +54,6 @@ public abstract class WeaponView : MonoBehaviour
 
     public virtual void PlayFireAnimation(float duration) { }
 
-
     protected void SetWeaponModel(WeaponData data)
     {
         GameObject prefab = data != null ? data.WeaponModelPrefab : null;

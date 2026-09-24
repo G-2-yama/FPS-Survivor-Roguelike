@@ -31,8 +31,6 @@ public class WeaponStateMachine
             { typeof(WeaponChargeState), _chargeState }
         };
 
-        _currentState = _idleState;
-        _currentState.Enter();
     }
 
     public void Update(bool isPressed)

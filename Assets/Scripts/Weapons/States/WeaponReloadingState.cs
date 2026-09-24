@@ -26,7 +26,7 @@ public class WeaponReloadingState : WeaponState
         // リロードの完了
         if (_timer <= 0f)
         {
-            _weapon.WeaponView.SetReloadProgress(0f);
+            _weapon.WeaponView.SetReloadProgress(1f);
             _weapon.Reload();
             _weapon.Sounder.Play(SoundCategory.ReloadEnd);
             stateMachine.ChangeState<WeaponIdleState>();

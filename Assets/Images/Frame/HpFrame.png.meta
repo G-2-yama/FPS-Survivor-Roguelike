@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2daf3a189aea7b4429b1c75b4fa146b3
+guid: 6a92bf37fa515c543844fadb0682f7cc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPBar_0
+      name: HpFrame_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 602
-        width: 981
-        height: 49
+        x: 18
+        y: 477
+        width: 961
+        height: 46
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,30 +125,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c5d8da2ca6419f43b2f818e23b4735c
-      internalID: -1138075916
+      spriteID: 3a1919b4226480144b8a8682c9f71131
+      internalID: 1406849677
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HPBar_1
+      name: HpFrame_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 360
+        y: 179
         width: 1000
-        height: 76
+        height: 67
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 40, y: 0, z: 40, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de68bade900bc3048a718962eaeeea86
-      internalID: -1492928346
+      spriteID: e49a435c0b8f8c54cbe359abf7b93698
+      internalID: -1993224203
       vertices: []
       indices: 
       edges: []
@@ -157,7 +157,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 51048196e3bbf7044937c9c285ea5a80
+    spriteID: 73733f8b6e5a536489631c40ed394c7f
     internalID: 0
     vertices: []
     indices: 
@@ -167,10 +167,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":2.0},"gridSpriteSize":{"x":1000.0,"y":500.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      HPBar_0: -1138075916
-      HPBar_1: -1492928346
+      HpFrame_0: 1406849677
+      HpFrame_1: -1993224203
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
