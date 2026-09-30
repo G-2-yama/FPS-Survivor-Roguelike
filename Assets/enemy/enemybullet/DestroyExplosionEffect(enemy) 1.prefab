@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2673364096713744731}
   - component: {fileID: 2495236802419425395}
   - component: {fileID: 2181640533666065875}
+  - component: {fileID: -4254314993872968103}
   m_Layer: 0
   m_Name: DestroyExplosionEffect(enemy) 1
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.019258, y: -15, z: 2.0410028}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2200448437203567698}
@@ -53,8 +54,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.1996346, y: 4.304739, z: 4.8545036}
+  m_Center: {x: -0.71536064, y: 1.6523695, z: -1.271225}
 --- !u!114 &2181640533666065875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +76,30 @@ MonoBehaviour:
   HP: 1
   mode: 0
   interval: 1
+  scaleController: {fileID: -4254314993872968103}
+--- !u!114 &-4254314993872968103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951962115055829092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6dae3645fb2cfd4fb32fb5ecf415631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageAreaScaleController
+  scaleDatas:
+  - damageThreshold: 30
+    scale: {x: 0.9, y: 0.9, z: 0.9}
+  - damageThreshold: 20
+    scale: {x: 0.7, y: 0.7, z: 0.7}
+  - damageThreshold: 10
+    scale: {x: 0.4, y: 0.4, z: 0.4}
+  - damageThreshold: 5
+    scale: {x: 0.1, y: 0.1, z: 0.1}
+  defaultScale: {x: 0.5, y: 0.5, z: 0.5}
+  effectTransform: {fileID: 2200448437203567698}
 --- !u!1 &7071790023184932434
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +129,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.46, y: 0.46, z: 0.46}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2673364096713744731}

@@ -22,6 +22,7 @@ public class Enemy : PoolableObject, IDamageable
 
 
     [SerializeField] private float deathDelay = 0.1f;
+    [SerializeField] private int destroyDamageDamping = 2;
 
     [SerializeField] private List<DropData> dropList = new();
     [SerializeField] private Sounder sounder;
@@ -34,6 +35,7 @@ public class Enemy : PoolableObject, IDamageable
 
     private bool isDead = false;
     private EnemyGenerator generator;
+    private int finalDamage = 0;
 
 
     public void SetSpawner(EnemyGenerator generator)
@@ -60,6 +62,7 @@ public class Enemy : PoolableObject, IDamageable
 
 
         Health.TakeDamage(config.Damagelange * damage);
+        finalDamage = config.Damagelange * damage;
 
         // Knockback処理
         Target = enemyBrain.Target;
@@ -121,6 +124,10 @@ public class Enemy : PoolableObject, IDamageable
             GameObject destroyDamage = PoolManager.Instance.Get(DestroyDamagePrefab);
             destroyDamage.transform.position = transform.position;
             destroyDamage.transform.rotation = transform.rotation;
+            if (finalDamage - destroyDamageDamping > 0)
+            {
+                destroyDamage.GetComponent<DamageBase>().Initialize(finalDamage - destroyDamageDamping, 0);
+            }
         }
         generator.RemoveActiveEnemy(this.gameObject);
         Release();
