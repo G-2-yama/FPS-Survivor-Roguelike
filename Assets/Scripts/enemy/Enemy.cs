@@ -22,7 +22,7 @@ public class Enemy : PoolableObject, IDamageable
 
 
     [SerializeField] private float deathDelay = 0.1f;
-    [SerializeField] private int destroyDamageDamping = 2;
+    [SerializeField] private float destroyDamageDamping = 0.7f;
 
     [SerializeField] private List<DropData> dropList = new();
     [SerializeField] private Sounder sounder;
@@ -124,9 +124,9 @@ public class Enemy : PoolableObject, IDamageable
             GameObject destroyDamage = PoolManager.Instance.Get(DestroyDamagePrefab);
             destroyDamage.transform.position = transform.position;
             destroyDamage.transform.rotation = transform.rotation;
-            if (finalDamage - destroyDamageDamping > 0)
+            if ((int)(finalDamage * destroyDamageDamping) > 0)
             {
-                destroyDamage.GetComponent<DamageBase>().Initialize(finalDamage - destroyDamageDamping, 0);
+                destroyDamage.GetComponent<DamageBase>().Initialize((int)(finalDamage * destroyDamageDamping), 0);
             }
         }
         generator.RemoveActiveEnemy(this.gameObject);
