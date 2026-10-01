@@ -50,19 +50,31 @@ public class DamageArea : DamageBase
 
         timers.Remove(damageable);
     }
-    public override void OnGet()
+    public override void Initialize(int damage, float knockback)
     {
-       
-        base.OnGet();
-      
+        base.Initialize(damage, knockback);
+
+        // 新しいダメージ値が設定された後に拡縮
         scaleController?.SetScaleByDamage(damage);
     }
-    public override void OnRelease()
+
+    public override void OnGet()
     {
+        base.OnGet();
 
         timers.Clear();
-        base.OnRelease();
+
+        // 前回のスケールを初期化
         scaleController?.ResetScale();
+    }
+
+    public override void OnRelease()
+    {
+        timers.Clear();
+
+        scaleController?.ResetScale();
+
+        base.OnRelease();
     }
 }
 

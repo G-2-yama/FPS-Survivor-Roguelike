@@ -91,9 +91,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageAreaScaleController
   scaleDatas:
   - damageThreshold: 30
-    scale: {x: 0.9, y: 0.9, z: 0.9}
-  - damageThreshold: 20
     scale: {x: 0.7, y: 0.7, z: 0.7}
+  - damageThreshold: 20
+    scale: {x: 0.55, y: 0.55, z: 0.55}
   - damageThreshold: 10
     scale: {x: 0.4, y: 0.4, z: 0.4}
   - damageThreshold: 5
