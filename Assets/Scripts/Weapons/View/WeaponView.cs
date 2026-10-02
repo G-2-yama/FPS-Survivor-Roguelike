@@ -7,6 +7,7 @@ public abstract class WeaponView : MonoBehaviour
     [SerializeField] protected Image weaponIcon;
     [SerializeField] private Image reloadIndicator;
 
+
     protected GameObject weaponModelInstance;
     protected Animator animator;
     protected WeaponAnimationTiming animationTiming;

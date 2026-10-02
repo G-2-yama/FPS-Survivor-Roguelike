@@ -19,7 +19,7 @@ public class WeaponAnimationTiming : MonoBehaviour
     public void SetFireDuration(float duration)
     {
         // 低速武器でも発射モーションは引き伸ばさない。
-        animator.SetFloat(FireSpeed, Mathf.Max(1f, GetSpeed(fireClip, duration)));
+        animator.SetFloat(FireSpeed, GetSpeed(fireClip, duration));
     }
 
     public void SetReloadDuration(float duration)
