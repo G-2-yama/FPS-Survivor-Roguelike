@@ -20,7 +20,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     [SerializeField] private float deathDelay = 0.1f;
     [SerializeField] private EnemyBrain enemyBrain;
     [SerializeField] private Sounder sounder;
-    [SerializeField] private DamageEffectManager damageEffectManager;
+    private DamageEffectManager damageEffectManager;
     protected Health health;
     public Sounder Sounder => sounder;
     public TeamType TeamType => TeamType.EnemyAmmo;

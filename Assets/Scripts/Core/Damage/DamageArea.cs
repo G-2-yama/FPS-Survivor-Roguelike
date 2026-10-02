@@ -10,6 +10,7 @@ public class DamageArea : DamageBase
     private float interval = 1f;
 
     Dictionary<IDamageable, float> timers = new();
+    [SerializeField] private DamageAreaScaleController scaleController;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -49,10 +50,30 @@ public class DamageArea : DamageBase
 
         timers.Remove(damageable);
     }
+    public override void Initialize(int damage, float knockback)
+    {
+        base.Initialize(damage, knockback);
+
+        // 新しいダメージ値が設定された後に拡縮
+        scaleController?.SetScaleByDamage(damage);
+    }
+
+    public override void OnGet()
+    {
+        base.OnGet();
+
+        timers.Clear();
+
+        // 前回のスケールを初期化
+        scaleController?.ResetScale();
+    }
 
     public override void OnRelease()
     {
         timers.Clear();
+
+        scaleController?.ResetScale();
+
         base.OnRelease();
     }
 }
