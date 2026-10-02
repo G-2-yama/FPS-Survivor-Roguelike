@@ -304,6 +304,7 @@ MonoBehaviour:
   whiteFlash: {fileID: 2800237456015880210}
   enemyBrain: {fileID: 3411233702528744966}
   deathDelay: 0.3
+  destroyDamageDamping: 0.5
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 100
