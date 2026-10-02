@@ -15,7 +15,7 @@ MonoBehaviour:
   identity:
     weaponId: weapon_default
     displayName: "\u5263"
-    description: "\u8FD1\u63A5\u7BC4\u56F2\u653B\u6483"
+    description: "\u8FD1\u63A5\u7BC4\u56F2\u653B\u6483\u3092\u884C\u3046\u5263"
     icon: {fileID: 21300000, guid: 7b84a37ed8df1644eb3a19ec3b948193, type: 3}
   visual:
     weaponModelPrefab: {fileID: 7353697110361124127, guid: bb6bd7a520397a144bd9c571d31647ec, type: 3}
