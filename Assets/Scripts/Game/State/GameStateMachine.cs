@@ -5,7 +5,7 @@ public class GameStateMachine : StateMachine<GameState>
     private GameState playingState;
     public GameState PlayingState => playingState;
 
-    private GameState endState;
+    private EndState endState;
     public GameState EndState => endState;
     
     private GameState upgradeState;
@@ -21,6 +21,8 @@ public class GameStateMachine : StateMachine<GameState>
         upgradeState = new UpgradeState(controller);
         inventoryState = new InventoryState(controller);
 
+        controller.Player.OnDeath += OnPlayerDeath;
+
         controller.StartTimer();
         ChangeState(playingState);
     }
@@ -30,8 +32,14 @@ public class GameStateMachine : StateMachine<GameState>
         ChangeState(playingState);
     }
 
-    public void ChangeEndState()
+    public void ChangeEndState(GameResult result)
     {
+        if (CurrentState == endState)
+        {
+            return;
+        }
+
+        endState.SetResult(result);
         ChangeState(endState);
     }
 
@@ -59,4 +67,5 @@ public class GameStateMachine : StateMachine<GameState>
         }
     }
 
+    private void OnPlayerDeath() => ChangeEndState(GameResult.GameOver);
 }

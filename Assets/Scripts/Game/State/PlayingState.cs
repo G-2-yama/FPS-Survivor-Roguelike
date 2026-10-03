@@ -27,5 +27,5 @@ public class PlayingState : GameState
     }
 
     private void OnLevelUp()    => controller.StateMachine.ChangeUpgradeState();
-    private void OnTimerFinished() => controller.StateMachine.ChangeEndState();
+    private void OnTimerFinished() => controller.StateMachine.ChangeEndState(GameResult.Clear);
 }
