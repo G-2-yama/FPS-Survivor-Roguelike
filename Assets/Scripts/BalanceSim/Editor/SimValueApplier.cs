@@ -32,22 +32,12 @@ namespace BalanceSim.Editor
         {
         }
 
-        public static SimValueApplier Apply(SimValueSource source, Scene scene, List<string> warnings)
+        public static SimValueApplier Apply(IEnumerable<SimValueRow> rows, Scene scene, List<string> warnings)
         {
             var applier = new SimValueApplier();
-            if (source == null)
-            {
-                return applier;
-            }
-
-            if (source is not SimValueSet set)
-            {
-                throw new InvalidOperationException($"{source.name}（{source.GetType().Name}）はまだ実行できない種類の数値SO です");
-            }
-
             try
             {
-                applier.ApplySet(set, scene, warnings);
+                applier.ApplyRows(rows, scene, warnings);
             }
             catch
             {
@@ -57,13 +47,13 @@ namespace BalanceSim.Editor
             return applier;
         }
 
-        private void ApplySet(SimValueSet set, Scene scene, List<string> warnings)
+        private void ApplyRows(IEnumerable<SimValueRow> rows, Scene scene, List<string> warnings)
         {
-            var seen = new HashSet<(int, string)>();
-            for (int i = 0; i < set.Overrides.Count; i++)
+            var seen = new Dictionary<(int, string), string>();
+            foreach (SimValueRow valueRow in rows)
             {
-                SimValueOverride entry = set.Overrides[i];
-                string row = $"{set.name} の {i + 1} 行目";
+                SimValueOverride entry = valueRow.Value;
+                string row = valueRow.Row;
                 if (string.IsNullOrEmpty(entry.TargetId))
                 {
                     throw new InvalidOperationException($"{row}: 対象が設定されていません");
@@ -94,10 +84,12 @@ namespace BalanceSim.Editor
                     throw new InvalidOperationException($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は数値でも真偽値でもありません");
                 }
 
-                if (!seen.Add((target.GetInstanceID(), property.propertyPath)))
+                var key = (target.GetInstanceID(), property.propertyPath);
+                if (seen.TryGetValue(key, out string previousRow))
                 {
-                    warnings.Add($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は上の行でも上書きしています。下の行の値を使います");
+                    warnings.Add($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は {previousRow} でも上書きしています。{row} の値を使います");
                 }
+                seen[key] = row;
 
                 _originals.Add(new Original(target, property));
                 SimValueOverride.Write(property, entry.Value);

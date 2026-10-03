@@ -16,7 +16,8 @@ namespace BalanceSim.Editor
             "leftWeapon", "rightWeapon", "leftAbility", "rightAbility", "leftAutoWeapon", "rightAutoWeapon",
         };
 
-        public static SimInput Build(BalanceSimSettings settings, List<string> warnings, out string terrainSummary)
+        public static void Build(BalanceSimSettings settings, IReadOnlyList<SimValueCase> cases, Action<int, SimInput> onBuilt,
+            List<string> warnings, out string terrainSummary)
         {
             string scenePath = AssetDatabase.GetAssetPath(settings.TargetScene);
             if (string.IsNullOrEmpty(scenePath))
@@ -34,19 +35,29 @@ namespace BalanceSim.Editor
             try
             {
                 bool sceneWasDirty = scene.isDirty;
-                SimInput input;
-                using (SimValueApplier.Apply(settings.Values, scene, warnings))
+                terrainSummary = null;
+                for (int i = 0; i < cases.Count; i++)
                 {
-                    input = Build(settings, scene, warnings, out terrainSummary);
+                    if (cases.Count > 1 && EditorUtility.DisplayCancelableProgressBar("BalanceSim", $"値の読み出し {i + 1}/{cases.Count}", (float)i / cases.Count))
+                    {
+                        throw new OperationCanceledException();
+                    }
+
+                    SimInput input;
+                    using (SimValueApplier.Apply(cases[i].Rows, scene, warnings))
+                    {
+                        input = Build(settings, scene, warnings, out terrainSummary);
+                    }
+                    onBuilt(i, input);
                 }
                 if (!openedHere && !sceneWasDirty && scene.isDirty)
                 {
                     warnings.Add($"数値SO の上書きで、開いているシーン {scene.name} に変更ありの印が付きました。値は実行前に戻しています");
                 }
-                return input;
             }
             finally
             {
+                EditorUtility.ClearProgressBar();
                 if (openedHere)
                 {
                     EditorSceneManager.CloseScene(scene, true);

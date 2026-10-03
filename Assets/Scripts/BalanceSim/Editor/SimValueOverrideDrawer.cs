@@ -47,9 +47,7 @@ namespace BalanceSim.Editor
                 line.y += line.height + Spacing;
             }
 
-            SerializedProperty source = target != null && !string.IsNullOrEmpty(propertyPath.stringValue)
-                ? new SerializedObject(target).FindProperty(propertyPath.stringValue)
-                : null;
+            SerializedProperty source = SourceProperty(target, propertyPath.stringValue);
 
             DrawPropertyChoice(line, target, propertyPath, propertyLabel, value);
             line.y += line.height + Spacing;
@@ -60,11 +58,20 @@ namespace BalanceSim.Editor
 
         private static bool NeedsMissingNote(SerializedProperty property)
         {
-            string id = property.FindPropertyRelative(SimValueOverride.TargetIdField).stringValue;
+            return IsMissing(property.FindPropertyRelative(SimValueOverride.TargetIdField).stringValue);
+        }
+
+        internal static bool IsMissing(string id)
+        {
             return !string.IsNullOrEmpty(id) && Resolve(id) == null;
         }
 
-        private static Object Resolve(string id)
+        internal static SerializedProperty SourceProperty(Object target, string path)
+        {
+            return target != null && !string.IsNullOrEmpty(path) ? new SerializedObject(target).FindProperty(path) : null;
+        }
+
+        internal static Object Resolve(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -83,7 +90,7 @@ namespace BalanceSim.Editor
             return resolved;
         }
 
-        private static void DrawTarget(Rect line, Object target, SerializedProperty targetId, SerializedProperty targetLabel,
+        internal static void DrawTarget(Rect line, Object target, SerializedProperty targetId, SerializedProperty targetLabel,
             SerializedProperty propertyPath, SerializedProperty propertyLabel)
         {
             Component[] components = target is Component current
@@ -131,8 +138,8 @@ namespace BalanceSim.Editor
             propertyLabel.stringValue = string.Empty;
         }
 
-        private static void DrawPropertyChoice(Rect line, Object target, SerializedProperty propertyPath,
-            SerializedProperty propertyLabel, SerializedProperty value)
+        internal static void DrawPropertyChoice(Rect line, Object target, SerializedProperty propertyPath,
+            SerializedProperty propertyLabel, params SerializedProperty[] valuesOnPick)
         {
             Rect buttonRect = EditorGUI.PrefixLabel(line, PropertyLabel);
             string caption = string.IsNullOrEmpty(propertyLabel.stringValue) ? "（選ぶ）" : propertyLabel.stringValue;
@@ -147,7 +154,7 @@ namespace BalanceSim.Editor
             SerializedObject serializedObject = propertyPath.serializedObject;
             string pathName = propertyPath.propertyPath;
             string labelName = propertyLabel.propertyPath;
-            string valueName = value.propertyPath;
+            string[] valueNames = valuesOnPick.Select(v => v.propertyPath).ToArray();
 
             var menu = new GenericMenu();
             foreach ((string path, string menuLabel, string displayLabel, double current) in ListProperties(target))
@@ -157,7 +164,10 @@ namespace BalanceSim.Editor
                     serializedObject.Update();
                     serializedObject.FindProperty(pathName).stringValue = path;
                     serializedObject.FindProperty(labelName).stringValue = displayLabel;
-                    serializedObject.FindProperty(valueName).doubleValue = current;
+                    foreach (string valueName in valueNames)
+                    {
+                        serializedObject.FindProperty(valueName).doubleValue = current;
+                    }
                     serializedObject.ApplyModifiedProperties();
                 });
             }
@@ -266,18 +276,23 @@ namespace BalanceSim.Editor
                 valueRect.width = EditorGUIUtility.labelWidth + (line.width - EditorGUIUtility.labelWidth) * 0.5f;
             }
 
+            NumberField(valueRect, ValueLabel, type, value);
+        }
+
+        internal static void NumberField(Rect rect, GUIContent label, SerializedPropertyType type, SerializedProperty value)
+        {
             EditorGUI.BeginChangeCheck();
             double edited;
             switch (type)
             {
                 case SerializedPropertyType.Integer:
-                    edited = EditorGUI.LongField(valueRect, ValueLabel, (long)System.Math.Round(value.doubleValue));
+                    edited = EditorGUI.LongField(rect, label, (long)System.Math.Round(value.doubleValue));
                     break;
                 case SerializedPropertyType.Boolean:
-                    edited = EditorGUI.Toggle(valueRect, ValueLabel, value.doubleValue != 0) ? 1 : 0;
+                    edited = EditorGUI.Toggle(rect, label, value.doubleValue != 0) ? 1 : 0;
                     break;
                 default:
-                    edited = EditorGUI.DoubleField(valueRect, ValueLabel, value.doubleValue);
+                    edited = EditorGUI.DoubleField(rect, label, value.doubleValue);
                     break;
             }
             if (EditorGUI.EndChangeCheck())

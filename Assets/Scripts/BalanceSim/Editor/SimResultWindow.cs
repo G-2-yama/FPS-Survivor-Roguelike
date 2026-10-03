@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -36,56 +38,301 @@ namespace BalanceSim.Editor
             new(0.25f, 0.75f, 0.80f),
         };
 
+        private const string ResultsFolder = "BalanceSimResults";
+        private const float NavButtonWidth = 28f;
+        private const float PageLabelWidth = 72f;
+        private const float RowButtonWidth = 48f;
+        private const float CellPadding = 16f;
+        private static readonly string[] MetricHeaders = { "クリア率", "死亡時刻の平均", "最終レベルの平均", "撃破数の平均" };
+
         private static GUIStyle _rightAlignedStyle;
         private static GUIStyle _centeredStyle;
+        private static GUIStyle _pageLabelStyle;
+        private static GUIStyle _cellStyle;
+        private static GUIStyle _headerStyle;
 
-        [SerializeField] private SimResult _result;
+        [SerializeField] private string _sourcePath;
+        [SerializeField] private int _page = -1;
+        [NonSerialized] private SimResultSet _set;
         private Vector2 _scroll;
         private int _hoverIndex = -1;
         private bool _hoverFound;
         private readonly Dictionary<string, float> _legendWidths = new();
         private SimResult _legendWidthsSource;
+        private SimResultSet _tableSource;
+        private string[] _tableHeaders;
+        private List<string[]> _tableRows;
+        private float[] _tableWidths;
 
         [MenuItem("Tools/BalanceSim/結果")]
         public static void Open()
         {
             var window = GetWindow<SimResultWindow>(WindowTitle);
-            if (window._result == null)
+            if (window._set == null)
             {
-                window.LoadLast();
+                window.LoadFrom(window.SourcePathOrLast, false, null);
             }
         }
 
-        public static void ShowResult(SimResult result)
+        public static void ShowResult(SimResultSet set, string sourcePath)
         {
             var window = GetWindow<SimResultWindow>(WindowTitle);
-            window._result = result;
-            window._hoverIndex = -1;
-            window.Repaint();
+            window.SetResult(set, sourcePath, null);
         }
+
+        private bool HasSummary => _set != null && _set.cases.Count > 1;
+
+        private SimResult CurrentResult => _set != null && _page >= 0 && _page < _set.cases.Count ? _set.cases[_page].result : null;
+
+        private string SourcePathOrLast => string.IsNullOrEmpty(_sourcePath) ? SimRunner.LastResultPath : _sourcePath;
+
+        private static string ResultsFolderPath => Path.Combine(SimRunner.ProjectRoot, ResultsFolder);
 
         private void OnEnable()
         {
             wantsMouseMove = true;
-            if (_result == null)
+            if (_set == null)
             {
-                LoadLast();
+                LoadFrom(SourcePathOrLast, false, _page);
             }
         }
 
-        private void LoadLast()
+        private void SetResult(SimResultSet set, string sourcePath, int? page)
         {
-            if (File.Exists(SimRunner.OutputPath))
+            _set = set;
+            _sourcePath = sourcePath;
+            int first = set.cases.Count > 1 ? -1 : 0;
+            _page = page.HasValue ? Mathf.Clamp(page.Value, first, set.cases.Count - 1) : first;
+            _hoverIndex = -1;
+            _scroll = Vector2.zero;
+            Repaint();
+        }
+
+        private bool LoadFrom(string path, bool reportError, int? page)
+        {
+            SimResultSet set = null;
+            if (File.Exists(path))
             {
-                _result = JsonUtility.FromJson<SimResult>(File.ReadAllText(SimRunner.OutputPath));
+                try
+                {
+                    set = JsonUtility.FromJson<SimResultSet>(File.ReadAllText(path));
+                }
+                catch (ArgumentException)
+                {
+                    set = null;
+                }
             }
+
+            if (set?.cases == null || set.cases.Count == 0)
+            {
+                if (reportError)
+                {
+                    EditorUtility.DisplayDialog(WindowTitle, $"BalanceSim の結果として読めませんでした:\n{path}", "OK");
+                }
+                return false;
+            }
+
+            SetResult(set, path, page);
+            return true;
+        }
+
+        private void Save()
+        {
+            Directory.CreateDirectory(ResultsFolderPath);
+            string path = EditorUtility.SaveFilePanel("結果を保存", ResultsFolderPath, DefaultFileName(), "json");
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            File.WriteAllText(path, JsonUtility.ToJson(_set));
+            _sourcePath = path;
+            Debug.Log($"[BalanceSim] 結果を保存しました: {path}");
+        }
+
+        private string DefaultFileName()
+        {
+            string name = string.IsNullOrEmpty(_set.valuesName) ? _set.settingsName : _set.valuesName;
+            DateTime created = DateTime.TryParseExact(_set.createdAt, SimResultSet.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsed)
+                ? parsed
+                : DateTime.Now;
+            return $"{name}_{created:yyyyMMdd_HHmm}";
+        }
+
+        private void OpenFile()
+        {
+            string folder = Directory.Exists(ResultsFolderPath) ? ResultsFolderPath : SimRunner.ProjectRoot;
+            string path = EditorUtility.OpenFilePanel("結果を開く", folder, "json");
+            if (!string.IsNullOrEmpty(path))
+            {
+                LoadFrom(path, true, null);
+            }
+        }
+
+        private void ChangePage(int page)
+        {
+            _page = page;
+            _hoverIndex = -1;
+            _scroll = Vector2.zero;
+            GUI.FocusControl(null);
+            GUIUtility.ExitGUI();
+        }
+
+        private void DrawToolbar()
+        {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                if (HasSummary)
+                {
+                    using (new EditorGUI.DisabledScope(_page < 0))
+                    {
+                        if (GUILayout.Button("まとめ", EditorStyles.toolbarButton))
+                        {
+                            ChangePage(-1);
+                        }
+                        if (GUILayout.Button("◀", EditorStyles.toolbarButton, GUILayout.Width(NavButtonWidth)))
+                        {
+                            ChangePage(_page - 1);
+                        }
+                    }
+
+                    GUILayout.Label(_page < 0 ? "まとめ" : $"{_page + 1} / {_set.cases.Count}", PageLabelStyle, GUILayout.Width(PageLabelWidth));
+
+                    using (new EditorGUI.DisabledScope(_page >= _set.cases.Count - 1))
+                    {
+                        if (GUILayout.Button("▶", EditorStyles.toolbarButton, GUILayout.Width(NavButtonWidth)))
+                        {
+                            ChangePage(_page + 1);
+                        }
+                    }
+                }
+
+                GUILayout.FlexibleSpace();
+                using (new EditorGUI.DisabledScope(_set == null))
+                {
+                    if (GUILayout.Button("保存", EditorStyles.toolbarButton))
+                    {
+                        Save();
+                        GUIUtility.ExitGUI();
+                    }
+                }
+                if (GUILayout.Button("開く", EditorStyles.toolbarButton))
+                {
+                    OpenFile();
+                    GUIUtility.ExitGUI();
+                }
+            }
+        }
+
+        private void DrawConditions()
+        {
+            string source = string.Equals(Path.GetFullPath(_sourcePath), Path.GetFullPath(SimRunner.LastResultPath), StringComparison.OrdinalIgnoreCase)
+                ? "最新の実行"
+                : Path.GetFileNameWithoutExtension(_sourcePath);
+            var parts = new List<string>
+            {
+                source,
+                _set.createdAt,
+                $"設定: {_set.settingsName}",
+                $"シーン: {_set.sceneName}",
+                HasSummary ? $"1通りあたり {_set.runCount} 回" : $"{_set.runCount} 回",
+            };
+            if (!string.IsNullOrEmpty(_set.valuesName))
+            {
+                parts.Add($"{(HasSummary ? "探索SO" : "数値SO")}: {_set.valuesName}");
+            }
+            EditorGUILayout.LabelField(string.Join("    ", parts), EditorStyles.wordWrappedMiniLabel);
+
+            if (_set.fixedValues.Count > 0)
+            {
+                EditorGUILayout.LabelField($"{(HasSummary ? "固定した値" : "上書きした値")}: {string.Join(", ", _set.fixedValues)}", EditorStyles.wordWrappedMiniLabel);
+            }
+        }
+
+        private void DrawSummary()
+        {
+            if (_tableSource != _set)
+            {
+                BuildTable();
+            }
+
+            DrawTableRow(_tableHeaders, HeaderStyle, -1);
+            for (int i = 0; i < _tableRows.Count; i++)
+            {
+                DrawTableRow(_tableRows[i], CellStyle, i);
+            }
+        }
+
+        private void BuildTable()
+        {
+            _tableSource = _set;
+            _tableHeaders = new[] { "#" }
+                .Concat(_set.cases[0].values.Select(v => v.Name))
+                .Concat(MetricHeaders)
+                .ToArray();
+            _tableRows = _set.cases
+                .Select((c, i) => new[] { (i + 1).ToString() }
+                    .Concat(c.values.Select(v => v.ValueText))
+                    .Concat(Metrics(c.result))
+                    .ToArray())
+                .ToList();
+
+            _tableWidths = new float[_tableHeaders.Length];
+            for (int col = 0; col < _tableHeaders.Length; col++)
+            {
+                float width = HeaderStyle.CalcSize(new GUIContent(_tableHeaders[col])).x;
+                foreach (string[] row in _tableRows)
+                {
+                    if (col < row.Length)
+                    {
+                        width = Mathf.Max(width, CellStyle.CalcSize(new GUIContent(row[col])).x);
+                    }
+                }
+                _tableWidths[col] = width + CellPadding;
+            }
+        }
+
+        private void DrawTableRow(string[] cells, GUIStyle style, int caseIndex)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                for (int col = 0; col < cells.Length && col < _tableWidths.Length; col++)
+                {
+                    GUILayout.Label(cells[col], style, GUILayout.Width(_tableWidths[col]));
+                }
+
+                GUILayout.Space(CellPadding);
+                if (caseIndex >= 0 && GUILayout.Button("表示", GUILayout.Width(RowButtonWidth)))
+                {
+                    ChangePage(caseIndex);
+                }
+            }
+        }
+
+        private static string[] Metrics(SimResult result)
+        {
+            List<SimRunSummary> runs = result.runs;
+            if (runs.Count == 0)
+            {
+                return MetricHeaders.Select(_ => "-").ToArray();
+            }
+
+            List<SimRunSummary> deaths = runs.Where(r => !r.cleared).ToList();
+            return new[]
+            {
+                $"{100f * runs.Count(r => r.cleared) / runs.Count:0}%",
+                deaths.Count > 0 ? $"{deaths.Average(r => r.endTime):0}秒" : "-",
+                $"{runs.Average(r => r.level):0.0}",
+                $"{runs.Average(r => r.kills):0}",
+            };
         }
 
         private void OnGUI()
         {
-            if (_result == null || _result.series.Count == 0)
+            DrawToolbar();
+            if (_set == null)
             {
-                EditorGUILayout.HelpBox("結果がありません。BalanceSimSettings の Inspector で「実行」を押してください。", MessageType.Info);
+                EditorGUILayout.HelpBox("結果がありません。BalanceSimSettings の Inspector で「実行」を押すか、上の「開く」で保存した結果を開いてください。", MessageType.Info);
                 return;
             }
 
@@ -97,14 +344,29 @@ namespace BalanceSim.Editor
             }
 
             _hoverFound = false;
-            EditorGUILayout.LabelField(_result.message, EditorStyles.wordWrappedLabel);
-            _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            foreach (IGrouping<string, SimSeries> group in _result.series.GroupBy(s => string.IsNullOrEmpty(s.group) ? s.name : s.group))
+            DrawConditions();
+            if (_page < 0)
             {
-                DrawPanel(group.Key, group.ToList());
-                GUILayout.Space(PanelSpacing);
+                _scroll = EditorGUILayout.BeginScrollView(_scroll);
+                DrawSummary();
+                EditorGUILayout.EndScrollView();
             }
-            EditorGUILayout.EndScrollView();
+            else
+            {
+                SimResultCase current = _set.cases[_page];
+                if (HasSummary)
+                {
+                    EditorGUILayout.LabelField($"振った値: {current.Label}", EditorStyles.wordWrappedLabel);
+                }
+                EditorGUILayout.LabelField(current.result.message, EditorStyles.wordWrappedLabel);
+                _scroll = EditorGUILayout.BeginScrollView(_scroll);
+                foreach (IGrouping<string, SimSeries> group in current.result.series.GroupBy(s => string.IsNullOrEmpty(s.group) ? s.name : s.group))
+                {
+                    DrawPanel(group.Key, group.ToList());
+                    GUILayout.Space(PanelSpacing);
+                }
+                EditorGUILayout.EndScrollView();
+            }
 
             if (e.type == EventType.MouseMove)
             {
@@ -122,7 +384,7 @@ namespace BalanceSim.Editor
             int sampleCount = all[0].mean.Count;
             int hover = _hoverIndex >= 0 && _hoverIndex < sampleCount ? _hoverIndex : -1;
 
-            string titleText = hover >= 0 ? $"{title}    {hover * _result.sampleInterval:0.#}秒" : title;
+            string titleText = hover >= 0 ? $"{title}    {hover * CurrentResult.sampleInterval:0.#}秒" : title;
             EditorGUILayout.LabelField(titleText, EditorStyles.boldLabel);
 
             if (series.Count == 0 || sampleCount == 0)
@@ -140,7 +402,7 @@ namespace BalanceSim.Editor
                 return;
             }
 
-            float duration = (sampleCount - 1) * _result.sampleInterval;
+            float duration = (sampleCount - 1) * CurrentResult.sampleInterval;
             UpdateHover(plot, sampleCount);
 
             if (Event.current.type != EventType.Repaint)
@@ -190,10 +452,10 @@ namespace BalanceSim.Editor
 
         private float LegendColumnWidth(string title, List<SimSeries> series, GUIStyle style)
         {
-            if (_legendWidthsSource != _result)
+            if (_legendWidthsSource != CurrentResult)
             {
                 _legendWidths.Clear();
-                _legendWidthsSource = _result;
+                _legendWidthsSource = CurrentResult;
             }
 
             if (_legendWidths.TryGetValue(title, out float width))
@@ -336,6 +598,12 @@ namespace BalanceSim.Editor
         private static GUIStyle RightAlignedStyle => _rightAlignedStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight };
 
         private static GUIStyle CenteredStyle => _centeredStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
+
+        private static GUIStyle PageLabelStyle => _pageLabelStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleCenter };
+
+        private static GUIStyle CellStyle => _cellStyle ??= new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleRight };
+
+        private static GUIStyle HeaderStyle => _headerStyle ??= new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleRight };
 
         private static Color BackgroundColor => EditorGUIUtility.isProSkin ? new Color(0.15f, 0.15f, 0.15f) : new Color(0.92f, 0.92f, 0.92f);
 

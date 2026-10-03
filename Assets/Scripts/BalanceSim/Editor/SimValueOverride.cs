@@ -19,6 +19,19 @@ namespace BalanceSim.Editor
         [SerializeField] private string propertyLabel;
         [SerializeField] private double value;
 
+        public SimValueOverride()
+        {
+        }
+
+        public SimValueOverride(string targetId, string targetLabel, string propertyPath, string propertyLabel, double value)
+        {
+            this.targetId = targetId;
+            this.targetLabel = targetLabel;
+            this.propertyPath = propertyPath;
+            this.propertyLabel = propertyLabel;
+            this.value = value;
+        }
+
         public string TargetId => targetId;
         public string TargetLabel => targetLabel;
         public string PropertyPath => propertyPath;

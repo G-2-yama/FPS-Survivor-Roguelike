@@ -7,7 +7,7 @@ namespace BalanceSim.Editor
     public class BalanceSimSettings : ScriptableObject
     {
         [Header("実行")]
-        [Tooltip("シミュレーションを回す回数")]
+        [Tooltip("シミュレーションを回す回数。探索SO のときは、組み合わせ1通りごとにこの回数ずつ回す")]
         [Min(1)]
         [SerializeField] private int runCount = 100;
         public int RunCount => runCount;
@@ -21,7 +21,7 @@ namespace BalanceSim.Editor
         public SceneAsset TargetScene => targetScene;
 
         [Header("ゲームの値の上書き")]
-        [Tooltip("ゲームの値を上書きする数値SO（Assets > Create > BalanceSim > Values）。空ならゲームの値のまま実行する。アセットやシーンは書き換えず、読み出しの間だけ値を差し替える")]
+        [Tooltip("ゲームの値を上書きする数値SO（Assets > Create > BalanceSim > Values）、または値を振って試す探索SO（Assets > Create > BalanceSim > Sweep）。空ならゲームの値のまま実行する。アセットやシーンは書き換えず、読み出しの間だけ値を差し替える")]
         [SerializeField] private SimValueSource values;
         public SimValueSource Values => values;
 

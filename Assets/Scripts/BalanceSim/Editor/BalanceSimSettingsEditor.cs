@@ -19,12 +19,31 @@ namespace BalanceSim.Editor
             DrawPolicy(serializedObject.FindProperty(PolicyPropertyName));
             serializedObject.ApplyModifiedProperties();
 
+            var settings = (BalanceSimSettings)target;
             EditorGUILayout.Space();
-            using (new EditorGUI.DisabledScope(SimRunner.IsRunning))
+            if (settings.Values is SimSweep sweep)
             {
-                if (GUILayout.Button(SimRunner.IsRunning ? "実行中..." : "実行", GUILayout.Height(30)))
+                SimSweepEditor.DrawCaseCount(sweep, settings.RunCount);
+            }
+
+            if (!SimRunner.IsRunning)
+            {
+                if (GUILayout.Button("実行", GUILayout.Height(30)))
                 {
-                    SimRunner.Run((BalanceSimSettings)target);
+                    SimRunner.Run(settings);
+                }
+                return;
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    GUILayout.Button($"実行中... {SimRunner.ProgressText}", GUILayout.Height(30));
+                }
+                if (GUILayout.Button("中止", GUILayout.Height(30), GUILayout.Width(80)))
+                {
+                    SimRunner.Cancel();
                 }
             }
         }
