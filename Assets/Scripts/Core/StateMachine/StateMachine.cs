@@ -1,3 +1,5 @@
+using System;
+
 public class StateMachine<T> where T : IState
 {
     /// <summary>
@@ -5,7 +7,9 @@ public class StateMachine<T> where T : IState
     /// </summary>
     protected T currentState;
     public T CurrentState => currentState;
-    
+
+    public event Action<T> OnStateChanged;
+
     /// <summary>
     /// 現在の状態を終了し、新しい状態へ切り替え
     /// </summary>
@@ -15,6 +19,7 @@ public class StateMachine<T> where T : IState
         currentState?.Exit();
         currentState = newState;
         currentState?.Enter();
+        OnStateChanged?.Invoke(newState);
     }
     
     /// <summary>
