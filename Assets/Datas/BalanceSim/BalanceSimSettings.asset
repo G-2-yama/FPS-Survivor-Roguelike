@@ -14,3 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.BalanceSimSettings
   runCount: 100
   seed: 0
+  targetScene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  timeStep: 0.02
+  sampleInterval: 1
+  facing: 0
+  escapeRadius: 30
+  escapeLookahead: 15
+  escapeDeadEndWeight: 1
+  escapeTurnWeight: 0.2
+  aimError: 2
+  fireRange: 60
+  terrainCellSize: 0.5
+  choicePolicy:
+    rid: 2577245417605955651
+  references:
+    version: 2
+    RefIds:
+    - rid: 2577245417605955651
+      type: {class: RandomChoicePolicy, ns: BalanceSim, asm: BalanceSim.Core}
+      data: 

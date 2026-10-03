@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -16,8 +18,11 @@ namespace BalanceSim.Editor
         private static readonly StringBuilder _stderr = new();
         private static readonly Stopwatch _stopwatch = new();
         private static string _outputPath;
+        private static string _terrainSummary;
 
         public static bool IsRunning => _process != null;
+
+        public static string OutputPath => Path.Combine(Directory.GetParent(Application.dataPath).FullName, WorkRelativePath, "output.json");
 
         public static void Run(BalanceSimSettings settings)
         {
@@ -38,13 +43,28 @@ namespace BalanceSim.Editor
             string workDir = Path.Combine(projectRoot, WorkRelativePath);
             Directory.CreateDirectory(workDir);
             string inputPath = Path.Combine(workDir, "input.json");
-            _outputPath = Path.Combine(workDir, "output.json");
+            _outputPath = OutputPath;
             if (File.Exists(_outputPath))
             {
                 File.Delete(_outputPath);
             }
 
-            SimInput input = SimInputBuilder.Build(settings);
+            var warnings = new List<string>();
+            SimInput input;
+            try
+            {
+                input = SimInputBuilder.Build(settings, warnings, out _terrainSummary);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[BalanceSim] Unity 側の値の読み出しに失敗しました: {e.Message}\n{e}");
+                return;
+            }
+
+            foreach (string warning in warnings)
+            {
+                Debug.LogWarning($"[BalanceSim] {warning}");
+            }
             File.WriteAllText(inputPath, JsonUtility.ToJson(input, true));
 
             var startInfo = new ProcessStartInfo(exePath)
@@ -109,7 +129,8 @@ namespace BalanceSim.Editor
             }
 
             SimResult result = JsonUtility.FromJson<SimResult>(File.ReadAllText(_outputPath));
-            Debug.Log($"[BalanceSim] 完了 ({_stopwatch.Elapsed.TotalSeconds:F2}秒): {result.message}\n結果: {_outputPath}");
+            Debug.Log($"[BalanceSim] 完了 ({_stopwatch.Elapsed.TotalSeconds:F2}秒): {result.message}\n{_terrainSummary}\n結果: {_outputPath}");
+            SimResultWindow.ShowResult(result);
         }
 
         private static void Abort()
