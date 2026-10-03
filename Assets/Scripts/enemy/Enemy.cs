@@ -30,6 +30,9 @@ public class Enemy : PoolableObject, IDamageable
     public Sounder Sounder => sounder;
     private DamageEffectManager damageEffectManager;
 
+    public static event System.Action<int> OnAnyDamaged;
+    public static event System.Action OnAnyKilled;
+
     public TeamType TeamType => TeamType.Enemy;
     public Health Health { get; private set; }
 
@@ -83,6 +86,7 @@ public class Enemy : PoolableObject, IDamageable
         isDead = false;
 
         Health = new Health(config.MaxHp);
+        Health.OnDamaged += HandleDamaged;
         Health.OnDeath += HandleDeath;
     }
 
@@ -92,9 +96,15 @@ public class Enemy : PoolableObject, IDamageable
 
         if (Health != null)
         {
+            Health.OnDamaged -= HandleDamaged;
             Health.OnDeath -= HandleDeath;
             Health = null;
         }
+    }
+
+    private void HandleDamaged(int appliedDamage, int currentHP, int maxHP)
+    {
+        OnAnyDamaged?.Invoke(appliedDamage);
     }
 
     private void HandleDeath()
@@ -102,6 +112,7 @@ public class Enemy : PoolableObject, IDamageable
         if (isDead) return;
 
         isDead = true;
+        OnAnyKilled?.Invoke();
 
         StartCoroutine(DeathRoutine());
     }
