@@ -36,6 +36,7 @@ namespace BalanceSim.Editor
             {
                 bool sceneWasDirty = scene.isDirty;
                 terrainSummary = null;
+                var terrainCache = new TerrainSampler.Cache();
                 for (int i = 0; i < cases.Count; i++)
                 {
                     if (cases.Count > 1 && EditorUtility.DisplayCancelableProgressBar("BalanceSim", $"値の読み出し {i + 1}/{cases.Count}", (float)i / cases.Count))
@@ -46,7 +47,7 @@ namespace BalanceSim.Editor
                     SimInput input;
                     using (SimValueApplier.Apply(cases[i].Rows, scene, warnings))
                     {
-                        input = Build(settings, scene, warnings, out terrainSummary);
+                        input = Build(settings, scene, terrainCache, warnings, out terrainSummary);
                     }
                     onBuilt(i, input);
                 }
@@ -65,7 +66,7 @@ namespace BalanceSim.Editor
             }
         }
 
-        private static SimInput Build(BalanceSimSettings settings, Scene scene, List<string> warnings, out string terrainSummary)
+        private static SimInput Build(BalanceSimSettings settings, Scene scene, TerrainSampler.Cache terrainCache, List<string> warnings, out string terrainSummary)
         {
             var input = new SimInput
             {
@@ -124,7 +125,7 @@ namespace BalanceSim.Editor
             ReadUpgrades(Single<UpgradeManager>(scene), input, weapons, warnings);
             input.projectiles = projectiles.Projectiles;
 
-            input.terrain = TerrainSampler.Sample(Single<StageManager>(scene), player, settings.TerrainCellSize, warnings, out float blockedRatio);
+            input.terrain = TerrainSampler.Sample(Single<StageManager>(scene), player, settings.TerrainCellSize, terrainCache, warnings, out float blockedRatio);
             terrainSummary = $"地形 {input.terrain.gridSize}×{input.terrain.gridSize} 枚（一辺 {input.terrain.tileSize * input.terrain.gridSize}m）、格子 {input.terrain.cells}×{input.terrain.cells}、通れないマス {blockedRatio:P1}";
             return input;
         }

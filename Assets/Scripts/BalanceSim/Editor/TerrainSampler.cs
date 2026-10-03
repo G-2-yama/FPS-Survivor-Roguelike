@@ -7,7 +7,21 @@ namespace BalanceSim.Editor
 {
     public static class TerrainSampler
     {
-        public static SimTerrainDef Sample(StageManager stage, Player player, float requestedCellSize, List<string> warnings, out float blockedRatio)
+        public sealed class Cache
+        {
+            internal SimTerrainDef def;
+            internal float bottom;
+            internal float top;
+            internal float blockedRatio;
+
+            internal bool Matches(float originX, float originZ, float tileSize, int gridSize, int cells, float bottom, float top)
+            {
+                return def != null && def.originX == originX && def.originZ == originZ && def.tileSize == tileSize && def.gridSize == gridSize
+                    && def.cells == cells && this.bottom == bottom && this.top == top;
+            }
+        }
+
+        public static SimTerrainDef Sample(StageManager stage, Player player, float requestedCellSize, Cache cache, List<string> warnings, out float blockedRatio)
         {
             float tileSize = stage.TileSize;
             int gridSize = stage.GridSize;
@@ -40,6 +54,13 @@ namespace BalanceSim.Editor
 
             float bottom = groundY + stepOffset;
             float top = groundY + height;
+            if (cache.Matches(originX, originZ, tileSize, gridSize, cells, bottom, top))
+            {
+                blockedRatio = cache.blockedRatio;
+                WarnIfStartBlocked(cache.def, playerPosition, warnings);
+                return cache.def;
+            }
+
             var halfExtents = new Vector3(cellSize * 0.5f, (top - bottom) * 0.5f, cellSize * 0.5f);
             float centerY = (top + bottom) * 0.5f;
 
@@ -81,11 +102,20 @@ namespace BalanceSim.Editor
                 blockedBits = Terrain.Encode(blocked),
             };
 
+            cache.def = def;
+            cache.bottom = bottom;
+            cache.top = top;
+            cache.blockedRatio = blockedRatio;
+            WarnIfStartBlocked(def, playerPosition, warnings);
+            return def;
+        }
+
+        private static void WarnIfStartBlocked(SimTerrainDef def, Vector3 playerPosition, List<string> warnings)
+        {
             if (new Terrain(def).IsBlocked(new Vec2(playerPosition.x, playerPosition.z)))
             {
                 warnings.Add("プレイヤーの初期位置が通れないマスになっています");
             }
-            return def;
         }
     }
 }

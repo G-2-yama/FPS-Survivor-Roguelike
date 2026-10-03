@@ -765,6 +765,9 @@ namespace BalanceSim
 
         private void UpdatePickups(float time, float dt)
         {
+            SimPickupDef rangeDef = null;
+            float range = 0f;
+            float idleDistanceSqr = 0f;
             foreach (PickupAgent pickup in _pickups)
             {
                 if (!pickup.Alive)
@@ -773,7 +776,20 @@ namespace BalanceSim
                 }
 
                 SimPickupDef def = pickup.Def;
-                float range = def.baseRange + _progression.RangeBonusOf(def.rangeKey);
+                if (def != rangeDef)
+                {
+                    rangeDef = def;
+                    range = def.baseRange + _progression.RangeBonusOf(def.rangeKey);
+                    float idleDistance = MathF.Max(range, def.radius + _player.Radius) + 1f;
+                    idleDistanceSqr = idleDistance * idleDistance;
+                }
+
+                if (!pickup.InCombat && def.chase.kind == SimMovementKind.Stop
+                    && (_player.Position - pickup.Position).SqrLength > idleDistanceSqr)
+                {
+                    continue;
+                }
+
                 float distance = (_player.Position - pickup.Position).Length;
                 if (!pickup.InCombat)
                 {
@@ -800,6 +816,7 @@ namespace BalanceSim
                 {
                     pickup.Alive = false;
                     Collect(def, time);
+                    rangeDef = null;
                 }
             }
         }

@@ -69,14 +69,8 @@ namespace BalanceSim
 
         private int CellIndex(float offset)
         {
-            float local = offset % Period;
-            if (local < 0f)
-            {
-                local += Period;
-            }
-
-            int index = (int)(local / _cellSize);
-            return index >= _cells ? _cells - 1 : index;
+            int index = (int)MathF.Floor(offset / _cellSize) % _cells;
+            return index < 0 ? index + _cells : index;
         }
 
         public int WorldToGrid(float coord) => (int)MathF.Floor((coord + TileSize * 0.5f) / TileSize);
