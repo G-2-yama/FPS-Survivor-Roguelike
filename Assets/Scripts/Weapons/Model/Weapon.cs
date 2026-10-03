@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    public static event System.Action OnAnyFired;
+
     [SerializeField] private Player weaponOwner;
     public Player WeaponOwner => weaponOwner;
     [SerializeField] private WeaponData weaponData;
@@ -83,6 +85,7 @@ public class Weapon : MonoBehaviour
         currentAmmo--;
         weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
         weaponData.FireModeData.Fire(this, weaponOwner);
+        OnAnyFired?.Invoke();
 
         return true;
     }
