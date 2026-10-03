@@ -15,6 +15,7 @@ MonoBehaviour:
   runCount: 100
   seed: 0
   targetScene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  values: {fileID: 11400000, guid: de72cfba313aa734082ae3465ec529f8, type: 2}
   timeStep: 0.02
   sampleInterval: 1
   facing: 0

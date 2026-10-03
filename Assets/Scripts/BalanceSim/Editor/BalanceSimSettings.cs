@@ -20,6 +20,11 @@ namespace BalanceSim.Editor
         [SerializeField] private SceneAsset targetScene;
         public SceneAsset TargetScene => targetScene;
 
+        [Header("ゲームの値の上書き")]
+        [Tooltip("ゲームの値を上書きする数値SO（Assets > Create > BalanceSim > Values）。空ならゲームの値のまま実行する。アセットやシーンは書き換えず、読み出しの間だけ値を差し替える")]
+        [SerializeField] private SimValueSource values;
+        public SimValueSource Values => values;
+
         [Header("時間")]
         [Tooltip("1ステップの秒数。ゲームの物理（Fixed Timestep）と同じ 0.02 が既定")]
         [Min(0.001f)]

@@ -33,7 +33,17 @@ namespace BalanceSim.Editor
 
             try
             {
-                return Build(settings, scene, warnings, out terrainSummary);
+                bool sceneWasDirty = scene.isDirty;
+                SimInput input;
+                using (SimValueApplier.Apply(settings.Values, scene, warnings))
+                {
+                    input = Build(settings, scene, warnings, out terrainSummary);
+                }
+                if (!openedHere && !sceneWasDirty && scene.isDirty)
+                {
+                    warnings.Add($"数値SO の上書きで、開いているシーン {scene.name} に変更ありの印が付きました。値は実行前に戻しています");
+                }
+                return input;
             }
             finally
             {
