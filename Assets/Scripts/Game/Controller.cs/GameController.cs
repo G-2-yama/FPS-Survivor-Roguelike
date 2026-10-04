@@ -22,5 +22,5 @@ public class GameController
     public void HideUpgradeUI()  => gameManager.UpgradeManager.HideUpgradeUI();
     public void ShowInventoryUI() => gameManager.InventoryController.Open();
     public void HideInventoryUI() => gameManager.InventoryController.Close();
-    public void ShowGameEnd(GameResult result) => gameManager.GameEndView.Show(result, Timer.ElapsedTime);
+    public void ShowGameEnd(GameResult result) => gameManager.GameEndView.Show(result, Timer.ElapsedTime, gameManager.GameStats);
 }
