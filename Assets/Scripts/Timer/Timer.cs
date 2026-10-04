@@ -29,6 +29,13 @@ public class Timer : MonoBehaviour
         IsRunning = false;
     }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    public void ForceFinish()
+    {
+        ElapsedTime = timeLimit;
+    }
+#endif
+
     private void Update()
     {
         if (!IsRunning) return;

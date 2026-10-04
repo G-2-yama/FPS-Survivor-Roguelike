@@ -1,26 +1,25 @@
-
-
 public class EndState : GameState
 {
     public override CursorActivationMode CursorActivationMode =>
         CursorActivationMode.AlwaysVisible;
 
+    public override bool AcceptsPlayerInput => false;
+
+    private GameResult result;
+
     public EndState(GameController controller) : base(controller)
     {
     }
 
+    public void SetResult(GameResult result)
+    {
+        this.result = result;
+    }
+
     public override void Enter()
     {
-        controller.ShowGameEnd();
-    }
-
-    public override void Update()
-    {
-        // ゲーム終了中の更新処理
-    }
-
-    public override void Exit()
-    {
-        // ゲーム終了後の後処理
+        controller.StopTimer();
+        controller.PauseGame();
+        controller.ShowGameEnd(result);
     }
 }

@@ -3,6 +3,7 @@ public abstract class GameState : IState
 	protected GameController controller;
 	public virtual CursorActivationMode CursorActivationMode =>
 		CursorActivationMode.HiddenUnlessModifierHeld;
+	public virtual bool AcceptsPlayerInput => true;
 
 	public GameState(GameController controller)
 	{
