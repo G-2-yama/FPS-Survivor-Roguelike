@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 namespace BalanceSim.Editor
@@ -41,28 +42,44 @@ namespace BalanceSim.Editor
         private const string ResultsFolder = "BalanceSimResults";
         private const float NavButtonWidth = 28f;
         private const float PageLabelWidth = 72f;
-        private const float RowButtonWidth = 48f;
-        private const float CellPadding = 16f;
-        private static readonly string[] MetricHeaders = { "クリア率", "死亡時刻の平均", "最終レベルの平均", "撃破数の平均" };
+        private const float ViewGap = 8f;
+        private const float PopupMaxWidth = 280f;
+        private const float ScrollbarAllowance = 24f;
+        private static readonly string[] SummaryViewLabels = { "表", "値ごと", "組み合わせ" };
+
+        private enum SummaryView
+        {
+            Table,
+            Effects,
+            Heatmap,
+        }
 
         private static GUIStyle _rightAlignedStyle;
         private static GUIStyle _centeredStyle;
         private static GUIStyle _pageLabelStyle;
-        private static GUIStyle _cellStyle;
-        private static GUIStyle _headerStyle;
 
         [SerializeField] private string _sourcePath;
         [SerializeField] private int _page = -1;
+        [SerializeField] private TreeViewState<int> _tableState;
+        [SerializeField] private MultiColumnHeaderState _tableHeaderState;
+        [SerializeField] private SummaryView _summaryView;
+        [SerializeField] private string _metricName;
+        [SerializeField] private string _heatmapXName;
+        [SerializeField] private string _heatmapYName;
         [NonSerialized] private SimResultSet _set;
         private Vector2 _scroll;
+        private Vector2 _chartScroll;
+        private SimResultSet _columnsSource;
+        private SimSummaryColumns _columns;
+        private SimEffectChart _effectChart;
+        private SimHeatmap _heatmap;
         private int _hoverIndex = -1;
         private bool _hoverFound;
         private readonly Dictionary<string, float> _legendWidths = new();
         private SimResult _legendWidthsSource;
         private SimResultSet _tableSource;
-        private string[] _tableHeaders;
-        private List<string[]> _tableRows;
-        private float[] _tableWidths;
+        private SimResultTable _table;
+        private int _openRequest = -1;
 
         [MenuItem("Tools/BalanceSim/結果")]
         public static void Open()
@@ -84,6 +101,37 @@ namespace BalanceSim.Editor
 
         private SimResult CurrentResult => _set != null && _page >= 0 && _page < _set.cases.Count ? _set.cases[_page].result : null;
 
+        private SimResultTable Table
+        {
+            get
+            {
+                if (_tableSource != _set)
+                {
+                    _tableSource = _set;
+                    _tableState ??= new TreeViewState<int>();
+                    _table = SimResultTable.Create(Columns, _tableState, ref _tableHeaderState, index => _openRequest = index);
+                }
+                return _table;
+            }
+        }
+
+        private SimSummaryColumns Columns
+        {
+            get
+            {
+                if (_columnsSource != _set)
+                {
+                    _columnsSource = _set;
+                    _columns = SimSummaryColumns.Of(_set);
+                    _effectChart = new SimEffectChart(_columns, index => _openRequest = index);
+                    _heatmap = new SimHeatmap(_columns, index => _openRequest = index);
+                }
+                return _columns;
+            }
+        }
+
+        private bool ChartShown => _page < 0 && _summaryView != SummaryView.Table;
+
         private string SourcePathOrLast => string.IsNullOrEmpty(_sourcePath) ? SimRunner.LastResultPath : _sourcePath;
 
         private static string ResultsFolderPath => Path.Combine(SimRunner.ProjectRoot, ResultsFolder);
@@ -103,6 +151,7 @@ namespace BalanceSim.Editor
             _sourcePath = sourcePath;
             int first = set.cases.Count > 1 ? -1 : 0;
             _page = page.HasValue ? Mathf.Clamp(page.Value, first, set.cases.Count - 1) : first;
+            _tableState = null;
             _hoverIndex = -1;
             _scroll = Vector2.zero;
             Repaint();
@@ -184,6 +233,8 @@ namespace BalanceSim.Editor
             {
                 if (HasSummary)
                 {
+                    SimResultTable table = Table;
+                    int position = _page < 0 ? -1 : table.PositionOf(_page);
                     using (new EditorGUI.DisabledScope(_page < 0))
                     {
                         if (GUILayout.Button("まとめ", EditorStyles.toolbarButton))
@@ -192,17 +243,30 @@ namespace BalanceSim.Editor
                         }
                         if (GUILayout.Button("◀", EditorStyles.toolbarButton, GUILayout.Width(NavButtonWidth)))
                         {
-                            ChangePage(_page - 1);
+                            ChangePage(position <= 0 ? -1 : table.CaseAt(position - 1));
                         }
                     }
 
-                    GUILayout.Label(_page < 0 ? "まとめ" : $"{_page + 1} / {_set.cases.Count}", PageLabelStyle, GUILayout.Width(PageLabelWidth));
+                    GUILayout.Label(_page < 0 ? "まとめ" : $"{position + 1} / {table.Count}", PageLabelStyle, GUILayout.Width(PageLabelWidth));
 
-                    using (new EditorGUI.DisabledScope(_page >= _set.cases.Count - 1))
+                    using (new EditorGUI.DisabledScope(position >= table.Count - 1))
                     {
                         if (GUILayout.Button("▶", EditorStyles.toolbarButton, GUILayout.Width(NavButtonWidth)))
                         {
-                            ChangePage(_page + 1);
+                            ChangePage(table.CaseAt(position + 1));
+                        }
+                    }
+
+                    if (_page < 0)
+                    {
+                        GUILayout.Space(ViewGap);
+                        var view = (SummaryView)GUILayout.Toolbar((int)_summaryView, SummaryViewLabels, EditorStyles.toolbarButton, GUI.ToolbarButtonSize.FitToContents);
+                        if (view != _summaryView)
+                        {
+                            _summaryView = view;
+                            ClearChartHover();
+                            GUI.FocusControl(null);
+                            GUIUtility.ExitGUI();
                         }
                     }
                 }
@@ -251,80 +315,79 @@ namespace BalanceSim.Editor
 
         private void DrawSummary()
         {
-            if (_tableSource != _set)
+            if (_summaryView == SummaryView.Table)
             {
-                BuildTable();
+                Rect rect = GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                Table.OnGUI(rect);
+            }
+            else
+            {
+                DrawChart();
             }
 
-            DrawTableRow(_tableHeaders, HeaderStyle, -1);
-            for (int i = 0; i < _tableRows.Count; i++)
+            if (_openRequest >= 0)
             {
-                DrawTableRow(_tableRows[i], CellStyle, i);
-            }
-        }
-
-        private void BuildTable()
-        {
-            _tableSource = _set;
-            _tableHeaders = new[] { "#" }
-                .Concat(_set.cases[0].values.Select(v => v.Name))
-                .Concat(MetricHeaders)
-                .ToArray();
-            _tableRows = _set.cases
-                .Select((c, i) => new[] { (i + 1).ToString() }
-                    .Concat(c.values.Select(v => v.ValueText))
-                    .Concat(Metrics(c.result))
-                    .ToArray())
-                .ToList();
-
-            _tableWidths = new float[_tableHeaders.Length];
-            for (int col = 0; col < _tableHeaders.Length; col++)
-            {
-                float width = HeaderStyle.CalcSize(new GUIContent(_tableHeaders[col])).x;
-                foreach (string[] row in _tableRows)
-                {
-                    if (col < row.Length)
-                    {
-                        width = Mathf.Max(width, CellStyle.CalcSize(new GUIContent(row[col])).x);
-                    }
-                }
-                _tableWidths[col] = width + CellPadding;
+                int page = _openRequest;
+                _openRequest = -1;
+                ChangePage(page);
             }
         }
 
-        private void DrawTableRow(string[] cells, GUIStyle style, int caseIndex)
+        private void DrawChart()
         {
+            SimSummaryColumns columns = Columns;
+            bool heatmap = _summaryView == SummaryView.Heatmap;
+            int metric;
+            int x = -1;
+            int y = -1;
             using (new EditorGUILayout.HorizontalScope())
             {
-                for (int col = 0; col < cells.Length && col < _tableWidths.Length; col++)
+                metric = ColumnPopup("指標", ref _metricName, columns.FirstMetric, columns.Count, columns.FirstMetric);
+                if (heatmap && columns.ValueCount >= 2)
                 {
-                    GUILayout.Label(cells[col], style, GUILayout.Width(_tableWidths[col]));
+                    x = ColumnPopup("横軸", ref _heatmapXName, columns.FirstValue, columns.FirstMetric, columns.FirstValue);
+                    y = ColumnPopup("縦軸", ref _heatmapYName, columns.FirstValue, columns.FirstMetric, columns.FirstValue + 1);
                 }
+                GUILayout.FlexibleSpace();
+            }
 
-                GUILayout.Space(CellPadding);
-                if (caseIndex >= 0 && GUILayout.Button("表示", GUILayout.Width(RowButtonWidth)))
-                {
-                    ChangePage(caseIndex);
-                }
+            _chartScroll = EditorGUILayout.BeginScrollView(_chartScroll);
+            float width = position.width - ScrollbarAllowance;
+            bool hoverChanged = heatmap ? _heatmap.OnGUI(metric, x, y, width) : _effectChart.OnGUI(metric, width);
+            EditorGUILayout.EndScrollView();
+
+            if (hoverChanged)
+            {
+                Repaint();
             }
         }
 
-        private static string[] Metrics(SimResult result)
+        private int ColumnPopup(string label, ref string selectedName, int from, int to, int fallback)
         {
-            List<SimRunSummary> runs = result.runs;
-            if (runs.Count == 0)
+            string[] headers = _columns.Headers;
+            int current = Array.IndexOf(headers, selectedName, from, to - from);
+            if (current < 0)
             {
-                return MetricHeaders.Select(_ => "-").ToArray();
+                current = fallback;
             }
 
-            List<SimRunSummary> deaths = runs.Where(r => !r.cleared).ToList();
-            return new[]
+            GUILayout.Label(label, GUILayout.ExpandWidth(false));
+            string[] options = headers.Skip(from).Take(to - from).ToArray();
+            int selected = EditorGUILayout.Popup(current - from, options, GUILayout.MaxWidth(PopupMaxWidth)) + from;
+            if (selected != current)
             {
-                $"{100f * runs.Count(r => r.cleared) / runs.Count:0}%",
-                deaths.Count > 0 ? $"{deaths.Average(r => r.endTime):0}秒" : "-",
-                $"{runs.Average(r => r.level):0.0}",
-                $"{runs.Average(r => r.kills):0}",
-            };
+                selectedName = headers[selected];
+                ClearChartHover();
+                GUIUtility.ExitGUI();
+            }
+            selectedName = headers[current];
+            return current;
+        }
+
+        private void ClearChartHover()
+        {
+            _effectChart?.ClearHover();
+            _heatmap?.ClearHover();
         }
 
         private void OnGUI()
@@ -340,6 +403,7 @@ namespace BalanceSim.Editor
             if (e.type == EventType.MouseLeaveWindow)
             {
                 _hoverIndex = -1;
+                ClearChartHover();
                 Repaint();
             }
 
@@ -347,9 +411,7 @@ namespace BalanceSim.Editor
             DrawConditions();
             if (_page < 0)
             {
-                _scroll = EditorGUILayout.BeginScrollView(_scroll);
                 DrawSummary();
-                EditorGUILayout.EndScrollView();
             }
             else
             {
@@ -359,6 +421,10 @@ namespace BalanceSim.Editor
                     EditorGUILayout.LabelField($"振った値: {current.Label}", EditorStyles.wordWrappedLabel);
                 }
                 EditorGUILayout.LabelField(current.result.message, EditorStyles.wordWrappedLabel);
+                if (current.result.runs.Count == 0 && current.result.runCount > 0)
+                {
+                    EditorGUILayout.LabelField($"各回の記録を残さずに実行した結果です。グラフは平均だけで、{current.result.sampleInterval:0.##}秒ごとの点を結んでいます", EditorStyles.wordWrappedMiniLabel);
+                }
                 _scroll = EditorGUILayout.BeginScrollView(_scroll);
                 foreach (IGrouping<string, SimSeries> group in current.result.series.GroupBy(s => string.IsNullOrEmpty(s.group) ? s.name : s.group))
                 {
@@ -368,7 +434,7 @@ namespace BalanceSim.Editor
                 EditorGUILayout.EndScrollView();
             }
 
-            if (e.type == EventType.MouseMove)
+            if (e.type == EventType.MouseMove && !ChartShown)
             {
                 if (!_hoverFound)
                 {
@@ -593,22 +659,18 @@ namespace BalanceSim.Editor
             return value >= 10f || Mathf.Approximately(value, Mathf.Round(value)) ? $"{value:0}" : $"{value:0.#}";
         }
 
-        private static Color ColorOf(int index) => Palette[(index % Palette.Length + Palette.Length) % Palette.Length];
+        internal static Color ColorOf(int index) => Palette[(index % Palette.Length + Palette.Length) % Palette.Length];
 
-        private static GUIStyle RightAlignedStyle => _rightAlignedStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight };
+        internal static GUIStyle RightAlignedStyle => _rightAlignedStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight };
 
-        private static GUIStyle CenteredStyle => _centeredStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
+        internal static GUIStyle CenteredStyle => _centeredStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
 
         private static GUIStyle PageLabelStyle => _pageLabelStyle ??= new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleCenter };
 
-        private static GUIStyle CellStyle => _cellStyle ??= new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleRight };
+        internal static Color BackgroundColor => EditorGUIUtility.isProSkin ? new Color(0.15f, 0.15f, 0.15f) : new Color(0.92f, 0.92f, 0.92f);
 
-        private static GUIStyle HeaderStyle => _headerStyle ??= new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleRight };
+        internal static Color GridColor => EditorGUIUtility.isProSkin ? new Color(0.28f, 0.28f, 0.28f) : new Color(0.78f, 0.78f, 0.78f);
 
-        private static Color BackgroundColor => EditorGUIUtility.isProSkin ? new Color(0.15f, 0.15f, 0.15f) : new Color(0.92f, 0.92f, 0.92f);
-
-        private static Color GridColor => EditorGUIUtility.isProSkin ? new Color(0.28f, 0.28f, 0.28f) : new Color(0.78f, 0.78f, 0.78f);
-
-        private static Color HoverColor => EditorGUIUtility.isProSkin ? new Color(0.9f, 0.9f, 0.9f, 0.6f) : new Color(0.1f, 0.1f, 0.1f, 0.6f);
+        internal static Color HoverColor => EditorGUIUtility.isProSkin ? new Color(0.9f, 0.9f, 0.9f, 0.6f) : new Color(0.1f, 0.1f, 0.1f, 0.6f);
     }
 }
