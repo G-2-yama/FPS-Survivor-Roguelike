@@ -11,6 +11,10 @@ public class DamageObject : DamageBase
         {
             Release();
         }
+        else if (!other.isTrigger && !other.TryGetComponent<IDamageable>(out _))
+        {
+            Release();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
