@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ce709226fdb59a4686e3d70b7b2732b, type: 3}
+  m_Name: BalanceSimSweep
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.SimSweep
+  fixedValues: {fileID: 0}
+  axes:
+  - targetId: GlobalObjectId_V1-3-1a9cbc5f235271a498859bcfae9c5448-11400000-0
+    targetLabel: HG_00
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 5
+    max: 15
+    step: 3
+  - targetId: GlobalObjectId_V1-3-b6f9eee65bdd9ab4b85d74107f87f3ff-11400000-0
+    targetLabel: HG_01
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 10
+    max: 17
+    step: 3
+  - targetId: GlobalObjectId_V1-3-c6d879d31275a754b8fbb135575fba7e-11400000-0
+    targetLabel: HG_02
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 20
+    max: 25
+    step: 3
+  - targetId: GlobalObjectId_V1-3-84986b671f66f744a81320ba6ec12ca1-11400000-0
+    targetLabel: HG_03
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 20
+    max: 25
+    step: 3
+  - targetId: GlobalObjectId_V1-3-febd3c96077964b4c8dcf6886301f8bf-11400000-0
+    targetLabel: HG_04
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 20
+    max: 30
+    step: 3
+  - targetId: GlobalObjectId_V1-3-9991d3441f516b8449690fa0edef1f15-11400000-0
+    targetLabel: HG_05
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 30
+    max: 40
+    step: 3
+  - targetId: GlobalObjectId_V1-3-8074cbe9ea56c334ca3b8e83d50b2c6d-11400000-0
+    targetLabel: HG_Evo
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    min: 40
+    max: 50
+    step: 3
+  groups: []
+  generator:
+    rid: 2577245417605955658
+  references:
+    version: 2
+    RefIds:
+    - rid: 2577245417605955658
+      type: {class: TargetClearRateSweep, ns: BalanceSim.Editor, asm: Assembly-CSharp-Editor}
+      data:
+        targetClearRate: 50
+        tolerance: 2
+        pointsPerRound: 5
