@@ -32,6 +32,14 @@ public class GameManager : MonoBehaviour
     private GameStateMachine gameStateMachine;
     public GameStateMachine GameStateMachine => gameStateMachine;
 
+    private GameStats gameStats;
+    public GameStats GameStats => gameStats;
+
+    private void Awake()
+    {
+        gameStats = new GameStats();
+    }
+
     public void Start()
     {
         gameController = new GameController(this);
@@ -48,6 +56,11 @@ public class GameManager : MonoBehaviour
     {
         gameStateMachine.Update();
         gameplayCursorController.UpdateCursor(gameStateMachine.CurrentState);
+    }
+
+    private void OnDestroy()
+    {
+        gameStats?.Dispose();
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
