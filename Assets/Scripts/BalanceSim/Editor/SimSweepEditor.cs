@@ -13,8 +13,14 @@ namespace BalanceSim.Editor
             ManagedReferencePopup.Draw<ISimSweepGenerator>(serializedObject.FindProperty(SimSweep.GeneratorField), "作り方の種類", "作り方の設定");
             serializedObject.ApplyModifiedProperties();
 
+            var sweep = (SimSweep)target;
+            if (sweep.Generator != null)
+            {
+                EditorGUILayout.HelpBox(sweep.Generator.Description, MessageType.None);
+            }
+
             EditorGUILayout.Space();
-            DrawCaseCount((SimSweep)target, null);
+            DrawCaseCount(sweep, null);
         }
 
         internal static void DrawCaseCount(SimSweep sweep, int? runCount)
@@ -30,14 +36,15 @@ namespace BalanceSim.Editor
                 return;
             }
 
+            string upTo = sweep.Generator is ISimAdaptiveSweepGenerator ? "最大 " : string.Empty;
             if (runCount == null)
             {
-                EditorGUILayout.HelpBox($"{cases} 通り。実行すると、1通りごとに設定SO の回数ずつ回す", MessageType.Info);
+                EditorGUILayout.HelpBox($"{upTo}{cases} 通り。実行すると、1通りごとに設定SO の回数ずつ回す", MessageType.Info);
                 return;
             }
 
             long runs = (long)cases * runCount.Value;
-            string text = $"探索: {cases} 通り × {runCount} 回 = {runs} 回";
+            string text = $"探索: {upTo}{cases} 通り × {runCount} 回 = {upTo}{runs} 回";
             float secondsPerRun = SimRunner.SecondsPerRun;
             if (secondsPerRun > 0f)
             {

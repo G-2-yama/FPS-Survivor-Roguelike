@@ -33,6 +33,7 @@ namespace BalanceSim
     {
         public float timeStep = 0.02f;
         public float sampleInterval = 1f;
+        public bool keepRunDetails = true;
         public SimFacingMode facing;
         public float escapeRadius = 30f;
         public float escapeLookahead = 15f;

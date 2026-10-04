@@ -18,18 +18,20 @@ namespace BalanceSim.Editor
         [SerializeField] private string propertyPath;
         [SerializeField] private string propertyLabel;
         [SerializeField] private double value;
+        [NonSerialized] private bool scale;
 
         public SimValueOverride()
         {
         }
 
-        public SimValueOverride(string targetId, string targetLabel, string propertyPath, string propertyLabel, double value)
+        public SimValueOverride(string targetId, string targetLabel, string propertyPath, string propertyLabel, double value, bool scale = false)
         {
             this.targetId = targetId;
             this.targetLabel = targetLabel;
             this.propertyPath = propertyPath;
             this.propertyLabel = propertyLabel;
             this.value = value;
+            this.scale = scale;
         }
 
         public string TargetId => targetId;
@@ -37,6 +39,7 @@ namespace BalanceSim.Editor
         public string PropertyPath => propertyPath;
         public string PropertyLabel => propertyLabel;
         public double Value => value;
+        public bool Scale => scale;
 
         public static UnityEngine.Object ResolveTarget(string id)
         {

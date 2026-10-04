@@ -8,8 +8,22 @@ namespace BalanceSim
     {
         public string message;
         public float sampleInterval;
+        public int runCount;
+        public int clearedCount;
+        public float deathTimeMean;
+        public double levelMean;
+        public double killsMean;
+        public List<SimEvolutionStat> evolutionStats = new();
         public List<SimSeries> series = new();
         public List<SimRunSummary> runs = new();
+    }
+
+    [Serializable]
+    public class SimEvolutionStat
+    {
+        public string weapon;
+        public int count;
+        public float timeMean;
     }
 
     [Serializable]

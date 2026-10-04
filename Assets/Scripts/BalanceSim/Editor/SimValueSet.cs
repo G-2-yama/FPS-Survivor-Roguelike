@@ -13,7 +13,7 @@ namespace BalanceSim.Editor
 
         public override List<SimValueCase> BuildCases()
         {
-            return new List<SimValueCase> { new(Rows(), new List<SimValueRow>()) };
+            return new List<SimValueCase> { new(Rows(), new List<SimValueRow>(), new List<SimCaseValue>()) };
         }
 
         public List<SimValueRow> Rows()

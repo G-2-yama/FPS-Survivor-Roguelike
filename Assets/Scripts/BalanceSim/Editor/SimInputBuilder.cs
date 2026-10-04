@@ -75,7 +75,8 @@ namespace BalanceSim.Editor
                 options = new SimOptions
                 {
                     timeStep = settings.TimeStep,
-                    sampleInterval = settings.SampleInterval,
+                    sampleInterval = settings.KeepRunDetails ? settings.SampleInterval : settings.SummarySampleInterval,
+                    keepRunDetails = settings.KeepRunDetails,
                     facing = settings.Facing,
                     escapeRadius = settings.EscapeRadius,
                     escapeLookahead = settings.EscapeLookahead,

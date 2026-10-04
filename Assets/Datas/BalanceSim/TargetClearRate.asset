@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ce709226fdb59a4686e3d70b7b2732b, type: 3}
-  m_Name: BalanceSimSweep
+  m_Name: TargetClearRate
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.SimSweep
   fixedValues: {fileID: 0}
   axes:

@@ -84,17 +84,28 @@ namespace BalanceSim.Editor
                     throw new InvalidOperationException($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は数値でも真偽値でもありません");
                 }
 
+                if (entry.Scale && property.propertyType == SerializedPropertyType.Boolean)
+                {
+                    throw new InvalidOperationException($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は真偽値なので倍率を掛けられません");
+                }
+
                 var key = (target.GetInstanceID(), property.propertyPath);
-                if (seen.TryGetValue(key, out string previousRow))
+                if (!entry.Scale && seen.TryGetValue(key, out string previousRow))
                 {
                     warnings.Add($"{row}: {entry.TargetLabel} の {entry.PropertyLabel} は {previousRow} でも上書きしています。{row} の値を使います");
                 }
                 seen[key] = row;
 
                 _originals.Add(new Original(target, property));
-                SimValueOverride.Write(property, entry.Value);
+                SimValueOverride.Write(property, entry.Scale ? Scaled(property, entry.Value) : entry.Value);
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
+        }
+
+        private static double Scaled(SerializedProperty property, double factor)
+        {
+            double scaled = SimValueOverride.Read(property) * factor;
+            return property.propertyType == SerializedPropertyType.Integer ? Math.Round(scaled, MidpointRounding.AwayFromZero) : scaled;
         }
 
         public void Dispose()

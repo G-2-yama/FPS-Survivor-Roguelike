@@ -49,7 +49,7 @@ namespace BalanceSim.Editor
 
             SerializedProperty source = SourceProperty(target, propertyPath.stringValue);
 
-            DrawPropertyChoice(line, target, propertyPath, propertyLabel, value);
+            DrawPropertyChoice(line, target, propertyPath, propertyLabel, true, value);
             line.y += line.height + Spacing;
 
             DrawValue(line, source, propertyPath.stringValue, value);
@@ -139,7 +139,7 @@ namespace BalanceSim.Editor
         }
 
         internal static void DrawPropertyChoice(Rect line, Object target, SerializedProperty propertyPath,
-            SerializedProperty propertyLabel, params SerializedProperty[] valuesOnPick)
+            SerializedProperty propertyLabel, bool allowBoolean, params SerializedProperty[] valuesOnPick)
         {
             Rect buttonRect = EditorGUI.PrefixLabel(line, PropertyLabel);
             string caption = string.IsNullOrEmpty(propertyLabel.stringValue) ? "（選ぶ）" : propertyLabel.stringValue;
@@ -157,7 +157,7 @@ namespace BalanceSim.Editor
             string[] valueNames = valuesOnPick.Select(v => v.propertyPath).ToArray();
 
             var menu = new GenericMenu();
-            foreach ((string path, string menuLabel, string displayLabel, double current) in ListProperties(target))
+            foreach ((string path, string menuLabel, string displayLabel, double current) in ListProperties(target, allowBoolean))
             {
                 menu.AddItem(new GUIContent(menuLabel), path == propertyPath.stringValue, () =>
                 {
@@ -173,12 +173,12 @@ namespace BalanceSim.Editor
             }
             if (menu.GetItemCount() == 0)
             {
-                menu.AddDisabledItem(new GUIContent("数値・真偽値の項目がありません"));
+                menu.AddDisabledItem(new GUIContent(allowBoolean ? "数値・真偽値の項目がありません" : "数値の項目がありません"));
             }
             menu.DropDown(buttonRect);
         }
 
-        private static IEnumerable<(string path, string menuLabel, string displayLabel, double current)> ListProperties(Object target)
+        private static IEnumerable<(string path, string menuLabel, string displayLabel, double current)> ListProperties(Object target, bool allowBoolean)
         {
             var serialized = new SerializedObject(target);
             SerializedProperty iterator = serialized.GetIterator();
@@ -186,7 +186,7 @@ namespace BalanceSim.Editor
             while (iterator.NextVisible(enterChildren))
             {
                 enterChildren = iterator.propertyType == SerializedPropertyType.Generic;
-                if (!SimValueOverride.IsSupported(iterator.propertyType) || iterator.propertyPath.EndsWith(".Array.size"))
+                if (!IsChoosable(iterator, allowBoolean))
                 {
                     continue;
                 }
@@ -197,6 +197,18 @@ namespace BalanceSim.Editor
                 string menuLabel = string.Join("/", names.Take(names.Length - 1).Append(leaf).Select(n => n.Replace('/', '／')));
                 yield return (iterator.propertyPath, menuLabel, string.Join(" > ", names), current);
             }
+        }
+
+        internal static bool IsChoosable(SerializedProperty property, bool allowBoolean)
+        {
+            return SimValueOverride.IsSupported(property.propertyType)
+                && (allowBoolean || property.propertyType != SerializedPropertyType.Boolean)
+                && !property.propertyPath.EndsWith(".Array.size");
+        }
+
+        internal static string DisplayLabel(Object target, string path)
+        {
+            return string.Join(" > ", DisplayNames(new SerializedObject(target), path));
         }
 
         private static string[] DisplayNames(SerializedObject serialized, string path)

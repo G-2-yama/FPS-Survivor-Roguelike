@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e0a65c4d99e5f749979ecde83e5450d, type: 3}
   m_Name: BalanceSimSettings
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.BalanceSimSettings
-  runCount: 100
+  runCount: 10
   seed: 0
   targetScene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
   values: {fileID: 11400000, guid: 9db9289be81eea2449a355026340b6e8, type: 2}
   timeStep: 0.04
   sampleInterval: 1
+  keepRunDetails: 0
+  summarySampleInterval: 30
   facing: 0
   escapeRadius: 30
   escapeLookahead: 15

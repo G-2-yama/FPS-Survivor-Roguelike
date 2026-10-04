@@ -24,7 +24,12 @@ namespace BalanceSim.Editor
         public List<SimCaseValue> values = new();
         public SimResult result;
 
-        public string Label => string.Join(", ", values);
+        public string Label => LabelOf(values);
+
+        public static string LabelOf(IReadOnlyCollection<SimCaseValue> values)
+        {
+            return values.Count > 0 ? string.Join(", ", values) : "なし（基準）";
+        }
     }
 
     [Serializable]

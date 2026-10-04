@@ -16,22 +16,31 @@ namespace BalanceSim.Editor
         private const string ExeRelativePath = "Tools/BalanceSim/Release/BalanceSim.exe";
         private const string WorkRelativePath = "Temp/BalanceSim";
         private const string SecondsPerRunKey = "BalanceSim.SecondsPerRun";
+        private const double ReadRetrySeconds = 10;
 
         private static Process _process;
         private static readonly StringBuilder _stderr = new();
-        private static readonly Stopwatch _caseStopwatch = new();
+        private static readonly Stopwatch _processStopwatch = new();
         private static readonly Stopwatch _totalStopwatch = new();
-        private static string _exePath;
+        private static readonly Stopwatch _readRetryStopwatch = new();
+        private static int _readRetryIndex = -1;
         private static string _terrainSummary;
+        private static BalanceSimSettings _settings;
+        private static SimValueSource _source;
+        private static string _exePath;
         private static List<SimValueCase> _cases;
-        private static int _caseIndex;
+        private static int _round;
+        private static int _roundStart;
+        private static string _conclusion;
         private static int _runCount;
         private static bool _cancelRequested;
         private static SimResultSet _resultSet;
 
         public static bool IsRunning => _process != null;
 
-        public static string ProgressText => _cases != null && _cases.Count > 1 ? $"{_caseIndex + 1}/{_cases.Count}" : string.Empty;
+        public static string ProgressText => _cases != null && _cases.Count > 1
+            ? $"{(_round > 1 ? $"{_round}回目 " : string.Empty)}{_resultSet.cases.Count}/{_cases.Count}"
+            : string.Empty;
 
         public static float SecondsPerRun => SessionState.GetFloat(SecondsPerRunKey, 0f);
 
@@ -43,9 +52,11 @@ namespace BalanceSim.Editor
 
         private static string InputDir => Path.Combine(WorkDir, "inputs");
 
-        private static string OutputPath => Path.Combine(WorkDir, "output.json");
+        private static string OutputDir => Path.Combine(WorkDir, "outputs");
 
         private static string InputPath(int index) => Path.Combine(InputDir, $"input_{index:0000}.json");
+
+        private static string OutputPath(int index) => Path.Combine(OutputDir, $"output_{index:0000}.json");
 
         public static void Run(BalanceSimSettings settings)
         {
@@ -55,20 +66,13 @@ namespace BalanceSim.Editor
                 return;
             }
 
-            _exePath = Path.Combine(ProjectRoot, ExeRelativePath);
-            if (!File.Exists(_exePath))
+            string exePath = Path.Combine(ProjectRoot, ExeRelativePath);
+            if (!File.Exists(exePath))
             {
-                Debug.LogError($"[BalanceSim] 実行ファイルが見つかりません: {_exePath}");
+                Debug.LogError($"[BalanceSim] 実行ファイルが見つかりません: {exePath}");
                 return;
             }
 
-            if (Directory.Exists(InputDir))
-            {
-                Directory.Delete(InputDir, true);
-            }
-            Directory.CreateDirectory(InputDir);
-
-            var warnings = new List<string>();
             List<SimValueCase> cases;
             try
             {
@@ -77,7 +81,7 @@ namespace BalanceSim.Editor
                 {
                     throw new InvalidOperationException($"{settings.Values.name} から試す組み合わせが1つも作られませんでした");
                 }
-                SimInputBuilder.Build(settings, cases, (i, input) => File.WriteAllText(InputPath(i), JsonUtility.ToJson(input, true)), warnings, out _terrainSummary);
+                WriteInputs(settings, cases);
             }
             catch (OperationCanceledException)
             {
@@ -90,13 +94,13 @@ namespace BalanceSim.Editor
                 return;
             }
 
-            foreach (string warning in warnings.Distinct())
-            {
-                Debug.LogWarning($"[BalanceSim] {warning}");
-            }
-
+            _settings = settings;
+            _source = settings.Values;
+            _exePath = exePath;
+            _round = 1;
+            _roundStart = 0;
+            _conclusion = null;
             _cases = cases;
-            _caseIndex = 0;
             _runCount = settings.RunCount;
             _cancelRequested = false;
             _resultSet = new SimResultSet
@@ -110,7 +114,7 @@ namespace BalanceSim.Editor
             };
 
             _totalStopwatch.Restart();
-            StartCase();
+            StartProcess(exePath);
             EditorApplication.update += Poll;
             AssemblyReloadEvents.beforeAssemblyReload += Abort;
         }
@@ -129,16 +133,81 @@ namespace BalanceSim.Editor
             }
         }
 
-        private static void StartCase()
+        private static void WriteInputs(BalanceSimSettings settings, List<SimValueCase> cases)
         {
-            if (File.Exists(OutputPath))
+            ResetDirectory(InputDir);
+            ResetDirectory(OutputDir);
+
+            var warnings = new List<string>();
+            SimInputBuilder.Build(settings, cases, (i, input) => File.WriteAllText(InputPath(i), JsonUtility.ToJson(input)), warnings, out _terrainSummary);
+            LogWarnings(warnings);
+        }
+
+        private static void LogWarnings(IEnumerable<string> warnings)
+        {
+            foreach (string warning in warnings.Distinct())
             {
-                File.Delete(OutputPath);
+                Debug.LogWarning($"[BalanceSim] {warning}");
+            }
+        }
+
+        private static void StartNextRound()
+        {
+            List<SimValueCase> next;
+            string conclusion = null;
+            try
+            {
+                var warnings = new List<string>();
+                next = _source != null
+                    ? _source.BuildNextCases(_cases, _resultSet.cases.Select(c => c.result).ToList(), warnings, out conclusion)
+                    : new List<SimValueCase>();
+                LogWarnings(warnings);
+                if (next.Count > 0)
+                {
+                    WriteInputs(_settings, next);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log($"[BalanceSim] 値の読み出しを中止しました（{_resultSet.cases.Count} 通りが完了）");
+                Finish(true);
+                return;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[BalanceSim] 次に試す組み合わせを作れませんでした（{_resultSet.cases.Count} 通りが完了）: {e.Message}\n{e}");
+                Finish(true);
+                return;
             }
 
-            var startInfo = new ProcessStartInfo(_exePath)
+            if (next.Count == 0)
             {
-                Arguments = $"\"{InputPath(_caseIndex)}\" \"{OutputPath}\"",
+                _conclusion = conclusion;
+                LogCompleted();
+                Finish(true);
+                return;
+            }
+
+            _round++;
+            _roundStart = _cases.Count;
+            _cases.AddRange(next);
+            StartProcess(_exePath);
+        }
+
+        private static void ResetDirectory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            Directory.CreateDirectory(path);
+        }
+
+        private static void StartProcess(string exePath)
+        {
+            var startInfo = new ProcessStartInfo(exePath)
+            {
+                Arguments = $"\"{InputDir}\" \"{OutputDir}\"",
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardError = true,
@@ -154,7 +223,7 @@ namespace BalanceSim.Editor
             _process.ErrorDataReceived += OnErrorData;
             _process.Start();
             _process.BeginErrorReadLine();
-            _caseStopwatch.Restart();
+            _processStopwatch.Restart();
         }
 
         private static void OnErrorData(object sender, DataReceivedEventArgs e)
@@ -172,14 +241,30 @@ namespace BalanceSim.Editor
 
         private static void Poll()
         {
-            if (!_process.HasExited)
+            bool exited = _process.HasExited;
+            if (!CollectOutputs())
+            {
+                if (!_process.HasExited)
+                {
+                    _process.Kill();
+                }
+                Finish(true);
+                return;
+            }
+
+            if (!exited)
+            {
+                return;
+            }
+
+            if (!_cancelRequested && _readRetryIndex == _resultSet.cases.Count)
             {
                 return;
             }
 
             _process.WaitForExit();
             int exitCode = _process.ExitCode;
-            _caseStopwatch.Stop();
+            _processStopwatch.Stop();
             _process.Dispose();
             _process = null;
 
@@ -197,33 +282,60 @@ namespace BalanceSim.Editor
                 {
                     stderr = _stderr.ToString();
                 }
-                Debug.LogError($"[BalanceSim] 外部プログラムが失敗しました (終了コード {exitCode}){CaseSuffix(_caseIndex)}\n{stderr}");
+                Debug.LogError($"[BalanceSim] 外部プログラムが失敗しました (終了コード {exitCode}、{_cases.Count} 通りのうち {_resultSet.cases.Count} 通りが完了)\n{stderr}");
                 Finish(true);
                 return;
             }
 
-            SimResult result;
-            try
+            if (_resultSet.cases.Count < _cases.Count)
             {
-                result = JsonUtility.FromJson<SimResult>(File.ReadAllText(OutputPath));
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"[BalanceSim] 外部プログラムの結果を読めませんでした{CaseSuffix(_caseIndex)}: {e.Message}\n{e}");
+                Debug.LogError($"[BalanceSim] 外部プログラムの結果が足りません（{_cases.Count} 通りのうち {_resultSet.cases.Count} 通り）");
                 Finish(true);
                 return;
             }
-            SessionState.SetFloat(SecondsPerRunKey, (float)(_caseStopwatch.Elapsed.TotalSeconds / Math.Max(1, _runCount)));
-            _resultSet.cases.Add(new SimResultCase { values = SimCaseValue.Of(_cases[_caseIndex].Swept), result = result });
 
-            _caseIndex++;
-            if (_caseIndex >= _cases.Count)
+            SessionState.SetFloat(SecondsPerRunKey, (float)(_processStopwatch.Elapsed.TotalSeconds / Math.Max(1L, (long)(_cases.Count - _roundStart) * _runCount)));
+            StartNextRound();
+        }
+
+        private static bool CollectOutputs()
+        {
+            while (_resultSet.cases.Count < _cases.Count)
             {
-                LogCompleted();
-                Finish(true);
-                return;
+                int index = _resultSet.cases.Count;
+                string path = OutputPath(index - _roundStart);
+                if (!File.Exists(path))
+                {
+                    return true;
+                }
+
+                SimResult result;
+                try
+                {
+                    result = JsonUtility.FromJson<SimResult>(File.ReadAllText(path));
+                }
+                catch (IOException) when (KeepRetryingRead(index))
+                {
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[BalanceSim] 外部プログラムの結果を読めませんでした{CaseSuffix(index)}: {e.Message}\n{e}");
+                    return false;
+                }
+                _resultSet.cases.Add(new SimResultCase { values = new List<SimCaseValue>(_cases[index].Labels), result = result });
             }
-            StartCase();
+            return true;
+        }
+
+        private static bool KeepRetryingRead(int index)
+        {
+            if (_readRetryIndex != index)
+            {
+                _readRetryIndex = index;
+                _readRetryStopwatch.Restart();
+            }
+            return _readRetryStopwatch.Elapsed.TotalSeconds < ReadRetrySeconds;
         }
 
         private static void LogCompleted()
@@ -235,7 +347,13 @@ namespace BalanceSim.Editor
                 return;
             }
 
-            var text = new StringBuilder($"[BalanceSim] 探索が完了 ({_resultSet.cases.Count} 通り、{elapsed})\n{_terrainSummary}\n結果: {LastResultPath}");
+            string rounds = _round > 1 ? $"{_round} 回に分けて実行、" : string.Empty;
+            var text = new StringBuilder($"[BalanceSim] 探索が完了 ({_resultSet.cases.Count} 通り、{rounds}{elapsed})");
+            if (_conclusion != null)
+            {
+                text.Append($"\n{_conclusion}");
+            }
+            text.Append($"\n{_terrainSummary}\n結果: {LastResultPath}");
             for (int i = 0; i < _resultSet.cases.Count; i++)
             {
                 text.Append($"\n{i + 1}. {_resultSet.cases[i].Label}: {_resultSet.cases[i].result.message}");
@@ -245,7 +363,7 @@ namespace BalanceSim.Editor
 
         private static string CaseSuffix(int index)
         {
-            return _cases.Count > 1 ? $"（{index + 1}/{_cases.Count} 通り目: {string.Join(", ", SimCaseValue.Of(_cases[index].Swept))}）" : string.Empty;
+            return _cases.Count > 1 ? $"（{index + 1}/{_cases.Count} 通り目: {SimResultCase.LabelOf(_cases[index].Labels)}）" : string.Empty;
         }
 
         private static void Abort()
@@ -254,6 +372,7 @@ namespace BalanceSim.Editor
             {
                 _process.Kill();
             }
+            CollectOutputs();
             Debug.LogWarning($"[BalanceSim] スクリプトの再コンパイルのため中断しました（{_cases.Count} 通りのうち {_resultSet.cases.Count} 通りが完了）");
             Finish(false);
         }
@@ -275,9 +394,16 @@ namespace BalanceSim.Editor
                 }
             }
 
+            _settings = null;
+            _source = null;
+            _exePath = null;
             _cases = null;
+            _round = 0;
+            _roundStart = 0;
+            _conclusion = null;
             _resultSet = null;
             _cancelRequested = false;
+            _readRetryIndex = -1;
         }
     }
 }

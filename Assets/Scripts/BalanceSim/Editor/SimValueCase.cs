@@ -19,14 +19,18 @@ namespace BalanceSim.Editor
     {
         public readonly IReadOnlyList<SimValueRow> Fixed;
         public readonly IReadOnlyList<SimValueRow> Swept;
+        public readonly IReadOnlyList<SimCaseValue> Labels;
+        public readonly int[] Pick;
 
-        public SimValueCase(IReadOnlyList<SimValueRow> fixedRows, IReadOnlyList<SimValueRow> sweptRows)
+        public SimValueCase(IReadOnlyList<SimValueRow> fixedRows, IReadOnlyList<SimValueRow> sweptRows, IReadOnlyList<SimCaseValue> labels, int[] pick = null)
         {
             Fixed = fixedRows;
             Swept = sweptRows;
+            Labels = labels;
+            Pick = pick;
         }
 
-        public static SimValueCase None => new(new List<SimValueRow>(), new List<SimValueRow>());
+        public static SimValueCase None => new(new List<SimValueRow>(), new List<SimValueRow>(), new List<SimCaseValue>());
 
         public IEnumerable<SimValueRow> Rows => Fixed.Concat(Swept);
     }

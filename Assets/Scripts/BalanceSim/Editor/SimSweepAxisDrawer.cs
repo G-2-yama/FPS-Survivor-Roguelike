@@ -46,19 +46,19 @@ namespace BalanceSim.Editor
             SerializedProperty source = SimValueOverrideDrawer.SourceProperty(target, propertyPath.stringValue);
             SerializedPropertyType type = source?.propertyType ?? SerializedPropertyType.Float;
 
-            SimValueOverrideDrawer.DrawPropertyChoice(line, target, propertyPath, propertyLabel, min, max);
+            SimValueOverrideDrawer.DrawPropertyChoice(line, target, propertyPath, propertyLabel, true, min, max);
             line.y += line.height + Spacing;
 
-            DrawRange(line, type, min, max, step);
+            DrawRange(line, RangeLabel, type, min, max, step);
             line.y += line.height + Spacing;
 
             EditorGUI.LabelField(line, " ", Info(source, type, min.doubleValue, max.doubleValue, step.doubleValue), EditorStyles.miniLabel);
             EditorGUI.EndProperty();
         }
 
-        private static void DrawRange(Rect line, SerializedPropertyType type, SerializedProperty min, SerializedProperty max, SerializedProperty step)
+        internal static void DrawRange(Rect line, GUIContent label, SerializedPropertyType type, SerializedProperty min, SerializedProperty max, SerializedProperty step)
         {
-            Rect field = EditorGUI.PrefixLabel(line, RangeLabel);
+            Rect field = EditorGUI.PrefixLabel(line, label);
             int indent = EditorGUI.indentLevel;
             float labelWidth = EditorGUIUtility.labelWidth;
             EditorGUI.indentLevel = 0;

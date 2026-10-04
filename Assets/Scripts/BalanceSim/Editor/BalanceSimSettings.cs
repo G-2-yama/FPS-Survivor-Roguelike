@@ -31,10 +31,20 @@ namespace BalanceSim.Editor
         [SerializeField] private float timeStep = 0.02f;
         public float TimeStep => timeStep;
 
-        [Tooltip("結果の時系列を記録する間隔（秒）")]
+        [Tooltip("結果の時系列を記録する間隔（秒）。「各回の記録を残す」を外したときは「まとめのグラフの間隔」を使う")]
         [Min(0.01f)]
         [SerializeField] private float sampleInterval = 1f;
         public float SampleInterval => sampleInterval;
+
+        [Header("結果")]
+        [Tooltip("オン: 1回ごとの記録（レベルアップの履歴など）と、p10〜p90 の帯つきのグラフを残す。オフ: 組み合わせごとの集計（表の数値、平均だけの粗いグラフ）だけを残す。組み合わせが多い探索では結果が大きくなりすぎるので外す")]
+        [SerializeField] private bool keepRunDetails = true;
+        public bool KeepRunDetails => keepRunDetails;
+
+        [Tooltip("「各回の記録を残す」を外したときに、グラフの点を記録する間隔（秒）")]
+        [Min(0.01f)]
+        [SerializeField] private float summarySampleInterval = 30f;
+        public float SummarySampleInterval => summarySampleInterval;
 
         [Header("プレイヤーの仮定")]
         [Tooltip("プレイヤーの向き。敵の出現方向の基準になる")]
