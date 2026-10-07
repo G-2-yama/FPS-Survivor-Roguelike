@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        ApplyStartSettings();
         gameController = new GameController(this);
         gameplayInputController = new GameplayInputController(playerInput);
         upgradeManager.Initialize(gameController);
@@ -48,6 +49,14 @@ public class GameManager : MonoBehaviour
     {
         gameStateMachine.Update();
         gameplayCursorController.UpdateCursor(gameStateMachine.CurrentState);
+    }
+
+    private void ApplyStartSettings()
+    {
+        if (GameStartSettings.StartingWeapon != null)
+            player.Inventory.EquipWeapon(SlotType.LeftMain, GameStartSettings.StartingWeapon);
+
+        player.SetWeaponSync(GameStartSettings.WeaponSync);
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
