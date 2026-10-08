@@ -16,6 +16,18 @@ public class GameEndView : MonoBehaviour
     [Tooltip("経過時間を出すテキスト")]
     [SerializeField] private TMP_Text elapsedTimeText;
 
+    [Tooltip("倒した敵の数を出すテキスト")]
+    [SerializeField] private TMP_Text killCountText;
+
+    [Tooltip("攻撃回数を出すテキスト。弾1発ごとに数える")]
+    [SerializeField] private TMP_Text fireCountText;
+
+    [Tooltip("敵に与えた総ダメージを出すテキスト。敵の残りHPを超えた分は含めない")]
+    [SerializeField] private TMP_Text totalDamageText;
+
+    [Tooltip("攻撃1回あたりのヒット数を出すテキスト。範囲攻撃などで1を超えることがある")]
+    [SerializeField] private TMP_Text hitsPerFireText;
+
     [Tooltip("時間切れまで生き残ったときの表記")]
     [SerializeField] private string clearLabel = "CLEAR";
 
@@ -30,14 +42,27 @@ public class GameEndView : MonoBehaviour
         gameEndCanvas.gameObject.SetActive(false);
     }
 
-    public void Show(GameResult result, float elapsedSeconds)
+    public void Show(GameResult result, float elapsedSeconds, GameStats stats)
     {
         hudCanvas.enabled = false;
 
-        resultText.text = result == GameResult.Clear ? clearLabel : gameOverLabel;
+        SetText(resultText, result == GameResult.Clear ? clearLabel : gameOverLabel);
 
-        elapsedTimeText.text = TimeFormatter.Format(elapsedSeconds, elapsedTimeDisplayFormat);
+        SetText(elapsedTimeText, TimeFormatter.Format(elapsedSeconds, elapsedTimeDisplayFormat));
+
+        SetText(killCountText, stats.KillCount.ToString());
+        SetText(fireCountText, stats.FireCount.ToString());
+        SetText(totalDamageText, stats.TotalDamage.ToString());
+        SetText(hitsPerFireText, stats.HitsPerFire.ToString("0.00"));
 
         gameEndCanvas.gameObject.SetActive(true);
+    }
+
+    private static void SetText(TMP_Text target, string value)
+    {
+        if (target != null)
+        {
+            target.text = value;
+        }
     }
 }

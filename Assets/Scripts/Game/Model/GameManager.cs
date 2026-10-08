@@ -32,6 +32,14 @@ public class GameManager : MonoBehaviour
     private GameStateMachine gameStateMachine;
     public GameStateMachine GameStateMachine => gameStateMachine;
 
+    private GameStats gameStats;
+    public GameStats GameStats => gameStats;
+
+    private void Awake()
+    {
+        gameStats = new GameStats();
+    }
+
     public void Start()
     {
         ApplyStartSettings();
@@ -57,6 +65,11 @@ public class GameManager : MonoBehaviour
             player.Inventory.EquipWeapon(SlotType.LeftMain, GameStartSettings.StartingWeapon);
 
         player.SetWeaponSync(GameStartSettings.WeaponSync);
+    }
+
+    private void OnDestroy()
+    {
+        gameStats?.Dispose();
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
