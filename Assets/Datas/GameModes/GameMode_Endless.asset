@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameMode_Endless
   m_EditorClassIdentifier: Assembly-CSharp::GameModeData
   displayName: "\u30A8\u30F3\u30C9\u30EC\u30B9"
+  timeLimitMinutes: -1

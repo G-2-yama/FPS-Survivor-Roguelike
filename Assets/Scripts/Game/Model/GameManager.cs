@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
 
     private void ApplyStartSettings()
     {
+        if (GameStartSettings.Mode != null)
+            timer.SetTimeLimit(GameStartSettings.Mode.TimeLimitSeconds);
+
         if (GameStartSettings.StartingWeapon != null)
             player.Inventory.EquipWeapon(SlotType.LeftMain, GameStartSettings.StartingWeapon);
 

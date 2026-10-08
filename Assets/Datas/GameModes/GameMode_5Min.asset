@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameMode_5Min
   m_EditorClassIdentifier: Assembly-CSharp::GameModeData
   displayName: "5\u5206\u30E2\u30FC\u30C9"
+  timeLimitMinutes: 5
