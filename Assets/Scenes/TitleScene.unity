@@ -834,6 +834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModeSelectMenu
   modes:
   - {fileID: 11400000, guid: 5cb2a04e458c4364bb7b11d2d692b759, type: 2}
+  - {fileID: 11400000, guid: 1edb4078a94d04e429a8206b84d014f8, type: 2}
   - {fileID: 11400000, guid: 8fc1b926f9850f444acd47a077269202, type: 2}
   optionPrefab: {fileID: 4442242409477316009, guid: 5bea96504c5375c49be0502a14052ff8, type: 3}
   optionParent: {fileID: 958472617}
