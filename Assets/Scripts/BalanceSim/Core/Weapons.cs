@@ -16,6 +16,11 @@ namespace BalanceSim
         private float _timer;
         private int _burstRemaining;
         private float _nextFireTime;
+        private float _burstStartTime;
+        private float _cooldownEndTime;
+        private float? _resumeTime;
+        private int _updateCount;
+        private int _cooldownEnterUpdate;
 
         public SimWeaponDef Def { get; private set; }
         public int Ammo { get; private set; }
@@ -55,30 +60,25 @@ namespace BalanceSim
 
         public void Update(float time, float dt, bool pressed, Action<SimWeaponDef> fire)
         {
+            _updateCount++;
+            WeaponPhase phase;
+            do
+            {
+                phase = Phase;
+                Step(time, dt, pressed, fire);
+            }
+            while (Phase != phase && (Phase == WeaponPhase.Firing || Phase == WeaponPhase.Cooldown));
+        }
+
+        private void Step(float time, float dt, bool pressed, Action<SimWeaponDef> fire)
+        {
             switch (Phase)
             {
                 case WeaponPhase.Firing:
                     UpdateFiring(time, fire);
                     break;
                 case WeaponPhase.Cooldown:
-                    _timer -= dt;
-                    if (_timer >= 0f)
-                    {
-                        return;
-                    }
-
-                    if (Def.fullAuto && pressed)
-                    {
-                        ChangeState(WeaponPhase.Firing, time);
-                    }
-                    else if (Def.autoReload && Ammo <= 0)
-                    {
-                        ChangeState(WeaponPhase.Reloading, time);
-                    }
-                    else
-                    {
-                        ChangeState(WeaponPhase.Idle, time);
-                    }
+                    UpdateCooldown(time, pressed);
                     break;
                 case WeaponPhase.Reloading:
                     _timer -= dt;
@@ -93,23 +93,12 @@ namespace BalanceSim
 
         private void UpdateFiring(float time, Action<SimWeaponDef> fire)
         {
-            if (_burstRemaining <= 0)
-            {
-                ChangeState(WeaponPhase.Cooldown, time);
-                return;
-            }
-
-            if (time < _nextFireTime)
-            {
-                return;
-            }
-
             float interval = Def.burstInterval;
-            while (time >= _nextFireTime && _burstRemaining > 0)
+            while (_burstRemaining > 0 && time >= _nextFireTime)
             {
                 if (!TryFire(fire))
                 {
-                    ChangeState(WeaponPhase.Cooldown, time);
+                    EnterCooldown(_nextFireTime, time);
                     return;
                 }
 
@@ -119,8 +108,40 @@ namespace BalanceSim
 
             if (_burstRemaining <= 0)
             {
-                ChangeState(WeaponPhase.Cooldown, time);
+                EnterCooldown(_nextFireTime - interval, time);
             }
+        }
+
+        private void EnterCooldown(float lastShotTime, float time)
+        {
+            _cooldownEndTime = lastShotTime + Def.fireInterval;
+            ChangeState(WeaponPhase.Cooldown, time);
+        }
+
+        private void UpdateCooldown(float time, bool pressed)
+        {
+            if (time < _cooldownEndTime)
+            {
+                return;
+            }
+
+            bool keepFiring = Def.fullAuto && pressed;
+            if (!keepFiring && Def.autoReload && Ammo <= 0)
+            {
+                ChangeState(WeaponPhase.Reloading, time);
+                return;
+            }
+
+            if (keepFiring || Def.autoFire)
+            {
+                if (_updateCount == _cooldownEnterUpdate && _cooldownEndTime <= _burstStartTime)
+                {
+                    return;
+                }
+                _resumeTime = _cooldownEndTime;
+            }
+
+            ChangeState(keepFiring ? WeaponPhase.Firing : WeaponPhase.Idle, time);
         }
 
         private bool TryFire(Action<SimWeaponDef> fire)
@@ -148,10 +169,12 @@ namespace BalanceSim
                     break;
                 case WeaponPhase.Firing:
                     _burstRemaining = Def.burstCount;
-                    _nextFireTime = time;
+                    _nextFireTime = _resumeTime ?? time;
+                    _resumeTime = null;
+                    _burstStartTime = _nextFireTime;
                     break;
                 case WeaponPhase.Cooldown:
-                    _timer = Def.fireInterval;
+                    _cooldownEnterUpdate = _updateCount;
                     break;
                 case WeaponPhase.Reloading:
                     _timer = MathF.Max(Def.reloadTime, 0.01f);

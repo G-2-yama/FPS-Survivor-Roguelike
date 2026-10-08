@@ -2,40 +2,47 @@ using UnityEngine;
 
 public class WeaponCooldownState : WeaponState
 {
-    private float timer;
+    private int enterFrame;
 
     public WeaponCooldownState(Weapon weapon) : base(weapon) { }
 
     public override void Enter()
     {
-        timer = _weapon.WeaponData.FireInterval;
+        enterFrame = Time.frameCount;
     }
 
     public override void Update(bool isPressed)
     {
-        timer -= Time.deltaTime;
-
-        if (timer >= 0f)
+        float endTime = stateMachine.CooldownEndTime;
+        if (Time.time < endTime)
         {
             return;
         }
 
-        if (_weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+        bool keepFiring = _weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed;
+        if (!keepFiring && _weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
+        {
+            stateMachine.ChangeState<WeaponReloadingState>();
+            return;
+        }
+
+        if (keepFiring || _weapon.WeaponData.AutoFire)
+        {
+            if (Time.frameCount == enterFrame && endTime <= stateMachine.BurstStartTime)
+            {
+                return;
+            }
+            stateMachine.ResumeTime = endTime;
+        }
+
+        if (keepFiring)
         {
             stateMachine.ChangeState<WeaponFiringState>();
         }
         else
         {
-            if (_weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
-            {
-                stateMachine.ChangeState<WeaponReloadingState>();
-            }
-            else
-            {
-                stateMachine.ChangeState<WeaponIdleState>();
-            }
+            stateMachine.ChangeState<WeaponIdleState>();
         }
-
     }
 
     public override void Exit()
