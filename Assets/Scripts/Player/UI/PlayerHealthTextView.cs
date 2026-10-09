@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 /// <summary>
@@ -14,7 +15,7 @@ public class PlayerHealthTextView : MonoBehaviour
     /// <summary>
     /// 現在HPと最大HPを表示するテキスト
     /// </summary>
-    [SerializeField] private Text currentHealthText;
+    [SerializeField] private TMP_Text currentHealthText;
 
     [SerializeField] private Image currentHealthBar;
     [SerializeField] private Image characterImage;
