@@ -55,7 +55,48 @@ public class WeaponTests
             weapon.Update(time, 0.25f, pressed: false, _ => fireTimes.Add(time));
         }
 
-        Assert.Equal(new[] { 0f, 0f, 1.5f, 1.5f, 3f, 3f, 4.5f, 4.5f, 6f, 6f, 7.5f, 7.5f, 9f, 9f }, fireTimes);
+        Assert.Equal(new[] { 0f, 0f, 1f, 1f, 2f, 2f, 3f, 3f, 4f, 4f, 5f, 5f, 6f, 6f, 7f, 7f, 8f, 8f, 9f, 9f }, fireTimes);
+    }
+
+    [Theory]
+    [InlineData(1f / 30f)]
+    [InlineData(0.02f)]
+    [InlineData(1f / 144f)]
+    [InlineData(0.1f)]
+    public void FullAutoFireRateDoesNotDependOnTimeStep(float dt)
+    {
+        var weapon = new WeaponState();
+        weapon.Equip(new SimWeaponDef { fullAuto = true, magazineSize = 1000, burstCount = 1, fireInterval = 0.05f, reloadTime = 1f }, 0f);
+        int fired = 0;
+        for (int step = 0; step * dt < 3f; step++)
+        {
+            float time = step * dt;
+            if (weapon.Phase == WeaponPhase.Idle)
+            {
+                weapon.OnFire(time);
+            }
+            weapon.Update(time, dt, pressed: true, _ => fired++);
+        }
+
+        Assert.InRange(fired, 59, 61);
+    }
+
+    [Theory]
+    [InlineData(1f / 30f)]
+    [InlineData(0.02f)]
+    [InlineData(1f / 144f)]
+    [InlineData(0.1f)]
+    public void AutoFireBurstRateDoesNotDependOnTimeStep(float dt)
+    {
+        var weapon = new WeaponState();
+        weapon.Equip(new SimWeaponDef { type = SimWeaponType.AutoWeapon, autoFire = true, magazineSize = 1000, burstCount = 3, burstInterval = 0.02f, fireInterval = 0.2f, reloadTime = 1f }, 0f);
+        int fired = 0;
+        for (int step = 0; step * dt < 3f; step++)
+        {
+            weapon.Update(step * dt, dt, pressed: false, _ => fired++);
+        }
+
+        Assert.InRange(fired, 37, 39);
     }
 
     [Fact]

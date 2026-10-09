@@ -13,6 +13,10 @@ public class WeaponStateMachine
     private WeaponState _reloadingState;
     private WeaponState _chargeState;
 
+    public float BurstStartTime { get; set; }
+    public float CooldownEndTime { get; set; }
+    public float? ResumeTime { get; set; }
+
 
     public WeaponStateMachine(Weapon weapon)
     {
@@ -35,7 +39,13 @@ public class WeaponStateMachine
 
     public void Update(bool isPressed)
     {
-        _currentState?.Update(isPressed);
+        WeaponState state;
+        do
+        {
+            state = _currentState;
+            state?.Update(isPressed);
+        }
+        while (_currentState != state && (_currentState == _firingState || _currentState == _cooldownState));
     }
 
     public void OnFire()
