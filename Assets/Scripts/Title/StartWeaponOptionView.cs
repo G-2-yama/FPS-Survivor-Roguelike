@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class StartWeaponOptionView : MonoBehaviour
@@ -8,7 +9,7 @@ public class StartWeaponOptionView : MonoBehaviour
     [SerializeField] private Toggle toggle;
 
     [Tooltip("武器名を表示するテキスト 未設定でも動作します")]
-    [SerializeField] private Text nameText;
+    [SerializeField] private TMP_Text nameText;
 
     [Tooltip("武器のアイコンを表示する画像 未設定でも動作します")]
     [SerializeField] private Image iconImage;

@@ -1,10 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class MainWeaponView : WeaponView
 {
-    [SerializeField] private Text currentAmmoText;
-    [SerializeField] private Text magazineSizeText;
+    [SerializeField] private TMP_Text currentAmmoText;
+    [SerializeField] private TMP_Text magazineSizeText;
     [SerializeField] private float idleMoveAmount = 0.03f;
     [SerializeField] private float idleMoveSpeed = 2f;
     [SerializeField] private float idleRotationAmount = 2f;

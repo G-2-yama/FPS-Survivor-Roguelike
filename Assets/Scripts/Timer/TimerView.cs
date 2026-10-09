@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class TimerView : MonoBehaviour
 {
-    [SerializeField] private Text timerText;
+    [SerializeField] private TMP_Text timerText;
     [SerializeField] private Timer timer;
 
     [Tooltip("残り時間（エンドレスでは経過時間）の表示形式")]
