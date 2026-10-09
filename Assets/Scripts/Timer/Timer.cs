@@ -9,9 +9,15 @@ public class Timer : MonoBehaviour
     public float ElapsedTime { get; private set; }
     public float RemainingTime => Mathf.Max(0f, timeLimit - ElapsedTime);
     public bool IsRunning { get; private set; }
-    public bool IsFinished => ElapsedTime >= timeLimit;
+    public bool IsUnlimited => timeLimit < 0f;
+    public bool IsFinished => !IsUnlimited && ElapsedTime >= timeLimit;
 
     public event UnityAction OnTimerFinished;
+
+    public void SetTimeLimit(float seconds)
+    {
+        timeLimit = seconds;
+    }
 
     public void StartTimer()
     {
@@ -32,6 +38,12 @@ public class Timer : MonoBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     public void ForceFinish()
     {
+        if (IsUnlimited)
+        {
+            timeLimit = ElapsedTime;
+            return;
+        }
+
         ElapsedTime = timeLimit;
     }
 #endif
