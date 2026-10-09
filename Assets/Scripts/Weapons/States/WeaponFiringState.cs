@@ -14,30 +14,22 @@ public class WeaponFiringState : WeaponState
     {
         burstRemaining = _weapon.WeaponData.BurstCount;
         hasFired = false;
-        nextFireTime = Time.time;
+        nextFireTime = stateMachine.ResumeTime ?? Time.time;
+        stateMachine.ResumeTime = null;
+        stateMachine.BurstStartTime = nextFireTime;
     }
 
     public override void Update(bool isPressed)
     {
-        if (burstRemaining <= 0)
-        {
-            stateMachine.ChangeState<WeaponCooldownState>();
-            return;
-        }
-
-        // 射撃タイミングに達していなければ何もしない
-        if (Time.time < nextFireTime)
-            return;
-
         float interval = _weapon.WeaponData.BurstInterval;
 
         // 遅れていた射撃を可能な限り消化する
-        while (Time.time >= nextFireTime && burstRemaining > 0)
+        while (burstRemaining > 0 && Time.time >= nextFireTime)
         {
             // 弾が撃てなかった
             if (!_weapon.Fire())
             {
-                stateMachine.ChangeState<WeaponCooldownState>();
+                EnterCooldown(nextFireTime);
                 return;
             }
 
@@ -62,8 +54,14 @@ public class WeaponFiringState : WeaponState
 
         if (burstRemaining <= 0)
         {
-            stateMachine.ChangeState<WeaponCooldownState>();
+            EnterCooldown(nextFireTime - interval);
         }
+    }
+
+    private void EnterCooldown(float lastShotTime)
+    {
+        stateMachine.CooldownEndTime = lastShotTime + _weapon.WeaponData.FireInterval;
+        stateMachine.ChangeState<WeaponCooldownState>();
     }
 
     public override void Exit()
