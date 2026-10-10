@@ -224,6 +224,13 @@ public sealed class Recoil
 {
     public static Recoil Empty { get; } = new Recoil();
 
+    /// <summary>
+    /// Step 1回で進める時間の上限（秒）。
+    /// damping × dt が2未満、かつ returnStrength × dt² + 2 × damping × dt が4未満でないと、
+    /// 反動が振動しながら増えて NaN になる。
+    /// </summary>
+    private const float MaxStepTime = 1f / 60f;
+
     [SerializeField] private float pitchKick = 1.2f;
     [SerializeField] private float yawKick = 0.4f;
     [SerializeField] private float yawRandomness = 1f;
@@ -259,6 +266,25 @@ public sealed class Recoil
     /// </summary>
     public Vector2 Tick(float deltaTime)
     {
+        int steps = Mathf.Max(1, Mathf.CeilToInt(deltaTime / MaxStepTime));
+        float stepTime = deltaTime / steps;
+
+        for (int i = 0; i < steps; i++)
+        {
+            Step(stepTime);
+        }
+
+        return recoilOffset;
+    }
+
+    public void Reset()
+    {
+        recoilOffset = Vector2.zero;
+        recoilVelocity = Vector2.zero;
+    }
+
+    private void Step(float deltaTime)
+    {
         Vector2 accel =
             (-ReturnStrength * recoilOffset) -
             (Damping * recoilVelocity);
@@ -268,8 +294,6 @@ public sealed class Recoil
 
         recoilOffset.y =
             Mathf.Clamp(recoilOffset.y, -MaxPitch, MaxPitch);
-
-        return recoilOffset;
     }
 }
 
