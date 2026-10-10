@@ -21,7 +21,7 @@ public class WhiteFlash : MonoBehaviour
 
         for (int i = 0; i < renderers.Length; i++)
         {
-            originalMaterials[i] = renderers[i].materials;
+            originalMaterials[i] = renderers[i].sharedMaterials;
         }
     }
 
@@ -36,14 +36,14 @@ public class WhiteFlash : MonoBehaviour
     {
         for (int i = 0; i < renderers.Length; i++)
         {
-            Material[] whiteMaterials = new Material[renderers[i].materials.Length];
+            Material[] whiteMaterials = new Material[renderers[i].sharedMaterials.Length];
 
             for (int j = 0; j < whiteMaterials.Length; j++)
             {
                 whiteMaterials[j] = whiteFlashMaterial;
             }
 
-            renderers[i].materials = whiteMaterials;
+            renderers[i].sharedMaterials = whiteMaterials;
         }
 
         yield return new WaitForSeconds(flashDuration);
@@ -61,7 +61,7 @@ public class WhiteFlash : MonoBehaviour
 
         for (int i = 0; i < renderers.Length; i++)
         {
-            renderers[i].materials = originalMaterials[i];
+            renderers[i].sharedMaterials = originalMaterials[i];
         }
     }
 
