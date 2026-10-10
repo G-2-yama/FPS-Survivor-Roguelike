@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8379854717877954754}
   - component: {fileID: 4342199728072193920}
   - component: {fileID: 8968947404244896160}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MissileBox_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

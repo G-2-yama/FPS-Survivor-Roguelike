@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 7884487320096986353}
   - component: {fileID: 1881425027292726100}
   - component: {fileID: 809088916071739794}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gatling_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

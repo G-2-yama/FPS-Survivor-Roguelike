@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 3839275556258984677}
   - component: {fileID: 2874553990117837733}
   - component: {fileID: 6396180397066288861}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 'Hand_02 '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
