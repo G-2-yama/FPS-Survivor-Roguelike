@@ -28,7 +28,9 @@ public class EnemyBrain : MonoBehaviour
     public CombatState CombatState => combatState;
 
     public KnockbackState KnockbackState => knockbackState;
-   
+
+    internal int RunnerIndex { get; set; } = -1;
+
 
     private void Awake()
     {
@@ -42,13 +44,19 @@ public class EnemyBrain : MonoBehaviour
 
   
 
-    private void FixedUpdate()
+    private void OnEnable()
+    {
+        EnemyBrainRunner.Register(this);
+    }
+
+    internal void Tick()
     {
         stateMachine.Update();
     }
 
     private void OnDisable()
     {
+        EnemyBrainRunner.Unregister(this);
         attack?.CancelAttack();
     }
 
