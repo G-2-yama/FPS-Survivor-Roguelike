@@ -72,7 +72,7 @@ public class PoolManager : MonoBehaviour
 
             collectionCheck: true,
             defaultCapacity: 10,
-            maxSize: 100
+            maxSize: 10000
         );
 
         return pool;
