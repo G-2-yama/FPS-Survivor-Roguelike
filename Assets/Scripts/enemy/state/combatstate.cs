@@ -30,12 +30,14 @@ public class CombatState : IState
 
     public void Update()
     {
-        if (enemy.Target == null)
+        Transform target = enemy.Target;
+        if (target == null)
             return;
 
+        Vector3 targetPosition = EnemyBrainRunner.GetTargetPosition(target);
         float distance = Vector3.Distance(
-            enemy.transform.position,
-            enemy.Target.position);
+            enemy.CachedTransform.position,
+            targetPosition);
 
         if (distance >
             enemy.Config.EngageDistance + 1f)
@@ -48,8 +50,9 @@ public class CombatState : IState
 
         enemy.Config.combatMovedata.Move(
             enemy.Rb,
-            enemy.transform,
-            enemy.Target);
+            enemy.CachedTransform,
+            target,
+            targetPosition);
 
         enemy.Attack?.TryAttack();
     }

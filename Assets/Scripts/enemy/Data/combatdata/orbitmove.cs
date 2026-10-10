@@ -9,9 +9,10 @@ public class OrbitMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition)
     {
-        Vector3 offset = rb.position - target.position;
+        Vector3 offset = rb.position - targetPosition;
 
         if (offset.sqrMagnitude <= 0.0001f)
         {
@@ -29,12 +30,12 @@ public class OrbitMovement : MovementPattern
                 Vector3.up)
             * offset;
 
-        Vector3 nextPos = target.position + offset;
+        Vector3 nextPos = targetPosition + offset;
 
         rb.MovePosition(nextPos);
 
         Vector3 toCenter =
-            target.position - rb.position;
+            targetPosition - rb.position;
 
         rb.MoveRotation(
             Quaternion.LookRotation(-toCenter));

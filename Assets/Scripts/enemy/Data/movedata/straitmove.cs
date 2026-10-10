@@ -8,11 +8,13 @@ public class TowardMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition)
     {
       
+        Vector3 position = rb.position;
         Vector3 toTarget =
-            target.position - rb.position;
+            targetPosition - position;
 
         if (toTarget.sqrMagnitude <= 0.0001f)
             return;
@@ -21,15 +23,14 @@ public class TowardMovement : MovementPattern
 
         if (velocity.magnitude > maxSpeed)
         {
-            rb.linearVelocity =
-                velocity.normalized * maxSpeed;
+            velocity = velocity.normalized * maxSpeed;
+            rb.linearVelocity = velocity;
         }
 
 
         Vector3 direction = toTarget.normalized;
-        if (rb.position.y >= MaxHeight && direction.y > 0f)
+        if (position.y >= MaxHeight && direction.y > 0f)
         {
-            velocity = rb.linearVelocity;
             velocity.y = 0f;
             rb.linearVelocity = velocity;
             direction.y = 0f;

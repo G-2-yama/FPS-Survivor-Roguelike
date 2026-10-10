@@ -8,9 +8,10 @@ public class RollMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition)
     {
-        Vector3 dir = target.position - rb.position;
+        Vector3 dir = targetPosition - rb.position;
         dir.y = 0f;
 
         if (dir.sqrMagnitude <= 0.001f)

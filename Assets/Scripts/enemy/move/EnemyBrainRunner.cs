@@ -7,6 +7,9 @@ public class EnemyBrainRunner : MonoBehaviour
     private static EnemyBrainRunner instance;
     private static readonly List<EnemyBrain> brains = new List<EnemyBrain>();
 
+    private static Transform cachedTarget;
+    private static Vector3 cachedTargetPosition;
+
     private EnemyBrain[] snapshot = Array.Empty<EnemyBrain>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -14,6 +17,17 @@ public class EnemyBrainRunner : MonoBehaviour
     {
         instance = null;
         brains.Clear();
+        cachedTarget = null;
+    }
+
+    public static Vector3 GetTargetPosition(Transform target)
+    {
+        if (!ReferenceEquals(target, cachedTarget))
+        {
+            cachedTarget = target;
+            cachedTargetPosition = target.position;
+        }
+        return cachedTargetPosition;
     }
 
     public static void Register(EnemyBrain brain)
@@ -50,6 +64,7 @@ public class EnemyBrainRunner : MonoBehaviour
             snapshot = new EnemyBrain[Mathf.NextPowerOfTwo(count)];
         }
         brains.CopyTo(snapshot);
+        cachedTarget = null;
 
         for (int i = 0; i < count; i++)
         {
@@ -68,5 +83,6 @@ public class EnemyBrainRunner : MonoBehaviour
         }
 
         Array.Clear(snapshot, 0, count);
+        cachedTarget = null;
     }
 }

@@ -9,12 +9,14 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private EnemyAnimationEffect uniqueAnimation;
     private StateMachine<IState> stateMachine;
+    private Transform cachedTransform;
 
     private ChaseState chaseState;
     private CombatState combatState;
     private KnockbackState knockbackState;
 
     public Rigidbody Rb => rb;
+    public Transform CachedTransform => cachedTransform;
     public EnemyConfig Config => config;
     public Transform Target => targetProvider?.CurrentTarget;
     public EnemyAttackController Attack => attack;
@@ -34,7 +36,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void Awake()
     {
-        
+        cachedTransform = transform;
         stateMachine = new StateMachine<IState>();
 
         chaseState = new ChaseState(this, stateMachine);

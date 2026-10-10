@@ -6,7 +6,8 @@ public class stop : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition)
     {
         
     }

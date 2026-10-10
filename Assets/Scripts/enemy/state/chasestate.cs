@@ -29,13 +29,15 @@ public class ChaseState : IState
 
     public void Update()
     {
-        if (enemy.Target == null)
+        Transform target = enemy.Target;
+        if (target == null)
             return;
 
+        Vector3 targetPosition = EnemyBrainRunner.GetTargetPosition(target);
         float distance = Vector3.Distance(
-            enemy.transform.position,
-            enemy.Target.position);
-      
+            enemy.CachedTransform.position,
+            targetPosition);
+
         if (distance <= enemy.Config.EngageDistance)
         {
             stateMachine.ChangeState(
@@ -46,8 +48,9 @@ public class ChaseState : IState
 
         enemy.Config.chaseMovedata.Move(
             enemy.Rb,
-            enemy.transform,
-            enemy.Target);
+            enemy.CachedTransform,
+            target,
+            targetPosition);
     }
     public void Exit()
     {
