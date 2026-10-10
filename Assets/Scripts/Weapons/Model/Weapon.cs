@@ -46,6 +46,8 @@ public class Weapon : MonoBehaviour
         else
         {
             weaponData = newData;
+            // 反動の状態は複製していない武器データのアセット上にあり、前回の再生の値（NaN を含む）が残っているため0から始める
+            weaponData.Recoil.Reset();
 
             // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
             currentAmmo = (ammo < 0) ? weaponData.MagazineSize : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
