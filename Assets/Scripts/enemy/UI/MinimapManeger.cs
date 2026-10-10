@@ -10,6 +10,13 @@ public class MinimapManager : MonoBehaviour
         public GameObject iconPrefab;
     }
 
+    private class TrackedIcon
+    {
+        public MinimapIcon icon;
+        public Transform target;
+        public int seenStamp;
+    }
+
     [SerializeField] private List<MinimapSource> sources = new();
 
     [SerializeField] private Transform player;
@@ -21,35 +28,26 @@ public class MinimapManager : MonoBehaviour
 
 
     // 対象Object → 対応するIcon
-    private Dictionary<GameObject, MinimapIcon> targetIcons = new();
-
-    // 現在存在している全対象
-    private HashSet<GameObject> activeTargets = new();
-
-    // 対象 → 使用するPrefab
-    private Dictionary<GameObject, GameObject> targetPrefabs = new();
+    private Dictionary<GameObject, TrackedIcon> targetIcons = new();
 
     private List<GameObject> removeList = new();
+
+    private int currentStamp;
 
 
     private void Update()
     {
-        CollectActiveTargets();
+        currentStamp++;
 
-        CreateIcons();
+        UpdateTargetIcons();
         RemoveIcons();
-        UpdateIconPositions();
         UpdatePlayerIcon();
     }
 
 
-    /// <summary>
-    /// 全Generatorから現在ActiveなObjectを集める
-    /// </summary>
-    private void CollectActiveTargets()
+    private void UpdateTargetIcons()
     {
-        activeTargets.Clear();
-        targetPrefabs.Clear();
+        Vector3 playerPosition = player.position;
 
         foreach (MinimapSource source in sources)
         {
@@ -59,48 +57,52 @@ public class MinimapManager : MonoBehaviour
                 continue;
             }
 
-            var targets = source.generator.ActiveEnemies;
+            IReadOnlyList<GameObject> targets = source.generator.ActiveEnemies;
 
-            foreach (GameObject target in targets)
+            for (int i = 0; i < targets.Count; i++)
             {
+                GameObject target = targets[i];
+
                 if (target == null ||
                     !target.activeInHierarchy)
                 {
                     continue;
                 }
 
-                activeTargets.Add(target);
+                if (!targetIcons.TryGetValue(target, out TrackedIcon tracked))
+                {
+                    tracked = CreateIcon(target, source.iconPrefab);
+                }
+                else if (tracked.seenStamp == currentStamp)
+                {
+                    continue;
+                }
 
-                // このObjectがどのIconPrefabを使うか
-                targetPrefabs[target] = source.iconPrefab;
+                tracked.seenStamp = currentStamp;
+
+                UpdateIconPosition(tracked, playerPosition);
             }
         }
     }
 
 
-    /// <summary>
-    /// Iconを持っていない対象にPoolからIconを割り当てる
-    /// </summary>
-    private void CreateIcons()
+    private TrackedIcon CreateIcon(GameObject target, GameObject prefab)
     {
-        foreach (GameObject target in activeTargets)
+        GameObject iconObj =
+            PoolManager.Instance.Get(prefab);
+
+        // Canvas配下へ
+        iconObj.transform.SetParent(iconParent, false);
+
+        TrackedIcon tracked = new TrackedIcon
         {
-            if (targetIcons.ContainsKey(target))
-                continue;
+            icon = iconObj.GetComponent<MinimapIcon>(),
+            target = target.transform
+        };
 
-            GameObject prefab = targetPrefabs[target];
+        targetIcons.Add(target, tracked);
 
-            GameObject iconObj =
-                PoolManager.Instance.Get(prefab);
-
-            // Canvas配下へ
-            iconObj.transform.SetParent(iconParent, false);
-
-            MinimapIcon icon =
-                iconObj.GetComponent<MinimapIcon>();
-
-            targetIcons.Add(target, icon);
-        }
+        return tracked;
     }
 
 
@@ -113,19 +115,15 @@ public class MinimapManager : MonoBehaviour
 
         foreach (var pair in targetIcons)
         {
-            GameObject target = pair.Key;
-
-            if (target == null ||
-                !target.activeInHierarchy ||
-                !activeTargets.Contains(target))
+            if (pair.Value.seenStamp != currentStamp)
             {
-                removeList.Add(target);
+                removeList.Add(pair.Key);
             }
         }
 
         foreach (GameObject target in removeList)
         {
-            MinimapIcon icon = targetIcons[target];
+            MinimapIcon icon = targetIcons[target].icon;
 
             icon.Release();
 
@@ -135,57 +133,53 @@ public class MinimapManager : MonoBehaviour
 
 
     /// <summary>
-    /// 各Iconのミニマップ上の位置を更新
+    /// Iconのミニマップ上の位置を更新
     /// </summary>
-    private void UpdateIconPositions()
+    private void UpdateIconPosition(TrackedIcon tracked, Vector3 playerPosition)
     {
-        foreach (var pair in targetIcons)
+        MinimapIcon icon = tracked.icon;
+
+        Vector3 offset =
+            tracked.target.position - playerPosition;
+
+        Vector2 mapPosition =
+            new Vector2(
+                offset.x,
+                offset.z
+            );
+
+        mapPosition =
+            mapPosition / displayRange * minimapRadius;
+
+        mapPosition =
+            Vector2.ClampMagnitude(
+                mapPosition,
+                minimapRadius
+            );
+
+        icon.RectTransform.anchoredPosition =
+            mapPosition;
+
+
+        // アイコン上方向をPlayerへ向ける
+        Vector2 directionToPlayer = -mapPosition;
+
+        if (directionToPlayer.sqrMagnitude > 0.001f)
         {
-            GameObject target = pair.Key;
-            MinimapIcon icon = pair.Value;
+            float angle =
+                Mathf.Atan2(
+                    directionToPlayer.y,
+                    directionToPlayer.x
+                )
+                * Mathf.Rad2Deg
+                - 90f;
 
-            Vector3 offset =
-                target.transform.position - player.position;
-
-            Vector2 mapPosition =
-                new Vector2(
-                    offset.x,
-                    offset.z
+            icon.RectTransform.localRotation =
+                Quaternion.Euler(
+                    0f,
+                    0f,
+                    angle
                 );
-
-            mapPosition =
-                mapPosition / displayRange * minimapRadius;
-
-            mapPosition =
-                Vector2.ClampMagnitude(
-                    mapPosition,
-                    minimapRadius
-                );
-
-            icon.RectTransform.anchoredPosition =
-                mapPosition;
-
-
-            // アイコン上方向をPlayerへ向ける
-            Vector2 directionToPlayer = -mapPosition;
-
-            if (directionToPlayer.sqrMagnitude > 0.001f)
-            {
-                float angle =
-                    Mathf.Atan2(
-                        directionToPlayer.y,
-                        directionToPlayer.x
-                    )
-                    * Mathf.Rad2Deg
-                    - 90f;
-
-                icon.RectTransform.localRotation =
-                    Quaternion.Euler(
-                        0f,
-                        0f,
-                        angle
-                    );
-            }
         }
     }
 
