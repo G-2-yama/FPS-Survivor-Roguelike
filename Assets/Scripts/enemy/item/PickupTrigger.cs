@@ -19,9 +19,7 @@ public abstract class PickupTriggerItem : PoolableObject
         if (pickedUp)
             return;
 
-        Player player = other.GetComponent<Player>();
-
-        if (player == null)
+        if (!other.TryGetComponent(out Player player))
             return;
 
         pickedUp = true;
