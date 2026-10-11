@@ -29,6 +29,9 @@ public class PoolManager : MonoBehaviour
     {
         ObjectPool<GameObject> pool = null;
 
+        PoolableObject prefabPoolable = prefab.GetComponent<PoolableObject>();
+        bool keepActive = prefabPoolable != null && prefabPoolable.KeepActiveInPool;
+
         pool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
@@ -47,7 +50,8 @@ public class PoolManager : MonoBehaviour
 
             actionOnGet: obj =>
             {
-                obj.SetActive(true);
+                if (!keepActive)
+                    obj.SetActive(true);
 
                 IPoolable poolable =
                     obj.GetComponent<IPoolable>();
@@ -62,7 +66,8 @@ public class PoolManager : MonoBehaviour
 
                 poolable?.OnRelease();
 
-                obj.SetActive(false);
+                if (!keepActive)
+                    obj.SetActive(false);
             },
 
             actionOnDestroy: obj =>

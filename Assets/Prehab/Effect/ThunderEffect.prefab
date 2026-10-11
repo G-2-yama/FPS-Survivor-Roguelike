@@ -9833,3 +9833,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
   lifetime: 2
   effectParticleSystem: {fileID: 7135543472366308338}
+  keepActiveInPool: 1

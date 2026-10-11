@@ -84,11 +84,20 @@ public class DamagePopup : PoolableObject
         damageText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
     }
 
+    public override bool KeepActiveInPool => true;
+
     public override void OnGet()
     {
         Color color = damageText.color;
         color.a = 1f;
         damageText.color = color;
+        damageText.renderer.enabled = true;
+    }
+
+    public override void OnRelease()
+    {
+        DamagePopupRunner.Unregister(this);
+        damageText.renderer.enabled = false;
     }
 
     private void OnDisable()
