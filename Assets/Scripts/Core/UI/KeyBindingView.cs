@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+using TMPro;
 
 /// <summary>現在の操作方式に対応するキー・ボタン名を表示する。</summary>
 public class KeyBindingView : MonoBehaviour
 {
-    [SerializeField] private Text keyBindingText;
+    [SerializeField] private TMP_Text keyBindingText;
     [SerializeField] private InputActionReference inputAction;
     [SerializeField] private PlayerInput playerInput;
 

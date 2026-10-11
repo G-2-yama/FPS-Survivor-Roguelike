@@ -1,5 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 /// <summary>
@@ -15,7 +16,7 @@ public class PlayerLevelView : MonoBehaviour
     /// <summary>
     /// 現在レベルを表示するテキスト
     /// </summary>
-    [SerializeField] private Text currentLevelText;
+    [SerializeField] private TMP_Text currentLevelText;
 
     [SerializeField] private Image currentLevelBar;
 
