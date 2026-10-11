@@ -79,9 +79,9 @@ public class DamagePopup : PoolableObject
             {
                 colors[j].a = a;
             }
-        }
 
-        damageText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+            meshInfo.mesh.colors32 = colors;
+        }
     }
 
     public override bool KeepActiveInPool => true;
