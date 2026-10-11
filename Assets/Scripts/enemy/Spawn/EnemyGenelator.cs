@@ -95,7 +95,10 @@ public class EnemyGenerator : MonoBehaviour
                 if (oldEnemy != null)
                 {
                     RemoveActiveEnemy(oldEnemy);
-                    oldEnemy.GetComponent<Enemy>()?.Release();
+                    if (oldEnemy.TryGetComponent(out PoolableObject poolable))
+                    {
+                        poolable.Release();
+                    }
                 }
             }
 
@@ -107,7 +110,14 @@ public class EnemyGenerator : MonoBehaviour
 
                 activeEnemies.Add(enemy);
 
-                enemy.GetComponent<Enemy>()?.SetSpawner(this);
+                if (enemy.TryGetComponent(out Enemy enemyComponent))
+                {
+                    enemyComponent.SetSpawner(this);
+                }
+                else if (enemy.TryGetComponent(out enemyplojectileobject projectile))
+                {
+                    projectile.SetSpawner(this);
+                }
 
                 return;
             }
