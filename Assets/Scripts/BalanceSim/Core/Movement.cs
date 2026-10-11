@@ -33,6 +33,11 @@ namespace BalanceSim
                         return;
                     }
 
+                    if (body.Velocity.Length > move.maxSpeed)
+                    {
+                        body.Velocity = body.Velocity.Normalized * move.maxSpeed;
+                    }
+
                     body.Velocity += toTarget.Normalized * (move.moveForce * 0.7f * dt);
                     break;
                 }
