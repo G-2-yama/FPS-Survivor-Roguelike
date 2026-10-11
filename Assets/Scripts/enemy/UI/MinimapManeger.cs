@@ -63,8 +63,7 @@ public class MinimapManager : MonoBehaviour
             {
                 GameObject target = targets[i];
 
-                if (target == null ||
-                    !target.activeInHierarchy)
+                if (target == null)
                 {
                     continue;
                 }
@@ -157,29 +156,34 @@ public class MinimapManager : MonoBehaviour
                 minimapRadius
             );
 
-        icon.RectTransform.anchoredPosition =
-            mapPosition;
-
 
         // ƒAƒCƒRƒ“ã•ûŒü‚ðPlayer‚ÖŒü‚¯‚é
         Vector2 directionToPlayer = -mapPosition;
 
         if (directionToPlayer.sqrMagnitude > 0.001f)
         {
-            float angle =
-                Mathf.Atan2(
+            float halfAngle =
+                (Mathf.Atan2(
                     directionToPlayer.y,
                     directionToPlayer.x
                 )
-                * Mathf.Rad2Deg
-                - 90f;
+                - 90f * Mathf.Deg2Rad)
+                * 0.5f;
 
-            icon.RectTransform.localRotation =
-                Quaternion.Euler(
+            icon.RectTransform.SetLocalPositionAndRotation(
+                mapPosition,
+                new Quaternion(
                     0f,
                     0f,
-                    angle
-                );
+                    Mathf.Sin(halfAngle),
+                    Mathf.Cos(halfAngle)
+                )
+            );
+        }
+        else
+        {
+            icon.RectTransform.localPosition =
+                mapPosition;
         }
     }
 
