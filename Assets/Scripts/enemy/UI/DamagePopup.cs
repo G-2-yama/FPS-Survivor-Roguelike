@@ -24,6 +24,7 @@ public class DamagePopup : PoolableObject
         // éÛÇØéÊÇ¡ÇΩêFÇê›íË
         color.a = 1f;
         damageText.color = color;
+        damageText.ForceMeshUpdate();
 
         Vector3 direction =
             player.position - transform.position;
@@ -43,10 +44,6 @@ public class DamagePopup : PoolableObject
     {
         float timer = 0f;
 
-        Color color = damageText.color;
-        color.a = 1f;
-        damageText.color = color;
-
         while (timer < lifeTime)
         {
             timer += Time.deltaTime;
@@ -54,13 +51,31 @@ public class DamagePopup : PoolableObject
             transform.position +=
                 Vector3.up * moveSpeed * Time.deltaTime;
 
-            color.a = 1f - timer / lifeTime;
-            damageText.color = color;
+            SetVertexAlpha(1f - timer / lifeTime);
 
             yield return null;
         }
 
         Release();
+    }
+
+    private void SetVertexAlpha(float alpha)
+    {
+        byte a = (byte)Mathf.Round(Mathf.Clamp01(alpha) * 255f);
+        TMP_TextInfo textInfo = damageText.textInfo;
+
+        for (int i = 0; i < textInfo.materialCount; i++)
+        {
+            TMP_MeshInfo meshInfo = textInfo.meshInfo[i];
+            Color32[] colors = meshInfo.colors32;
+
+            for (int j = 0; j < meshInfo.vertexCount; j++)
+            {
+                colors[j].a = a;
+            }
+        }
+
+        damageText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
     }
 
     public override void OnGet()
