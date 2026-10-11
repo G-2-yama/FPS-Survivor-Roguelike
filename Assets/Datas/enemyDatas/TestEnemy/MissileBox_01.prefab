@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 8667526325595851811}
   - component: {fileID: 393598153719105161}
   - component: {fileID: 5314247338720636684}
-  - component: {fileID: 6843431205161098292}
+  - component: {fileID: 4517093288143706219}
   - component: {fileID: 8379854717877954754}
   - component: {fileID: 4342199728072193920}
   - component: {fileID: 8968947404244896160}
@@ -326,8 +326,9 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 335b76842e15bb14fb8b6a35724d5584, type: 2}
   targetProvider: {fileID: 8667526325595851811}
   attack: {fileID: 4566530008282914671}
-  animator: {fileID: 6843431205161098292}
+  animator: {fileID: 0}
   uniqueAnimation: {fileID: 9135571308329541617}
+  poseSwitcher: {fileID: 4517093288143706219}
 --- !u!114 &4566530008282914671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,28 +388,28 @@ MonoBehaviour:
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
   flashDuration: 0.3
---- !u!95 &6843431205161098292
-Animator:
-  serializedVersion: 7
+--- !u!114 &4517093288143706219
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4262321851066489838}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e0ae47118db557c4d9b6e9bd2a69e964, type: 2}
-  m_CullingMode: 2
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d6471e1f424ff19e7b9625856d43ea, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPoseSwitcher
+  parts:
+  - target: {fileID: 4808483191403146367}
+    idleEuler: {x: -90, y: 0, z: -90}
+    combatEuler: {x: -90, y: -30, z: -90}
+  - target: {fileID: 1753524606149282472}
+    idleEuler: {x: -89.791, y: 0, z: 0}
+    combatEuler: {x: 40, y: 0, z: 0}
+  blendDuration: 0.25
+  toCombatDuration: 0.033333335
+  toIdleDuration: 0.083333336
 --- !u!82 &8379854717877954754
 AudioSource:
   m_ObjectHideFlags: 0

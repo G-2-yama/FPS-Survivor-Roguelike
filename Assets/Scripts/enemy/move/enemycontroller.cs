@@ -8,6 +8,7 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyAttackController attack;
     [SerializeField] private Animator animator;
     [SerializeField] private EnemyAnimationEffect uniqueAnimation;
+    [SerializeField] private EnemyPoseSwitcher poseSwitcher;
     private StateMachine<IState> stateMachine;
     private Transform cachedTransform;
 
@@ -23,6 +24,7 @@ public class EnemyBrain : MonoBehaviour
     public Animator Animator => animator;
 
     public EnemyAnimationEffect UniqueAnimation => uniqueAnimation;
+    public EnemyPoseSwitcher PoseSwitcher => poseSwitcher;
 
     public StateMachine<IState> StateMachine => stateMachine;
 
@@ -101,6 +103,10 @@ public class EnemyBrain : MonoBehaviour
             animator.enabled = true;
 
             animator.SetBool("Iscombat", false);
+        }
+        if (poseSwitcher != null)
+        {
+            poseSwitcher.ResetPose();
         }
         if(uniqueAnimation != null)
         {

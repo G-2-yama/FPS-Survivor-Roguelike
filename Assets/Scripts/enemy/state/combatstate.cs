@@ -22,6 +22,10 @@ public class CombatState : IState
            
             enemy.Animator.SetBool("Iscombat", true);
         }
+        if (enemy.PoseSwitcher != null)
+        {
+            enemy.PoseSwitcher.SetCombat(true);
+        }
         if(enemy.UniqueAnimation != null)
         {
             enemy.UniqueAnimation.Play();
