@@ -9,7 +9,8 @@ public class RollMovement : MovementPattern
         Rigidbody rb,
         Transform self,
         Transform target,
-        Vector3 targetPosition)
+        Vector3 targetPosition,
+        int steps)
     {
         Vector3 dir = targetPosition - rb.position;
         dir.y = 0f;
@@ -23,11 +24,11 @@ public class RollMovement : MovementPattern
             Vector3.Cross(Vector3.up, dir);
 
         rb.AddTorque(
-            torqueAxis * MoveForce,
+            torqueAxis * MoveForce * steps,
             ForceMode.Acceleration);
 
         rb.AddForce(
-            dir * MoveForce * 0.7f,
+            dir * MoveForce * 0.7f * steps,
             ForceMode.Acceleration);
     }
 }

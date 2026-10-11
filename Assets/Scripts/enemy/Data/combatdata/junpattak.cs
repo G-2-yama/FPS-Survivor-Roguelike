@@ -10,7 +10,8 @@ public class JumpMovement : MovementPattern
         Rigidbody rb,
         Transform self,
         Transform target,
-        Vector3 targetPosition)
+        Vector3 targetPosition,
+        int steps)
     {
         if (rb.linearVelocity.y > 0.1f)
             return;

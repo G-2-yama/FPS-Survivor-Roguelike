@@ -9,7 +9,8 @@ public class ItemMovement : MovementPattern
         Rigidbody rb,
         Transform self,
         Transform target,
-        Vector3 targetPosition)
+        Vector3 targetPosition,
+        int steps)
     {
 
         Vector3 position = rb.position;

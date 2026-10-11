@@ -46,13 +46,17 @@ public class ChaseState : IState
             return;
         }
 
+        enemy.UpdateFar(distance);
+
         enemy.Config.chaseMovedata.Move(
             enemy.Rb,
             enemy.CachedTransform,
             target,
-            targetPosition);
+            targetPosition,
+            enemy.TickSteps);
     }
     public void Exit()
     {
+        enemy.ClearFar();
     }
 }

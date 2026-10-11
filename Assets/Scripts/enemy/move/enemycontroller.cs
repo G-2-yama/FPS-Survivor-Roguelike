@@ -32,11 +32,18 @@ public class EnemyBrain : MonoBehaviour
     public KnockbackState KnockbackState => knockbackState;
 
     internal int RunnerIndex { get; set; } = -1;
+    internal int ThinPhase { get; set; }
+    internal int LastTickStep { get; set; }
+    internal int TickSteps { get; private set; } = 1;
+    internal bool IsFar { get; private set; }
+
+    private bool canThin;
 
 
     private void Awake()
     {
         cachedTransform = transform;
+        canThin = gameObject.layer == LayerMask.NameToLayer("Enemy");
         stateMachine = new StateMachine<IState>();
 
         chaseState = new ChaseState(this, stateMachine);
@@ -51,14 +58,38 @@ public class EnemyBrain : MonoBehaviour
         EnemyBrainRunner.Register(this);
     }
 
-    internal void Tick()
+    internal void Tick(int step)
     {
+        TickSteps = Mathf.Clamp(step - LastTickStep, 1, EnemyBrainRunner.ThinInterval);
+        LastTickStep = step;
         stateMachine.Update();
+    }
+
+    internal void UpdateFar(float distance)
+    {
+        if (!canThin)
+            return;
+
+        if (IsFar)
+        {
+            if (distance < EnemyBrainRunner.NearDistance)
+                IsFar = false;
+        }
+        else if (distance > EnemyBrainRunner.FarDistance)
+        {
+            IsFar = true;
+        }
+    }
+
+    internal void ClearFar()
+    {
+        IsFar = false;
     }
 
     private void OnDisable()
     {
         EnemyBrainRunner.Unregister(this);
+        ClearFar();
         attack?.CancelAttack();
     }
 

@@ -10,7 +10,8 @@ public class OrbitMovement : MovementPattern
         Rigidbody rb,
         Transform self,
         Transform target,
-        Vector3 targetPosition)
+        Vector3 targetPosition,
+        int steps)
     {
         Vector3 offset = rb.position - targetPosition;
 

@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class EnemyBrainRunner : MonoBehaviour
 {
+    internal const int ThinInterval = 3;
+    internal const float FarDistance = 40f;
+    internal const float NearDistance = 35f;
+
     private static EnemyBrainRunner instance;
     private static readonly List<EnemyBrain> brains = new List<EnemyBrain>();
 
     private static Transform cachedTarget;
     private static Vector3 cachedTargetPosition;
+
+    private static int stepCount;
+    private static int nextThinPhase;
 
     private EnemyBrain[] snapshot = Array.Empty<EnemyBrain>();
 
@@ -18,6 +25,8 @@ public class EnemyBrainRunner : MonoBehaviour
         instance = null;
         brains.Clear();
         cachedTarget = null;
+        stepCount = 0;
+        nextThinPhase = 0;
     }
 
     public static Vector3 GetTargetPosition(Transform target)
@@ -39,6 +48,9 @@ public class EnemyBrainRunner : MonoBehaviour
         }
 
         brain.RunnerIndex = brains.Count;
+        brain.ThinPhase = nextThinPhase;
+        brain.LastTickStep = stepCount;
+        nextThinPhase = (nextThinPhase + 1) % ThinInterval;
         brains.Add(brain);
     }
 
@@ -65,6 +77,7 @@ public class EnemyBrainRunner : MonoBehaviour
         }
         brains.CopyTo(snapshot);
         cachedTarget = null;
+        stepCount++;
 
         for (int i = 0; i < count; i++)
         {
@@ -72,9 +85,12 @@ public class EnemyBrainRunner : MonoBehaviour
             if (brain.RunnerIndex < 0)
                 continue;
 
+            if (brain.IsFar && (stepCount + brain.ThinPhase) % ThinInterval != 0)
+                continue;
+
             try
             {
-                brain.Tick();
+                brain.Tick(stepCount);
             }
             catch (Exception e)
             {

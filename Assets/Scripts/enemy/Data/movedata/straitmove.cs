@@ -9,7 +9,8 @@ public class TowardMovement : MovementPattern
         Rigidbody rb,
         Transform self,
         Transform target,
-        Vector3 targetPosition)
+        Vector3 targetPosition,
+        int steps)
     {
       
         Vector3 position = rb.position;
@@ -20,22 +21,40 @@ public class TowardMovement : MovementPattern
             return;
         // Å‘å‘¬“x§ŒÀ
         Vector3 velocity = rb.linearVelocity;
-
-        if (velocity.magnitude > maxSpeed)
-        {
-            velocity = velocity.normalized * maxSpeed;
-            rb.linearVelocity = velocity;
-        }
-
+        bool velocityChanged = false;
 
         Vector3 direction = toTarget.normalized;
-        if (position.y >= MaxHeight && direction.y > 0f)
+        bool atMaxHeight = position.y >= MaxHeight && direction.y > 0f;
+        if (atMaxHeight)
         {
-            velocity.y = 0f;
-            rb.linearVelocity = velocity;
             direction.y = 0f;
             direction.Normalize();
         }
+
+        Vector3 stepVelocityChange = direction * (acceleration * Time.fixedDeltaTime);
+        for (int i = 0; i < steps; i++)
+        {
+            if (i > 0)
+            {
+                velocity += stepVelocityChange;
+                velocityChanged = true;
+            }
+
+            if (velocity.magnitude > maxSpeed)
+            {
+                velocity = velocity.normalized * maxSpeed;
+                velocityChanged = true;
+            }
+
+            if (atMaxHeight)
+            {
+                velocity.y = 0f;
+                velocityChanged = true;
+            }
+        }
+
+        if (velocityChanged)
+            rb.linearVelocity = velocity;
 
         rb.AddForce(
             direction * acceleration,

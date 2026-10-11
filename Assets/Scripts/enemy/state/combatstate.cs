@@ -52,7 +52,8 @@ public class CombatState : IState
             enemy.Rb,
             enemy.CachedTransform,
             target,
-            targetPosition);
+            targetPosition,
+            1);
 
         enemy.Attack?.TryAttack();
     }
