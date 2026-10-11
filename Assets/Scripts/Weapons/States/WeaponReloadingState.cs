@@ -29,7 +29,15 @@ public class WeaponReloadingState : WeaponState
             _weapon.WeaponView.SetReloadProgress(1f);
             _weapon.Reload();
             _weapon.Sounder.Play(SoundCategory.ReloadEnd);
-            stateMachine.ChangeState<WeaponIdleState>();
+
+            if (_weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+            {
+                stateMachine.ChangeState<WeaponFiringState>();
+            }
+            else
+            {
+                stateMachine.ChangeState<WeaponIdleState>();
+            }
         }
     }
 

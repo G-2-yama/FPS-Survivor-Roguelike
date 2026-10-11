@@ -85,7 +85,7 @@ namespace BalanceSim
                     if (_timer <= 0f)
                     {
                         Ammo = Def.magazineSize;
-                        ChangeState(WeaponPhase.Idle, time);
+                        ChangeState(Def.fullAuto && pressed ? WeaponPhase.Firing : WeaponPhase.Idle, time);
                     }
                     break;
             }
@@ -125,12 +125,13 @@ namespace BalanceSim
                 return;
             }
 
-            bool keepFiring = Def.fullAuto && pressed;
-            if (!keepFiring && Def.autoReload && Ammo <= 0)
+            if (Def.autoReload && Ammo <= 0)
             {
                 ChangeState(WeaponPhase.Reloading, time);
                 return;
             }
+
+            bool keepFiring = Def.fullAuto && pressed;
 
             if (keepFiring || Def.autoFire)
             {
