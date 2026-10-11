@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MinimapManager : MonoBehaviour
 {
@@ -8,13 +9,6 @@ public class MinimapManager : MonoBehaviour
     {
         public EnemyGenerator generator;
         public GameObject iconPrefab;
-    }
-
-    private class TrackedIcon
-    {
-        public MinimapIcon icon;
-        public Transform target;
-        public int seenStamp;
     }
 
     [SerializeField] private List<MinimapSource> sources = new();
@@ -27,20 +21,26 @@ public class MinimapManager : MonoBehaviour
     [SerializeField] private float minimapRadius = 100f;
 
 
-    // 対象Object → 対応するIcon
-    private Dictionary<GameObject, TrackedIcon> targetIcons = new();
+    private MinimapIconMesh[] iconMeshes;
 
-    private List<GameObject> removeList = new();
 
-    private int currentStamp;
+    private void Start()
+    {
+        iconMeshes = new MinimapIconMesh[sources.Count];
+
+        for (int i = 0; i < sources.Count; i++)
+        {
+            if (sources[i].iconPrefab != null)
+            {
+                iconMeshes[i] = CreateIconMesh(sources[i].iconPrefab);
+            }
+        }
+    }
 
 
     private void Update()
     {
-        currentStamp++;
-
         UpdateTargetIcons();
-        RemoveIcons();
         UpdatePlayerIcon();
     }
 
@@ -49,97 +49,69 @@ public class MinimapManager : MonoBehaviour
     {
         Vector3 playerPosition = player.position;
 
-        foreach (MinimapSource source in sources)
+        for (int s = 0; s < sources.Count; s++)
         {
-            if (source.generator == null ||
-                source.iconPrefab == null)
+            MinimapIconMesh iconMesh = iconMeshes[s];
+
+            if (iconMesh == null)
             {
                 continue;
             }
 
-            IReadOnlyList<GameObject> targets = source.generator.ActiveEnemies;
+            iconMesh.ClearIcons();
 
-            for (int i = 0; i < targets.Count; i++)
+            EnemyGenerator generator = sources[s].generator;
+
+            if (generator != null)
             {
-                GameObject target = targets[i];
+                IReadOnlyList<GameObject> targets = generator.ActiveEnemies;
 
-                if (target == null)
+                for (int i = 0; i < targets.Count; i++)
                 {
-                    continue;
-                }
+                    GameObject target = targets[i];
 
-                if (!targetIcons.TryGetValue(target, out TrackedIcon tracked))
-                {
-                    tracked = CreateIcon(target, source.iconPrefab);
-                }
-                else if (tracked.seenStamp == currentStamp)
-                {
-                    continue;
-                }
+                    if (target == null)
+                    {
+                        continue;
+                    }
 
-                tracked.seenStamp = currentStamp;
-
-                UpdateIconPosition(tracked, playerPosition);
+                    UpdateIconPosition(iconMesh, target.transform, playerPosition);
+                }
             }
+
+            iconMesh.ApplyIcons();
         }
     }
 
 
-    private TrackedIcon CreateIcon(GameObject target, GameObject prefab)
+    private MinimapIconMesh CreateIconMesh(GameObject prefab)
     {
-        GameObject iconObj =
-            PoolManager.Instance.Get(prefab);
+        RectTransform prefabRect = prefab.GetComponent<RectTransform>();
 
-        // Canvas配下へ
-        iconObj.transform.SetParent(iconParent, false);
+        GameObject meshObj = new GameObject(prefab.name, typeof(RectTransform));
+        meshObj.layer = iconParent.gameObject.layer;
 
-        TrackedIcon tracked = new TrackedIcon
-        {
-            icon = iconObj.GetComponent<MinimapIcon>(),
-            target = target.transform
-        };
+        RectTransform meshRect = (RectTransform)meshObj.transform;
+        meshRect.SetParent(iconParent, false);
+        meshRect.anchorMin = prefabRect.anchorMin;
+        meshRect.anchorMax = prefabRect.anchorMax;
+        meshRect.anchoredPosition = Vector2.zero;
+        meshRect.sizeDelta = Vector2.zero;
 
-        targetIcons.Add(target, tracked);
+        MinimapIconMesh iconMesh = meshObj.AddComponent<MinimapIconMesh>();
+        iconMesh.Setup(prefab.GetComponent<Image>(), prefabRect);
 
-        return tracked;
-    }
-
-
-    /// <summary>
-    /// Generatorから消えた対象のIconをPoolへ返す
-    /// </summary>
-    private void RemoveIcons()
-    {
-        removeList.Clear();
-
-        foreach (var pair in targetIcons)
-        {
-            if (pair.Value.seenStamp != currentStamp)
-            {
-                removeList.Add(pair.Key);
-            }
-        }
-
-        foreach (GameObject target in removeList)
-        {
-            MinimapIcon icon = targetIcons[target].icon;
-
-            icon.Release();
-
-            targetIcons.Remove(target);
-        }
+        return iconMesh;
     }
 
 
     /// <summary>
     /// Iconのミニマップ上の位置を更新
     /// </summary>
-    private void UpdateIconPosition(TrackedIcon tracked, Vector3 playerPosition)
+    private void UpdateIconPosition(MinimapIconMesh iconMesh, Transform target, Vector3 playerPosition)
     {
-        MinimapIcon icon = tracked.icon;
-
         Vector3 offset =
-            tracked.target.position - playerPosition;
+            target.position - playerPosition;
 
         Vector2 mapPosition =
             new Vector2(
@@ -160,32 +132,28 @@ public class MinimapManager : MonoBehaviour
         // アイコン上方向をPlayerへ向ける
         Vector2 directionToPlayer = -mapPosition;
 
-        if (directionToPlayer.sqrMagnitude > 0.001f)
-        {
-            float halfAngle =
-                (Mathf.Atan2(
-                    directionToPlayer.y,
-                    directionToPlayer.x
-                )
-                - 90f * Mathf.Deg2Rad)
-                * 0.5f;
+        float sqrDistance = directionToPlayer.sqrMagnitude;
 
-            icon.RectTransform.SetLocalPositionAndRotation(
+        if (sqrDistance > 0.001f)
+        {
+            float distance = Mathf.Sqrt(sqrDistance);
+
+            iconMesh.AddIcon(
                 mapPosition,
-                new Quaternion(
-                    0f,
-                    0f,
-                    Mathf.Sin(halfAngle),
-                    Mathf.Cos(halfAngle)
-                )
+                directionToPlayer.y / distance,
+                -directionToPlayer.x / distance
             );
         }
         else
         {
-            icon.RectTransform.localPosition =
-                mapPosition;
+            iconMesh.AddIcon(
+                mapPosition,
+                1f,
+                0f
+            );
         }
     }
+
 
 
     /// <summary>
