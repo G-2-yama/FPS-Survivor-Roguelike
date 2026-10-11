@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Collections;
 
 public class DamagePopup : PoolableObject
 {
@@ -9,7 +8,10 @@ public class DamagePopup : PoolableObject
     [SerializeField] private float lifeTime = 0.8f;
     [SerializeField] private float moveSpeed = 1.5f;
 
-    private Coroutine popupCoroutine;
+    private float timer;
+    private int lastTickFrame = -1;
+
+    internal int RunnerIndex { get; set; } = -1;
 
     public void Setup(
         Color color,
@@ -37,26 +39,30 @@ public class DamagePopup : PoolableObject
                 Quaternion.LookRotation(-direction);
         }
 
-        popupCoroutine = StartCoroutine(PopupRoutine());
+        timer = 0f;
+        lastTickFrame = -1;
+        DamagePopupRunner.Register(this);
+        Tick();
     }
 
-    private IEnumerator PopupRoutine()
+    public void Tick()
     {
-        float timer = 0f;
+        if (lastTickFrame == Time.frameCount)
+            return;
+        lastTickFrame = Time.frameCount;
 
-        while (timer < lifeTime)
+        if (timer >= lifeTime)
         {
-            timer += Time.deltaTime;
-
-            transform.position +=
-                Vector3.up * moveSpeed * Time.deltaTime;
-
-            SetVertexAlpha(1f - timer / lifeTime);
-
-            yield return null;
+            Release();
+            return;
         }
 
-        Release();
+        timer += Time.deltaTime;
+
+        transform.position +=
+            Vector3.up * moveSpeed * Time.deltaTime;
+
+        SetVertexAlpha(1f - timer / lifeTime);
     }
 
     private void SetVertexAlpha(float alpha)
@@ -85,12 +91,8 @@ public class DamagePopup : PoolableObject
         damageText.color = color;
     }
 
-    public override void OnRelease()
+    private void OnDisable()
     {
-        if (popupCoroutine != null)
-        {
-            StopCoroutine(popupCoroutine);
-            popupCoroutine = null;
-        }
+        DamagePopupRunner.Unregister(this);
     }
 }
