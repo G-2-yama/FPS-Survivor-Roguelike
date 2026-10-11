@@ -1,14 +1,16 @@
-using System.Collections;
 using UnityEngine;
 
-public class WhiteFlash : MonoBehaviour
+public class WhiteFlash : MonoBehaviour, ILifetimeOwner
 {
     [SerializeField] private Renderer[] renderers;
     [SerializeField] private Material whiteFlashMaterial;
     [SerializeField] private float flashDuration = 0.08f;
 
     private Material[][] originalMaterials;
-    private Coroutine flashCoroutine;
+    private Material[][] whiteMaterials;
+    private bool isFlashing;
+
+    public int LifetimeIndex { get; set; } = -1;
 
     private void Awake()
     {
@@ -18,51 +20,54 @@ public class WhiteFlash : MonoBehaviour
         }
 
         originalMaterials = new Material[renderers.Length][];
+        whiteMaterials = new Material[renderers.Length][];
 
         for (int i = 0; i < renderers.Length; i++)
         {
             originalMaterials[i] = renderers[i].sharedMaterials;
+
+            whiteMaterials[i] = new Material[originalMaterials[i].Length];
+
+            for (int j = 0; j < whiteMaterials[i].Length; j++)
+            {
+                whiteMaterials[i][j] = whiteFlashMaterial;
+            }
         }
     }
 
     public void Flash()
     {
-        Restore();
-
-        flashCoroutine = StartCoroutine(FlashRoutine());
-    }
-
-    private IEnumerator FlashRoutine()
-    {
-        for (int i = 0; i < renderers.Length; i++)
+        if (!isFlashing)
         {
-            Material[] whiteMaterials = new Material[renderers[i].sharedMaterials.Length];
-
-            for (int j = 0; j < whiteMaterials.Length; j++)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                whiteMaterials[j] = whiteFlashMaterial;
+                renderers[i].sharedMaterials = whiteMaterials[i];
             }
 
-            renderers[i].sharedMaterials = whiteMaterials;
+            isFlashing = true;
         }
 
-        yield return new WaitForSeconds(flashDuration);
+        LifetimeRunner.Register(this, flashDuration);
+    }
 
+    public void OnLifetimeExpired()
+    {
         Restore();
     }
 
     public void Restore()
     {
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-            flashCoroutine = null;
-        }
+        LifetimeRunner.Unregister(this);
+
+        if (!isFlashing)
+            return;
 
         for (int i = 0; i < renderers.Length; i++)
         {
             renderers[i].sharedMaterials = originalMaterials[i];
         }
+
+        isFlashing = false;
     }
 
     private void OnDisable()
