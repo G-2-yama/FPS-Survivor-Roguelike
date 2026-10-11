@@ -38,6 +38,11 @@ public class Sounder : MonoBehaviour
     }
     private void PlayPooledSound(SoundData data)
     {
+        if (!PooledSoundPlayer.CanPlay(data.clip))
+        {
+            return;
+        }
+
         GameObject obj =
             PoolManager.Instance.Get(soundprefab);
 
