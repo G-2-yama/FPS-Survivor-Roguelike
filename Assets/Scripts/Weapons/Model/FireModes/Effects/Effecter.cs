@@ -1,32 +1,26 @@
-using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Effecter : PoolableObject
+public class Effecter : PoolableObject, ILifetimeOwner
 {
     [SerializeField] private float lifetime = 0.5f;
     [SerializeField] private ParticleSystem effectParticleSystem;
 
-    private Coroutine lifeRoutine;
+    public int LifetimeIndex { get; set; } = -1;
 
     public override void OnGet()
     {
-        lifeRoutine = StartCoroutine(LifeTimer());
+        LifetimeRunner.Register(this, lifetime);
         effectParticleSystem.Play();
     }
 
-    public override void OnRelease()
+    public void OnLifetimeExpired()
     {
-        if (lifeRoutine != null)
-        {
-            StopCoroutine(lifeRoutine);
-            lifeRoutine = null;
-        }
+        Release();
     }
 
-    private IEnumerator LifeTimer()
+    private void OnDisable()
     {
-        yield return new WaitForSeconds(lifetime);
-        Release();
+        LifetimeRunner.Unregister(this);
     }
 }

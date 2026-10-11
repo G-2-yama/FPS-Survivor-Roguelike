@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-public abstract class DamageBase : PoolableObject, IDamageable
+public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner
 {
     [SerializeField] protected TeamType myTeam;
     public TeamType MyTeam => myTeam;
@@ -17,9 +16,9 @@ public abstract class DamageBase : PoolableObject, IDamageable
 
     protected Health health;
 
-    private Coroutine lifeRoutine;
-
     protected bool isReleased;
+
+    public int LifetimeIndex { get; set; } = -1;
 
     public TeamType TeamType => myTeam;
 
@@ -68,25 +67,22 @@ public abstract class DamageBase : PoolableObject, IDamageable
         health = new Health(HP);
 
         if (lifetime > 0)
-            lifeRoutine = StartCoroutine(LifeTimer(lifetime));
+            LifetimeRunner.Register(this, lifetime);
     }
 
     public override void OnRelease()
     {
         isReleased = true;
-
-        if (lifeRoutine != null)
-        {
-            StopCoroutine(lifeRoutine);
-            lifeRoutine = null;
-        }
     }
 
-    IEnumerator LifeTimer(float time)
+    public void OnLifetimeExpired()
     {
-        yield return new WaitForSeconds(time);
-
         if (!isReleased)
             Release();
+    }
+
+    private void OnDisable()
+    {
+        LifetimeRunner.Unregister(this);
     }
 }
