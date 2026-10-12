@@ -17,13 +17,15 @@ public class ModeSelectMenu : MonoBehaviour
 
     private void Start()
     {
+        int number = 0;
         foreach (var mode in modes)
         {
             if (mode == null)
                 continue;
 
+            number++;
             var option = Instantiate(optionPrefab, optionParent);
-            option.Setup(mode, () => Select(mode));
+            option.Setup(mode, number, () => Select(mode));
         }
     }
 

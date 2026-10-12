@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +36,22 @@ public class TitleScreen : MonoBehaviour
     [Tooltip("押すとモード選択へ戻るボタン")]
     [SerializeField] private Button loadoutBackButton;
 
+    [Header("演出")]
+    [Tooltip("左のキービジュアル")]
+    [SerializeField] private TitleKeyVisual keyVisual;
+
+    [Tooltip("画面切り替えのグリッチと明滅")]
+    [SerializeField] private TitleGlitchFx glitchFx;
+
+    [Tooltip("起動時に動かす要素 開始の遅れは各要素で設定します")]
+    [SerializeField] private List<TitleSlideIn> introEffects = new List<TitleSlideIn>();
+
+    [Tooltip("グリッチが始まってからパネルを差し替えるまでの時間（秒）")]
+    [SerializeField] private float panelSwapDelay = 0.12f;
+
+    private GameObject currentPanel;
+    private Coroutine swapRoutine;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -47,11 +65,37 @@ public class TitleScreen : MonoBehaviour
         modeSelectBackButton.onClick.AddListener(() => ShowPanel(titlePanel));
         loadoutBackButton.onClick.AddListener(() => ShowPanel(modeSelectPanel));
 
-        ShowPanel(titlePanel);
+        keyVisual.SetTitleMode(true, true);
+        ActivatePanel(titlePanel);
+        foreach (var effect in introEffects)
+            effect.Play();
     }
 
     private void ShowPanel(GameObject panel)
     {
+        if (panel == currentPanel)
+            return;
+
+        currentPanel = panel;
+        keyVisual.SetTitleMode(panel == titlePanel, false);
+        keyVisual.Glitch(glitchFx.Duration);
+        glitchFx.Play();
+
+        if (swapRoutine != null)
+            StopCoroutine(swapRoutine);
+        swapRoutine = StartCoroutine(SwapPanel(panel));
+    }
+
+    private IEnumerator SwapPanel(GameObject panel)
+    {
+        yield return new WaitForSecondsRealtime(panelSwapDelay);
+        ActivatePanel(panel);
+        swapRoutine = null;
+    }
+
+    private void ActivatePanel(GameObject panel)
+    {
+        currentPanel = panel;
         titlePanel.SetActive(panel == titlePanel);
         modeSelectPanel.SetActive(panel == modeSelectPanel);
         loadoutPanel.SetActive(panel == loadoutPanel);
