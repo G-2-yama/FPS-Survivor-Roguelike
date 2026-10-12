@@ -3,12 +3,16 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Unity から届く入力やライフサイクルイベントをプレイヤー制御へ中継する。
-/// ゲーム内データの更新は PlayerRuntime 側へ寄せ、MonoBehaviour は橋渡しに専念する。
+/// Unityから届く入力やライフサイクルイベントをプレイヤー制御へ中継する
+/// ゲーム内データの更新はPlayerRuntime側へ寄せ、MonoBehaviourは橋渡しに専念する
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    private const string PlayerBodyLayerName = "PlayerBody";
+    private const string PlayerPushZoneLayerName = "PlayerPushZone";
+    private const string EnemyLayerName = "Enemy";
+
     /// <summary>
     /// プレイヤーモデル
     /// </summary>
@@ -81,6 +85,8 @@ public class PlayerController : MonoBehaviour
         }
         player.InitializeIfNeeded();
         PlayerStats stats = player.Stats;
+
+        ConfigureEnemyCollisionAndPushZone();
 
         ConfigureRigidbodyForCharacterController();
 
@@ -172,26 +178,36 @@ public class PlayerController : MonoBehaviour
         runtime?.HandleDeath();
     }
 
+    /// <summary>移動入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemの移動入力コンテキスト</param>
     public void OnMove(InputAction.CallbackContext context)
     {
         inputRelay?.OnMove(context);
     }
 
+    /// <summary>ダッシュ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのダッシュ入力コンテキスト</param>
     public void OnSprint(InputAction.CallbackContext context)
     {
         inputRelay?.OnSprint(context);
     }
 
+    /// <summary>視点入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemの視点入力コンテキスト</param>
     public void OnLook(InputAction.CallbackContext context)
     {
         inputRelay?.OnLook(context);
     }
 
+    /// <summary>ジャンプ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのジャンプ入力コンテキスト</param>
     public void OnJump(InputAction.CallbackContext context)
     {
         inputRelay?.OnJump(context);
     }
 
+    /// <summary>しゃがみ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのしゃがみ入力コンテキスト</param>
     public void OnCrouch(InputAction.CallbackContext context)
     {
         inputRelay?.OnCrouch(context);
@@ -243,6 +259,41 @@ public class PlayerController : MonoBehaviour
         playerRigidbody.linearVelocity = Vector3.zero;
         playerRigidbody.isKinematic = true;
         playerRigidbody.useGravity = false;
+    }
+
+    /// <summary>プレイヤーと敵の物理接触を分離し、敵押し出しTriggerを作成する</summary>
+    private void ConfigureEnemyCollisionAndPushZone()
+    {
+        int playerBodyLayer = LayerMask.NameToLayer(PlayerBodyLayerName);
+        int pushZoneLayer = LayerMask.NameToLayer(PlayerPushZoneLayerName);
+        int enemyLayer = LayerMask.NameToLayer(EnemyLayerName);
+
+        if (playerBodyLayer < 0 || pushZoneLayer < 0 || enemyLayer < 0)
+        {
+            Debug.LogError(
+                $"Player collision layers are missing. Add {PlayerBodyLayerName}, {PlayerPushZoneLayerName}, and {EnemyLayerName} layers.",
+                this);
+            enabled = false;
+            return;
+        }
+
+        gameObject.layer = playerBodyLayer;
+        Physics.IgnoreLayerCollision(playerBodyLayer, enemyLayer, true);
+        Physics.IgnoreLayerCollision(pushZoneLayer, enemyLayer, false);
+
+        Transform zoneTransform = transform.Find("EnemyPushZone");
+        if (zoneTransform == null)
+        {
+            GameObject zone = new GameObject("EnemyPushZone");
+            zoneTransform = zone.transform;
+            zoneTransform.SetParent(transform, false);
+        }
+
+        PlayerEnemyPushZone pushZone = zoneTransform.GetComponent<PlayerEnemyPushZone>();
+        if (pushZone == null)
+            pushZone = zoneTransform.gameObject.AddComponent<PlayerEnemyPushZone>();
+
+        pushZone.Initialize(player, playerCharacterController, pushZoneLayer);
     }
 
     /// <summary>

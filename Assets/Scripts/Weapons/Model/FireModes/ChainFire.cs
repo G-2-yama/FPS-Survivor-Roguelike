@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>ヒットスキャンを行い、近くの敵へ連鎖してダメージを与える</summary>
 [CreateAssetMenu(menuName = "Weapons/FireMode/ChainFire")]
 public class ChainFire : FireModeData
 {
@@ -12,6 +13,9 @@ public class ChainFire : FireModeData
     [SerializeField] private float chainRange = 10f;
     [SerializeField] private int chainCount = 3;
 
+    /// <summary>最初の有効な対象を探し、連鎖ダメージを適用する</summary>
+    /// <param name="weapon">ダメージ値を持つ武器</param>
+    /// <param name="weaponOwner">武器の能力補正を受けるプレイヤー</param>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         List<Collider> hitTargets = new();
@@ -24,6 +28,10 @@ public class ChainFire : FireModeData
 
         foreach (var hit in hits)
         {
+            // プレイヤー自身の接触判定を飛ばし、その先のヒット候補を調べる
+            if (hit.collider.GetComponent<PlayerEnemyPushZone>() != null)
+                continue;
+
             if (!hit.collider.TryGetComponent(out IDamageable damageable))
             {
                 TryEnableHitEffect(hit.point);
@@ -46,6 +54,11 @@ public class ChainFire : FireModeData
         }
     }
 
+    /// <summary>現在の対象の近くにいる敵を探し、追加でダメージを与える</summary>
+    /// <param name="startTarget">連鎖の起点となる対象</param>
+    /// <param name="weapon">ダメージ値を持つ武器</param>
+    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
+    /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
     private void ChainDamage(Collider startTarget, Weapon weapon, Player weaponOwner, List<Collider> hitTargets)
     {
         Collider currentTarget = startTarget;
@@ -70,6 +83,10 @@ public class ChainFire : FireModeData
     /// <summary>
     /// まだヒットしていない最も近いダメージ可能対象を探す
     /// </summary>
+    /// <summary>未処理のダメージ対象から最も近いColliderを探す</summary>
+    /// <param name="originTarget">連鎖の現在の終点となる対象</param>
+    /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
+    /// <returns>最も近い対象、範囲内にいない場合はnull</returns>
     private Collider FindNearestEnemy(Collider originTarget,List<Collider> hitTargets)
     {
         Collider[] colliders =
@@ -110,6 +127,10 @@ public class ChainFire : FireModeData
         return nearest;
     }
 
+    /// <summary>武器能力を反映したダメージを連鎖対象へ適用する</summary>
+    /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
+    /// <param name="hitCollider">連鎖対象として選択されたCollider</param>
+    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
     private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
     {
         if(hitCollider.TryGetComponent(out IDamageable damageable))

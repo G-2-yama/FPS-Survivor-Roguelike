@@ -4,8 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーの装備と体力をまとめて保持するモデル。
-/// 移動や入力の実処理は別クラスへ寄せ、ここでは他システムが参照する状態のみを管理する。
+/// プレイヤーの装備と体力をまとめて保持するモデル
+/// 移動や入力の実処理は別クラスへ寄せ、ここでは他システムが参照する状態のみを管理する
 /// </summary>
 public class Player : MonoBehaviour, IDamageable
 {
@@ -32,6 +32,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private bool IsWeaponSyncEnabled = false;
     public bool IsWeaponSync => IsWeaponSyncEnabled;
+    /// <summary>装備中の武器状態を同期するか設定する</summary>
+    /// <param name="enabled">武器同期を有効にするか</param>
     public void SetWeaponSync(bool enabled)
     {
         IsWeaponSyncEnabled = enabled;
@@ -50,10 +52,12 @@ public class Player : MonoBehaviour, IDamageable
 
     public TimedBuffManager TimedBuffManager { get; private set; } 
 
+    /// <summary>生成時にプレイヤーの体力と成長状態を初期化する</summary>
     private void Awake()
     {
         InitializeIfNeeded();
     }
+    /// <summary>コントローラーから呼ばれた場合も含め、ランタイム状態を一度だけ生成する</summary>
     public void InitializeIfNeeded()
     {
         if (Stats != null)
@@ -67,6 +71,7 @@ public class Player : MonoBehaviour, IDamageable
         Health.OnDeath += HandleDeath;
     }
 
+    /// <summary>破棄前に体力イベントの購読を解除する</summary>
     private void OnDestroy()
     {
         if (Health != null)
@@ -75,18 +80,16 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>プレイヤーの体力にダメージを適用する</summary>
+    /// <param name="damage">減少させる体力</param>
+    /// <param name="knockbackForce">プレイヤーの体力モデルでは使用しない値</param>
     public void TakeDamage(int damage, float knockbackForce)
     {
         Health.TakeDamage(damage);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.TryGetComponent(out ToutchDamageController touch))
-        {
-            TakeDamage(touch.DamageAmount, 0);
-        }
-    }
+    /// <summary>経験値を加算し、必要量に達した場合はレベルアップ通知を行う</summary>
+    /// <param name="amount">加算する経験値</param>
     public void AddExp(float amount)
     {
         // 経験値を加算
@@ -105,6 +108,7 @@ public class Player : MonoBehaviour, IDamageable
             OnLevelUp?.Invoke();
         }
     }
+    /// <summary>保留中のレベルアップ選択を一つ消費する</summary>
     public void ConsumePendingLevelUp()
     {
         if (pendingLevelUps > 0)
@@ -113,5 +117,6 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>体力の死亡通知をプレイヤーの購読者へ伝える</summary>
     private void HandleDeath() => OnDeath?.Invoke();
 }

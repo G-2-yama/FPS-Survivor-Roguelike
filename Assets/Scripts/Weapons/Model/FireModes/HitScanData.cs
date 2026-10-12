@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>ヒットスキャンを行い、最初の有効な対象にダメージを与える</summary>
 [CreateAssetMenu(menuName = "Weapons/FireMode/HitScan")]
 public class HitScanData : FireModeData
 {
@@ -9,6 +10,9 @@ public class HitScanData : FireModeData
     [SerializeField] private GameObject tracerPrefab;
     [SerializeField] private TeamType targetTeam = TeamType.Enemy;
 
+    /// <summary>射線上を検索し、プレイヤー自身の接触判定を除外する</summary>
+    /// <param name="weapon">ダメージ値とトレーサー設定を持つ武器</param>
+    /// <param name="weaponOwner">武器の能力補正を受けるプレイヤー</param>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
@@ -22,6 +26,10 @@ public class HitScanData : FireModeData
 
         foreach (var hit in hits)
         {
+            // プレイヤー所有の押し出し判定を飛ばし、その先の対象も検索する
+            if (hit.collider.GetComponent<PlayerEnemyPushZone>() != null)
+                continue;
+
             if (hit.collider.TryGetComponent(out IDamageable damageable))
             {
                 if ((damageable.TeamType & targetTeam) == 0)
@@ -55,6 +63,10 @@ public class HitScanData : FireModeData
         
     }
 
+    /// <summary>武器能力を反映したダメージを対象へ適用する</summary>
+    /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
+    /// <param name="hitCollider">ヒットスキャンが選択したCollider</param>
+    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
     private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
     {
         if(hitCollider.TryGetComponent(out IDamageable damageable))
