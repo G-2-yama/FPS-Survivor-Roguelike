@@ -14,6 +14,12 @@ public class StartWeaponOptionView : MonoBehaviour
     [Tooltip("武器のアイコンを表示する画像 未設定でも動作します")]
     [SerializeField] private Image iconImage;
 
+    [Tooltip("選択中だけ表示するもの 未設定でも動作します")]
+    [SerializeField] private GameObject selectedMark;
+
+    [Tooltip("選択中は色を保つホバー演出 未設定でも動作します")]
+    [SerializeField] private TitleHoverFx hoverFx;
+
     public void Setup(WeaponData weaponData, ToggleGroup group, bool isOn, Action onSelected)
     {
         if (nameText != null)
@@ -24,10 +30,21 @@ public class StartWeaponOptionView : MonoBehaviour
 
         toggle.SetIsOnWithoutNotify(isOn);
         toggle.group = group;
+        ShowSelected(isOn);
         toggle.onValueChanged.AddListener(selected =>
         {
+            ShowSelected(selected);
             if (selected)
                 onSelected();
         });
+    }
+
+    private void ShowSelected(bool isSelected)
+    {
+        if (selectedMark != null)
+            selectedMark.SetActive(isSelected);
+
+        if (hoverFx != null)
+            hoverFx.Highlighted = isSelected;
     }
 }

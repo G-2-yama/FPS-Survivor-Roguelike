@@ -15,16 +15,23 @@ public class LoadoutMenu : MonoBehaviour
     [Tooltip("選択肢を並べる親 この ToggleGroup で1つだけ選べるようにします")]
     [SerializeField] private ToggleGroup optionGroup;
 
+    [Tooltip("選んでいる武器の名前・説明・アイコンを表示する欄")]
+    [SerializeField] private StartWeaponDetailView detailView;
+
     [Header("シンクロ")]
-    [Tooltip("シンクロの有無を切り替えるトグル")]
-    [SerializeField] private Toggle weaponSyncToggle;
+    [Tooltip("シンクロをオンにするボタン")]
+    [SerializeField] private TitleChoiceView weaponSyncOnButton;
+
+    [Tooltip("シンクロをオフにするボタン")]
+    [SerializeField] private TitleChoiceView weaponSyncOffButton;
 
     private void Start()
     {
         CreateWeaponOptions();
 
-        weaponSyncToggle.SetIsOnWithoutNotify(GameStartSettings.WeaponSync);
-        weaponSyncToggle.onValueChanged.AddListener(isOn => GameStartSettings.WeaponSync = isOn);
+        weaponSyncOnButton.Button.onClick.AddListener(() => SetWeaponSync(true));
+        weaponSyncOffButton.Button.onClick.AddListener(() => SetWeaponSync(false));
+        SetWeaponSync(GameStartSettings.WeaponSync);
     }
 
     private void CreateWeaponOptions()
@@ -43,7 +50,22 @@ public class LoadoutMenu : MonoBehaviour
                 weaponData,
                 optionGroup,
                 weaponData == GameStartSettings.StartingWeapon,
-                () => GameStartSettings.StartingWeapon = weaponData);
+                () => SelectWeapon(weaponData));
         }
+
+        detailView.Show(GameStartSettings.StartingWeapon);
+    }
+
+    private void SelectWeapon(WeaponData weaponData)
+    {
+        GameStartSettings.StartingWeapon = weaponData;
+        detailView.Show(weaponData);
+    }
+
+    private void SetWeaponSync(bool isOn)
+    {
+        GameStartSettings.WeaponSync = isOn;
+        weaponSyncOnButton.SetOn(isOn);
+        weaponSyncOffButton.SetOn(!isOn);
     }
 }
