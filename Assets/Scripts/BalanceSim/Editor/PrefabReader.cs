@@ -338,10 +338,6 @@ namespace BalanceSim.Editor
                     move.acceleration = SerializedReader.Float(toward, "acceleration");
                     move.maxSpeed = SerializedReader.Float(toward, "maxSpeed");
                     break;
-                case ItemMovement item:
-                    move.kind = SimMovementKind.Item;
-                    move.chaseSpeed = item.ChaseSpeed;
-                    break;
                 case OrbitMovement orbit:
                     move.kind = SimMovementKind.Orbit;
                     move.orbitRadius = orbit.OrbitRadius;

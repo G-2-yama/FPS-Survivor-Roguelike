@@ -1106,7 +1106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::scriptableinitiarised
   enemylist:
-  - {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}
   - {fileID: 11400000, guid: 00a397677e7091148a6750e1a9398700, type: 2}
   - {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
   - {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
