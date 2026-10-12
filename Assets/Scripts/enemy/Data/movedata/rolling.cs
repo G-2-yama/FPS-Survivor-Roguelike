@@ -4,6 +4,8 @@ using UnityEngine;
 public class RollMovement : MovementPattern
 {
     [Min(0f)] public float MoveForce = 10f;
+    [Tooltip("転がる速さ（水平方向）の上限")]
+    [Min(0f)] public float MaxSpeed = 8f;
 
     public override void Move(
         Rigidbody rb,
@@ -19,6 +21,14 @@ public class RollMovement : MovementPattern
             return;
 
         dir.Normalize();
+
+        Vector3 velocity = rb.linearVelocity;
+        Vector3 horizontal = new Vector3(velocity.x, 0f, velocity.z);
+        if (horizontal.sqrMagnitude > MaxSpeed * MaxSpeed)
+        {
+            horizontal = horizontal.normalized * MaxSpeed;
+            rb.linearVelocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
+        }
 
         Vector3 torqueAxis =
             Vector3.Cross(Vector3.up, dir);

@@ -29,6 +29,13 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     protected bool hasHit = false;
     protected int damage;
     protected float knockbackForce;
+    private EnemyGenerator generator;
+
+    public void SetSpawner(EnemyGenerator generator)
+    {
+        this.generator = generator;
+    }
+
     public void Initialize(int damage, float knockbackForce)
     {
         this.damage = damage;
@@ -80,11 +87,17 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     public override void OnRelease()
     {
         hasHit = true;
-        
+
         if (health != null)
         {
             health.OnDeath -= HandleDeath;
             health = null;
+        }
+
+        if (generator != null)
+        {
+            generator.RemoveActiveEnemy(gameObject);
+            generator = null;
         }
     }
 

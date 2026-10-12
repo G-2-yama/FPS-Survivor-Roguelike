@@ -28,7 +28,7 @@ public class StepFire : FireModeData
         GameObject bullet = PoolManager.Instance.Get(prefab);
 
         var damage = bullet.GetComponent<DamageBase>();
-        damage.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce);
+        damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
         var movement = bullet.GetComponent<MovementBase>();
         movement?.Initialize(weaponOwner.transform, direction);

@@ -19,12 +19,13 @@ public class WeaponCooldownState : WeaponState
             return;
         }
 
-        bool keepFiring = _weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed;
-        if (!keepFiring && _weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
+        if (_weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
         {
             stateMachine.ChangeState<WeaponReloadingState>();
             return;
         }
+
+        bool keepFiring = _weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed;
 
         if (keepFiring || _weapon.WeaponData.AutoFire)
         {

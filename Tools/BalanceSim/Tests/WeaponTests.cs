@@ -24,23 +24,37 @@ public class WeaponTests
     }
 
     [Fact]
-    public void FullAutoHeldWithEmptyMagazineNeverReloads()
+    public void FullAutoHeldThroughEmptyMagazineReloadsAndKeepsFiring()
+    {
+        var weapon = new WeaponState();
+        weapon.Equip(new SimWeaponDef { fullAuto = true, autoReload = true, magazineSize = 2, burstCount = 1, fireInterval = 0.5f, reloadTime = 1f }, 0f);
+        var fireTimes = new List<float>();
+        weapon.OnFire(0f);
+        for (int step = 0; step < 40; step++)
+        {
+            float time = step * 0.25f;
+            weapon.Update(time, 0.25f, pressed: true, _ => fireTimes.Add(time));
+        }
+
+        Assert.Equal(new[] { 0f, 0.5f, 2f, 2.5f, 4f, 4.5f, 6f, 6.5f, 8f, 8.5f }, fireTimes);
+    }
+
+    [Fact]
+    public void FullAutoReleasedDuringReloadStaysIdle()
     {
         var weapon = new WeaponState();
         weapon.Equip(new SimWeaponDef { fullAuto = true, autoReload = true, magazineSize = 2, burstCount = 1, fireInterval = 0.5f, reloadTime = 1f }, 0f);
         int fired = 0;
-        for (int step = 0; step < 400; step++)
+        weapon.OnFire(0f);
+        for (int step = 0; step < 20; step++)
         {
             float time = step * 0.25f;
-            if (weapon.Phase == WeaponPhase.Idle)
-            {
-                weapon.OnFire(time);
-            }
-            weapon.Update(time, 0.25f, pressed: true, _ => fired++);
+            weapon.Update(time, 0.25f, pressed: time < 1.5f, _ => fired++);
         }
 
         Assert.Equal(2, fired);
-        Assert.Equal(0, weapon.Ammo);
+        Assert.Equal(2, weapon.Ammo);
+        Assert.Equal(WeaponPhase.Idle, weapon.Phase);
     }
 
     [Fact]

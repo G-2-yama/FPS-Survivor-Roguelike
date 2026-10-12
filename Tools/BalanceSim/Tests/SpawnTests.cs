@@ -36,7 +36,7 @@ public class SpawnTests
     }
 
     [Fact]
-    public void EnemiesWithoutEnemyComponentStayInListAfterContact()
+    public void EnemiesWithoutEnemyComponentLeaveListAfterContact()
     {
         SimInput input = TestInputs.Minimal(timeLimit: 40f);
         SimEnemyDef ball = TestInputs.HarmlessEnemy("Ball");
@@ -55,7 +55,7 @@ public class SpawnTests
         SimSeries hp = Series(result, "HP");
 
         Assert.Equal(0f, alive.p50[^1]);
-        Assert.Equal(1f, list.p50[^1]);
+        Assert.Equal(0f, list.p50[^1]);
         Assert.Equal(990f, hp.p50[^1]);
     }
 
