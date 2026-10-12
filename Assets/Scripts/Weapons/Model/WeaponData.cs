@@ -62,6 +62,7 @@ public class WeaponData : ScriptableObject
     // =========================
 
     public Sprite Icon => identity.Icon;
+    public Sprite Artwork => identity.Artwork;
     public string DisplayName => identity.DisplayName;
     public string WeaponId => identity.WeaponId;
     public string Description => identity.Description;
@@ -109,10 +110,14 @@ public class WeaponIdentity
     [SerializeField] private string description = "現在のレベルの武器の説明文が入ります";
     [SerializeField] private Sprite icon;
 
+    [Tooltip("タイトル画面の装備選択で大きく表示する画像 未設定でも動作します")]
+    [SerializeField] private Sprite artwork;
+
     public string WeaponId => weaponId;
     public string DisplayName => displayName;
     public string Description => description;
     public Sprite Icon => icon;
+    public Sprite Artwork => artwork;
 }
 
 /// <summary>
