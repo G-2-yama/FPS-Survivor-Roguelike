@@ -3978,6 +3978,7 @@ GameObject:
   - component: {fileID: 275487195}
   - component: {fileID: 275487197}
   - component: {fileID: 275487198}
+  - component: {fileID: 275487199}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -4419,6 +4420,7 @@ MonoBehaviour:
   slideFieldOfViewIncrease: 12
   fieldOfViewIncreaseLerpSpeed: 10
   fieldOfViewDecreaseLerpSpeed: 6
+  pickupRadius: 3
 --- !u!54 &275487192
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4551,6 +4553,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d91b3928fd43844ab7b540c1e4f973e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimedBuffManager
+--- !u!114 &275487199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd29e46936978a44a4cffad231058d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupMagnet
+  pullSpeed: 80
+  maxHeight: 2
 --- !u!1 &283540922
 GameObject:
   m_ObjectHideFlags: 0

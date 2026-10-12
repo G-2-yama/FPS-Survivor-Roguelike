@@ -111,7 +111,12 @@ namespace BalanceSim.Editor
                 }
             }
 
-            var prefabs = new PrefabReader(initializedConfigs, projectiles, warnings);
+            var pickupMagnet = player.GetComponent<PickupMagnet>();
+            if (pickupMagnet == null)
+            {
+                warnings.Add("プレイヤーに PickupMagnet がありません。アイテムは引き寄せられないものとして扱います");
+            }
+            var prefabs = new PrefabReader(initializedConfigs, projectiles, warnings, player.Config.PickupRadius, pickupMagnet);
             foreach (EnemyGenerator generator in FindActive<EnemyGenerator>(scene))
             {
                 input.generators.Add(ReadGenerator(generator, player, prefabs, warnings));
@@ -503,8 +508,7 @@ namespace BalanceSim.Editor
                     {
                         def.kind = SimItemKind.ExpCatcher;
                         def.amount = SerializedReader.Float(item, "increaseamount");
-                        var config = SerializedReader.Ref<EnemyConfig>(item, "expdata");
-                        def.rangeKey = config != null ? config.name : string.Empty;
+                        def.rangeKey = PrefabReader.PickupRangeKey;
                         break;
                     }
                     case DamageUpItem:

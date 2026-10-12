@@ -3,15 +3,34 @@ using UnityEngine;
 public abstract class PickupTriggerItem : PoolableObject
 {
     private bool pickedUp = false;
-    [SerializeField] private EnemyBrain enemyBrain;
-  
+
+    internal Rigidbody Rb { get; private set; }
+    internal Transform CachedTransform { get; private set; }
+    internal int MagnetIndex { get; set; } = -1;
+    internal bool Captured { get; set; }
+
+    private void Awake()
+    {
+        Rb = GetComponent<Rigidbody>();
+        CachedTransform = transform;
+    }
+
+    private void OnEnable()
+    {
+        PickupMagnet.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        PickupMagnet.Unregister(this);
+    }
 
 
     
     public override void OnGet()
     {
         pickedUp = false;
-        enemyBrain?.ResetBrain();
+        Captured = false;
     }
 
     private void OnTriggerEnter(Collider other)
