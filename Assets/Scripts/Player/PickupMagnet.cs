@@ -75,6 +75,7 @@ public class PickupMagnet : MonoBehaviour
             if (distance > releaseRadius)
             {
                 item.Captured = false;
+                item.PlaceOnGround(item.CachedTransform.position);
                 continue;
             }
 

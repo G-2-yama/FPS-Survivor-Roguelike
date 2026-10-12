@@ -82,7 +82,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -98,6 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6139f63bb98c26843842e69dab697dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::healingHpitem
+  maxTilt: 15
+  minSink: 0
+  maxSink: 0
   healamount: 300
 --- !u!1 &3395144781589724021
 GameObject:
@@ -200,7 +203,6 @@ GameObject:
   - component: {fileID: 2324730243898450886}
   - component: {fileID: 6199617285226836134}
   - component: {fileID: 6153044615234693763}
-  - component: {fileID: 5811420602700162791}
   m_Layer: 7
   m_Name: "\u5186\u67F1"
   m_TagString: Untagged
@@ -281,24 +283,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5811420602700162791
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3520836019795617355}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.02660795, y: 0.026607946, z: 0.0033858255}
-  m_Center: {x: 0, y: 4.0466986e-17, z: -0.01908477}
