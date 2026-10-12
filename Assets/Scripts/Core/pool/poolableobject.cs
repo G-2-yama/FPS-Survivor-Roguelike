@@ -20,6 +20,8 @@ public class PoolableObject : MonoBehaviour, IPoolable
         }
     }
 
+    public virtual bool KeepActiveInPool => false;
+
     public virtual void OnGet() { }
     public virtual void OnRelease() { }
 }

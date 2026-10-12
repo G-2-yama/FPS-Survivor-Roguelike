@@ -281,10 +281,7 @@ namespace BalanceSim
                     if (farthest != null)
                     {
                         generator.ActiveEnemies.Remove(farthest);
-                        if (farthest.Def.hasEnemyComponent && farthest.Presence == Presence.Active)
-                        {
-                            Release(farthest);
-                        }
+                        Release(farthest);
                     }
                 }
 
@@ -859,8 +856,8 @@ namespace BalanceSim
                     if (enemy.Def.contactArea.enabled)
                     {
                         SpawnArea(enemy.Def.contactArea, enemy.Position, Vec2.Forward, time);
-                        enemy.Presence = Presence.Released;
-                        enemy.AttackRunning = false;
+                        enemy.Generator.ActiveEnemies.Remove(enemy);
+                        Release(enemy);
                     }
                 }
                 enemy.InContact = touching;
@@ -915,8 +912,8 @@ namespace BalanceSim
                 if (enemy.Def.hasEnemyComponent)
                 {
                     SpawnDeathExplosion(enemy);
-                    enemy.Generator.ActiveEnemies.Remove(enemy);
                 }
+                enemy.Generator.ActiveEnemies.Remove(enemy);
                 Release(enemy);
             }
         }

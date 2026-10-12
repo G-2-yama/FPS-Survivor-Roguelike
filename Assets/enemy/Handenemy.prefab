@@ -3854,7 +3854,7 @@ GameObject:
   - component: {fileID: 8427006510350509553}
   - component: {fileID: 8210859706457007736}
   - component: {fileID: 472213676047137243}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Handenemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

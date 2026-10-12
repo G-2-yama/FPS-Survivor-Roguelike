@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -7,8 +8,8 @@ public class UpgradeButtonView : MonoBehaviour
 {
     [SerializeField] Image ButtonImage;
     [SerializeField] Image FrameImage;
-    [SerializeField] private Text buttonText;
-    [SerializeField] private Text descriptionText;
+    [SerializeField] private TMP_Text buttonText;
+    [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Image iconImage;
 
     private CanvasGroup revealCanvasGroup;

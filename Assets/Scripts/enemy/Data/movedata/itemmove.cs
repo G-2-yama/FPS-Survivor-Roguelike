@@ -8,10 +8,13 @@ public class ItemMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition,
+        int steps)
     {
 
-        Vector3 toTarget = target.position - rb.position;
+        Vector3 position = rb.position;
+        Vector3 toTarget = targetPosition - position;
 
         if (toTarget.sqrMagnitude <= 0.0001f)
             return;
@@ -21,7 +24,7 @@ public class ItemMovement : MovementPattern
             ChaseSpeed *
             Time.fixedDeltaTime;
 
-        Vector3 nextPos = rb.position + move;
+        Vector3 nextPos = position + move;
         nextPos.y = Mathf.Min(nextPos.y, MaxHeight);
 
         rb.MovePosition(nextPos);

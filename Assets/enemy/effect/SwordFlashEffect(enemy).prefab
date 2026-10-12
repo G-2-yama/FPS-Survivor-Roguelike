@@ -4852,6 +4852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashEffect
   lifetime: 0.5
   effectParticleSystem: {fileID: 6434263156934573996}
+  keepActiveInPool: 1
 --- !u!1 &4965948024700116376
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RollMovement
   ChaseSpeed: 1.5
   MoveForce: 4
+  MaxSpeed: 8

@@ -21,7 +21,7 @@ public class AutoTargetFire : FireModeData
         bullet.transform.SetPositionAndRotation(Camera.main.transform.position + rotation * spawnOffset, rotation);
 
         var damage = bullet.GetComponent<DamageBase>();
-        damage.Initialize(weapon.WeaponData.Damage, weapon.WeaponData.KnockbackForce);
+        damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
         var movement = bullet.GetComponent<MovementBase>();
         movement?.Initialize(weaponOwner.transform, direction);

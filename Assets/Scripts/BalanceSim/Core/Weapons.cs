@@ -85,7 +85,7 @@ namespace BalanceSim
                     if (_timer <= 0f)
                     {
                         Ammo = Def.magazineSize;
-                        ChangeState(WeaponPhase.Idle, time);
+                        ChangeState(Def.fullAuto && pressed ? WeaponPhase.Firing : WeaponPhase.Idle, time);
                     }
                     break;
             }
@@ -125,12 +125,13 @@ namespace BalanceSim
                 return;
             }
 
-            bool keepFiring = Def.fullAuto && pressed;
-            if (!keepFiring && Def.autoReload && Ammo <= 0)
+            if (Def.autoReload && Ammo <= 0)
             {
                 ChangeState(WeaponPhase.Reloading, time);
                 return;
             }
+
+            bool keepFiring = Def.fullAuto && pressed;
 
             if (keepFiring || Def.autoFire)
             {
@@ -538,14 +539,18 @@ namespace BalanceSim
                 return;
             }
 
+            int damage = (int)(_progression.DamageMultiplier * def.damage);
+            float knockback = _progression.KnockbackMultiplier * def.knockback;
             Vec2 position = _player.Position + direction.LocalToWorld(mode.offsetX, mode.offsetZ);
-            Spawn(projectile, def.damage, def.knockback, position, direction, mode.tracking, _input.player.eyeHeight, ScaleFor(projectile, def.damage));
+            Spawn(projectile, damage, knockback, position, direction, mode.tracking, _input.player.eyeHeight, ScaleFor(projectile, damage));
         }
 
         private void FireArea(SimWeaponDef def)
         {
             SimFireModeDef mode = def.fireMode;
             SimProjectileDef projectile = ProjectileDefOf(mode.projectile);
+            int damage = (int)(_progression.DamageMultiplier * def.damage);
+            float knockback = _progression.KnockbackMultiplier * def.knockback;
             for (int i = 0; i < mode.projectileCount; i++)
             {
                 float x = Uniform(-mode.areaSizeX * 0.5f, mode.areaSizeX * 0.5f);
@@ -557,7 +562,7 @@ namespace BalanceSim
 
                 Vec2 position = _player.Position + new Vec2(x, z);
                 float height = _input.player.pivotHeight + mode.spawnHeight;
-                Spawn(projectile, def.damage, def.knockback, position, Vec2.Forward, false, height, ScaleFor(projectile, def.damage));
+                Spawn(projectile, damage, knockback, position, Vec2.Forward, false, height, ScaleFor(projectile, damage));
             }
         }
 
@@ -602,8 +607,10 @@ namespace BalanceSim
             SimProjectileDef projectile = ProjectileDefOf(mode.projectile);
             if (projectile != null)
             {
+                int damage = (int)(_progression.DamageMultiplier * def.damage);
+                float knockback = _progression.KnockbackMultiplier * def.knockback;
                 Vec2 spawnPosition = _player.Position + new Vec2(mode.offsetX, mode.offsetZ);
-                Spawn(projectile, def.damage, def.knockback, spawnPosition, Vec2.Forward, false, _input.player.eyeHeight, ScaleFor(projectile, def.damage));
+                Spawn(projectile, damage, knockback, spawnPosition, Vec2.Forward, false, _input.player.eyeHeight, ScaleFor(projectile, damage));
             }
             _stepPositions[mode.name ?? string.Empty] = _player.Position;
         }

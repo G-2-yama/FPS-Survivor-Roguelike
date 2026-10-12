@@ -1,12 +1,54 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 public class PooledSoundPlayer : PoolableObject
 {
+    private const int MaxPlayingPerClip = 8;
+
+    private static readonly Dictionary<AudioClip, int> playingCounts = new();
+
     [SerializeField] private AudioSource audioSource;
 
     private Coroutine playCoroutine;
+
+    private AudioClip countedClip;
+
+    public static bool CanPlay(AudioClip clip)
+    {
+        return clip != null
+            && (!playingCounts.TryGetValue(clip, out int count) || count < MaxPlayingPerClip);
+    }
+
+    private void CountPlaying(AudioClip clip)
+    {
+        countedClip = clip;
+        playingCounts.TryGetValue(clip, out int count);
+        playingCounts[clip] = count + 1;
+    }
+
+    private void UncountPlaying()
+    {
+        if (countedClip == null)
+        {
+            return;
+        }
+
+        if (playingCounts.TryGetValue(countedClip, out int count))
+        {
+            if (count <= 1)
+            {
+                playingCounts.Remove(countedClip);
+            }
+            else
+            {
+                playingCounts[countedClip] = count - 1;
+            }
+        }
+
+        countedClip = null;
+    }
 
     private void Awake()
     {
@@ -26,6 +68,7 @@ public class PooledSoundPlayer : PoolableObject
         }
 
         audioSource.Stop();
+        UncountPlaying();
 
         if (data == null || data.clip == null)
         {
@@ -41,6 +84,7 @@ public class PooledSoundPlayer : PoolableObject
        
 
         audioSource.Play();
+        CountPlaying(data.clip);
 
         playCoroutine = StartCoroutine(WaitForSoundEnd());
     }
@@ -50,6 +94,7 @@ public class PooledSoundPlayer : PoolableObject
         yield return new WaitWhile(() => audioSource.isPlaying);
 
         playCoroutine = null;
+        UncountPlaying();
 
       
 
@@ -77,8 +122,9 @@ public class PooledSoundPlayer : PoolableObject
         audioSource.Stop();
         audioSource.clip = null;
         audioSource.loop = false;
+        UncountPlaying();
 
-       
+
     }
 
     public override void OnRelease()
@@ -92,7 +138,13 @@ public class PooledSoundPlayer : PoolableObject
         audioSource.Stop();
         audioSource.clip = null;
         audioSource.loop = false;
+        UncountPlaying();
 
-       
+
+    }
+
+    private void OnDestroy()
+    {
+        UncountPlaying();
     }
 }

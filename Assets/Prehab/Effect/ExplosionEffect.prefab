@@ -4937,6 +4937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Effecter
   lifetime: 5
   effectParticleSystem: {fileID: 7165370837732025837}
+  keepActiveInPool: 1
 --- !u!1 &5747988966525348634
 GameObject:
   m_ObjectHideFlags: 0

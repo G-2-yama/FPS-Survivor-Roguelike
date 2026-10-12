@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class WeaponSlotView : MonoBehaviour
@@ -6,7 +7,7 @@ public class WeaponSlotView : MonoBehaviour
     [SerializeField] private SlotType slotType;
     [SerializeField] private Image weaponIcon;
     [SerializeField] private Image Button;
-    [SerializeField] private Text weaponNameText;
+    [SerializeField] private TMP_Text weaponNameText;
 
     private Color initialColor;
 

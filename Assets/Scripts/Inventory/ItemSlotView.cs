@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
  
 /// <summary>
@@ -9,7 +10,7 @@ public class ItemSlotView : MonoBehaviour
 {
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image Button;
-    [SerializeField] private Text itemNameText;
+    [SerializeField] private TMP_Text itemNameText;
  
     /// <summary>Items リスト上のインデックス。InventoryUI が割り当てる。</summary>
     public int ItemIndex { get; private set; } = -1;

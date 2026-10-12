@@ -8,33 +8,53 @@ public class TowardMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition,
+        int steps)
     {
       
+        Vector3 position = rb.position;
         Vector3 toTarget =
-            target.position - rb.position;
+            targetPosition - position;
 
         if (toTarget.sqrMagnitude <= 0.0001f)
             return;
         // Å‘å‘¬“x§ŒÀ
         Vector3 velocity = rb.linearVelocity;
-
-        if (velocity.magnitude > maxSpeed)
-        {
-            rb.linearVelocity =
-                velocity.normalized * maxSpeed;
-        }
-
+        bool velocityChanged = false;
 
         Vector3 direction = toTarget.normalized;
-        if (rb.position.y >= MaxHeight && direction.y > 0f)
+        bool atMaxHeight = position.y >= MaxHeight && direction.y > 0f;
+        if (atMaxHeight)
         {
-            velocity = rb.linearVelocity;
-            velocity.y = 0f;
-            rb.linearVelocity = velocity;
             direction.y = 0f;
             direction.Normalize();
         }
+
+        Vector3 stepVelocityChange = direction * (acceleration * Time.fixedDeltaTime);
+        for (int i = 0; i < steps; i++)
+        {
+            if (i > 0)
+            {
+                velocity += stepVelocityChange;
+                velocityChanged = true;
+            }
+
+            if (velocity.magnitude > maxSpeed)
+            {
+                velocity = velocity.normalized * maxSpeed;
+                velocityChanged = true;
+            }
+
+            if (atMaxHeight)
+            {
+                velocity.y = 0f;
+                velocityChanged = true;
+            }
+        }
+
+        if (velocityChanged)
+            rb.linearVelocity = velocity;
 
         rb.AddForce(
             direction * acceleration,

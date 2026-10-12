@@ -346,6 +346,7 @@ namespace BalanceSim.Editor
                 case RollMovement roll:
                     move.kind = SimMovementKind.Roll;
                     move.moveForce = roll.MoveForce;
+                    move.maxSpeed = roll.MaxSpeed;
                     break;
                 case JumpMovement jump:
                     move.kind = SimMovementKind.Jump;

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class GameModeOptionView : MonoBehaviour
@@ -8,7 +9,7 @@ public class GameModeOptionView : MonoBehaviour
     [SerializeField] private Button button;
 
     [Tooltip("モード名を表示するテキスト 未設定でも動作します")]
-    [SerializeField] private Text nameText;
+    [SerializeField] private TMP_Text nameText;
 
     public void Setup(GameModeData mode, Action onSelected)
     {

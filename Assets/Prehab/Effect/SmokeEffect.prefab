@@ -4851,3 +4851,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Effecter
   lifetime: 0.5
   effectParticleSystem: {fileID: 5578882128098745376}
+  keepActiveInPool: 1

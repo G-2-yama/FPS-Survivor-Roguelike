@@ -37,7 +37,7 @@ namespace InfiniteTileWorld
 
         /// <summary>gridSize×gridSizeのパネルリスト。「Setup Panels」で自動登録される。</summary>
         [SerializeField] private List<StagePanel> panels = new();
-        [SerializeField] private BackgroundPanel backgroundPanel = new();
+        [SerializeField] private BackgroundPanel backgroundPanel;
 
         /// <summary>距離判定カメラ。未設定時は Camera.main を使用。</summary>
         [SerializeField] private Transform cameraTransform;
