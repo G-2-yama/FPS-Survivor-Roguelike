@@ -79,6 +79,14 @@ public class Player : MonoBehaviour, IDamageable
     {
         Health.TakeDamage(damage);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out ToutchDamageController touch))
+        {
+            TakeDamage(touch.DamageAmount, 0);
+        }
+    }
     public void AddExp(float amount)
     {
         // 経験値を加算

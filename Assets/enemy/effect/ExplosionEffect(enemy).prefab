@@ -980,8 +980,8 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 30
-        minScalar: 30
+        scalar: 15
+        minScalar: 15
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -4913,7 +4913,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 000103040522
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 1e388377618066242b08efa900904b7c, type: 2}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -5903,8 +5903,8 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 30
-        minScalar: 30
+        scalar: 15
+        minScalar: 15
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -9836,7 +9836,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 000103040522
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 1e388377618066242b08efa900904b7c, type: 2}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -9858,3 +9858,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Effecter
   lifetime: 1
   effectParticleSystem: {fileID: 4794023214405510958}
+  keepActiveInPool: 1

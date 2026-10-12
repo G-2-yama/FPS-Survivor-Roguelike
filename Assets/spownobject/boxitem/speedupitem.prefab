@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 6764737531609444669}
   - component: {fileID: 3733792369783622590}
   - component: {fileID: 2361475402351978197}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: speedupitem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 3339078434502497279}
   - component: {fileID: 7438246110831365039}
   - component: {fileID: 4366023138898065711}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

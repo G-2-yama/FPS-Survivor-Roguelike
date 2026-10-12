@@ -116,7 +116,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private bool IsSpawnable(Vector3 position)
     {
-        return Physics.OverlapSphere(position, 0.5f).Length == 0;
+        return !Physics.CheckSphere(position, 0.5f, Physics.AllLayers);
     }
 
     /// <summary>

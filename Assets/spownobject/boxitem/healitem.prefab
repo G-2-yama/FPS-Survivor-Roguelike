@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5926673517059604558}
   - component: {fileID: 7874427256165873194}
   - component: {fileID: 6433735254940241079}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: healitem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 6199617285226836134}
   - component: {fileID: 6153044615234693763}
   - component: {fileID: 5811420602700162791}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "\u5186\u67F1"
   m_TagString: Untagged
   m_Icon: {fileID: 0}

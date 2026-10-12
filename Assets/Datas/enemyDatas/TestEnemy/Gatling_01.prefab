@@ -210,8 +210,8 @@ GameObject:
   - component: {fileID: 2331569486650839668}
   - component: {fileID: 7884487320096986353}
   - component: {fileID: 1881425027292726100}
-  - component: {fileID: 809088916071739794}
-  m_Layer: 0
+  - component: {fileID: 7712950183460212701}
+  m_Layer: 6
   m_Name: Gatling_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,8 +326,9 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 7e0663357ac5f754798b9e6df11f5461, type: 2}
   targetProvider: {fileID: 6894056028761864770}
   attack: {fileID: 3109805712287345634}
-  animator: {fileID: 809088916071739794}
+  animator: {fileID: 0}
   uniqueAnimation: {fileID: 5382224994450271295}
+  poseSwitcher: {fileID: 7712950183460212701}
 --- !u!114 &3109805712287345634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,28 +513,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToutchDamageController
   damageAmount: 10
---- !u!95 &809088916071739794
-Animator:
-  serializedVersion: 7
+--- !u!114 &7712950183460212701
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3601273489759220852}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e2a4c8dbdeef9f24fb4dae8203b8c628, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d6471e1f424ff19e7b9625856d43ea, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPoseSwitcher
+  parts:
+  - target: {fileID: 6789920131623467727}
+    idleEuler: {x: -90, y: 0, z: 0}
+    combatEuler: {x: -90, y: -40, z: 0}
+  - target: {fileID: 6641482673011307975}
+    idleEuler: {x: -90, y: 0, z: 0}
+    combatEuler: {x: -90, y: -40, z: 0}
+  - target: {fileID: 2165590474697386387}
+    idleEuler: {x: -90, y: 0, z: 0}
+    combatEuler: {x: -90, y: -40, z: 0}
+  - target: {fileID: 2961955802490351883}
+    idleEuler: {x: -90, y: 0, z: 0}
+    combatEuler: {x: -90, y: -40, z: 0}
+  blendDuration: 0.25
+  toCombatDuration: 0.083333336
+  toIdleDuration: 0.083333336
 --- !u!1 &5663925887336488352
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_RenderMode
@@ -1077,7 +1084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_RenderMode
@@ -1175,7 +1182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_RenderMode
@@ -1273,7 +1280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3152393942948106227, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 80
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3687795030423004158, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
       propertyPath: m_RenderMode

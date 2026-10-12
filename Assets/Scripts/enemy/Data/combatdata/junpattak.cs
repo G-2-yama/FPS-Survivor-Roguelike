@@ -9,13 +9,15 @@ public class JumpMovement : MovementPattern
     public override void Move(
         Rigidbody rb,
         Transform self,
-        Transform target)
+        Transform target,
+        Vector3 targetPosition,
+        int steps)
     {
         if (rb.linearVelocity.y > 0.1f)
             return;
 
         Vector3 dir =
-            (target.position - self.position)
+            (targetPosition - self.position)
             .normalized;
 
         Vector3 force =

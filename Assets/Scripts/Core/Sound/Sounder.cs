@@ -10,6 +10,7 @@ public class Sounder : MonoBehaviour
     [SerializeField] private GameObject soundprefab;
 
     private Dictionary<(SoundCategory, int), SoundData> soundDictionary;
+    private Dictionary<SoundCategory, List<SoundData>> categoryCandidates;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class Sounder : MonoBehaviour
     private void InitializeDictionary()
     {
         soundDictionary = new();
+        categoryCandidates = new();
 
         if(soundDatabase == null)
         {
@@ -29,6 +31,17 @@ public class Sounder : MonoBehaviour
         {
             soundDictionary[(data.category, data.index)] = data;
         }
+
+        foreach (SoundData data in soundDictionary.Values)
+        {
+            if (!categoryCandidates.TryGetValue(data.category, out List<SoundData> candidates))
+            {
+                candidates = new();
+                categoryCandidates[data.category] = candidates;
+            }
+
+            candidates.Add(data);
+        }
     }
 
     public void SetSoundDB(SoundDB newDB)
@@ -38,6 +51,11 @@ public class Sounder : MonoBehaviour
     }
     private void PlayPooledSound(SoundData data)
     {
+        if (!PooledSoundPlayer.CanPlay(data.clip))
+        {
+            return;
+        }
+
         GameObject obj =
             PoolManager.Instance.Get(soundprefab);
 
@@ -61,18 +79,8 @@ public class Sounder : MonoBehaviour
         // indexが-1なら、そのCategoryからランダム選択
         if (index == -1)
         {
-            List<SoundData> candidates = new();
-
-            foreach (SoundData sound in soundDictionary.Values)
-            {
-                if (sound.category == category)
-                {
-                    candidates.Add(sound);
-                }
-            }
-
             // 候補がない場合は何もせずに終了
-            if (candidates.Count == 0)
+            if (!categoryCandidates.TryGetValue(category, out List<SoundData> candidates))
             {
                 return;
             }
