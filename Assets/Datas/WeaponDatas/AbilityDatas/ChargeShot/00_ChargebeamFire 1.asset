@@ -15,4 +15,4 @@ MonoBehaviour:
   effectPrefab: {fileID: 0}
   prefab: {fileID: 6114629737088864950, guid: f481c5351099987419ff9cbba74ac2c4, type: 3}
   Offset: {x: 0, y: -0.5, z: 1}
-  isTracking: 1
+  isTracking: 0

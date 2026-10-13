@@ -22,6 +22,7 @@ public sealed class PlayerCollisionController : MonoBehaviour
             return;
         }
         settings = collisionSettings;
+        player.SetBodyController(controller);
         // 一度無効化して全寸法を反映し、中間的に高さと段差の条件が崩れるのを防ぐ
         bool wasEnabled = controller.enabled;
         controller.enabled = false;

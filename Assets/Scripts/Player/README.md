@@ -25,13 +25,18 @@ SOアセットの編集は保存されるため、実行中のHPや能力は `Pl
 
 1. プレイヤー本体に `Player` と `PlayerController` を付ける
 2. 自動追加される `PlayerConfig` に5分類のSOを割り当てる
-3. `PlayerController` の武器管理、カメラ支点、カメラなどの参照を設定する
-4. 本体にRigidbodyがある場合は `PlayerController` の参照欄へ割り当てる
-5. Input Systemのイベントを既存の `OnMove`、`OnLook`、`OnJump`、`OnSprint`、`OnCrouch` へ関連付ける
+3. `Player` の `Config`、`Inventory`、`Timed Buff Manager` を割り当て、必要な効果音の参照も設定する
+4. `PlayerController` のプレイヤー、武器管理、カメラ支点、カメラ、衝突制御などの参照を設定する
+5. 本体に被弾用の `CapsuleCollider` を配置し、`PlayerCollisionController` の `Config`、`Controller`、`Body Trigger` を割り当てる
+6. 本体の子に `EnemyPushZone` を作り、`PlayerEnemyPushZone` と `CapsuleCollider` を付ける 子の位置と回転は0、スケールは1にする
+7. 子の部品を `PlayerCollisionController` の `Push Zone` と `Push Zone Collider` に割り当てる
+8. 本体にRigidbodyがある場合は `PlayerController` の参照欄へ割り当てる
+9. 戦闘Sceneへ更新担当を事前配置する 詳細は「固定コンポーネントの事前配置」を参照する
+10. Input Systemのイベントを既存の `OnMove`、`OnLook`、`OnJump`、`OnSprint`、`OnCrouch` へ関連付ける
 
-開始時に `PlayerCollisionController` が本体寸法を反映し、子の `EnemyPushZone` を作る
-本体に既存の被弾用カプセルがある場合も寸法と姿勢を同期し、Triggerとして使用する
-編集時にも衝突のGizmoを確認する場合は `PlayerCollisionController` を本体へ付ける
+開始時に `PlayerCollisionController` が、事前配置した本体と接触領域へSOの寸法と衝突設定を反映する
+被弾用カプセルは必須参照で、本体の寸法と姿勢に同期してTriggerとして使用する
+本体の `PlayerCollisionController` を選択すると、衝突のGizmoを確認できる
 水色は本体、黄色は接触領域を示し、追加距離が0の場合は同じ境界になる
 
 GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保存してある
@@ -57,11 +62,14 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 既存の敵はプール取得時に `Enemy` レイヤーを割り当てる
 別のレイヤーを使用する独自の敵は、そのレイヤーを敵の対象レイヤーへ追加する
 
-既存の `Enemy` はPrefabに事前配置した `PlayerContactTarget` の参照を使う
-独自の敵では `PlayerContactTarget` を付け、移動するRigidbodyと接触ダメージ元を割り当てる
-ダメージ元は `IContactDamageSource` を実装する
-通常Colliderの外接境界から半径を推定するため、細長い形状などでは「水平半径の上書き」を設定する
-半径を調整する場合は敵Prefabへあらかじめ `PlayerContactTarget` を付ける
+既存の `Enemy` はPrefabに事前配置した `PlayerContactTarget` の参照を使い、プール取得時の `OnGet()` で `BeginLife()` を呼んで登録する
+独自の敵では `PlayerContactTarget` を事前配置し、活動開始時に `BeginLife(body, damageSource)` を呼ぶ
+`body` は敵を移動するRigidbody、`damageSource` は `IContactDamageSource` を実装したコンポーネントを渡す
+検知するColliderの `attachedRigidbody` が登録したRigidbodyと一致する構成にする
+Inspectorで参照を割り当てただけでは登録されず、押し出しと接触ダメージの対象にならない
+プール返却時や活動終了時には `Invalidate()` を呼ぶ 無効化でも登録は解除されるが、再有効化だけでは再登録されないため、活動再開時に `BeginLife()` を呼び直す
+半径は接触通知を受けたColliderのワールド座標の境界から推定するため、細長い形状などでは `Radius Override` を設定する
+`Radius Override` が0の場合、推定半径は同じ接触期間中の最大値を保持し、Colliderの縮小や退出だけでは小さくならない
 
 押し出しと接触ダメージは独立して有効化できる
 検知はカプセルで行い、押し出し計算は水平面の円形境界で行う
@@ -77,10 +85,12 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 ## 攻撃方式を追加する
 
 接触領域のColliderは `AttackCollisionFilter` に登録され、攻撃判定から除外される
-補助Colliderを追加する場合は、そのColliderと同じGameObjectにマーカーを付ける
+攻撃から除外する補助Colliderを追加する場合は、参照を保持するコンポーネントから `AttackCollisionFilter.Register(collider)` を呼ぶ
+参照の設定後と再有効化時に登録し、無効化または破棄時に `AttackCollisionFilter.Unregister(collider)` を呼ぶ
+既存の `PlayerEnemyPushZone` は初期化時と有効化時に登録し、無効化時に解除するため、追加の登録処理は不要
 攻撃の命中処理前に `AttackCollisionFilter.ShouldIgnore(collider)` を確認する
 ヒット一覧の検索では次の候補へ進み、実体弾では命中処理と解放を行わず通過させる
-壁や敵の通常Colliderにはこのマーカーを付けない
+壁や敵の通常Colliderは攻撃除外対象として登録しない
 
 ## 検証
 

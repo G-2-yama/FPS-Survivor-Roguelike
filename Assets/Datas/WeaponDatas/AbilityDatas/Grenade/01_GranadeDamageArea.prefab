@@ -116,8 +116,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 1.5
+      scalar: 1.2
+      minScalar: 0.8
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4932,6 +4932,7 @@ GameObject:
   - component: {fileID: 1208157812551946685}
   - component: {fileID: 6017380263142868539}
   - component: {fileID: 8507236809112742344}
+  - component: {fileID: 7290815563214477201}
   - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: 01_GranadeDamageArea
@@ -5114,8 +5115,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 1.5
+      scalar: 1.2
+      minScalar: 0.8
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9919,6 +9920,20 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &7290815563214477201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371946893808914018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75294e0224254e718c36a43dcaab9739, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::ExplosionHeightFade
+  fadeHeight: 4
+  opacity: 0.7
 --- !u!114 &2000020000
 MonoBehaviour:
   m_ObjectHideFlags: 0

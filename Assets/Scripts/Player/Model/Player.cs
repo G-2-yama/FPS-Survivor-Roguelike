@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerProgression progression;
     private int pendingLevelUps;
     private bool isWeaponSyncEnabled;
+    private CharacterController bodyController;
 
     public PlayerConfig Config => config;
     public PlayerSettingsSnapshot Settings { get; private set; }
@@ -35,12 +36,26 @@ public class Player : MonoBehaviour, IDamageable
     public int Level => progression?.Level ?? Config.Progression.InitialLevel;
     public int PendingLevelUps => pendingLevelUps;
     public bool IsWeaponSync => isWeaponSyncEnabled;
+    /// <summary>現在の姿勢を反映した本体の足元位置を取得する</summary>
+    public Vector3 FootPosition
+    {
+        get
+        {
+            Vector3 position = transform.position;
+            // developの生成位置に合わせ、姿勢ごとに変化する本体境界の下端を使う
+            if (bodyController != null) position.y = bodyController.bounds.min.y;
+            return position;
+        }
+    }
     public event Action OnDeath;
     public event Action OnLevelUp;
     public event Action<float> OnExpGained;
 
     /// <summary>装備中の武器状態を同期するか設定する</summary>
     public void SetWeaponSync(bool enabled) => isWeaponSyncEnabled = enabled;
+
+    /// <summary>衝突初期化時に本体参照を関連付け、攻撃ごとのコンポーネント検索を避ける</summary>
+    internal void SetBodyController(CharacterController controller) => bodyController = controller;
 
     /// <summary>生成時にプレイヤー専用の実行時状態を作る</summary>
     private void Awake() => InitializeIfNeeded();

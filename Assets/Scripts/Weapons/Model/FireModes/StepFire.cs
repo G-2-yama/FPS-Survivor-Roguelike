@@ -40,6 +40,6 @@ public class StepFire : FireModeData
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         bullet.transform.rotation = rotation;
-        bullet.transform.position = weapon.AimTransform.position + rotation * Offset;
+        bullet.transform.position = weaponOwner.FootPosition + rotation * Offset;
     }
 }
