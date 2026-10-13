@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 7503229732909655231}
   - component: {fileID: 661444327848213338}
   - component: {fileID: 8342348762349876234}
+  - component: {fileID: 2000020000}
+  - component: {fileID: 7463715144363059389}
   m_Layer: 10
   m_Name: "\u30A2\u30A4\u30C6\u30E0\u30DC\u30C3\u30AF\u30B9"
   m_TagString: Untagged
@@ -167,7 +169,12 @@ MonoBehaviour:
   attackController: {fileID: 0}
   whiteFlash: {fileID: 5730256966100818832}
   enemyBrain: {fileID: 1643217037688791818}
+  contactDamageSource: {fileID: 0}
+  playerObstacle: {fileID: 8342348762349876234}
+  layerColliders:
+  - {fileID: 6378269355364915030}
   deathDelay: 0.1
+  destroyDamageDamping: 0.7
   dropList:
   - prefab: {fileID: 2603205645147408396, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
     weight: 60
@@ -177,6 +184,7 @@ MonoBehaviour:
     weight: 20
   sounder: {fileID: 661444327848213338}
   DestroyDamagePrefab: {fileID: 0}
+  contactTarget: {fileID: 7463715144363059389}
 --- !u!114 &1643217037688791818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +203,7 @@ MonoBehaviour:
   attack: {fileID: 0}
   animator: {fileID: 0}
   uniqueAnimation: {fileID: 0}
+  poseSwitcher: {fileID: 0}
 --- !u!114 &794843970310526415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,5 +355,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c0933d90835400296352eee541f6aab, type: 3}
-  m_Name:
+  m_Name: ""
   m_EditorClassIdentifier: Assembly-CSharp::PlayerObstacle
+  targetColliders:
+  - {fileID: 6378269355364915030}
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317347510099702208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 4122991606844656850}
+  targetColliders:
+  - {fileID: 6378269355364915030}
+--- !u!114 &7463715144363059389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317347510099702208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
+  body: {fileID: 0}
+  damageSource: {fileID: 0}
+  radiusOverride: 0

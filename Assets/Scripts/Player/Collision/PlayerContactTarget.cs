@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>敵固有の制御から押し出しに必要な体と接触ダメージを分離する</summary>
 [DisallowMultipleComponent]
 public sealed class PlayerContactTarget : MonoBehaviour
 {
+    private static readonly Dictionary<Rigidbody, PlayerContactTarget> targetsByBody = new();
+
+    /// <summary>プレイ開始時に前回の接触対象を破棄する</summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => targetsByBody.Clear();
     [SerializeField, PlayerSettingLabel("Body"), Tooltip("水平方向の位置補正を適用するRigidbody")]
     private Rigidbody body;
     [SerializeField, PlayerSettingLabel("Damage Source"), Tooltip("IContactDamageSourceを実装したコンポーネント")]
@@ -17,14 +23,9 @@ public sealed class PlayerContactTarget : MonoBehaviour
     public Rigidbody Body => body;
     public bool IsAvailable => available && isActiveAndEnabled && body != null && body.gameObject.activeInHierarchy;
     public bool CanBePushed => canBePushed;
+    public float RadiusOverride => radiusOverride;
     public int ContactDamage => damageSource is IContactDamageSource source ? source.DamageAmount : 0;
     public event Action<PlayerContactTarget> OnUnavailable;
-
-    /// <summary>手動で配置した対象のRigidbodyを補完する</summary>
-    private void Awake()
-    {
-        if (body == null) body = GetComponent<Rigidbody>();
-    }
 
     /// <summary>取得時に対象の参照と押し出し可否を設定し、新しい活動期間を開始する</summary>
     /// <param name="targetBody">水平位置を補正する対象のRigidbody</param>
@@ -37,12 +38,15 @@ public sealed class PlayerContactTarget : MonoBehaviour
         damageSource = source;
         canBePushed = pushable;
         available = true;
+        if (body != null) targetsByBody[body] = this;
     }
 
     /// <summary>プール返却や無効化時にすべての接触領域へ追跡終了を通知する</summary>
     public void Invalidate()
     {
         available = false;
+        if (body != null && targetsByBody.TryGetValue(body, out PlayerContactTarget registered) && registered == this)
+            targetsByBody.Remove(body);
         OnUnavailable?.Invoke(this);
     }
 
@@ -52,17 +56,11 @@ public sealed class PlayerContactTarget : MonoBehaviour
     /// <summary>手動配置した対象が再び有効になった際に使用可能にする</summary>
     private void OnEnable() => available = true;
 
-    /// <summary>敵の通常Colliderからワールド座標の水平半径を推定する</summary>
-    public float GetHorizontalRadius()
+    /// <summary>Rigidbodyをキーとして登録済みの接触対象を取得する</summary>
+    public static bool TryResolve(Rigidbody targetBody, out PlayerContactTarget target)
     {
-        if (radiusOverride > 0f) return radiusOverride;
-        float radius = 0f;
-        foreach (Collider targetCollider in GetComponentsInChildren<Collider>())
-        {
-            if (targetCollider.isTrigger || !targetCollider.enabled) continue;
-            Bounds bounds = targetCollider.bounds;
-            radius = Mathf.Max(radius, Mathf.Max(bounds.extents.x, bounds.extents.z));
-        }
-        return radius;
+        target = null;
+        return targetBody != null && targetsByBody.TryGetValue(targetBody, out target);
     }
+
 }

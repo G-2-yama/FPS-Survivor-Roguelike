@@ -16,7 +16,7 @@ public class HitScanData : FireModeData
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
-        Ray ray = new Ray(Camera.main.transform.position, direction);
+        Ray ray = new Ray(weapon.AimTransform.position, direction);
         Vector3 endPoint = ray.origin + direction * maxRange;
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
@@ -30,7 +30,7 @@ public class HitScanData : FireModeData
             if (AttackCollisionFilter.ShouldIgnore(hit.collider))
                 continue;
 
-            if (hit.collider.TryGetComponent(out IDamageable damageable))
+            if (DamageTargetRegistry.TryResolve(hit.collider, out IDamageable damageable))
             {
                 if ((damageable.TeamType & targetTeam) == 0)
                 {
@@ -40,7 +40,7 @@ public class HitScanData : FireModeData
 
                 TryEnableHitEffect(hit.point);
 
-                ApplyDamage(weapon, hit.collider, weaponOwner);
+                ApplyDamage(weapon, damageable, weaponOwner);
 
                 if(damageable.TeamType != TeamType.EnemyAmmo)
                 {
@@ -56,26 +56,19 @@ public class HitScanData : FireModeData
 
         if (tracerPrefab != null)
         {
-            GameObject tracer = PoolManager.Instance.Get(tracerPrefab);
+            PooledInstance tracer = PoolManager.Instance.Rent(tracerPrefab);
 
-            tracer.GetComponent<Tracer>().Initialize(weapon.transform.position, endPoint, 0.1f);
+            tracer.RequireTracer().Initialize(weapon.transform.position, endPoint, 0.1f);
         }
 
     }
 
     /// <summary>武器能力を反映したダメージを対象へ適用する</summary>
     /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
-    /// <param name="hitCollider">ヒットスキャンが選択したCollider</param>
+    /// <param name="damageable">ヒットスキャンが選択したダメージ対象</param>
     /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
-    private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
+    private void ApplyDamage(Weapon weapon, IDamageable damageable, Player weaponOwner)
     {
-        if(hitCollider.TryGetComponent(out IDamageable damageable))
-        {
-            if ((damageable.TeamType & targetTeam) == 0)
-            {
-                return;
-            }
-            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
-        }
+        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }

@@ -48,8 +48,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField, PlayerSettingLabel("Action Concentration Line"), Tooltip("ダッシュやスライドなどに連動する任意の演出")] private PlayerActionConcentrationLine actionConcentrationLine;
 
     /// <summary>
-    /// プレイヤー移動に使用するCharacterController
+    /// プレイヤーの衝突設定を適用するコンポーネント
     /// </summary>
+    [SerializeField, PlayerSettingLabel("Player Collision Controller"), Tooltip("プレイヤーの衝突設定を適用するコンポーネント")]
+    private PlayerCollisionController collisionController;
     private CharacterController playerCharacterController;
 
     /// <summary>
@@ -87,11 +89,10 @@ public class PlayerController : MonoBehaviour
         }
         settings = player.Settings;
         PlayerStats stats = player.Stats;
-        PlayerCollisionController collision = GetComponent<PlayerCollisionController>();
-        if (collision == null) collision = gameObject.AddComponent<PlayerCollisionController>();
-        collision.Initialize(player, settings.Collision);
+        collisionController.Initialize(player, settings.Collision);
 
         ConfigureRigidbodyForCharacterController();
+        BoostFireCullerRunner.SetCamera(playerCamera);
 
         PlayerMotor motor = new PlayerMotor(playerCharacterController, settings.Collision);
         PlayerJumpController jumpController = new PlayerJumpController(motor, settings.Control, stats);
@@ -152,6 +153,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
+        BoostFireCullerRunner.ClearCamera(playerCamera);
         if (player == null)
         {
             return;
@@ -233,6 +235,12 @@ public class PlayerController : MonoBehaviour
         if (weaponControllerManager == null)
         {
             Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(weaponControllerManager)}.", this);
+            return false;
+        }
+
+        if (collisionController == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(collisionController)}.", this);
             return false;
         }
 

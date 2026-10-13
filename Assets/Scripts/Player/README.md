@@ -57,7 +57,7 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 既存の敵はプール取得時に `Enemy` レイヤーを割り当てる
 別のレイヤーを使用する独自の敵は、そのレイヤーを敵の対象レイヤーへ追加する
 
-既存の `Enemy` はプール取得時に `PlayerContactTarget` を準備する
+既存の `Enemy` はPrefabに事前配置した `PlayerContactTarget` の参照を使う
 独自の敵では `PlayerContactTarget` を付け、移動するRigidbodyと接触ダメージ元を割り当てる
 ダメージ元は `IContactDamageSource` を実装する
 通常Colliderの外接境界から半径を推定するため、細長い形状などでは「水平半径の上書き」を設定する
@@ -76,7 +76,7 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 
 ## 攻撃方式を追加する
 
-接触領域には `AttackIgnoredCollider` が付いている
+接触領域のColliderは `AttackCollisionFilter` に登録され、攻撃判定から除外される
 補助Colliderを追加する場合は、そのColliderと同じGameObjectにマーカーを付ける
 攻撃の命中処理前に `AttackCollisionFilter.ShouldIgnore(collider)` を確認する
 ヒット一覧の検索では次の候補へ進み、実体弾では命中処理と解放を行わず通過させる
@@ -86,3 +86,61 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 
 5つの設定SOのInspectorとPlayerConfigに設定不足や数値の警告を表示する
 Unityのコンパイルに加え、移行値、共有SOからの状態分離、能力強化、複数レベルアップ、接触判定を検証する
+
+## 実行中の参照管理
+
+ゲーム開始時と各個体の初回生成時だけUnityの参照検索を行う
+発射、命中、接触、プール再利用時は保持済みの参照を使う
+
+- `DamageTargetBinding` は同じGameObjectのColliderと `IDamageable` を登録する
+- `DamageTargetRegistry` はColliderから登録済みの対象を解決する
+- `PoolManager.Rent` は初回生成時に準備した `PooledInstance` を返す
+- `PooledInstance` は実際に使う部品だけを用途別のプロパティに保持する
+- 攻撃生成は `RequireDamage()`、任意の移動部品は `Movement` などから取得する
+- `Weapon.AimTransform` は明示的に設定した照準の基準を使う
+
+ダメージ対象の既存基底型には登録部品の `RequireComponent` があるため、新しいPrefabにも登録部品が追加される
+独自の `IDamageable` を追加する場合も `DamageTargetBinding` を同じGameObjectへ付ける
+既存資産の移行は `Tools/Combat/参照を移行して検証` から実行できる
+親のダメージ対象へ子のColliderを自動的に対応付ける処理は行わない
+
+部品参照は初回生成後に変更せず、発射や再取得ではプロパティから直接読み取る
+プール自体が `PooledInstance` を保持するため、取得と返却のコールバックでGameObjectから個体の登録表を引き直さない
+返却処理は初回生成時にだけ関連付け、`PoolableObject.Release` から直接呼び出す
+既存の用途の派生クラスは同じプロパティへ登録されるため、新しい敵や移動方式を追加する際に型別キャッシュへ登録する作業は不要
+新しい用途の部品をプールから参照する場合は、`PooledInstance` の用途別プロパティと初回の型判定へ追加する
+
+## 固定コンポーネントの事前配置
+
+`EnemyPushZone` と専用の `CapsuleCollider` はPlayerの子オブジェクトに配置し、`PlayerCollisionController` の `Push Zone` と `Push Zone Collider` に割り当てる
+`Enemy` の `Contact Target` には同じGameObjectの `PlayerContactTarget` を割り当てる
+`PlayerActionTrail` の `State Bindings` には各アクション専用の `Trail Renderer` を割り当てる
+これらの不足を実行時に生成して補完する処理は行わない
+
+戦闘Sceneの `CombatRunners` に `LifetimeRunner`、`EnemyBrainRunner`、`BoostFireCullerRunner`、`DamagePopupRunner` を1つずつ配置する
+更新担当はScene内で先に初期化され、Scene終了時に登録と個体の登録番号を解放する
+Sceneを再読み込みした場合は新しいSceneに配置した更新担当を使う
+
+既存資産の構成を移行する場合は `Tools/Combat/固定コンポーネントを事前配置` を使用する
+`Tools/Combat/固定コンポーネントの設定を確認` で現在のSceneの未設定参照、軌跡の共有、更新担当の不足や重複を検出する
+Prefabとビルド対象Sceneはビルド時にも検査する
+設定済みPrefabの生成とプール再利用は引き続き実行時に行う
+
+## 接触状態の更新と再利用
+
+プレイヤーの接触領域と範囲攻撃は、それぞれ対象別の接触状態とCollider別の対応表を持つ
+状態の生成、更新、解除は各コンポーネント内で完結し、終了した状態とCollider集合を再利用する
+状態の保持数は各領域で同時に追跡した最大数に応じて増えるため、再侵入時の割り当てを減らす代わりに再利用用のメモリを保持する
+領域が破棄されると再利用用の状態も解放対象になる
+
+接触ダメージを適用した途中で対象が返却される場合があるため、活動期間の番号で終了済み状態への書き戻しを防ぐ
+範囲攻撃は既存の仕様に合わせ、Colliderごとに時間を加算し、1つのColliderが退出した時点で対象の時間をリセットする
+押し出しは既存の継続通知とFixedUpdateのタイミングを維持する
+`PlayerContactTarget.TryResolve` はRigidbodyをキーとしたDictionaryの参照取得であり、Sceneや階層を探索しない
+
+## 負荷比較
+
+`CombatPerformanceComparison.RunBatch` は隔離したUnityの空Sceneで初回生成、プール再利用、24体と200体の接触、200対象の範囲攻撃を計測する
+300回のウォームアップ後に600回を5走行測定し、CPU時間の中央値と95パーセンタイル、GC.Alloc、管理メモリの差分をCSVへ出力する
+CPUとGCは別の走行で記録し、GC.Allocは既知の割り当てで校正する
+同じ物理通知を直接呼ぶ処理単位の比較であり、描画、物理エンジン全体、ゲーム全体のフレーム時間は対象に含めない

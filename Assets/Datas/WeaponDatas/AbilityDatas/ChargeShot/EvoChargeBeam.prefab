@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 3500972516992917104}
   - component: {fileID: 1024191589599941312}
   - component: {fileID: 6480806535963747535}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: EvoChargeBeam
   m_TagString: Untagged
@@ -5036,3 +5037,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RotateMovement
   speed: 90
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114629737088864950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 1024191589599941312}
+  targetColliders:
+  - {fileID: 3500972516992917104}

@@ -4,6 +4,7 @@ using UnityEngine.Serialization;
 
 /// <summary>プレイヤー専用の体力、強化値、成長状態と装備参照を管理する</summary>
 [RequireComponent(typeof(PlayerConfig))]
+[RequireComponent(typeof(DamageTargetBinding))]
 public class Player : MonoBehaviour, IDamageable
 {
     [FormerlySerializedAs("exp")]
@@ -15,11 +16,13 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerInventory inventory;
     [SerializeField, PlayerSettingLabel("Sounder"), Tooltip("プレイヤーの効果音を再生するコンポーネント")]
     private Sounder sounder;
+    [SerializeField, PlayerSettingLabel("Timed Buff Manager"), Tooltip("プレイヤーの一時強化を管理するコンポーネント")]
+    private TimedBuffManager timedBuffManager;
     private PlayerProgression progression;
     private int pendingLevelUps;
     private bool isWeaponSyncEnabled;
 
-    public PlayerConfig Config => config != null ? config : GetComponent<PlayerConfig>();
+    public PlayerConfig Config => config;
     public PlayerSettingsSnapshot Settings { get; private set; }
     public PlayerInventory Inventory => inventory;
     public Sounder Sounder => sounder;
@@ -46,7 +49,6 @@ public class Player : MonoBehaviour, IDamageable
     public void InitializeIfNeeded()
     {
         if (Stats != null) return;
-        config = Config;
         if (config == null)
         {
             Debug.LogError("プレイヤー設定の入口がありません", this);
@@ -59,13 +61,18 @@ public class Player : MonoBehaviour, IDamageable
             enabled = false;
             return;
         }
+        if (timedBuffManager == null)
+        {
+            Debug.LogError("TimedBuffManager が設定されていません", this);
+            enabled = false;
+            return;
+        }
         Settings = config.CreateRuntimeSnapshot();
         Stats = new PlayerStats(Settings.Stats);
         progression = new PlayerProgression(Settings.Progression);
         pendingLevelUps = progression.AddExperience(initialExperience);
         // MonoBehaviourをnewで生成せず、実際に更新されるコンポーネントを使用する
-        TimedBuffManager = GetComponent<TimedBuffManager>();
-        if (TimedBuffManager == null) TimedBuffManager = gameObject.AddComponent<TimedBuffManager>();
+        TimedBuffManager = timedBuffManager;
         Health.OnDeath += HandleDeath;
     }
 

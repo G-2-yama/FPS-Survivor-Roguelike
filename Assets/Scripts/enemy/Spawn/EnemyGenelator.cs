@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+/// <summary>フェーズ設定に従って敵の生成数と活動期間を管理する</summary>
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class EnemyGenerator : MonoBehaviour
     public IReadOnlyList<GameObject> ActiveEnemies => activeEnemies;
 
     //敵生成上限数
+    /// <summary>ゲーム開始時に設定を反映して更新を開始する</summary>
     [SerializeField] private int maxEnemyCount = 10;
 
     private void Start()
@@ -30,6 +32,7 @@ public class EnemyGenerator : MonoBehaviour
 
         StartCoroutine(SpawnRoutine());
     }
+    /// <summary>保持済みの参照を使って個体の状態を更新する</summary>
 
     public void Update()
     {
@@ -45,6 +48,7 @@ public class EnemyGenerator : MonoBehaviour
             currentPhase = phases[currentPhaseIndex];
         }
     }
+    /// <summary>フェーズの間隔と上限に従って敵の生成を繰り返す</summary>
 
     private IEnumerator SpawnRoutine()
     {
@@ -68,11 +72,13 @@ public class EnemyGenerator : MonoBehaviour
             yield return new WaitForSeconds(currentPhase.SpawnInterval);
         }
     }
+    /// <summary>活動中の敵一覧から返却する個体を除く</summary>
 
     public void RemoveActiveEnemy(GameObject enemy)
     {
         activeEnemies.Remove(enemy);
     }
+    /// <summary>生成位置を確認して敵の個体参照を関連付ける</summary>
 
     private void SpawnEnemy(PhaseData phase)
     {
@@ -95,26 +101,29 @@ public class EnemyGenerator : MonoBehaviour
                 if (oldEnemy != null)
                 {
                     RemoveActiveEnemy(oldEnemy);
-                    if (oldEnemy.TryGetComponent(out PoolableObject poolable))
+                    if (PoolManager.Instance.TryResolveInstance(oldEnemy, out var oldInstance))
                     {
-                        poolable.Release();
+                        oldInstance.Poolable?.Release();
                     }
                 }
             }
 
             if (IsSpawnable(spawnPosition))
             {
-                GameObject enemy = PoolManager.Instance.Get(enemyData.Prefab);
+                PooledInstance spawned = PoolManager.Instance.Rent(enemyData.Prefab);
+                GameObject enemy = spawned.GameObject;
 
                 enemy.transform.position = spawnPosition;
 
                 activeEnemies.Add(enemy);
 
-                if (enemy.TryGetComponent(out Enemy enemyComponent))
+                Enemy enemyComponent = spawned.Enemy;
+                enemyplojectileobject projectile = spawned.EnemyProjectile;
+                if (enemyComponent != null)
                 {
                     enemyComponent.SetSpawner(this);
                 }
-                else if (enemy.TryGetComponent(out enemyplojectileobject projectile))
+                else if (projectile != null)
                 {
                     projectile.SetSpawner(this);
                 }
@@ -123,6 +132,7 @@ public class EnemyGenerator : MonoBehaviour
             }
         }
     }
+    /// <summary>生成位置が他の物体と重ならないか確認する</summary>
 
     private bool IsSpawnable(Vector3 position)
     {
@@ -194,6 +204,7 @@ public class EnemyGenerator : MonoBehaviour
 
         return forward;
     }
+    /// <summary>活動中の敵から最も遠い個体を選ぶ</summary>
 
     private GameObject GetFarthestEnemy()
     {

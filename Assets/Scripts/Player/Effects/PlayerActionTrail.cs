@@ -1,21 +1,21 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// プレイヤーのアクション中だけ軌跡を発生させるコンポーネント
 /// ステートごとに別の TrailRenderer を使用するため、残っている軌跡の見た目は切り替わらない
 /// </summary>
 [DisallowMultipleComponent]
-[RequireComponent(typeof(TrailRenderer))]
 public class PlayerActionTrail : MonoBehaviour
 {
+    /// <summary>専用の軌跡を切り替えるプレイヤーのアクション</summary>
     public enum ActionType
     {
         Dash,
         Slide,
         FastFall
     }
+    /// <summary>アクションと専用軌跡の設定を関連付ける</summary>
 
     [Serializable]
     public class StateBinding
@@ -26,33 +26,37 @@ public class PlayerActionTrail : MonoBehaviour
         [Tooltip("このステート中に使う軌跡設定 ScriptableObject")]
         public PlayerTrailSettings settings;
 
-        [Tooltip("このステート専用の TrailRenderer 未設定の場合は実行時に自動生成されます")]
+        [Tooltip("Editorで事前配置したこのステート専用のTrailRenderer")]
         public TrailRenderer trailRenderer;
     }
 
-    [FormerlySerializedAs("trailRenderer")]
-    [SerializeField] private TrailRenderer primaryTrailRenderer;
 
     [Tooltip("アクションステートごとの軌跡設定 アクションは重複させないでください")]
     [SerializeField] private StateBinding[] stateBindings;
 
     private StateBinding activeBinding;
+    private readonly StateBinding[] bindings = new StateBinding[(int)ActionType.FastFall + 1];
 
-    private void Reset()
-    {
-        primaryTrailRenderer = GetComponent<TrailRenderer>();
-    }
+    /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {
-        if (primaryTrailRenderer == null)
-        {
-            primaryTrailRenderer = GetComponent<TrailRenderer>();
-        }
-
-        EnsureTrailRenderers();
+        // 未設定を補完せず、PrefabやSceneの構成ミスとして検出する
+        if (stateBindings != null)
+            foreach (StateBinding binding in stateBindings)
+                if (binding == null || binding.trailRenderer == null)
+                    throw new InvalidOperationException($"{name}: 各State BindingのTrail RendererをEditorで設定してください");
+        if (stateBindings != null)
+            foreach (StateBinding binding in stateBindings)
+            {
+                int index = (int)binding.action;
+                if (index < 0 || index >= bindings.Length)
+                    throw new InvalidOperationException($"{name}: 未対応のアクションが設定されています");
+                if (bindings[index] == null) bindings[index] = binding;
+            }
         StopEmitting();
     }
+    /// <summary>無効化された個体の登録と一時状態を解除する</summary>
 
     private void OnDisable()
     {
@@ -64,14 +68,15 @@ public class PlayerActionTrail : MonoBehaviour
     /// </summary>
     public void Begin(ActionType action)
     {
-        StateBinding binding = FindBinding(action);
+        int index = (int)action;
+        StateBinding binding = index >= 0 && index < bindings.Length ? bindings[index] : null;
         if (binding == null || binding.settings == null || !binding.settings.IsEnabled)
         {
             StopEmitting();
             return;
         }
 
-        TrailRenderer targetTrailRenderer = GetOrCreateTrailRenderer(binding);
+        TrailRenderer targetTrailRenderer = binding.trailRenderer;
         if (targetTrailRenderer == null)
         {
             StopEmitting();
@@ -129,91 +134,5 @@ public class PlayerActionTrail : MonoBehaviour
                 targetTrailRenderer.emitting = false;
             }
         }
-    }
-
-    private void EnsureTrailRenderers()
-    {
-        if (stateBindings == null)
-        {
-            return;
-        }
-
-        bool isPrimaryTrailRendererAssigned = false;
-        for (int i = 0; i < stateBindings.Length; i++)
-        {
-            StateBinding binding = stateBindings[i];
-            if (binding?.trailRenderer == primaryTrailRenderer)
-            {
-                isPrimaryTrailRendererAssigned = true;
-                break;
-            }
-        }
-
-        for (int i = 0; i < stateBindings.Length; i++)
-        {
-            StateBinding binding = stateBindings[i];
-            if (binding == null || binding.trailRenderer != null)
-            {
-                continue;
-            }
-
-            if (!isPrimaryTrailRendererAssigned && primaryTrailRenderer != null)
-            {
-                binding.trailRenderer = primaryTrailRenderer;
-                isPrimaryTrailRendererAssigned = true;
-                continue;
-            }
-
-            binding.trailRenderer = CreateTrailRenderer(binding.action);
-        }
-    }
-
-    private TrailRenderer GetOrCreateTrailRenderer(StateBinding binding)
-    {
-        if (binding.trailRenderer != null)
-        {
-            return binding.trailRenderer;
-        }
-
-        EnsureTrailRenderers();
-        return binding.trailRenderer;
-    }
-
-    private TrailRenderer CreateTrailRenderer(ActionType action)
-    {
-        string objectName = $"Player Trail - {action}";
-        Transform existingChild = transform.Find(objectName);
-        if (existingChild != null && existingChild.TryGetComponent(out TrailRenderer existingTrailRenderer))
-        {
-            return existingTrailRenderer;
-        }
-
-        GameObject trailObject = new GameObject(objectName);
-        trailObject.transform.SetParent(transform, false);
-
-        TrailRenderer newTrailRenderer = trailObject.AddComponent<TrailRenderer>();
-        newTrailRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        newTrailRenderer.receiveShadows = false;
-        newTrailRenderer.emitting = false;
-        return newTrailRenderer;
-    }
-
-    private StateBinding FindBinding(ActionType action)
-    {
-        if (stateBindings == null)
-        {
-            return null;
-        }
-
-        for (int i = 0; i < stateBindings.Length; i++)
-        {
-            StateBinding binding = stateBindings[i];
-            if (binding != null && binding.action == action)
-            {
-                return binding;
-            }
-        }
-
-        return null;
     }
 }

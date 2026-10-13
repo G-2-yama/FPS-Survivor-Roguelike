@@ -3854,6 +3854,8 @@ GameObject:
   - component: {fileID: 8427006510350509553}
   - component: {fileID: 8210859706457007736}
   - component: {fileID: 472213676047137243}
+  - component: {fileID: 2000020000}
+  - component: {fileID: 764927095564812838}
   m_Layer: 6
   m_Name: Handenemy
   m_TagString: Untagged
@@ -3946,12 +3948,20 @@ MonoBehaviour:
   attackController: {fileID: 4818800964872357635}
   whiteFlash: {fileID: 8427006510350509553}
   enemyBrain: {fileID: 3314495736408130372}
+  contactDamageSource: {fileID: 0}
+  playerObstacle: {fileID: 0}
+  layerColliders:
+  - {fileID: 472213676047137243}
   deathDelay: 0.3
+  destroyDamageDamping: 0.7
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
     weight: 80
   - prefab: {fileID: 0}
     weight: 20
+  sounder: {fileID: 0}
+  DestroyDamagePrefab: {fileID: 0}
+  contactTarget: {fileID: 764927095564812838}
 --- !u!114 &4818800964872357635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3985,6 +3995,8 @@ MonoBehaviour:
   targetProvider: {fileID: 1066021274306290870}
   attack: {fileID: 4818800964872357635}
   animator: {fileID: 2446288854180587493}
+  uniqueAnimation: {fileID: 0}
+  poseSwitcher: {fileID: 0}
 --- !u!114 &1066021274306290870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4012,6 +4024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLauncher
   bulletData: {fileID: 11400000, guid: e0b3556902a8f5e4faf09ca81e598798, type: 2}
+  sounder: {fileID: 0}
 --- !u!114 &8427006510350509553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4075,6 +4088,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.897275, y: 5.0662966, z: 10.610258}
   m_Center: {x: -1.7422864, y: 1.17131, z: -1.6590999}
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8799001866560603096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 1783394908588830033}
+  targetColliders:
+  - {fileID: 472213676047137243}
+--- !u!114 &764927095564812838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8799001866560603096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
+  body: {fileID: 0}
+  damageSource: {fileID: 0}
+  radiusOverride: 0
 --- !u!1 &8838958172709790860
 GameObject:
   m_ObjectHideFlags: 0

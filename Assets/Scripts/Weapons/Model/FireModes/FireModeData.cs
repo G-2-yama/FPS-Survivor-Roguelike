@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>武器の攻撃方式と共通のダメージ補正を提供する</summary>
 
 public abstract class FireModeData : ScriptableObject
 {
@@ -11,6 +12,7 @@ public abstract class FireModeData : ScriptableObject
     /// <param name="weapon">攻撃を行う武器</param>
     /// <param name="weaponOwner">武器の所有者</param>
     public abstract void Fire(Weapon weapon, Player weaponOwner);
+    /// <summary>命中位置へ設定されたエフェクトを生成する</summary>
 
     public void TryEnableHitEffect(Vector3 position)
     {
@@ -30,6 +32,7 @@ public abstract class FireModeData : ScriptableObject
     {
         return weapon.WeaponData.DamageProfile.GetDamageAmount(weaponOwner);
     }
+    /// <summary>所有者の強化を反映したノックバック量を計算する</summary>
 
     protected float GetKnockbackForce(Weapon weapon, Player weaponOwner)
     {
@@ -53,7 +56,7 @@ public abstract class FireModeData : ScriptableObject
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);
 
-        Vector3 direction = Camera.main.transform.forward;
+        Vector3 direction = weapon.AimTransform.forward;
         direction = Quaternion.Euler(y, x, 0) * direction;
 
         return direction;

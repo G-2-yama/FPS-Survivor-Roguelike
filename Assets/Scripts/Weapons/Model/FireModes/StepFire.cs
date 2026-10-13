@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>移動した距離に応じて攻撃個体を生成する</summary>
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/StepFire")]
 public class StepFire : FireModeData
@@ -8,6 +9,7 @@ public class StepFire : FireModeData
     [SerializeField] private float stepInterval = 0.5f;
 
     private Vector3 previousPosition;
+    /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
 
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
@@ -20,21 +22,24 @@ public class StepFire : FireModeData
             previousPosition = currentPosition;
         }
     }
+    /// <summary>移動位置を基準に範囲攻撃を生成する</summary>
 
     private void CreateDamageArea(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = weaponOwner.transform.up;
 
-        GameObject bullet = PoolManager.Instance.Get(prefab);
+        PooledInstance spawned = PoolManager.Instance.Rent(prefab);
 
-        var damage = bullet.GetComponent<DamageBase>();
+        GameObject bullet = spawned.GameObject;
+
+        var damage = spawned.RequireDamage();
         damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
-        var movement = bullet.GetComponent<MovementBase>();
+        MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         bullet.transform.rotation = rotation;
-        bullet.transform.position = Camera.main.transform.position + rotation * Offset;
+        bullet.transform.position = weapon.AimTransform.position + rotation * Offset;
     }
 }

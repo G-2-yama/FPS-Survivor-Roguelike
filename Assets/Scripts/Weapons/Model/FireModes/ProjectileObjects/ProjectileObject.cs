@@ -3,6 +3,7 @@ using System.Collections;
 /// <summary>
 /// 弾の体力、寿命、衝突検知とプール管理の共通処理を提供する
 /// </summary>
+[RequireComponent(typeof(DamageTargetBinding))]
 public abstract class ProjectileObject : PoolableObject, IDamageable
 {
     [SerializeField] protected TeamType myTeam = TeamType.None;

@@ -9,7 +9,7 @@ public class ChainFire : FireModeData
     [SerializeField] private float hitRadius = 0.1f;
     [SerializeField] private TeamType targetTeam = TeamType.Enemy;
 
-    [Header("連鎖設定")]
+    [Header("Chain Settings")]
     [SerializeField] private float chainRange = 10f;
     [SerializeField] private int chainCount = 3;
 
@@ -21,7 +21,7 @@ public class ChainFire : FireModeData
         List<Collider> hitTargets = new();
 
         Vector3 direction = GetFireDirection(weapon);
-        Ray ray = new Ray(Camera.main.transform.position, direction);
+        Ray ray = new Ray(weapon.AimTransform.position, direction);
 
         RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -32,7 +32,7 @@ public class ChainFire : FireModeData
             if (AttackCollisionFilter.ShouldIgnore(hit.collider))
                 continue;
 
-            if (!hit.collider.TryGetComponent(out IDamageable damageable))
+            if (!DamageTargetRegistry.TryResolve(hit.collider, out IDamageable damageable))
             {
                 TryEnableHitEffect(hit.point);
                 break;
@@ -42,7 +42,7 @@ public class ChainFire : FireModeData
                 continue;
 
             TryEnableHitEffect(hit.collider.transform.position);
-            ApplyDamage(weapon, hit.collider, weaponOwner);
+            ApplyDamage(weapon, damageable, weaponOwner);
 
             if (damageable.TeamType == TeamType.EnemyAmmo)
                 continue;
@@ -65,7 +65,7 @@ public class ChainFire : FireModeData
 
         for (int i = 0; i < chainCount; i++)
         {
-            Collider nextTarget = FindNearestEnemy(currentTarget, hitTargets);
+            Collider nextTarget = FindNearestEnemy(currentTarget, hitTargets, out IDamageable damageable);
 
             if (nextTarget == null)
                 break;
@@ -74,7 +74,7 @@ public class ChainFire : FireModeData
 
             TryEnableHitEffect(nextTarget.transform.position);
 
-            ApplyDamage(weapon, nextTarget, weaponOwner);
+            ApplyDamage(weapon, damageable, weaponOwner);
 
             currentTarget = nextTarget;
         }
@@ -84,8 +84,9 @@ public class ChainFire : FireModeData
     /// <param name="originTarget">連鎖の現在の終点となる対象</param>
     /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
     /// <returns>最も近い対象、範囲内にいない場合はnull</returns>
-    private Collider FindNearestEnemy(Collider originTarget,List<Collider> hitTargets)
+    private Collider FindNearestEnemy(Collider originTarget, List<Collider> hitTargets, out IDamageable target)
     {
+        target = null;
         Collider[] colliders =
             Physics.OverlapSphere(originTarget.transform.position, chainRange);
 
@@ -101,7 +102,7 @@ public class ChainFire : FireModeData
             if (hitTargets.Contains(col))
                 continue;
 
-            if (!col.TryGetComponent(out IDamageable damageable))
+            if (!DamageTargetRegistry.TryResolve(col, out IDamageable damageable))
                 continue;
 
             if (damageable.TeamType == TeamType.EnemyAmmo)
@@ -118,6 +119,7 @@ public class ChainFire : FireModeData
             {
                 nearestDistance = distance;
                 nearest = col;
+                target = damageable;
             }
         }
 
@@ -126,18 +128,10 @@ public class ChainFire : FireModeData
 
     /// <summary>武器能力を反映したダメージを連鎖対象へ適用する</summary>
     /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
-    /// <param name="hitCollider">連鎖対象として選択されたCollider</param>
+    /// <param name="damageable">連鎖先として選択されたダメージ対象</param>
     /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
-    private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
+    private void ApplyDamage(Weapon weapon, IDamageable damageable, Player weaponOwner)
     {
-        if(hitCollider.TryGetComponent(out IDamageable damageable))
-        {
-            if ((damageable.TeamType & targetTeam) == 0)
-            {
-                return;
-            }
-            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
-
-        }
+        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
     }
 }

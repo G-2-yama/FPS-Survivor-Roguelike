@@ -5,10 +5,13 @@ using UnityEngine;
 public sealed class PlayerObstacle : MonoBehaviour
 {
     private const string ObstacleLayerName = "PlayerObstacle";
+    [SerializeField] private Collider[] targetColliders;
 
     /// <summary>生成時に自身と子のColliderへ専用レイヤーを適用する</summary>
     private void Awake()
     {
+        if (targetColliders == null || targetColliders.Length == 0)
+            targetColliders = GetComponentsInChildren<Collider>(true);
         ApplyLayerToColliders();
     }
 
@@ -22,7 +25,8 @@ public sealed class PlayerObstacle : MonoBehaviour
             return;
         }
 
-        foreach (Collider targetCollider in GetComponentsInChildren<Collider>(true))
-            targetCollider.gameObject.layer = obstacleLayer;
+        if (targetColliders == null) return;
+        foreach (Collider targetCollider in targetColliders)
+            if (targetCollider != null) targetCollider.gameObject.layer = obstacleLayer;
     }
 }

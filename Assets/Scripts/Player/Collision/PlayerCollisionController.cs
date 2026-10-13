@@ -5,15 +5,23 @@ using UnityEngine;
 public sealed class PlayerCollisionController : MonoBehaviour
 {
     private PlayerCollisionSettings settings;
-    private CharacterController controller;
+    [SerializeField] private PlayerConfig config;
+    [SerializeField] private CharacterController controller;
+    [SerializeField, Tooltip("Editorで配置した敵の接触と押し出しを処理する子オブジェクト")]
     private PlayerEnemyPushZone pushZone;
-    private CapsuleCollider bodyTrigger;
+    [SerializeField, Tooltip("接触領域に事前配置したCapsuleCollider")]
+    private CapsuleCollider pushZoneCollider;
+    [SerializeField] private CapsuleCollider bodyTrigger;
 
     /// <summary>開始時の設定を本体と敵の接触領域へ反映する</summary>
     public void Initialize(Player player, PlayerCollisionSettings collisionSettings)
     {
+        if (controller == null || bodyTrigger == null || pushZone == null || pushZoneCollider == null)
+        {
+            Debug.LogError("本体とEnemyPushZoneのコンポーネント参照をEditorで設定してください", this);
+            return;
+        }
         settings = collisionSettings;
-        controller = GetComponent<CharacterController>();
         // 一度無効化して全寸法を反映し、中間的に高さと段差の条件が崩れるのを防ぐ
         bool wasEnabled = controller.enabled;
         controller.enabled = false;
@@ -30,21 +38,10 @@ public sealed class PlayerCollisionController : MonoBehaviour
         controller.excludeLayers |= 1 << settings.PushZoneLayer;
         controller.layerOverridePriority = 10;
         controller.enabled = wasEnabled;
-        bodyTrigger = GetComponent<CapsuleCollider>();
         SyncBodyTrigger();
 
-        Transform zoneTransform = transform.Find("EnemyPushZone");
-        if (zoneTransform == null)
-        {
-            zoneTransform = new GameObject("EnemyPushZone").transform;
-            zoneTransform.SetParent(transform, false);
-        }
-        zoneTransform.localPosition = Vector3.zero;
-        zoneTransform.localRotation = Quaternion.identity;
-        zoneTransform.localScale = Vector3.one;
-        if (!zoneTransform.TryGetComponent(out pushZone))
-            pushZone = zoneTransform.gameObject.AddComponent<PlayerEnemyPushZone>();
-        pushZone.Initialize(player, controller, settings);
+        // 構成はEditorで確定し、実行時はSOの値と現在の姿勢だけを反映する
+        pushZone.Initialize(player, controller, settings, pushZoneCollider);
     }
 
     /// <summary>既存の被弾用カプセルも本体の姿勢変更に追従させる</summary>
@@ -64,10 +61,9 @@ public sealed class PlayerCollisionController : MonoBehaviour
     /// <summary>選択時にSOの本体と接触領域を表示する</summary>
     private void OnDrawGizmosSelected()
     {
-        PlayerConfig config = GetComponent<PlayerConfig>();
         PlayerCollisionSettings preview = settings != null ? settings : config != null ? config.Collision : null;
         if (preview == null) return;
-        CharacterController current = GetComponent<CharacterController>();
+        CharacterController current = controller;
         Vector3 center = Application.isPlaying && current != null ? current.center : preview.Center;
         float height = Application.isPlaying && current != null ? current.height : preview.Height;
         float radius = Application.isPlaying && current != null ? current.radius : preview.Radius;

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5772173272414011593}
   - component: {fileID: -8198278380787105223}
   - component: {fileID: -5349246945987388326}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: 00_AirStrikeAmmo
   m_TagString: Untagged
@@ -276,3 +277,18 @@ MonoBehaviour:
   soundDatabase: {fileID: 11400000, guid: 75672b47e6667aa4992fee56d5bc54db, type: 2}
   audioSource: {fileID: -8198278380787105223}
   soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6556299627688077866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 5772173272414011593}
+  targetColliders:
+  - {fileID: 7540704968161900505}

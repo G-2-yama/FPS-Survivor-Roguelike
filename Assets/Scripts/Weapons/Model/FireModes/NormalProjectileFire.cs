@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>照準方向へ攻撃個体を発射する</summary>
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/Projectile")]
 public class NormalProjectileFire : FireModeData
@@ -14,20 +15,21 @@ public class NormalProjectileFire : FireModeData
     {
         Vector3 direction = GetFireDirection(weapon);
 
-        GameObject bullet = PoolManager.Instance.Get(prefab);
+        PooledInstance spawned = PoolManager.Instance.Rent(prefab);
+        GameObject bullet = spawned.GameObject;
 
-        var damage = bullet.GetComponent<DamageBase>();
+        var damage = spawned.RequireDamage();
         damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
-        var movement = bullet.GetComponent<MovementBase>();
+        MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         bullet.transform.rotation = rotation;
-        bullet.transform.position =Camera.main.transform.position + rotation * Offset;
+        bullet.transform.position =weapon.AimTransform.position + rotation * Offset;
         if(isTracking)
         {
-            bullet.transform.SetParent(Camera.main.transform);
+            bullet.transform.SetParent(weapon.AimTransform);
         }
     }
     

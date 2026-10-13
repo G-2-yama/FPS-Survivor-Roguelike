@@ -214,6 +214,8 @@ public static class PlayerSettingsValidation
         Assert(movedDistance < 1f, "プレイヤーがPlayerObstacleレイヤーを通り抜けました");
 
         player.transform.position = start;
+        // Destroyの反映を待たず次の移動検証から遮蔽物を除く
+        obstacle.SetActive(false);
         Physics.SyncTransforms();
         Object.Destroy(obstacle);
         Record("実際のCharacterControllerによるプレイヤー遮蔽物の通過防止");
@@ -239,8 +241,19 @@ public static class PlayerSettingsValidation
                 "Assets/Datas/Player/GameScene" + names[i] + "Settings.asset");
         serialized.ApplyModifiedPropertiesWithoutUndo();
         Player player = root.AddComponent<Player>();
+        var playerReferences = new SerializedObject(player);
+        playerReferences.FindProperty("config").objectReferenceValue = config;
+        playerReferences.FindProperty("timedBuffManager").objectReferenceValue = root.AddComponent<TimedBuffManager>();
+        playerReferences.ApplyModifiedPropertiesWithoutUndo();
+        var collision = root.AddComponent<PlayerCollisionController>();
+        var collisionReferences = new SerializedObject(collision);
+        collisionReferences.FindProperty("config").objectReferenceValue = config;
+        collisionReferences.FindProperty("controller").objectReferenceValue = root.GetComponent<CharacterController>();
+        collisionReferences.FindProperty("bodyTrigger").objectReferenceValue = root.GetComponent<CapsuleCollider>();
+        collisionReferences.ApplyModifiedPropertiesWithoutUndo();
+        FixedComponentSetup.ConfigureHierarchy(root);
         root.SetActive(true);
-        root.AddComponent<PlayerCollisionController>().Initialize(player, player.Settings.Collision);
+        collision.Initialize(player, player.Settings.Collision);
         return player;
     }
 
@@ -341,7 +354,7 @@ public static class PlayerSettingsValidation
     /// <summary>実体弾と射線検索の両方で補助Colliderを通過することを確認する</summary>
     private static void TestAttackFilter(Collider zone)
     {
-        Assert(AttackCollisionFilter.ShouldIgnore(zone), "補助Colliderの除外マーカーがありません");
+        Assert(AttackCollisionFilter.ShouldIgnore(zone), "補助Colliderが攻撃除外対象に登録されていません");
         var projectileObject = new GameObject("検証弾");
         projectileObject.transform.position = Vector3.one * 100f;
         projectileObject.AddComponent<Rigidbody>().isKinematic = true;

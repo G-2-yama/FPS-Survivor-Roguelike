@@ -53,6 +53,8 @@ GameObject:
   - component: {fileID: 3273962408429500559}
   - component: {fileID: 4657746142798485403}
   - component: {fileID: 255385233847080976}
+  - component: {fileID: 2000020000}
+  - component: {fileID: 3484526640886153629}
   m_Layer: 6
   m_Name: Bit_00
   m_TagString: Untagged
@@ -152,6 +154,10 @@ MonoBehaviour:
   attackController: {fileID: 4933798852626595605}
   whiteFlash: {fileID: 7862773016890114749}
   enemyBrain: {fileID: 6515575751581878923}
+  contactDamageSource: {fileID: 255385233847080976}
+  playerObstacle: {fileID: 0}
+  layerColliders:
+  - {fileID: 351978529155683102}
   deathDelay: 0.1
   destroyDamageDamping: 0.4
   dropList:
@@ -161,6 +167,7 @@ MonoBehaviour:
     weight: 20
   sounder: {fileID: 4657746142798485403}
   DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
+  contactTarget: {fileID: 3484526640886153629}
 --- !u!114 &6515575751581878923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +186,7 @@ MonoBehaviour:
   attack: {fileID: 4933798852626595605}
   animator: {fileID: 0}
   uniqueAnimation: {fileID: 0}
+  poseSwitcher: {fileID: 0}
 --- !u!54 &5154964929320662522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -411,3 +419,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToutchDamageController
   damageAmount: 10
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874736543859849084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 3399542025029340652}
+  targetColliders:
+  - {fileID: 351978529155683102}
+--- !u!114 &3484526640886153629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874736543859849084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
+  body: {fileID: 0}
+  damageSource: {fileID: 0}
+  radiusOverride: 0

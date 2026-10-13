@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 5010117434686078316}
   - component: {fileID: 446570625007560332}
   - component: {fileID: 1146902704468627000}
+  - component: {fileID: 2000020000}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -304,3 +305,18 @@ MonoBehaviour:
   renderers: []
   whiteFlashMaterial: {fileID: 2100000, guid: 6df509889e0431e4aae1bf0e48bdc7ec, type: 2}
   flashDuration: 0.08
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411297557696040895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 446570625007560332}
+  targetColliders:
+  - {fileID: 5010117434686078316}
