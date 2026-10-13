@@ -126,7 +126,7 @@ public class PlayerReactionOverlayController : MonoBehaviour
     {
         if (player == null)
         {
-            player = FindObjectOfType<Player>();
+            player = FindFirstObjectByType<Player>();
         }
     }
 

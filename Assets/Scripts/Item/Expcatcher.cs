@@ -3,7 +3,6 @@ using UnityEngine;
 public class Expcatcher : Item
 {
 
-    [SerializeField] private EnemyConfig expdata;
     [SerializeField] private float increaseamount = 5;
 
     public override bool IsAvailable()
@@ -13,11 +12,11 @@ public class Expcatcher : Item
 
     public override void Apply()
     {
-        expdata.IncreaseDistance(increaseamount);
+        player.Stats.AddPickupRadius(increaseamount);
     }
 
     public override void Revert()
     {
-       expdata.IncreaseDistance(-increaseamount);
+       player.Stats.AddPickupRadius(-increaseamount);
     }
 }
