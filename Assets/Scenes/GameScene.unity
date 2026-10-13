@@ -193,7 +193,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2740,7 +2740,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2753,7 +2753,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2908,7 +2908,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2921,7 +2921,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -3364,7 +3364,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3377,7 +3377,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -3969,11 +3969,11 @@ GameObject:
   - component: {fileID: 275487187}
   - component: {fileID: 275487186}
   - component: {fileID: 275487192}
+  - component: {fileID: 275487191}
   - component: {fileID: 275487193}
   - component: {fileID: 275487185}
   - component: {fileID: 275487194}
   - component: {fileID: 275487196}
-  - component: {fileID: 275487191}
   - component: {fileID: 275487190}
   - component: {fileID: 275487195}
   - component: {fileID: 2000011100}
@@ -5377,7 +5377,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5390,7 +5390,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -6032,7 +6032,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -6045,7 +6045,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -7784,7 +7784,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -7797,7 +7797,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -8966,7 +8966,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -8979,7 +8979,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -12803,7 +12803,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -15563,7 +15563,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -15576,7 +15576,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -18250,7 +18250,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -18263,7 +18263,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -18462,7 +18462,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -18475,7 +18475,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -19407,7 +19407,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -19420,7 +19420,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -22683,7 +22683,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -22696,7 +22696,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -29058,6 +29058,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2000011100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5852f4cf6d743609670a35cbf530645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollisionController
 --- !u!1 &2019895848
 GameObject:
   m_ObjectHideFlags: 0
@@ -29639,7 +29651,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -29652,7 +29664,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -30393,7 +30405,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294111986
   m_fontColor: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -30406,7 +30418,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -31767,15 +31779,3 @@ SceneRoots:
   - {fileID: 419950868}
   - {fileID: 1653113032}
   - {fileID: 467297659}
---- !u!114 &2000011100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275487184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5852f4cf6d743609670a35cbf530645, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollisionController

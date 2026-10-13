@@ -12,9 +12,11 @@ public sealed class PlayerContactTarget : MonoBehaviour
     [SerializeField, Min(0f), PlayerSettingLabel("Radius Override"), Tooltip("0なら通常Colliderから推定する 0より大きい場合はワールド座標の半径として使用する")]
     private float radiusOverride;
     private bool available = true;
+    private bool canBePushed = true;
 
     public Rigidbody Body => body;
     public bool IsAvailable => available && isActiveAndEnabled && body != null && body.gameObject.activeInHierarchy;
+    public bool CanBePushed => canBePushed;
     public int ContactDamage => damageSource is IContactDamageSource source ? source.DamageAmount : 0;
     public event Action<PlayerContactTarget> OnUnavailable;
 
@@ -24,12 +26,16 @@ public sealed class PlayerContactTarget : MonoBehaviour
         if (body == null) body = GetComponent<Rigidbody>();
     }
 
-    /// <summary>取得時に対象の参照を設定し、新しい活動期間を開始する</summary>
-    public void BeginLife(Rigidbody targetBody, MonoBehaviour source)
+    /// <summary>取得時に対象の参照と押し出し可否を設定し、新しい活動期間を開始する</summary>
+    /// <param name="targetBody">水平位置を補正する対象のRigidbody</param>
+    /// <param name="source">接触ダメージの取得元</param>
+    /// <param name="pushable">プレイヤーの接触判定で押し出す場合はtrue</param>
+    public void BeginLife(Rigidbody targetBody, MonoBehaviour source, bool pushable = true)
     {
         Invalidate();
         body = targetBody;
         damageSource = source;
+        canBePushed = pushable;
         available = true;
     }
 

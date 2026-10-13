@@ -75,6 +75,7 @@ public static class PlayerSettingsValidation
             Assert(player.GetComponent<ExpManager>() == null, "旧経験値コンポーネントが残っています");
             Assert(player.GetComponent<TimedBuffManager>() != null, "強化管理コンポーネントの移行に失敗しています");
             Record("GameSceneの移行値、設定参照、Missing Script");
+            TestEnemyPushConfiguration();
             TestBalanceSimulator();
             TestProgression(player.Config.Progression);
             TestPushMath();
@@ -84,6 +85,25 @@ public static class PlayerSettingsValidation
             EditorApplication.EnterPlaymode();
         }
         catch (Exception exception) { Finish(exception); }
+    }
+
+    /// <summary>敵の押し出し既定動作とアイテムボックスの例外設定を確認する</summary>
+    private static void TestEnemyPushConfiguration()
+    {
+        EnemyConfig itemBoxConfig = AssetDatabase.LoadAssetAtPath<EnemyConfig>("Assets/Datas/spownobject/itembox.asset");
+        GameObject itemBoxPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/spownobject/アイテムボックス.prefab");
+        Enemy itemBoxEnemy = itemBoxPrefab != null ? itemBoxPrefab.GetComponent<Enemy>() : null;
+        var serializedEnemy = itemBoxEnemy != null ? new SerializedObject(itemBoxEnemy) : null;
+        Assert(itemBoxPrefab != null && itemBoxPrefab.GetComponent<PlayerObstacle>() != null, "アイテムボックスPrefabにPlayerObstacleがありません");
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        int playerLayer = LayerMask.NameToLayer("PlayerBody");
+        int obstacleLayer = LayerMask.NameToLayer("PlayerObstacle");
+        Assert(itemBoxPrefab != null && itemBoxPrefab.layer == obstacleLayer, "アイテムボックスPrefabに専用レイヤーがありません");
+        Assert(Physics.GetIgnoreLayerCollision(enemyLayer, obstacleLayer), "敵とプレイヤー遮蔽物の物理衝突が無効になっていません");
+        Assert(!Physics.GetIgnoreLayerCollision(playerLayer, obstacleLayer), "プレイヤーとアイテムボックスの物理衝突が無効になっています");
+        Assert(serializedEnemy != null && serializedEnemy.FindProperty("config").objectReferenceValue == itemBoxConfig,
+            "アイテムボックスPrefabが専用の敵設定を参照していません");
+        Record("敵設定、プレイヤー遮蔽物レイヤー、アイテムボックスの例外設定");
     }
 
     /// <summary>既存のバランス検証ツールが新しいSOから開始値を読み取れることを確認する</summary>
@@ -141,6 +161,7 @@ public static class PlayerSettingsValidation
             checks.AddRange(SessionState.GetString(ChecksKey, "").Split('\n'));
             first = CreatePlayer("検証プレイヤーA", new Vector3(0f, 5f, 0f));
             second = CreatePlayer("検証プレイヤーB", new Vector3(10f, 5f, 0f));
+            TestPlayerObstacleCollision(second);
             originalStatsJson = JsonUtility.ToJson(first.Config.Stats);
             Assert(first.Settings.Stats != second.Settings.Stats && first.Settings.Stats != first.Config.Stats,
                 "開始時の設定複製が共有されています");
@@ -175,6 +196,27 @@ public static class PlayerSettingsValidation
             EditorApplication.update += TickPhysicsChecks;
         }
         catch (Exception exception) { Finish(exception); }
+    }
+
+    /// <summary>実際のCharacterControllerが専用遮蔽物を通り抜けないことを確認する</summary>
+    private static void TestPlayerObstacleCollision(Player player)
+    {
+        CharacterController controller = player.GetComponent<CharacterController>();
+        Vector3 start = player.transform.position;
+        var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.name = "検証用プレイヤー遮蔽物";
+        obstacle.layer = LayerMask.NameToLayer("PlayerObstacle");
+        obstacle.transform.position = start + Vector3.forward * 1.5f;
+        Physics.SyncTransforms();
+
+        controller.Move(Vector3.forward * 2f);
+        float movedDistance = player.transform.position.z - start.z;
+        Assert(movedDistance < 1f, "プレイヤーがPlayerObstacleレイヤーを通り抜けました");
+
+        player.transform.position = start;
+        Physics.SyncTransforms();
+        Object.Destroy(obstacle);
+        Record("実際のCharacterControllerによるプレイヤー遮蔽物の通過防止");
     }
 
     /// <summary>SO参照を割り当ててからプレイヤーのAwakeを実行する</summary>
@@ -238,13 +280,16 @@ public static class PlayerSettingsValidation
                 target.gameObject.SetActive(false);
                 target.transform.position = first.transform.position + Vector3.right * 0.2f;
                 target.gameObject.SetActive(true);
-                target.BeginLife(target.Body, target.GetComponent<ToutchDamageController>());
+                target.BeginLife(target.Body, target.GetComponent<ToutchDamageController>(), false);
                 Physics.SyncTransforms();
             }
             else if (phase == 1)
             {
                 Assert(first.Health.CurrentHP == contactStartHP - 200, "無効化と再取得で接触状態が持ち越されました");
-                Record("対象の無効化と活動期間再開後の接触ダメージ");
+                Assert(!target.CanBePushed, "活動期間再開後に押し出し無効設定が保持されていません");
+                Assert(Vector3.Distance(target.Body.position, first.transform.position) < 0.3f,
+                    "押し出し無効の対象が移動しました");
+                Record("押し出し無効時の位置維持と接触ダメージ、活動期間の再開");
                 var motor = new PlayerMotor(first.GetComponent<CharacterController>(), first.Settings.Collision);
                 motor.SetControllerHeight(1f);
             }

@@ -141,7 +141,7 @@ public sealed class PlayerEnemyPushZone : MonoBehaviour
     /// <summary>通常の敵AIを維持し、重なりによる水平位置だけを補正する</summary>
     private void PushOutsidePlayer(PlayerContactTarget target, float targetRadius)
     {
-        if (!settings.PushEnabled || player.Health.IsDead || !target.IsAvailable) return;
+        if (!settings.PushEnabled || player.Health.IsDead || !target.IsAvailable || !target.CanBePushed) return;
         Vector3 scale = controller.transform.lossyScale;
         float radius = (controller.radius + settings.PushRadiusPadding) * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
         Vector3 position = target.Body.position;

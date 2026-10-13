@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/// <summary>敵の能力とプレイヤー接触時の挙動を設定する</summary>
 [CreateAssetMenu(menuName = "Enemy/Config")]
 public class EnemyConfig : ScriptableObject
 {
@@ -30,6 +31,7 @@ public class EnemyConfig : ScriptableObject
     [Min(0)] public int AttackPower = 1;
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
+
 
     public void IncreaseDistance(float amount)
     {

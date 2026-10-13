@@ -19,7 +19,8 @@ GameObject:
   - component: {fileID: 5730256966100818832}
   - component: {fileID: 7503229732909655231}
   - component: {fileID: 661444327848213338}
-  m_Layer: 0
+  - component: {fileID: 8342348762349876234}
+  m_Layer: 10
   m_Name: "\u30A2\u30A4\u30C6\u30E0\u30DC\u30C3\u30AF\u30B9"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,3 +336,15 @@ MonoBehaviour:
   soundDatabase: {fileID: 11400000, guid: d87485e3e3c39d74eb41e542062fe924, type: 2}
   audioSource: {fileID: 7503229732909655231}
   soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
+--- !u!114 &8342348762349876234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317347510099702208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0933d90835400296352eee541f6aab, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerObstacle

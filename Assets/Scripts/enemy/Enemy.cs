@@ -99,22 +99,36 @@ public class Enemy : PoolableObject, IDamageable
             contactTarget = GetComponent<PlayerContactTarget>();
             if (contactTarget == null) contactTarget = gameObject.AddComponent<PlayerContactTarget>();
         }
-        contactTarget.BeginLife(enemyBrain.Rb, GetComponentInChildren<ToutchDamageController>());
+        contactTarget.BeginLife(
+            enemyBrain.Rb,
+            GetComponentInChildren<ToutchDamageController>(),
+            GetComponent<PlayerObstacle>() == null);
 
         Health = new Health(config.MaxHp);
         Health.OnDamaged += HandleDamaged;
         Health.OnDeath += HandleDeath;
     }
 
-    /// <summary>敵のすべてのColliderをプレイヤーとの物理判定用レイヤーに設定する</summary>
+    /// <summary>通常の敵レイヤーを適用し、専用コンポーネントを持つ例外オブジェクトには専用レイヤーを再適用する</summary>
     private void AssignEnemyLayerToColliders()
     {
-        int enemyLayer = LayerMask.NameToLayer("Enemy");
-        if (enemyLayer < 0)
+        PlayerObstacle obstacle = GetComponent<PlayerObstacle>();
+        if (obstacle != null)
+        {
+            obstacle.ApplyLayerToColliders();
             return;
+        }
+
+        const string layerName = "Enemy";
+        int collisionLayer = LayerMask.NameToLayer(layerName);
+        if (collisionLayer < 0)
+        {
+            Debug.LogError($"{layerName}レイヤーが登録されていません", this);
+            return;
+        }
 
         foreach (Collider enemyCollider in GetComponentsInChildren<Collider>(true))
-            enemyCollider.gameObject.layer = enemyLayer;
+            enemyCollider.gameObject.layer = collisionLayer;
     }
 
     /// <summary>プールへ戻す前に攻撃を停止し、体力イベントの購読を解除する</summary>

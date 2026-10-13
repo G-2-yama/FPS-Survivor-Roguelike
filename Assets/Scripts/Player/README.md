@@ -69,6 +69,11 @@ GameScene用の設定は `Assets/Datas/Player/GameScene*Settings.asset` に保�
 接触ダメージは対象の最初のColliderが入ったときに一度だけ適用し、全部退出した後の再侵入で再び適用する
 プール返却や無効化時は対象から接触終了を通知し、古い状態を持ち越さない
 
+敵は既定ですべて接触領域から押し出される
+`PlayerObstacle` コンポーネントを例外オブジェクトに付けると、自身と子のColliderへ専用レイヤーを設定し、プレイヤー接触領域からの押し出し対象にも含めない
+`PlayerBody` はこのレイヤーと衝突し、`Enemy` レイヤーは衝突しない
+新しいレイヤーを使う場合は `TagManager` の名前と `DynamicsManager` の衝突設定を維持する
+
 ## 攻撃方式を追加する
 
 接触領域には `AttackIgnoredCollider` が付いている
