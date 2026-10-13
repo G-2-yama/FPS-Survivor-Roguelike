@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StepFire
   effectPrefab: {fileID: 0}
   prefab: {fileID: 4004365500606963686, guid: 146794b6f28d842409f5a4e164da888b, type: 3}
-  Offset: {x: 0, y: -2, z: 0}
+  Offset: {x: 0, y: 0, z: 0}
   stepInterval: 5
