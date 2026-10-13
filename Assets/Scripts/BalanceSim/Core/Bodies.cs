@@ -5,7 +5,6 @@ namespace BalanceSim
     public enum Presence
     {
         Active,
-        Fallen,
         Released,
     }
 

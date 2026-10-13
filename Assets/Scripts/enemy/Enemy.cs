@@ -60,6 +60,7 @@ public class Enemy : PoolableObject, IDamageable
     public void SetSpawner(EnemyGenerator generator)
     {
         this.generator = generator;
+        enemyBrain.SetSpawner(generator);
     }
 
 

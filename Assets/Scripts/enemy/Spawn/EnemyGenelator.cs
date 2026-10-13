@@ -23,6 +23,15 @@ public class EnemyGenerator : MonoBehaviour
     /// <summary>ゲーム開始時に設定を反映して更新を開始する</summary>
     [SerializeField] private int maxEnemyCount = 10;
 
+    [Tooltip("プレイヤーからこの距離より離れた敵を、生成と同じ位置の決め方で移し直す。spawnRadius より大きく、ステージのタイルが入れ替わる距離より小さくする")]
+    [SerializeField, Min(0f)] private float relocateDistance = 85f;
+
+    [Tooltip("プレイヤーよりこの高さ以上低くなった敵（足場から落ちた敵）を移し直す")]
+    [SerializeField, Min(0f)] private float fallRelocateDepth = 30f;
+
+    public float RelocateDistance => relocateDistance;
+    public float FallRelocateDepth => fallRelocateDepth;
+
     private void Start()
     {
         phases.Sort((a, b) => a.StartTime.CompareTo(b.StartTime));
@@ -90,8 +99,7 @@ public class EnemyGenerator : MonoBehaviour
         for (int i = 0; i < maxSpawnTry; i++)
         {
             // Playerの向いている方向を基準にスポーン方向を決定
-            Vector3 direction = GetSpawnDirection();
-            Vector3 spawnPosition = transform.position + direction * spawnRadius;
+            Vector3 spawnPosition = GetSpawnPosition();
 
             // 敵の最大数を超えたら最も遠い敵を削除
             if (activeEnemies.Count >= maxEnemyCount)
@@ -133,6 +141,25 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
     /// <summary>生成位置が他の物体と重ならないか確認する</summary>
+
+    public bool TryGetRelocatePosition(out Vector3 position)
+    {
+        for (int i = 0; i < maxSpawnTry; i++)
+        {
+            position = GetSpawnPosition();
+
+            if (IsSpawnable(position))
+                return true;
+        }
+
+        position = default;
+        return false;
+    }
+
+    private Vector3 GetSpawnPosition()
+    {
+        return transform.position + GetSpawnDirection() * spawnRadius;
+    }
 
     private bool IsSpawnable(Vector3 position)
     {

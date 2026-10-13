@@ -210,6 +210,7 @@ namespace BalanceSim.Editor
                 spawnRadius = SerializedReader.Float(generator, "spawnRadius"),
                 maxSpawnTry = SerializedReader.Int(generator, "maxSpawnTry"),
                 maxEnemyCount = SerializedReader.Int(generator, "maxEnemyCount"),
+                relocateDistance = SerializedReader.Float(generator, "relocateDistance"),
             };
 
             SerializedProperty directions = SerializedReader.Prop(generator, "spawnDirections");

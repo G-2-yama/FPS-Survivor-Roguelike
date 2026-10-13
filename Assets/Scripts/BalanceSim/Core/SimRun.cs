@@ -356,9 +356,7 @@ namespace BalanceSim
                     continue;
                 }
 
-                float sqrDistance = enemy.Presence == Presence.Fallen
-                    ? float.PositiveInfinity
-                    : (enemy.Position - _player.Position).SqrLength;
+                float sqrDistance = (enemy.Position - _player.Position).SqrLength;
                 if (sqrDistance > maxSqrDistance)
                 {
                     maxSqrDistance = sqrDistance;
@@ -558,7 +556,7 @@ namespace BalanceSim
                 {
                     enemy.InCombat = true;
                 }
-                else
+                else if (!TryRelocate(enemy, distance))
                 {
                     Movement.Apply(enemy, def.chase, _player.Position, _player.Facing, dt, _terrain);
                 }
@@ -576,6 +574,29 @@ namespace BalanceSim
 
             Movement.Integrate(enemy, def.linearDamping, def.useGravity, dt, _terrain);
             UpdateAttack(enemy, time);
+        }
+
+        private bool TryRelocate(EnemyAgent enemy, float distance)
+        {
+            SimGeneratorDef def = enemy.Generator.Def;
+            if (distance <= def.relocateDistance)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < def.maxSpawnTry; i++)
+            {
+                Vec2 position = _player.Position + PickSpawnDirection(def) * def.spawnRadius;
+                if (IsSpawnable(position))
+                {
+                    enemy.Position = position;
+                    enemy.Velocity = Vec2.Zero;
+                    enemy.Height = 0f;
+                    enemy.VerticalVelocity = 0f;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void TryAttack(EnemyAgent enemy, float time)
@@ -964,32 +985,6 @@ namespace BalanceSim
 
             _gridX = gridX;
             _gridZ = gridZ;
-
-            foreach (EnemyAgent enemy in _enemies)
-            {
-                if (enemy.Presence != Presence.Active)
-                {
-                    continue;
-                }
-
-                float shiftX = WindowShift(enemy.Position.X, gridX);
-                float shiftZ = WindowShift(enemy.Position.Z, gridZ);
-                if (shiftX == 0f && shiftZ == 0f)
-                {
-                    continue;
-                }
-
-                if (enemy.Def.hasEnemyComponent)
-                {
-                    enemy.Position += new Vec2(shiftX, shiftZ);
-                    enemy.Velocity = Vec2.Zero;
-                }
-                else
-                {
-                    enemy.Presence = Presence.Fallen;
-                    enemy.AttackRunning = false;
-                }
-            }
 
             foreach (PickupAgent pickup in _pickups)
             {
