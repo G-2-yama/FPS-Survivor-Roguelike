@@ -16,3 +16,4 @@ MonoBehaviour:
   prefab: {fileID: 6114629737088864950, guid: f8cda3f3c2e39e24583edb253038c8a0, type: 3}
   Offset: {x: 0, y: -0.5, z: 0}
   projectileCount: 6
+  isTracking: 0

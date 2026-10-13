@@ -35,6 +35,16 @@ public class StepFire : FireModeData
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         bullet.transform.rotation = rotation;
-        bullet.transform.position = Camera.main.transform.position + rotation * Offset;
+        bullet.transform.position = GetFootPosition(weaponOwner) + rotation * Offset;
+    }
+
+    private static Vector3 GetFootPosition(Player weaponOwner)
+    {
+        Vector3 position = weaponOwner.transform.position;
+        if (weaponOwner.TryGetComponent(out CharacterController controller))
+        {
+            position.y = controller.bounds.min.y;
+        }
+        return position;
     }
 }
