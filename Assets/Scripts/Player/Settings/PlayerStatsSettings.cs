@@ -61,6 +61,14 @@ public sealed class PlayerStatsSettings : PlayerSettingsAsset
     private float knockbackForceMultiplier = 1f;
 
     /// <summary>武器のノックバック量に掛ける倍率 1で等倍</summary>
+
+
+    [Header("Pickup")]
+    [SerializeField, Min(0f), PlayerSettingLabel("Pickup Radius"), Tooltip("アイテムを引き寄せ始める距離")]
+    private float pickupRadius = 3f;
+
+    /// <summary>アイテムを引き寄せ始める距離</summary>
+    public float PickupRadius => pickupRadius;
     public float KnockbackForceMultiplier => knockbackForceMultiplier;
 
     /// <summary>ステータスの数値と関連する条件を検証する</summary>
@@ -75,6 +83,7 @@ public sealed class PlayerStatsSettings : PlayerSettingsAsset
         if (!IsFinite(dashCooldown) || dashCooldown < 0f) { error = "ダッシュ待ち時間の値が有効範囲外です"; return false; }
         if (!IsFinite(damageMultiplier) || damageMultiplier < 0f) { error = "攻撃倍率の値が有効範囲外です"; return false; }
         if (!IsFinite(knockbackForceMultiplier) || knockbackForceMultiplier < 0f) { error = "ノックバック倍率の値が有効範囲外です"; return false; }
+        if (!IsFinite(pickupRadius) || pickupRadius < 0f) { error = "Invalid pickup radius"; return false; }
         error = null;
         return true;
     }

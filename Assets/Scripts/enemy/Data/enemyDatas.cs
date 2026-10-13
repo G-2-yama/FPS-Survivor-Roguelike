@@ -33,10 +33,6 @@ public class EnemyConfig : ScriptableObject
     public AttackPattern AttackPattern;
 
 
-    public void IncreaseDistance(float amount)
-    {
-        currentdistance += amount;
-    }
     public void Initialize()
     {
         currentdistance = engagedistance;

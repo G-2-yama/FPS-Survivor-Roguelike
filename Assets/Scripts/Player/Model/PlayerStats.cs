@@ -14,6 +14,7 @@ public sealed class PlayerStats
     public float DashCooldown { get; private set; }
     public float DamageMultiplier { get; private set; }
     public float KnockbackForceMultiplier { get; private set; }
+    public float PickupRadius { get; private set; }
 
     /// <summary>初期値をコピーし、共有SOを書き換えずに強化できる状態を作る</summary>
     public PlayerStats(PlayerStatsSettings baseStats)
@@ -27,6 +28,7 @@ public sealed class PlayerStats
         DashCooldown = baseStats.DashCooldown;
         DamageMultiplier = baseStats.DamageMultiplier;
         KnockbackForceMultiplier = baseStats.KnockbackForceMultiplier;
+        PickupRadius = baseStats.PickupRadius;
     }
 
     /// <summary>体力モデルを唯一の最大HPとして更新する</summary>
@@ -47,4 +49,6 @@ public sealed class PlayerStats
     public void AddDamageMultiplier(float value) => DamageMultiplier = Mathf.Max(0f, DamageMultiplier + value);
     /// <summary>ノックバック倍率を加算する</summary>
     public void AddKnockbackForceMultiplier(float value) => KnockbackForceMultiplier = Mathf.Max(0f, KnockbackForceMultiplier + value);
+    /// <summary>アイテム吸引距離を加算し、0未満にならないようにする</summary>
+    public void AddPickupRadius(float value) => PickupRadius = Mathf.Max(0f, PickupRadius + value);
 }

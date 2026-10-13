@@ -6,20 +6,26 @@ namespace BalanceSim.Editor
 {
     public sealed class PrefabReader
     {
+        public const string PickupRangeKey = "PickupRadius";
+
         private readonly HashSet<EnemyConfig> _initializedConfigs;
         private readonly ProjectileReader _projectiles;
         private readonly List<string> _warnings;
+        private readonly float _pickupRadius;
+        private readonly PickupMagnet _pickupMagnet;
         private readonly Dictionary<string, GameObject> _enemySources = new();
         private readonly Dictionary<string, GameObject> _pickupSources = new();
 
         public List<SimEnemyDef> Enemies { get; } = new();
         public List<SimPickupDef> Pickups { get; } = new();
 
-        public PrefabReader(HashSet<EnemyConfig> initializedConfigs, ProjectileReader projectiles, List<string> warnings)
+        public PrefabReader(HashSet<EnemyConfig> initializedConfigs, ProjectileReader projectiles, List<string> warnings, float pickupRadius, PickupMagnet pickupMagnet)
         {
             _initializedConfigs = initializedConfigs;
             _projectiles = projectiles;
             _warnings = warnings;
+            _pickupRadius = pickupRadius;
+            _pickupMagnet = pickupMagnet;
         }
 
         public string AddEnemy(GameObject prefab)
@@ -302,14 +308,12 @@ namespace BalanceSim.Editor
                     return null;
             }
 
-            var brain = SerializedReader.Ref<EnemyBrain>(item, "enemyBrain");
-            if (brain != null && brain.Config != null)
-            {
-                def.rangeKey = brain.Config.name;
-                def.baseRange = EngageDistance(brain.Config);
-                def.chase = ReadMovement(brain.Config.chaseMovedata);
-                def.combat = ReadMovement(brain.Config.combatMovedata);
-            }
+            def.rangeKey = PickupRangeKey;
+            def.baseRange = _pickupRadius;
+            def.chase = new SimMovementDef { kind = SimMovementKind.Stop };
+            def.combat = _pickupMagnet != null
+                ? new SimMovementDef { kind = SimMovementKind.Item, chaseSpeed = SerializedReader.Float(_pickupMagnet, "pullSpeed") }
+                : new SimMovementDef { kind = SimMovementKind.Stop };
 
             Pickups.Add(def);
             return prefab.name;
@@ -333,10 +337,6 @@ namespace BalanceSim.Editor
                     move.kind = SimMovementKind.Toward;
                     move.acceleration = SerializedReader.Float(toward, "acceleration");
                     move.maxSpeed = SerializedReader.Float(toward, "maxSpeed");
-                    break;
-                case ItemMovement item:
-                    move.kind = SimMovementKind.Item;
-                    move.chaseSpeed = item.ChaseSpeed;
                     break;
                 case OrbitMovement orbit:
                     move.kind = SimMovementKind.Orbit;

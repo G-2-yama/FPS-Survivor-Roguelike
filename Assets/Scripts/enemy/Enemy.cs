@@ -177,8 +177,15 @@ public class Enemy : PoolableObject, IDamageable
         if (prefab != null)
         {
             GameObject item = PoolManager.Instance.Get(prefab);
-            item.transform.position = transform.position;
-            item.transform.rotation = transform.rotation;
+            if (item.TryGetComponent(out PickupTriggerItem pickup))
+            {
+                pickup.PlaceOnGround(transform.position, transform);
+            }
+            else
+            {
+                item.transform.position = transform.position;
+                item.transform.rotation = transform.rotation;
+            }
         }
         if(DestroyDamagePrefab != null)
         {

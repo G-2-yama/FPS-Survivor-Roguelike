@@ -1106,7 +1106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::scriptableinitiarised
   enemylist:
-  - {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}
   - {fileID: 11400000, guid: 00a397677e7091148a6750e1a9398700, type: 2}
   - {fileID: 11400000, guid: e6761e8398702f34d9fcd3a83225f762, type: 2}
   - {fileID: 11400000, guid: 8301bec7f4cd28848aa8ff22632f6a21, type: 2}
@@ -3978,6 +3977,7 @@ GameObject:
   - component: {fileID: 275487195}
   - component: {fileID: 2000011100}
   - component: {fileID: 275487198}
+  - component: {fileID: 275487199}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -4504,6 +4504,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d91b3928fd43844ab7b540c1e4f973e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimedBuffManager
+--- !u!114 &275487199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd29e46936978a44a4cffad231058d2, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PickupMagnet
+  pullSpeed: 80
+  maxHeight: 2
 --- !u!1 &283540922
 GameObject:
   m_ObjectHideFlags: 0
