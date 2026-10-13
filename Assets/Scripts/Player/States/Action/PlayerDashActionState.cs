@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// プレイヤーがダッシュしている動作ステート
@@ -19,6 +19,9 @@ public class PlayerDashActionState : PlayerActionState
     /// ダッシュ動作の残り時間
     /// </summary>
     private float dashTimer;
+
+    /// <summary>開始時に確定した強化後のダッシュ速度</summary>
+    private float dashSpeed;
 
     /// <summary>
     /// 次のダッシュ開始までの残り待ち時間
@@ -70,7 +73,8 @@ public class PlayerDashActionState : PlayerActionState
             return;
         }
 
-        dashTimer = context.Config.DashDuration;
+        dashTimer = context.Player.Stats.DashDuration;
+        dashSpeed = context.Player.Stats.DashDistance / dashTimer;
         context.Locomotion.ClearHorizontalVelocity();
         context.ActionTrail?.Begin(PlayerActionTrail.ActionType.Dash);
         context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.Dash);
@@ -82,7 +86,7 @@ public class PlayerDashActionState : PlayerActionState
     public override void Update()
     {
         float dashStep = Mathf.Min(Time.deltaTime, dashTimer);
-        context.Locomotion.MoveDash(dashDirection, dashStep);
+        context.Locomotion.MoveDash(dashDirection, dashStep, dashSpeed);
         dashTimer -= dashStep;
 
         if (dashTimer > 0f)
@@ -100,7 +104,7 @@ public class PlayerDashActionState : PlayerActionState
     {
         dashTimer = 0f;
         dashDirection = Vector3.zero;
-        cooldownTimer = context.Config.DashCooldown;
+        cooldownTimer = context.Player.Stats.DashCooldown;
         context.ActionTrail?.End(PlayerActionTrail.ActionType.Dash);
         context.ActionConcentrationLine?.End(PlayerActionConcentrationLine.ActionType.Dash);
     }

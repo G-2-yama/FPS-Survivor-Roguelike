@@ -1,5 +1,5 @@
-﻿/// <summary>
-/// スライディングする動作ステート。
+/// <summary>
+/// スライディングする動作ステート
 /// </summary>
 public class PlayerSlideActionState : PlayerActionState
 {
@@ -9,20 +9,22 @@ public class PlayerSlideActionState : PlayerActionState
     private UnityEngine.Vector3 originalControllerCenter;
 
     /// <summary>
-    /// スライディング動作ステートを初期化する。
+    /// スライディング動作ステートを初期化する
     /// </summary>
-    /// <param name="context">プレイヤー制御コンテキスト。</param>
-    /// <param name="actionStateMachine">動作ステートマシン。</param>
+    /// <param name="context">プレイヤー制御コンテキスト</param>
+    /// <param name="actionStateMachine">動作ステートマシン</param>
     public PlayerSlideActionState(
         PlayerContext context,
         PlayerActionStateMachine actionStateMachine)
         : base(context, actionStateMachine) { }
 
+    /// <summary>接地していてスライドを開始できるか確認する</summary>
     public bool CanEnter()
     {
         return context.Motor.IsGrounded();
     }
 
+    /// <summary>本体寸法を保存し、スライドの方向と姿勢を設定する</summary>
     public override void Enter()
     {
         originalControllerHeight = context.Motor.ControllerHeight;
@@ -31,7 +33,7 @@ public class PlayerSlideActionState : PlayerActionState
         UnityEngine.Vector3 horizontalVelocity = context.Motor.HorizontalVelocity;
         horizontalVelocity.y = 0f;
 
-        if (horizontalVelocity.magnitude >= context.Config.SlideMinInertiaSpeed)
+        if (horizontalVelocity.magnitude >= context.ControlSettings.SlideMinInertiaSpeed)
         {
             slideDirection = horizontalVelocity.normalized;
         }
@@ -47,12 +49,13 @@ public class PlayerSlideActionState : PlayerActionState
             slideDirection = UnityEngine.Vector3.forward;
         }
 
-        context.Motor.SetControllerHeight(originalControllerHeight * 0.5f);
+        context.Motor.SetControllerHeight(originalControllerHeight * context.Motor.SlideHeightMultiplier);
         context.ViewOffset.SetSlideActive(true);
         context.ActionTrail?.Begin(PlayerActionTrail.ActionType.Slide);
         context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.Slide);
     }
 
+    /// <summary>スライドの継続条件と旋回を処理し、移動を適用する</summary>
     public override void Update()
     {
         if (!context.Controls.CrouchHeld || !context.Motor.IsGrounded())
@@ -63,7 +66,7 @@ public class PlayerSlideActionState : PlayerActionState
 
         if (context.Commands.TryConsumeJump() && context.TryJump())
         {
-            context.Motor.HorizontalVelocity = slideDirection * context.Config.SlideSpeed;
+            context.Motor.HorizontalVelocity = slideDirection * context.ControlSettings.SlideSpeed;
 
             if (context.Controls.CrouchHeld)
             {
@@ -77,7 +80,7 @@ public class PlayerSlideActionState : PlayerActionState
         if (context.Locomotion.TryGetMoveDirection(context.Controls.MoveInput, out UnityEngine.Vector3 targetDirection))
         {
             float maxRadiansDelta =
-                context.Config.SlideTurnRateDegreesPerSecond * UnityEngine.Mathf.Deg2Rad * UnityEngine.Time.deltaTime;
+                context.ControlSettings.SlideTurnRateDegreesPerSecond * UnityEngine.Mathf.Deg2Rad * UnityEngine.Time.deltaTime;
 
             slideDirection = UnityEngine.Vector3.RotateTowards(
                 slideDirection,
@@ -86,9 +89,10 @@ public class PlayerSlideActionState : PlayerActionState
                 0f);
         }
 
-        context.Locomotion.MoveSlide(slideDirection, context.Config.SlideSpeed, UnityEngine.Time.deltaTime);
+        context.Locomotion.MoveSlide(slideDirection, context.ControlSettings.SlideSpeed, UnityEngine.Time.deltaTime);
     }
 
+    /// <summary>通常時の本体寸法とカメラ演出へ戻す</summary>
     public override void Exit()
     {
         context.ViewOffset.SetSlideActive(false);

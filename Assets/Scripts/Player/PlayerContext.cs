@@ -1,6 +1,6 @@
 /// <summary>
-/// プレイヤー制御で共有するデータ参照をまとめる。
-/// 各システムはこのコンテキストだけを受け取り、MonoBehaviour へ直接依存しない。
+/// プレイヤー制御で共有するデータ参照をまとめる
+/// 各システムはこのコンテキストだけを受け取り、MonoBehaviour へ直接依存しない
 /// </summary>
 public class PlayerContext
 {
@@ -10,9 +10,9 @@ public class PlayerContext
     public Player Player { get; }
 
     /// <summary>
-    /// プレイヤー全体設定
+    /// 移動と入力方法に使用する操作設定
     /// </summary>
-    public PlayerConfig Config { get; }
+    public PlayerControlSettings ControlSettings { get; }
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
@@ -66,7 +66,7 @@ public class PlayerContext
     /// </summary>
     public PlayerContext(
         Player player,
-        PlayerConfig config,
+        PlayerControlSettings controlSettings,
         WeaponControllerManager weaponControllerManager,
         PlayerMotor motor,
         PlayerLocomotion locomotion,
@@ -80,7 +80,7 @@ public class PlayerContext
         PlayerCommandBuffer commands)
     {
         Player = player;
-        Config = config;
+        ControlSettings = controlSettings;
         WeaponControllerManager = weaponControllerManager;
         Motor = motor;
         Locomotion = locomotion;

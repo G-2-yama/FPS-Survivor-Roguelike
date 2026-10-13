@@ -3976,9 +3976,9 @@ GameObject:
   - component: {fileID: 275487191}
   - component: {fileID: 275487190}
   - component: {fileID: 275487195}
-  - component: {fileID: 275487197}
+  - component: {fileID: 2000011100}
   - component: {fileID: 275487198}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3998,7 +3998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   player: {fileID: 275487193}
-  playerConfig: {fileID: 275487191}
   playerRigidbody: {fileID: 275487192}
   weaponControllerManager: {fileID: 1417112577}
   cameraLookPivotTransform: {fileID: 330585546}
@@ -4384,41 +4383,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01b959c56312064aa8208e7523a91b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
-  walkSpeed: 7.5
-  runSpeed: 10
-  groundDeceleration: 30
-  groundAcceleration: 24
-  airDeceleration: 45
-  jumpHoldDuration: 0.2
-  jumpHoldMaxMultiplier: 1.2
-  gravity: -18
-  lookSensitivity: 0.08
-  gamepadLookSensitivity: 60
-  gamepadLookDeadzone: 0.25
-  minPitch: -80
-  maxPitch: 80
-  groundRayStartOffset: 0.5
-  groundCheckDistance: 2
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  jumpForce: 8
-  initialHP: 1000
-  dashDistance: 5.5
-  dashDuration: 0.12
-  dashCooldown: 0.5
-  slideSpeed: 13
-  slideMinInertiaSpeed: 1.5
-  slideTurnRateDegreesPerSecond: 30
-  fastFallEntrySpeed: 100
-  fastFallAcceleration: 90
-  fastFallTerminalSpeed: 35
-  slideCameraHeightMultiplier: 0.1
-  slideCameraHeightLerpSpeed: 12
-  sprintFieldOfViewIncrease: 6
-  slideFieldOfViewIncrease: 12
-  fieldOfViewIncreaseLerpSpeed: 10
-  fieldOfViewDecreaseLerpSpeed: 6
+  stats: {fileID: 11400000, guid: 9df07fc70c304da893579fd613105e64, type: 2}
+  control: {fileID: 11400000, guid: 1bd93abb39146289b5731e9127b1d772, type: 2}
+  collision: {fileID: 11400000, guid: 7b29a2c43d771bc1c2c9ab29f4c5bfa1, type: 2}
+  cameraSettings: {fileID: 11400000, guid: 44db9022776e0cebfc35339e4d9255de, type: 2}
+  progression: {fileID: 11400000, guid: 4c59cb08ab106886af5faf139ff6c417, type: 2}
 --- !u!54 &275487192
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4458,8 +4427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae42e02257d79f4bb0ec5ab323c17a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  exp: 0
-  expmanager: {fileID: 275487197}
+  initialExperience: 0
   config: {fileID: 275487191}
   inventory: {fileID: 1569679481}
   sounder: {fileID: 709705776}
@@ -4524,21 +4492,6 @@ MonoBehaviour:
   player: {fileID: 275487193}
   currentLevelText: {fileID: 342769816}
   currentLevelBar: {fileID: 951569190}
-  expmager: {fileID: 275487197}
---- !u!114 &275487197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275487184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf568c6c4fa27e64dbacd8e37d5db45a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::expmaneger
-  levelUpRequiredExp: 50
-  levelUpRate: 1.08
 --- !u!114 &275487198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31814,3 +31767,15 @@ SceneRoots:
   - {fileID: 419950868}
   - {fileID: 1653113032}
   - {fileID: 467297659}
+--- !u!114 &2000011100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275487184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5852f4cf6d743609670a35cbf530645, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollisionController

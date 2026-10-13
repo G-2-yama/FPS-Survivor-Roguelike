@@ -29,7 +29,7 @@ public class ChainFire : FireModeData
         foreach (var hit in hits)
         {
             // プレイヤー自身の接触判定を飛ばし、その先のヒット候補を調べる
-            if (hit.collider.GetComponent<PlayerEnemyPushZone>() != null)
+            if (AttackCollisionFilter.ShouldIgnore(hit.collider))
                 continue;
 
             if (!hit.collider.TryGetComponent(out IDamageable damageable))
@@ -80,9 +80,6 @@ public class ChainFire : FireModeData
         }
     }
 
-    /// <summary>
-    /// まだヒットしていない最も近いダメージ可能対象を探す
-    /// </summary>
     /// <summary>未処理のダメージ対象から最も近いColliderを探す</summary>
     /// <param name="originTarget">連鎖の現在の終点となる対象</param>
     /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
@@ -140,7 +137,7 @@ public class ChainFire : FireModeData
                 return;
             }
             damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
-           
+
         }
     }
 }

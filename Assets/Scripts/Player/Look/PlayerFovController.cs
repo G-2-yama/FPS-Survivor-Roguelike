@@ -9,10 +9,11 @@ public class PlayerFovController
     private const float MaximumFieldOfView = 179f;
 
     private readonly Camera playerCamera;
-    private readonly PlayerConfig settings;
+    private readonly PlayerCameraSettings settings;
     private readonly float defaultFieldOfView;
 
-    public PlayerFovController(Camera playerCamera, PlayerConfig settings)
+    /// <summary>カメラと視野角の演出設定を関連付け、通常時の視野角を保存する</summary>
+    public PlayerFovController(Camera playerCamera, PlayerCameraSettings settings)
     {
         this.playerCamera = playerCamera;
         this.settings = settings;

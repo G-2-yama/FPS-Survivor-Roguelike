@@ -1,4 +1,4 @@
-﻿using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -11,16 +11,14 @@ public class PlayerLevelView : MonoBehaviour
     /// <summary>
     /// 表示対象のプレイヤーレベルモデル
     /// </summary>
-    [SerializeField] private Player player;
+    [SerializeField, PlayerSettingLabel("Player"), Tooltip("経験値とレベルを表示するプレイヤー")] private Player player;
 
     /// <summary>
     /// 現在レベルを表示するテキスト
     /// </summary>
-    [SerializeField] private TMP_Text currentLevelText;
+    [SerializeField, PlayerSettingLabel("Current Level Text"), Tooltip("現在レベルを表示するテキスト")] private TMP_Text currentLevelText;
 
-    [SerializeField] private Image currentLevelBar;
-
-    [SerializeField] private ExpManager expmager;
+    [SerializeField, PlayerSettingLabel("Current Level Bar"), Tooltip("次のレベルアップまでの残余経験値を表示するImage")] private Image currentLevelBar;
 
     /// <summary>
     /// レベル変更通知を購読する
@@ -40,12 +38,13 @@ public class PlayerLevelView : MonoBehaviour
     {
         int level = player.Level;
         currentLevelText.text = $"Lv.{level}";
-        currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
+        currentLevelBar.fillAmount = (float)player.Exp / player.LevelUpRequiredExp;
     }
 
+    /// <summary>確定後の残余経験値と必要経験値からゲージを更新する</summary>
     private void UpdateLevelBar(float expGained)
     {
-        currentLevelBar.fillAmount = (float)player.Exp / expmager.LevelUpRequiredExp;
+        currentLevelBar.fillAmount = (float)player.Exp / player.LevelUpRequiredExp;
     }
 
     /// <summary>

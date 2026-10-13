@@ -20,14 +20,14 @@ public class HitScanData : FireModeData
         Vector3 endPoint = ray.origin + direction * maxRange;
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
-        
+
         RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         foreach (var hit in hits)
         {
             // プレイヤー所有の押し出し判定を飛ばし、その先の対象も検索する
-            if (hit.collider.GetComponent<PlayerEnemyPushZone>() != null)
+            if (AttackCollisionFilter.ShouldIgnore(hit.collider))
                 continue;
 
             if (hit.collider.TryGetComponent(out IDamageable damageable))
@@ -53,14 +53,14 @@ public class HitScanData : FireModeData
                 break;
             }
         }
-        
+
         if (tracerPrefab != null)
         {
             GameObject tracer = PoolManager.Instance.Get(tracerPrefab);
 
             tracer.GetComponent<Tracer>().Initialize(weapon.transform.position, endPoint, 0.1f);
         }
-        
+
     }
 
     /// <summary>武器能力を反映したダメージを対象へ適用する</summary>

@@ -41,6 +41,7 @@ public class Enemy : PoolableObject, IDamageable
     private bool isDead = false;
     private EnemyGenerator generator;
     private int finalDamage = 0;
+    private PlayerContactTarget contactTarget;
 
 
     /// <summary>敵の活動期間を管理する生成器を設定する</summary>
@@ -56,9 +57,9 @@ public class Enemy : PoolableObject, IDamageable
     /// <param name="knockbackForce">敵の状態へ渡すノックバック量</param>
     public void TakeDamage(int damage, float knockbackForce)
     {
-        
-        
-        // Damage処理
+
+
+        // ダメージ処理
         if (Health == null || isDead)
             return;
 
@@ -74,7 +75,7 @@ public class Enemy : PoolableObject, IDamageable
         Health.TakeDamage(config.Damagelange * damage);
         finalDamage = config.Damagelange * damage;
 
-        // Knockback処理
+        // ノックバック処理
         Target = enemyBrain.Target;
         if (Target != null)
         {
@@ -93,6 +94,12 @@ public class Enemy : PoolableObject, IDamageable
         damageEffectManager = DamageEffectManager.Instance;
         enemyBrain.ResetBrain();
         isDead = false;
+        if (contactTarget == null)
+        {
+            contactTarget = GetComponent<PlayerContactTarget>();
+            if (contactTarget == null) contactTarget = gameObject.AddComponent<PlayerContactTarget>();
+        }
+        contactTarget.BeginLife(enemyBrain.Rb, GetComponentInChildren<ToutchDamageController>());
 
         Health = new Health(config.MaxHp);
         Health.OnDamaged += HandleDamaged;
@@ -113,6 +120,7 @@ public class Enemy : PoolableObject, IDamageable
     /// <summary>プールへ戻す前に攻撃を停止し、体力イベントの購読を解除する</summary>
     public override void OnRelease()
     {
+        contactTarget?.Invalidate();
         attackController?.CancelAttack();
 
         if (Health != null)
@@ -138,6 +146,7 @@ public class Enemy : PoolableObject, IDamageable
         if (isDead) return;
 
         isDead = true;
+        contactTarget?.Invalidate();
         OnAnyKilled?.Invoke();
 
         StartCoroutine(DeathRoutine());

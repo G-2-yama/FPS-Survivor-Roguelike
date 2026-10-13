@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace BalanceSim.Editor
 {
+    /// <summary>シーンの設定をバランス検証用の入力データへ変換する</summary>
     public static class SimInputBuilder
     {
         private static readonly string[] InventorySlotFields =
@@ -16,6 +17,7 @@ namespace BalanceSim.Editor
             "leftWeapon", "rightWeapon", "leftAbility", "rightAbility", "leftAutoWeapon", "rightAutoWeapon",
         };
 
+        /// <summary>対象シーンと各調整ケースからシミュレーション入力を構築する</summary>
         public static void Build(BalanceSimSettings settings, IReadOnlyList<SimValueCase> cases, Action<int, SimInput> onBuilt,
             List<string> warnings, out string terrainSummary)
         {
@@ -66,6 +68,7 @@ namespace BalanceSim.Editor
             }
         }
 
+        /// <summary>1ケース分のプレイヤー、敵、地形、装備の設定を読み取る</summary>
         private static SimInput Build(BalanceSimSettings settings, Scene scene, TerrainSampler.Cache terrainCache, List<string> warnings, out string terrainSummary)
         {
             var input = new SimInput
@@ -131,9 +134,12 @@ namespace BalanceSim.Editor
             return input;
         }
 
+        /// <summary>共有設定SOから開始時のプレイヤー能力と成長値を読み取る</summary>
         private static void ReadPlayer(Scene scene, Player player, SimInput input, WeaponCollector weapons, List<string> warnings)
         {
             PlayerConfig config = player.Config;
+            if (config == null) throw new InvalidOperationException("プレイヤー設定の入口がありません");
+            if (!config.Validate(out string configurationError)) throw new InvalidOperationException(configurationError);
             var controller = player.GetComponent<CharacterController>();
             if (controller == null)
             {
@@ -141,9 +147,9 @@ namespace BalanceSim.Editor
             }
 
             Vector3 position = player.transform.position;
-            float footY = controller != null
-                ? player.transform.TransformPoint(controller.center).y - controller.height * 0.5f * player.transform.lossyScale.y
-                : position.y;
+            Vector3 scale = player.transform.lossyScale;
+            float footY = player.transform.TransformPoint(config.Collision.Center).y
+                - config.Collision.Height * 0.5f * Mathf.Abs(scale.y);
             Camera camera = FindActive<Camera>(scene).FirstOrDefault(c => c.CompareTag("MainCamera"));
             float eyeHeight;
             if (camera == null)
@@ -161,16 +167,16 @@ namespace BalanceSim.Editor
                 eyeHeight = cameraPosition.y - footY;
             }
 
-            var expManager = SerializedReader.Ref<ExpManager>(player, "expmanager");
+
             input.player = new SimPlayerDef
             {
                 x = position.x,
                 z = position.z,
-                radius = controller != null ? controller.radius : 0.5f,
-                maxHp = config.InitialHP,
-                runSpeed = config.RunSpeed,
-                levelUpRequiredExp = expManager.LevelUpRequiredExp,
-                levelUpRate = SerializedReader.Float(expManager, "levelUpRate"),
+                radius = config.Collision.Radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z)),
+                maxHp = config.Stats.InitialHP,
+                runSpeed = config.Stats.RunSpeed,
+                levelUpRequiredExp = config.Progression.LevelUpRequiredExp,
+                levelUpRate = config.Progression.LevelUpRate,
                 eyeHeight = eyeHeight,
                 pivotHeight = position.y - footY,
             };
@@ -184,6 +190,7 @@ namespace BalanceSim.Editor
             }
         }
 
+        /// <summary>敵生成器の設定とフェーズをシミュレーション用に変換する</summary>
         private static SimGeneratorDef ReadGenerator(EnemyGenerator generator, Player player, PrefabReader prefabs, List<string> warnings)
         {
             Vector3 offset = generator.transform.position - player.transform.position;
@@ -222,6 +229,7 @@ namespace BalanceSim.Editor
             return def;
         }
 
+        /// <summary>敵の生成フェーズを設定済みPrefabの参照とともに変換する</summary>
         private static SimPhase ToSimPhase(PhaseData phase, PrefabReader prefabs, List<string> warnings)
         {
             var simPhase = new SimPhase
@@ -253,6 +261,7 @@ namespace BalanceSim.Editor
             return simPhase;
         }
 
+        /// <summary>強化候補の武器とアイテムをシミュレーション用に登録する</summary>
         private static void ReadUpgrades(UpgradeManager manager, SimInput input, WeaponCollector weapons, List<string> warnings)
         {
             var items = new ItemCollector(input.items, warnings);
@@ -300,6 +309,7 @@ namespace BalanceSim.Editor
             }
         }
 
+        /// <summary>シーン内の有効な対象が1つだけであることを確認して取得する</summary>
         private static T Single<T>(Scene scene) where T : Component
         {
             List<T> found = FindActive<T>(scene);
@@ -314,6 +324,7 @@ namespace BalanceSim.Editor
             return found[0];
         }
 
+        /// <summary>対象シーンに属する有効なコンポーネントを列挙する</summary>
         private static List<T> FindActive<T>(Scene scene) where T : Component
         {
             return scene.GetRootGameObjects()
@@ -322,6 +333,7 @@ namespace BalanceSim.Editor
                 .ToList();
         }
 
+        /// <summary>武器と強化先を重複させずにシミュレーション入力へ集約する</summary>
         private sealed class WeaponCollector
         {
             private readonly List<SimWeaponDef> _weapons;
@@ -329,6 +341,7 @@ namespace BalanceSim.Editor
             private readonly List<string> _warnings;
             private readonly Dictionary<string, WeaponData> _known = new();
 
+            /// <summary>武器一覧、弾の読取器、警告の保存先を関連付ける</summary>
             public WeaponCollector(List<SimWeaponDef> weapons, ProjectileReader projectiles, List<string> warnings)
             {
                 _weapons = weapons;
@@ -336,6 +349,7 @@ namespace BalanceSim.Editor
                 _warnings = warnings;
             }
 
+            /// <summary>武器とその強化先を一覧へ登録する</summary>
             public void Add(WeaponData data)
             {
                 while (data != null && !data.IsEmpty)
@@ -373,6 +387,7 @@ namespace BalanceSim.Editor
                 }
             }
 
+            /// <summary>武器の攻撃方式をシミュレーションの攻撃定義へ変換する</summary>
             private SimFireModeDef ReadFireMode(WeaponData data)
             {
                 FireModeData mode = data.FireModeData;
@@ -445,6 +460,7 @@ namespace BalanceSim.Editor
                 return def;
             }
 
+            /// <summary>攻撃Prefabと発射位置の補正を読み取る</summary>
             private void ReadPrefabAndOffset(FireModeData mode, SimFireModeDef def, string offsetField)
             {
                 def.projectile = _projectiles.Add(SerializedReader.Ref<GameObject>(mode, "prefab"));
@@ -454,18 +470,21 @@ namespace BalanceSim.Editor
             }
         }
 
+        /// <summary>アイテムと強化先を重複させずにシミュレーション入力へ集約する</summary>
         private sealed class ItemCollector
         {
             private readonly List<SimItemDef> _items;
             private readonly List<string> _warnings;
             private readonly Dictionary<string, Item> _known = new();
 
+            /// <summary>アイテム一覧と警告の保存先を関連付ける</summary>
             public ItemCollector(List<SimItemDef> items, List<string> warnings)
             {
                 _items = items;
                 _warnings = warnings;
             }
 
+            /// <summary>アイテムとその強化先を一覧へ登録する</summary>
             public void Add(Item item)
             {
                 while (item != null)
@@ -485,6 +504,7 @@ namespace BalanceSim.Editor
                 }
             }
 
+            /// <summary>アイテム効果をシミュレーション用の定義へ変換する</summary>
             private SimItemDef Read(Item item)
             {
                 var def = new SimItemDef

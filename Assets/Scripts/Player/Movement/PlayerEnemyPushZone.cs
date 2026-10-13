@@ -1,180 +1,153 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// プレイヤーの接触領域に入った敵へダメージを与え、水平方向に押し出す
-/// </summary>
-[RequireComponent(typeof(CapsuleCollider))]
+/// <summary>敵の接触を対象単位で管理し、接触ダメージと水平押し出しを仲介する</summary>
+[RequireComponent(typeof(CapsuleCollider), typeof(AttackIgnoredCollider))]
 public sealed class PlayerEnemyPushZone : MonoBehaviour
 {
-    private readonly Dictionary<Enemy, HashSet<Collider>> overlappingColliders = new();
-    private readonly Dictionary<Enemy, float> enemyHorizontalRadii = new();
-    private readonly List<Enemy> staleEnemies = new();
-    private CapsuleCollider pushCollider;
-    private CharacterController playerController;
-    private Player player;
-
-    /// <summary>プレイヤーと接触領域を関連付け、Colliderを初期化する</summary>
-    /// <param name="targetPlayer">接触領域を所有するプレイヤー</param>
-    /// <param name="controller">領域の寸法を決めるCharacterController</param>
-    /// <param name="zoneLayer">敵の接触検知に使う専用レイヤー</param>
-    public void Initialize(Player targetPlayer, CharacterController controller, int zoneLayer)
+    /// <summary>1体の対象が領域に持つColliderと推定半径を保持する</summary>
+    private sealed class Contact
     {
-        player = targetPlayer;
-        playerController = controller;
+        public readonly HashSet<Collider> Colliders = new();
+        public float Radius;
+    }
+
+    private readonly Dictionary<PlayerContactTarget, Contact> contacts = new();
+    private readonly Dictionary<Collider, PlayerContactTarget> colliderOwners = new();
+    private readonly List<PlayerContactTarget> staleTargets = new();
+    private readonly List<Collider> staleColliders = new();
+    private CapsuleCollider pushCollider;
+    private CharacterController controller;
+    private Player player;
+    private PlayerCollisionSettings settings;
+
+    /// <summary>所有プレイヤー、現在の本体、開始時の設定を接触領域へ関連付ける</summary>
+    public void Initialize(Player owner, CharacterController characterController, PlayerCollisionSettings collisionSettings)
+    {
+        ClearContacts();
+        player = owner;
+        controller = characterController;
+        settings = collisionSettings;
         pushCollider = GetComponent<CapsuleCollider>();
-        gameObject.layer = zoneLayer;
         pushCollider.isTrigger = true;
         pushCollider.direction = 1;
+        // 他のレイヤーの除外設定を含め、接触領域は敵の検知だけに使用する
+        gameObject.layer = settings.PushZoneLayer;
+        pushCollider.includeLayers = settings.EnemyLayers;
+        pushCollider.excludeLayers = ~settings.EnemyLayers.value;
+        pushCollider.layerOverridePriority = 20;
         SyncCollider();
     }
 
-    /// <summary>接触領域を更新し、重なった敵をプレイヤーの外側へ押し出す</summary>
+    /// <summary>姿勢変更を反映し、無効なColliderを清掃して接触中の対象を押し出す</summary>
     private void FixedUpdate()
     {
-        if (playerController == null || pushCollider == null)
-            return;
-
+        if (controller == null || settings == null) return;
         SyncCollider();
-
-        staleEnemies.Clear();
-        foreach (Enemy enemy in overlappingColliders.Keys)
+        staleTargets.Clear();
+        foreach (var pair in contacts)
         {
-            if (enemy == null || !enemy.gameObject.activeInHierarchy)
-                staleEnemies.Add(enemy);
-            else
-                PushOutsidePlayer(enemy);
+            PlayerContactTarget target = pair.Key;
+            if (target == null || !target.IsAvailable) { staleTargets.Add(target); continue; }
+            staleColliders.Clear();
+            foreach (Collider collider in pair.Value.Colliders)
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                    staleColliders.Add(collider);
+            foreach (Collider collider in staleColliders)
+            {
+                pair.Value.Colliders.Remove(collider);
+                colliderOwners.Remove(collider);
+            }
+            if (pair.Value.Colliders.Count == 0) staleTargets.Add(target);
+            else PushOutsidePlayer(target, pair.Value.Radius);
         }
-
-        foreach (Enemy enemy in staleEnemies)
-        {
-            overlappingColliders.Remove(enemy);
-            enemyHorizontalRadii.Remove(enemy);
-        }
+        foreach (PlayerContactTarget target in staleTargets) ForgetTarget(target);
     }
 
-    /// <summary>侵入した敵を記録し、接触ダメージを一度だけ与えて押し出す</summary>
-    /// <param name="other">押し出し領域に入ったCollider</param>
-    private void OnTriggerEnter(Collider other)
+    /// <summary>侵入したColliderを登録し、最初の接触だけダメージを適用する</summary>
+    private void OnTriggerEnter(Collider other) => TrackContact(other);
+
+    /// <summary>Collider再有効化などで侵入通知を逃した場合も追跡を復元する</summary>
+    private void OnTriggerStay(Collider other) => TrackContact(other);
+
+    /// <summary>対象単位でColliderを集約し、同じ対象への二重ダメージを防ぐ</summary>
+    private void TrackContact(Collider other)
     {
-        Enemy enemy = other.GetComponentInParent<Enemy>();
-        if (enemy == null)
-            return;
-
-        bool firstCollider = !overlappingColliders.TryGetValue(enemy, out HashSet<Collider> colliders);
-        if (firstCollider)
+        if (settings == null || player == null || player.Health == null || player.Health.IsDead) return;
+        if ((settings.EnemyLayers.value & (1 << other.gameObject.layer)) == 0) return;
+        PlayerContactTarget target = other.GetComponentInParent<PlayerContactTarget>();
+        if (target == null || !target.IsAvailable) return;
+        if (!contacts.TryGetValue(target, out Contact contact))
         {
-            colliders = new HashSet<Collider>();
-            overlappingColliders.Add(enemy, colliders);
-            enemyHorizontalRadii[enemy] = GetHorizontalRadius(enemy);
-            ApplyContactDamage(enemy);
+            contact = new Contact { Radius = target.GetHorizontalRadius() };
+            contacts.Add(target, contact);
+            target.OnUnavailable += ForgetTarget;
+            ApplyContactDamage(target);
         }
-
-        colliders.Add(other);
-        PushOutsidePlayer(enemy);
+        contact.Colliders.Add(other);
+        colliderOwners[other] = target;
+        PushOutsidePlayer(target, contact.Radius);
     }
 
-    /// <summary>敵の最後のColliderが領域を出た時点で追跡を終了する</summary>
-    /// <param name="other">押し出し領域から出たCollider</param>
+    /// <summary>最後のColliderが離れた時点で対象への追跡を終了する</summary>
     private void OnTriggerExit(Collider other)
     {
-        Enemy enemy = other.GetComponentInParent<Enemy>();
-        if (enemy == null || !overlappingColliders.TryGetValue(enemy, out HashSet<Collider> colliders))
-            return;
-
-        colliders.Remove(other);
-        if (colliders.Count == 0)
-        {
-            overlappingColliders.Remove(enemy);
-            enemyHorizontalRadii.Remove(enemy);
-        }
+        // 親が変わった場合も侵入時に保存した所有者へ退出を通知する
+        if (!colliderOwners.TryGetValue(other, out PlayerContactTarget target)) return;
+        colliderOwners.Remove(other);
+        if (!contacts.TryGetValue(target, out Contact contact)) return;
+        contact.Colliders.Remove(other);
+        if (contact.Colliders.Count == 0) ForgetTarget(target);
     }
 
-    /// <summary>領域が無効になったとき接触状態を消去する</summary>
-    private void OnDisable()
+    /// <summary>プール返却、無効化、退出時に対象のすべての接触参照を解放する</summary>
+    private void ForgetTarget(PlayerContactTarget target)
     {
-        overlappingColliders.Clear();
-        enemyHorizontalRadii.Clear();
-        staleEnemies.Clear();
+        if (!contacts.TryGetValue(target, out Contact contact)) return;
+        foreach (Collider collider in contact.Colliders) colliderOwners.Remove(collider);
+        contacts.Remove(target);
+        if (target != null) target.OnUnavailable -= ForgetTarget;
     }
 
-    /// <summary>CharacterControllerの現在の寸法をTriggerカプセルへ反映する</summary>
+    /// <summary>無効化時に対象のイベント購読も含めて清掃する</summary>
+    private void OnDisable() => ClearContacts();
+
+    /// <summary>現在のすべての接触状態を破棄する</summary>
+    private void ClearContacts()
+    {
+        foreach (PlayerContactTarget target in contacts.Keys)
+            if (target != null) target.OnUnavailable -= ForgetTarget;
+        contacts.Clear();
+        colliderOwners.Clear();
+        staleTargets.Clear();
+        staleColliders.Clear();
+    }
+
+    /// <summary>現在の本体寸法と追加距離から検知カプセルを同期する</summary>
     private void SyncCollider()
     {
-        pushCollider.radius = playerController.radius;
-        pushCollider.height = Mathf.Max(playerController.height, playerController.radius * 2f);
-        pushCollider.center = playerController.center;
+        pushCollider.radius = controller.radius + settings.PushRadiusPadding;
+        pushCollider.height = Mathf.Max(controller.height, pushCollider.radius * 2f);
+        pushCollider.center = controller.center;
+        pushCollider.enabled = settings.PushEnabled || settings.ContactDamageEnabled;
     }
 
-    /// <summary>敵に設定された接触ダメージをプレイヤーへ適用する</summary>
-    /// <param name="enemy">接触ダメージを与える敵</param>
-    private void ApplyContactDamage(Enemy enemy)
+    /// <summary>設定が有効な場合だけ対象の接触ダメージを所有プレイヤーへ適用する</summary>
+    private void ApplyContactDamage(PlayerContactTarget target)
     {
-        if (player == null || enemy == null)
-            return;
-
-        ToutchDamageController touchDamage = enemy.GetComponentInChildren<ToutchDamageController>();
-        if (touchDamage != null)
-            player.TakeDamage(touchDamage.DamageAmount, 0f);
+        if (settings.ContactDamageEnabled) player.TakeDamage(target.ContactDamage, 0f);
     }
 
-    /// <summary>高さを保ったまま、重なった敵を水平方向へ押し出す</summary>
-    /// <param name="enemy">プレイヤーから離す敵</param>
-    private void PushOutsidePlayer(Enemy enemy)
+    /// <summary>通常の敵AIを維持し、重なりによる水平位置だけを補正する</summary>
+    private void PushOutsidePlayer(PlayerContactTarget target, float targetRadius)
     {
-        if (enemy == null || !enemy.TryGetComponent(out EnemyBrain brain) || brain.Rb == null)
-            return;
-
-        Rigidbody enemyBody = brain.Rb;
-        Vector3 playerCenter = transform.parent.TransformPoint(playerController.center);
-        Vector3 enemyPosition = enemyBody.position;
-        Vector3 offset = enemyPosition - playerCenter;
-        offset.y = 0f;
-
-        float distance = offset.magnitude;
-        if (!enemyHorizontalRadii.TryGetValue(enemy, out float enemyRadius))
-            enemyRadius = GetHorizontalRadius(enemy);
-
-        float minimumDistance = playerController.radius + enemyRadius;
-        if (distance >= minimumDistance)
-            return;
-
-        Vector3 direction = distance > 0.0001f
-            ? offset / distance
-            : GetFallbackDirection(enemy);
-
-        enemyPosition += direction * (minimumDistance - distance);
-        enemyBody.MovePosition(enemyPosition);
-    }
-
-    /// <summary>敵の通常Colliderから水平方向の半径を推定する</summary>
-    /// <param name="enemy">Colliderの境界を測定する敵</param>
-    /// <returns>最大の水平半径、通常Colliderがない場合は0</returns>
-    private static float GetHorizontalRadius(Enemy enemy)
-    {
-        float radius = 0f;
-        foreach (Collider enemyCollider in enemy.GetComponentsInChildren<Collider>())
-        {
-            if (enemyCollider == null || enemyCollider.isTrigger)
-                continue;
-
-            Bounds bounds = enemyCollider.bounds;
-            radius = Mathf.Max(radius, Mathf.Max(bounds.extents.x, bounds.extents.z));
-        }
-
-        return radius;
-    }
-
-    /// <summary>敵とプレイヤーの中心が一致した場合に使う水平方向を返す</summary>
-    /// <param name="enemy">向きを代替方向に使う敵</param>
-    /// <returns>正規化した水平方向</returns>
-    private Vector3 GetFallbackDirection(Enemy enemy)
-    {
-        Vector3 direction = enemy.transform.forward;
-        direction.y = 0f;
-        if (direction.sqrMagnitude < 0.0001f)
-            direction = Vector3.right;
-
-        return direction.normalized;
+        if (!settings.PushEnabled || player.Health.IsDead || !target.IsAvailable) return;
+        Vector3 scale = controller.transform.lossyScale;
+        float radius = (controller.radius + settings.PushRadiusPadding) * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
+        Vector3 position = target.Body.position;
+        Vector3 corrected = PlayerPushSolver.CorrectPosition(
+            controller.transform.TransformPoint(controller.center), position, radius + targetRadius, target.transform.forward);
+        if ((corrected - position).sqrMagnitude > 0.00000001f)
+            target.Body.MovePosition(corrected);
     }
 }

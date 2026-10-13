@@ -9,6 +9,7 @@ public class PlayerMotor
     /// 移動計算に使用するCharacterController
     /// </summary>
     private CharacterController characterController;
+    private readonly PlayerCollisionSettings settings;
 
     /// <summary>
     /// 水平方向の現在速度
@@ -21,14 +22,16 @@ public class PlayerMotor
     public float VerticalVelocity { get; set; }
     public float ControllerHeight => characterController.height;
     public Vector3 ControllerCenter => characterController.center;
+    public float SlideHeightMultiplier => settings.SlideHeightMultiplier;
 
     /// <summary>
     /// 移動処理に必要な参照を初期化する
     /// </summary>
     /// <param name="characterController">移動を適用するCharacterController</param>
-    public PlayerMotor(CharacterController characterController)
+    public PlayerMotor(CharacterController characterController, PlayerCollisionSettings settings)
     {
         this.characterController = characterController;
+        this.settings = settings;
     }
 
     /// <summary>
@@ -67,7 +70,7 @@ public class PlayerMotor
     /// <param name="wallNormal">接触した壁の法線</param>
     public void ResolveWallHit(Vector3 wallNormal)
     {
-        if (wallNormal.y > 0.1f)
+        if (wallNormal.y > settings.RecoverableGroundNormalY)
         {
             return;
         }
@@ -84,6 +87,7 @@ public class PlayerMotor
         VerticalVelocity = 0f;
     }
 
+    /// <summary>本体の底面を必要に応じて維持しながら高さを変更する</summary>
     public void SetControllerHeight(float newHeight, bool keepBottomAligned = true)
     {
         newHeight = Mathf.Max(newHeight, characterController.radius * 2f);
@@ -95,13 +99,17 @@ public class PlayerMotor
             center.y = bottom + (newHeight * 0.5f);
         }
 
+        characterController.stepOffset = Mathf.Min(settings.StepOffset, newHeight);
         characterController.height = newHeight;
         characterController.center = center;
     }
 
+    /// <summary>姿勢変更用の高さと中心を反映する</summary>
     public void SetControllerDimensions(float height, Vector3 center)
     {
-        characterController.height = Mathf.Max(height, characterController.radius * 2f);
+        float safeHeight = Mathf.Max(height, characterController.radius * 2f);
+        characterController.stepOffset = Mathf.Min(settings.StepOffset, safeHeight);
+        characterController.height = safeHeight;
         characterController.center = center;
     }
 }
