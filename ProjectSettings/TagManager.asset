@@ -13,9 +13,9 @@ TagManager:
   - UI
   - Enemy
   - Pickup
-  - 
-  - 
-  - 
+  - PlayerBody
+  - PlayerPushZone
+  - PlayerObstacle
   - 
   - 
   - 

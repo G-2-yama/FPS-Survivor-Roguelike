@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>所有者の武器設定と弾数と攻撃状態を管理する</summary>
 
 public class Weapon : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponView weaponView;
     public WeaponView WeaponView => weaponView;
 
+    [SerializeField, Tooltip("照準方向と弾の生成位置に使うプレイヤーカメラのTransform")]
+    private Transform aimTransform;
+    public Transform AimTransform => aimTransform;
+
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
     
@@ -24,9 +29,17 @@ public class Weapon : MonoBehaviour
     public WeaponStateMachine StateMachine => stateMachine;
 
     public bool HasWeapon => !weaponData.IsEmpty;
+    /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {
+        // 未設定のシーンでもカメラの補完はゲーム開始時だけに限定する
+        if (aimTransform == null)
+        {
+            Camera camera = Camera.main;
+            if (camera != null) aimTransform = camera.transform;
+        }
+        if (aimTransform == null) Debug.LogError("照準用Transformが設定されていません", this);
         stateMachine = new WeaponStateMachine(this);
         Equip(weaponData);
     }
@@ -79,7 +92,7 @@ public class Weapon : MonoBehaviour
     /// <returns>true: 攻撃できた / false: 攻撃できなかった</returns>
     public bool Fire()
     {
-        if (!HasWeapon || currentAmmo <= 0)
+        if (!HasWeapon || currentAmmo <= 0 || aimTransform == null)
         {
             return false;
         }

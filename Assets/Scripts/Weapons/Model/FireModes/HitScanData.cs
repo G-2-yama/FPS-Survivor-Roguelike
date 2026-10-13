@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>ヒットスキャンを行い、最初の有効な対象にダメージを与える</summary>
 [CreateAssetMenu(menuName = "Weapons/FireMode/HitScan")]
 public class HitScanData : FireModeData
 {
@@ -9,20 +10,27 @@ public class HitScanData : FireModeData
     [SerializeField] private GameObject tracerPrefab;
     [SerializeField] private TeamType targetTeam = TeamType.Enemy;
 
+    /// <summary>射線上を検索し、プレイヤー自身の接触判定を除外する</summary>
+    /// <param name="weapon">ダメージ値とトレーサー設定を持つ武器</param>
+    /// <param name="weaponOwner">武器の能力補正を受けるプレイヤー</param>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Vector3 direction = GetFireDirection(weapon);
-        Ray ray = new Ray(Camera.main.transform.position, direction);
+        Ray ray = new Ray(weapon.AimTransform.position, direction);
         Vector3 endPoint = ray.origin + direction * maxRange;
 
         Debug.DrawRay(ray.origin, ray.direction * maxRange, Color.red, 1f);
-        
+
         RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         foreach (var hit in hits)
         {
-            if (hit.collider.TryGetComponent(out IDamageable damageable))
+            // プレイヤー所有の押し出し判定を飛ばし、その先の対象も検索する
+            if (AttackCollisionFilter.ShouldIgnore(hit.collider))
+                continue;
+
+            if (DamageTargetRegistry.TryResolve(hit.collider, out IDamageable damageable))
             {
                 if ((damageable.TeamType & targetTeam) == 0)
                 {
@@ -32,7 +40,7 @@ public class HitScanData : FireModeData
 
                 TryEnableHitEffect(hit.point);
 
-                ApplyDamage(weapon, hit.collider, weaponOwner);
+                ApplyDamage(weapon, damageable, weaponOwner);
 
                 if(damageable.TeamType != TeamType.EnemyAmmo)
                 {
@@ -45,25 +53,22 @@ public class HitScanData : FireModeData
                 break;
             }
         }
-        
+
         if (tracerPrefab != null)
         {
-            GameObject tracer = PoolManager.Instance.Get(tracerPrefab);
+            PooledInstance tracer = PoolManager.Instance.Rent(tracerPrefab);
 
-            tracer.GetComponent<Tracer>().Initialize(weapon.transform.position, endPoint, 0.1f);
+            tracer.RequireTracer().Initialize(weapon.transform.position, endPoint, 0.1f);
         }
-        
+
     }
 
-    private void ApplyDamage(Weapon weapon, Collider hitCollider, Player weaponOwner)
+    /// <summary>武器能力を反映したダメージを対象へ適用する</summary>
+    /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
+    /// <param name="damageable">ヒットスキャンが選択したダメージ対象</param>
+    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
+    private void ApplyDamage(Weapon weapon, IDamageable damageable, Player weaponOwner)
     {
-        if(hitCollider.TryGetComponent(out IDamageable damageable))
-        {
-            if ((damageable.TeamType & targetTeam) == 0)
-            {
-                return;
-            }
-            damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
-        }
+        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }

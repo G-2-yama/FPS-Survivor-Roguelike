@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーの継続的な移動性能を扱うクラス。
-/// ここでいう Locomotion は姿勢そのものではなく、歩行中や空中移動中の速度更新を指す。
+/// プレイヤーの継続的な移動性能を扱うクラス
+/// ここでいう Locomotion は姿勢そのものではなく、歩行中や空中移動中の速度更新を指す
 /// </summary>
 public class PlayerLocomotion
 {
@@ -10,16 +10,6 @@ public class PlayerLocomotion
     /// 停止扱いにする最小の入力量
     /// </summary>
     private const float StopInputDeadzoneSqr = 0.0001f;
-
-    /// <summary>
-    /// 接地中に床へ吸い付けるための下向き速度
-    /// </summary>
-    private const float GroundedVerticalVelocity = -2f;
-
-    /// <summary>
-    /// 空中で逆方向へ切り返す時にゼロまで戻す目安時間
-    /// </summary>
-    private const float AirReverseToZeroTime = 0.5f;
 
     /// <summary>
     /// 移動入力をワールド座標へ変換する基準Transform
@@ -39,7 +29,7 @@ public class PlayerLocomotion
     /// <summary>
     /// プレイヤー移動設定
     /// </summary>
-    private PlayerConfig settings;
+    private PlayerControlSettings settings;
     private PlayerStats stats;
 
     /// <summary>
@@ -53,7 +43,7 @@ public class PlayerLocomotion
         Transform playerTransform,
         PlayerMotor motor,
         PlayerJumpController jumpController,
-        PlayerConfig settings,
+        PlayerControlSettings settings,
         PlayerStats stats)
     {
         this.playerTransform = playerTransform;
@@ -82,7 +72,7 @@ public class PlayerLocomotion
             }
             else
             {
-                float airAcceleration = moveSpeed / AirReverseToZeroTime;
+                float airAcceleration = moveSpeed / settings.AirReverseToZeroTime;
                 float currentHorizontalSpeed = motor.HorizontalVelocity.magnitude;
                 float targetHorizontalSpeed = Mathf.Max(moveSpeed, currentHorizontalSpeed);
                 Vector3 airborneTargetVelocity = move * targetHorizontalSpeed;
@@ -105,7 +95,7 @@ public class PlayerLocomotion
 
         if (isEffectivelyGrounded && motor.VerticalVelocity < 0f)
         {
-            motor.VerticalVelocity = GroundedVerticalVelocity;
+            motor.VerticalVelocity = settings.GroundedVerticalVelocity;
             jumpController.ClearJumpHold();
         }
 
@@ -115,7 +105,7 @@ public class PlayerLocomotion
 
         if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
         {
-            motor.VerticalVelocity = GroundedVerticalVelocity;
+            motor.VerticalVelocity = settings.GroundedVerticalVelocity;
         }
     }
 
@@ -143,13 +133,13 @@ public class PlayerLocomotion
     /// </summary>
     /// <param name="direction">正規化されたダッシュ方向</param>
     /// <param name="deltaTime">ダッシュ移動を適用する時間</param>
-    public void MoveDash(Vector3 direction, float deltaTime)
+    public void MoveDash(Vector3 direction, float deltaTime, float dashSpeed)
     {
-        float dashSpeed = settings.DashDistance / settings.DashDuration;
+
 
         if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
         {
-            motor.VerticalVelocity = GroundedVerticalVelocity;
+            motor.VerticalVelocity = settings.GroundedVerticalVelocity;
         }
         else
         {
@@ -159,11 +149,12 @@ public class PlayerLocomotion
         motor.MoveWithHorizontalVelocity(direction * dashSpeed, deltaTime);
     }
 
+    /// <summary>スライド速度と重力をモーターへ適用する</summary>
     public void MoveSlide(Vector3 direction, float speed, float deltaTime)
     {
         if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
         {
-            motor.VerticalVelocity = GroundedVerticalVelocity;
+            motor.VerticalVelocity = settings.GroundedVerticalVelocity;
         }
         else
         {
@@ -174,7 +165,7 @@ public class PlayerLocomotion
 
         if (motor.IsGrounded() && motor.VerticalVelocity < 0f)
         {
-            motor.VerticalVelocity = GroundedVerticalVelocity;
+            motor.VerticalVelocity = settings.GroundedVerticalVelocity;
         }
     }
 

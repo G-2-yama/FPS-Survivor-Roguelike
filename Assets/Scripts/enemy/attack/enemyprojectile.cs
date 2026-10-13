@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+/// <summary>敵の攻撃個体の体力と命中とドロップを管理する</summary>
 
 
 
+[RequireComponent(typeof(DamageTargetBinding))]
 public class enemyplojectileobject : PoolableObject, IDamageable
 {
+    /// <summary>ドロップするPrefabと選択時の重みを定義する</summary>
     [System.Serializable]
     public class DropData
     {
@@ -30,11 +33,13 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     protected int damage;
     protected float knockbackForce;
     private EnemyGenerator generator;
+    /// <summary>個体を生成した敵生成器を関連付ける</summary>
 
     public void SetSpawner(EnemyGenerator generator)
     {
         this.generator = generator;
     }
+    /// <summary>取得した個体へ今回の攻撃設定を渡す</summary>
 
     public void Initialize(int damage, float knockbackForce)
     {
@@ -42,6 +47,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         this.knockbackForce = knockbackForce;
       
     }
+    /// <summary>受けたダメージを個体の体力へ適用する</summary>
 
 
     public void TakeDamage(int damage, float knockbackForce)
@@ -61,6 +67,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
        
         health?.TakeDamage(config.Damagelange*damage);
     }
+    /// <summary>侵入したColliderとの接触処理を開始する</summary>
 
 
 
@@ -69,6 +76,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         if (hasHit) return;
         HandleHit(other);
     }
+    /// <summary>新しい活動期間の状態を準備する</summary>
 
     public override void OnGet()
     {
@@ -83,6 +91,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         }
 
     }
+    /// <summary>返却する個体の一時状態と購読を解除する</summary>
     
     public override void OnRelease()
     {
@@ -100,6 +109,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
             generator = null;
         }
     }
+    /// <summary>死亡した個体の通知と返却処理を開始する</summary>
 
     private void HandleDeath()
     {
@@ -112,6 +122,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
             Release();
         }
     }
+    /// <summary>保持済みの登録情報を使って対象への命中を処理する</summary>
 
     protected virtual void HandleHit(Collider collider)
     {
@@ -119,6 +130,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         deathType = DeathType.SelfDestruct;
         health?.TakeDamage(9999);
     }
+    /// <summary>死亡後の待機とドロップ生成を処理する</summary>
 
 
     private IEnumerator DeathRoutine()
@@ -129,8 +141,10 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         GameObject prefab = GetRandomDrop();
         if (prefab != null)
         {
-            GameObject item = PoolManager.Instance.Get(prefab);
-            if (item.TryGetComponent(out PickupTriggerItem pickup))
+            PooledInstance spawnedItem = PoolManager.Instance.Rent(prefab);
+            GameObject item = spawnedItem.GameObject;
+            PickupTriggerItem pickup = spawnedItem.Pickup;
+            if (pickup != null)
             {
                 pickup.PlaceOnGround(transform.position, transform);
             }
@@ -142,6 +156,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         }
         Release();
     }
+    /// <summary>設定された重みからドロップするPrefabを選ぶ</summary>
 
     private GameObject GetRandomDrop()
     {

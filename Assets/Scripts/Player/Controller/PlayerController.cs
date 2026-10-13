@@ -3,40 +3,41 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Unity から届く入力やライフサイクルイベントをプレイヤー制御へ中継する。
-/// ゲーム内データの更新は PlayerRuntime 側へ寄せ、MonoBehaviour は橋渡しに専念する。
+/// Unityから届く入力やライフサイクルイベントをプレイヤー制御へ中継する
+/// ゲーム内データの更新はPlayerRuntime側へ寄せ、MonoBehaviourは橋渡しに専念する
 /// </summary>
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(PlayerCollisionController))]
 public class PlayerController : MonoBehaviour
 {
+
     /// <summary>
     /// プレイヤーモデル
     /// </summary>
     [FormerlySerializedAs("playerHealth")]
-    [SerializeField] private Player player;
+    [SerializeField, PlayerSettingLabel("Player"), Tooltip("実行中の体力、成長、装備を保持するプレイヤー")] private Player player;
 
     /// <summary>
     /// プレイヤー全体設定
     /// </summary>
-    [SerializeField] private PlayerConfig playerConfig;
-   
+    private PlayerSettingsSnapshot settings;
+
     /// <summary>
     /// 物理挙動を無効化してCharacterController移動へ寄せるためのRigidbody
     /// </summary>
-    [SerializeField] private Rigidbody playerRigidbody;
+    [SerializeField, PlayerSettingLabel("Player Rigidbody"), Tooltip("本体にRigidbodyがある場合に指定する 開始時にKinematicへ設定する")] private Rigidbody playerRigidbody;
 
     /// <summary>
     /// 武器の入力・攻撃処理を管理するコントローラー
     /// </summary>
-    [SerializeField] private WeaponControllerManager weaponControllerManager;
+    [SerializeField, PlayerSettingLabel("Weapon Controller Manager"), Tooltip("入力と攻撃を管理する必須コンポーネント")] private WeaponControllerManager weaponControllerManager;
 
     /// <summary>
     /// カメラの上下視点を制御するためのTransform
     /// </summary>
     [FormerlySerializedAs("cameraPitchTransform")]
-    [SerializeField] private Transform cameraLookPivotTransform;
+    [SerializeField, PlayerSettingLabel("Camera Look Pivot Transform"), Tooltip("上下視点とスライド時の高さ補正を適用するTransform")] private Transform cameraLookPivotTransform;
 
-    [SerializeField] private Camera playerCamera;
+    [SerializeField, PlayerSettingLabel("Player Camera"), Tooltip("視野角演出を適用するカメラ 未指定なら子から取得する")] private Camera playerCamera;
 
     [Tooltip("ダッシュ・スライド・急降下時の軌跡 未設定の場合は軌跡を表示しません")]
     [SerializeField] private PlayerActionTrail actionTrail;
@@ -44,11 +45,13 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// ダッシュやスライディングなどのアクション中に集中線を表示するコンポーネント
     /// </summary>
-    [SerializeField] private PlayerActionConcentrationLine actionConcentrationLine;
+    [SerializeField, PlayerSettingLabel("Action Concentration Line"), Tooltip("ダッシュやスライドなどに連動する任意の演出")] private PlayerActionConcentrationLine actionConcentrationLine;
 
     /// <summary>
-    /// プレイヤー移動に使用するCharacterController
+    /// プレイヤーの衝突設定を適用するコンポーネント
     /// </summary>
+    [SerializeField, PlayerSettingLabel("Player Collision Controller"), Tooltip("プレイヤーの衝突設定を適用するコンポーネント")]
+    private PlayerCollisionController collisionController;
     private CharacterController playerCharacterController;
 
     /// <summary>
@@ -66,10 +69,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-       
+
         playerCharacterController = GetComponent<CharacterController>();
         player = ResolvePlayer();
-        playerConfig = ResolvePlayerConfig();
         cameraLookPivotTransform = ResolveCameraLookPivotTransform();
         playerCamera = ResolvePlayerCamera();
         actionTrail = ResolveActionTrail();
@@ -80,22 +82,30 @@ public class PlayerController : MonoBehaviour
             return;
         }
         player.InitializeIfNeeded();
+        if (player.Stats == null)
+        {
+            enabled = false;
+            return;
+        }
+        settings = player.Settings;
         PlayerStats stats = player.Stats;
+        collisionController.Initialize(player, settings.Collision);
 
         ConfigureRigidbodyForCharacterController();
+        BoostFireCullerRunner.SetCamera(playerCamera);
 
-        PlayerMotor motor = new PlayerMotor(playerCharacterController);
-        PlayerJumpController jumpController = new PlayerJumpController(motor, playerConfig,stats);
-        PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, playerConfig,stats);
-        PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, playerConfig);
-        PlayerViewOffsetController viewOffset = new PlayerViewOffsetController(cameraLookPivotTransform, playerConfig);
-        PlayerFovController fov = new PlayerFovController(playerCamera, playerConfig);
+        PlayerMotor motor = new PlayerMotor(playerCharacterController, settings.Collision);
+        PlayerJumpController jumpController = new PlayerJumpController(motor, settings.Control, stats);
+        PlayerLocomotion locomotion = new PlayerLocomotion(transform, motor, jumpController, settings.Control, stats);
+        PlayerLookController look = new PlayerLookController(transform, cameraLookPivotTransform, settings.Control);
+        PlayerViewOffsetController viewOffset = new PlayerViewOffsetController(cameraLookPivotTransform, settings.Camera);
+        PlayerFovController fov = new PlayerFovController(playerCamera, settings.Camera);
         PlayerControlState controls = new PlayerControlState();
         PlayerCommandBuffer commands = new PlayerCommandBuffer();
 
         PlayerContext context = new PlayerContext(
             player,
-            playerConfig,
+            settings.Control,
             weaponControllerManager,
             motor,
             locomotion,
@@ -143,6 +153,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
+        BoostFireCullerRunner.ClearCamera(playerCamera);
         if (player == null)
         {
             return;
@@ -156,7 +167,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.normal.y > 0.1f && hit.collider.GetComponentInParent<Enemy>() == null)
+        if (settings != null && hit.normal.y > settings.Collision.RecoverableGroundNormalY
+            && (settings.Collision.EnemyLayers.value & (1 << hit.collider.gameObject.layer)) == 0)
         {
             runtime?.HandleRecoverableGroundContact();
         }
@@ -172,26 +184,36 @@ public class PlayerController : MonoBehaviour
         runtime?.HandleDeath();
     }
 
+    /// <summary>移動入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemの移動入力コンテキスト</param>
     public void OnMove(InputAction.CallbackContext context)
     {
         inputRelay?.OnMove(context);
     }
 
+    /// <summary>ダッシュ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのダッシュ入力コンテキスト</param>
     public void OnSprint(InputAction.CallbackContext context)
     {
         inputRelay?.OnSprint(context);
     }
 
+    /// <summary>視点入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemの視点入力コンテキスト</param>
     public void OnLook(InputAction.CallbackContext context)
     {
         inputRelay?.OnLook(context);
     }
 
+    /// <summary>ジャンプ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのジャンプ入力コンテキスト</param>
     public void OnJump(InputAction.CallbackContext context)
     {
         inputRelay?.OnJump(context);
     }
 
+    /// <summary>しゃがみ入力をプレイヤー入力リレーへ渡す</summary>
+    /// <param name="context">Input Systemのしゃがみ入力コンテキスト</param>
     public void OnCrouch(InputAction.CallbackContext context)
     {
         inputRelay?.OnCrouch(context);
@@ -209,15 +231,16 @@ public class PlayerController : MonoBehaviour
             return false;
         }
 
-        if (playerConfig == null)
-        {
-            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(playerConfig)}.", this);
-            return false;
-        }
 
         if (weaponControllerManager == null)
         {
             Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(weaponControllerManager)}.", this);
+            return false;
+        }
+
+        if (collisionController == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} on {name} requires {nameof(collisionController)}.", this);
             return false;
         }
 
@@ -267,6 +290,7 @@ public class PlayerController : MonoBehaviour
         return null;
     }
 
+    /// <summary>設定済みのカメラか子オブジェクトのカメラを取得する</summary>
     private Camera ResolvePlayerCamera()
     {
         if (playerCamera != null)
@@ -288,19 +312,6 @@ public class PlayerController : MonoBehaviour
         }
 
         return GetComponent<Player>();
-    }
-
-    /// <summary>
-    /// プレイヤー設定を解決する
-    /// </summary>
-    private PlayerConfig ResolvePlayerConfig()
-    {
-        if (playerConfig != null)
-        {
-            return playerConfig;
-        }
-
-        return GetComponent<PlayerConfig>();
     }
 
     /// <summary>

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1056760503474149836}
   - component: {fileID: 4915692453184951791}
   - component: {fileID: 5538543393594772651}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: basicammo(enemy)
   m_TagString: Untagged
@@ -163,3 +164,18 @@ MonoBehaviour:
   exp: {fileID: 0}
   whiteFlash: {fileID: 0}
   deathDelay: 0.1
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7491390756978583155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 5538543393594772651}
+  targetColliders:
+  - {fileID: 1056760503474149836}

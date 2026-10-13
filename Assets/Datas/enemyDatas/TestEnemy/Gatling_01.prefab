@@ -211,6 +211,8 @@ GameObject:
   - component: {fileID: 7884487320096986353}
   - component: {fileID: 1881425027292726100}
   - component: {fileID: 7712950183460212701}
+  - component: {fileID: 2000020000}
+  - component: {fileID: 7212719666412745016}
   m_Layer: 6
   m_Name: Gatling_01
   m_TagString: Untagged
@@ -303,6 +305,10 @@ MonoBehaviour:
   attackController: {fileID: 3109805712287345634}
   whiteFlash: {fileID: 2800237456015880210}
   enemyBrain: {fileID: 3411233702528744966}
+  contactDamageSource: {fileID: 1881425027292726100}
+  playerObstacle: {fileID: 0}
+  layerColliders:
+  - {fileID: 3759028761446002201}
   deathDelay: 0.3
   destroyDamageDamping: 0.5
   dropList:
@@ -310,6 +316,7 @@ MonoBehaviour:
     weight: 100
   sounder: {fileID: 7884487320096986353}
   DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
+  contactTarget: {fileID: 7212719666412745016}
 --- !u!114 &3411233702528744966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,7 +530,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99d6471e1f424ff19e7b9625856d43ea, type: 3}
-  m_Name:
+  m_Name: ""
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPoseSwitcher
   parts:
   - target: {fileID: 6789920131623467727}
@@ -541,6 +548,36 @@ MonoBehaviour:
   blendDuration: 0.25
   toCombatDuration: 0.083333336
   toIdleDuration: 0.083333336
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601273489759220852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 7033543306934540179}
+  targetColliders:
+  - {fileID: 3759028761446002201}
+--- !u!114 &7212719666412745016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601273489759220852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
+  body: {fileID: 0}
+  damageSource: {fileID: 0}
+  radiusOverride: 0
 --- !u!1 &5663925887336488352
 GameObject:
   m_ObjectHideFlags: 0

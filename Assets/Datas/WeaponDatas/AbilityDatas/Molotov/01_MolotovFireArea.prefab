@@ -9685,6 +9685,7 @@ GameObject:
   - component: {fileID: 5607478753718360184}
   - component: {fileID: 5750607715207682203}
   - component: {fileID: 4347899695715437930}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: 01_MolotovFireArea
   m_TagString: Untagged
@@ -19390,3 +19391,18 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4004365500606963686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 5750607715207682203}
+  targetColliders:
+  - {fileID: 4347899695715437930}

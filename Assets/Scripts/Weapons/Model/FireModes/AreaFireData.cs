@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>プレイヤー周辺の範囲へ上空から攻撃個体を生成する</summary>
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/AreaFire")]
 public class AreaFireData : FireModeData
@@ -8,6 +9,7 @@ public class AreaFireData : FireModeData
     [SerializeField] private int projectileCount = 1;
     [SerializeField] private GameObject prefab;
 
+    /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         for (int i = 0; i < projectileCount; i++)
@@ -15,6 +17,7 @@ public class AreaFireData : FireModeData
             FireSingle(weapon, weaponOwner);
         }
     }
+    /// <summary>指定された範囲内へ攻撃個体を一つ生成する</summary>
 
     private void FireSingle(Weapon weapon, Player weaponOwner)
     {
@@ -27,14 +30,15 @@ public class AreaFireData : FireModeData
 
         Vector3 direction = Vector3.down;
 
-        GameObject bullet = PoolManager.Instance.Get(prefab);
+        PooledInstance spawned = PoolManager.Instance.Rent(prefab);
+        GameObject bullet = spawned.GameObject;
 
         bullet.transform.SetPositionAndRotation(spawnPosition, Quaternion.LookRotation(direction));
 
-        var damage = bullet.GetComponent<DamageBase>();
+        var damage = spawned.RequireDamage();
         damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
-        var movement = bullet.GetComponent<MovementBase>();
+        MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);
     }
 }

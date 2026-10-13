@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+/// <summary>攻撃検証用の対象の体力を管理する</summary>
 
+[RequireComponent(typeof(DamageTargetBinding))]
 public class TrainingDummy : MonoBehaviour, IDamageable
 {
     [SerializeField] private int initialHP = 100;
@@ -11,6 +13,7 @@ public class TrainingDummy : MonoBehaviour, IDamageable
     /// 体力を管理するモデル
     /// </summary>
     public Health Health { get; private set; }
+    /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {

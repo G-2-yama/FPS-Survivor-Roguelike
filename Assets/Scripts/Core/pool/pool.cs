@@ -2,84 +2,71 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
 
+/// <summary>初回生成時の部品参照を保持し検索せず個体を取得と返却する</summary>
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance;
+    private readonly Dictionary<GameObject, ObjectPool<PooledInstance>> pools = new();
+    private readonly Dictionary<GameObject, PooledInstance> instances = new();
 
-    private Dictionary<GameObject, ObjectPool<GameObject>> pools
-        = new Dictionary<GameObject, ObjectPool<GameObject>>();
+    /// <summary>シーンのプール管理を公開する</summary>
+    private void Awake() => Instance = this;
 
-    private void Awake()
+    /// <summary>既存の呼び出しへGameObjectを返す</summary>
+    public GameObject Get(GameObject prefab) => Rent(prefab).GameObject;
+
+    /// <summary>保持済みの部品参照を持つ個体を取得する</summary>
+    public PooledInstance Rent(GameObject prefab)
     {
-        Instance = this;
-    }
-
-    public GameObject Get(GameObject prefab)
-    {
-        if (!pools.ContainsKey(prefab))
+        if (!pools.TryGetValue(prefab, out var pool))
         {
-            pools[prefab] = CreatePool(prefab);
+            pool = CreatePool(prefab);
+            pools.Add(prefab, pool);
         }
-
-        return pools[prefab].Get();
+        return pool.Get();
     }
-    
 
-    private ObjectPool<GameObject> CreatePool(GameObject prefab)
+    /// <summary>生成済みの個体情報を登録表から返す</summary>
+    public bool TryResolveInstance(GameObject instance, out PooledInstance cached) =>
+        instances.TryGetValue(instance, out cached);
+
+    /// <summary>Prefabごとの初回生成と保持済み参照の再利用を定義する</summary>
+    private ObjectPool<PooledInstance> CreatePool(GameObject prefab)
     {
-        ObjectPool<GameObject> pool = null;
-
+        ObjectPool<PooledInstance> pool = null;
+        // Prefabの設定はこのプールの初期化時に一度だけ読み込む
         PoolableObject prefabPoolable = prefab.GetComponent<PoolableObject>();
         bool keepActive = prefabPoolable != null && prefabPoolable.KeepActiveInPool;
-
-        pool = new ObjectPool<GameObject>(
+        pool = new ObjectPool<PooledInstance>(
             createFunc: () =>
             {
                 GameObject obj = Instantiate(prefab);
-
-                PoolableObject poolable =
-                    obj.GetComponent<PoolableObject>();
-
-                if (poolable != null)
-                {
-                    poolable.SetPool(pool);
-                }
-
-                return obj;
+                var cached = new PooledInstance(obj);
+                instances.Add(obj, cached);
+                // 返却先は初回生成時に関連付け、実行中は個体の登録表を引き直さない
+                cached.Poolable?.SetPoolReturn(() => pool.Release(cached));
+                return cached;
             },
-
-            actionOnGet: obj =>
+            actionOnGet: cached =>
             {
-                if (!keepActive)
-                    obj.SetActive(true);
-
-                IPoolable poolable =
-                    obj.GetComponent<IPoolable>();
-
-                poolable?.OnGet();
+                if (!keepActive) cached.GameObject.SetActive(true);
+                cached.Lifecycle?.OnGet();
+                cached.DamageBinding?.Register();
             },
-
-            actionOnRelease: obj =>
+            actionOnRelease: cached =>
             {
-                IPoolable poolable =
-                    obj.GetComponent<IPoolable>();
-
-                poolable?.OnRelease();
-
-                if (!keepActive)
-                    obj.SetActive(false);
+                cached.DamageBinding?.Unregister();
+                cached.Lifecycle?.OnRelease();
+                if (!keepActive) cached.GameObject.SetActive(false);
             },
-
-            actionOnDestroy: obj =>
+            actionOnDestroy: cached =>
             {
-                Destroy(obj);
+                instances.Remove(cached.GameObject);
+                Destroy(cached.GameObject);
             },
-
             collectionCheck: true,
             defaultCapacity: 10,
-            maxSize: 10000
-        );
-
+            maxSize: 10000);
         return pool;
     }
 }

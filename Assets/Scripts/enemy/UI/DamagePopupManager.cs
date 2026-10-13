@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>ダメージ量に対応する表示と命中エフェクトを生成する</summary>
 
 public class DamageEffectManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class DamageEffectManager : MonoBehaviour
     [SerializeField] private float randomOffsetZ = 0.3f;
     [SerializeField] private Color defaultDamageColor;
 
+    /// <summary>ダメージ量に対応する表示色を定義する</summary>
     [System.Serializable]
     private class ChangeDamagePopupMaterial
     {
@@ -24,11 +26,13 @@ public class DamageEffectManager : MonoBehaviour
 
     [SerializeField]
     private ChangeDamagePopupMaterial[] changeDamagePopupMaterials;
+    /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {
         Instance = this;
     }
+    /// <summary>ダメージ量に応じた表示とエフェクトを生成する</summary>
 
     public void ShowDamage(int damage, Vector3 enemyPosition)
     {
@@ -46,11 +50,10 @@ public class DamageEffectManager : MonoBehaviour
         // -----------------------------
         // ダメージポップアップ
         // -----------------------------
-        GameObject popupObj =
-            PoolManager.Instance.Get(damagePopupPrefab);
+        PooledInstance popupObj = PoolManager.Instance.Rent(damagePopupPrefab);
 
         DamagePopup popup =
-            popupObj.GetComponent<DamagePopup>();
+            popupObj.RequireDamagePopup();
 
         popup.Setup(
             popupColor,
@@ -68,6 +71,7 @@ public class DamageEffectManager : MonoBehaviour
         effectObj.transform.position = enemyPosition;
         effectObj.transform.rotation = Quaternion.identity;
     }
+    /// <summary>ダメージ量の条件を満たす表示色を選ぶ</summary>
 
     private Color GetDamageColor(int damage)
     {

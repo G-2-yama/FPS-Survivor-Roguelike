@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// プレイヤーの水平視点とカメラの上下視点を制御するクラス
@@ -18,7 +18,7 @@ public class PlayerLookController
     /// <summary>
     /// 視点感度とピッチ制限の設定
     /// </summary>
-    private PlayerConfig settings;
+    private PlayerControlSettings settings;
 
     /// <summary>
     /// 現在のカメラピッチ角度
@@ -34,13 +34,14 @@ public class PlayerLookController
     public PlayerLookController(
         Transform playerTransform,
         Transform cameraLookPivotTransform,
-        PlayerConfig settings)
+        PlayerControlSettings settings)
     {
         this.playerTransform = playerTransform;
         this.cameraLookPivotTransform = cameraLookPivotTransform;
         this.settings = settings;
     }
 
+    /// <summary>入力と武器の反動から最終的な視点回転を適用する</summary>
     public void ApplyView(Vector2 lookInput, bool isGamepadLookInput, Vector2 recoilOffset, float deltaTime)
     {
         ApplyLook(lookInput, isGamepadLookInput, deltaTime);
@@ -72,6 +73,7 @@ public class PlayerLookController
             settings.MaxPitch);
     }
 
+    /// <summary>右スティックの中心付近を無効化し、残りの入力範囲を正規化する</summary>
     private static Vector2 ApplyDeadzone(Vector2 input, float deadzone)
     {
         float magnitude = Mathf.Clamp01(input.magnitude);
@@ -84,6 +86,7 @@ public class PlayerLookController
         return input.normalized * scaledMagnitude;
     }
 
+    /// <summary>上下視点と反動の回転をカメラ支点へ反映する</summary>
     private void ApplyCameraRotation(Vector2 recoilOffset)
     {
         Quaternion lookRotation =

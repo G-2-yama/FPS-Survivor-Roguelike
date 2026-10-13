@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b817771463784275a2eb16799c8bd7ee, type: 3}
+  m_Name: GameSceneCameraSettings
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraSettings
+  slideCameraHeightMultiplier: 0.1
+  slideCameraHeightLerpSpeed: 12
+  sprintFieldOfViewIncrease: 6
+  slideFieldOfViewIncrease: 12
+  fieldOfViewIncreaseLerpSpeed: 10
+  fieldOfViewDecreaseLerpSpeed: 6
+

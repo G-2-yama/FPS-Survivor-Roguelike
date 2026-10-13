@@ -4906,6 +4906,7 @@ GameObject:
   - component: {fileID: 1208157812551946685}
   - component: {fileID: 8973926248689688693}
   - component: {fileID: 8507236809112742344}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: EvoSlashArea
   m_TagString: Untagged
@@ -9865,3 +9866,18 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371946893808914018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 8507236809112742344}
+  targetColliders:
+  - {fileID: 8973926248689688693}

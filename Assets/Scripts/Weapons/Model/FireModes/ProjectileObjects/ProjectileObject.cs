@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 /// <summary>
-/// 発射されたProjectileの衝突を検知し、ヒット時コールバックを実行して自身を破棄するコンポーネント。
+/// 弾の体力、寿命、衝突検知とプール管理の共通処理を提供する
 /// </summary>
+[RequireComponent(typeof(DamageTargetBinding))]
 public abstract class ProjectileObject : PoolableObject, IDamageable
 {
     [SerializeField] protected TeamType myTeam = TeamType.None;
@@ -19,6 +20,7 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
 
     protected Health health;
 
+    /// <summary>Projectileの体力にダメージを適用する</summary>
     public void TakeDamage(int damage, float knockbackForce)
     {
         health.TakeDamage(damage);
@@ -29,16 +31,16 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
     /// </summary>
     protected bool hasHit = false;
 
-    void Awake()
+    /// <summary>ProjectileのRigidbodyを取得する</summary>
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    /// <summary>
-    /// ヒット時に呼び出す処理と生存時間を初期化する
-    /// </summary>
-    /// <param name="onHitAction">衝突したColliderを受け取るヒット時コールバック</param>
-    /// <param name="lifeTime">自動破棄までの秒数</param>
+    /// <summary>ダメージ値と生存時間を初期化する</summary>
+    /// <param name="damage">有効な対象に与えるダメージ</param>
+    /// <param name="knockbackForce">有効な対象へ渡すノックバック量</param>
+    /// <param name="lifeTime">Projectileを解放するまでの秒数</param>
     public void Initialize(int damage, float knockbackForce, float lifeTime)
     {
         this.damage = damage;
@@ -48,10 +50,12 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
         lifeRoutine = StartCoroutine(LifeTimer(lifeTime));
     }
 
-    IEnumerator LifeTimer(float time)
+    /// <summary>指定時間後にProjectileを解放する</summary>
+    /// <param name="time">解放まで待機する秒数</param>
+    private IEnumerator LifeTimer(float time)
     {
         yield return new WaitForSeconds(time);
-        Release(); 
+        Release();
     }
 
     /// <summary>
@@ -61,6 +65,10 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
     protected void OnCollisionEnter(Collision collision)
     {
         if (hasHit) return;
+        // プレイヤー所有の押し出し領域は敵との距離調整用のため、弾の対象から除外する
+        if (AttackCollisionFilter.ShouldIgnore(collision.collider))
+            return;
+
         HandleHit(collision.collider);
     }
 
@@ -72,25 +80,31 @@ public abstract class ProjectileObject : PoolableObject, IDamageable
     protected void OnTriggerEnter(Collider other)
     {
         if (hasHit) return;
+        // プレイヤー自身の接触判定だけを除外し、Projectileは解放しない
+        if (AttackCollisionFilter.ShouldIgnore(other))
+            return;
+
         HandleHit(other);
     }
 
     /// <summary>
-    /// ヒットコールバックを実行し、Projectileを破棄する
+    /// 具体的な弾の種類に応じた命中処理を実行する
     /// </summary>
     /// <param name="collider">ヒットしたCollider</param>
     protected abstract void HandleHit(Collider collider);
 
+    /// <summary>プールから取得された際にヒット状態を初期化する</summary>
     public override void OnGet()
     {
         hasHit = false;
         rb.linearVelocity = Vector3.zero;
     }
 
+    /// <summary>プールへ戻す前に生存時間処理を停止し、一時状態を消去する</summary>
     public override void OnRelease()
     {
         hasHit = true;
-        
+
         if (lifeRoutine != null)
         {
             StopCoroutine(lifeRoutine);

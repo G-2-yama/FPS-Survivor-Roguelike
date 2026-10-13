@@ -1,255 +1,59 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-/// <summary>
-/// プレイヤーの移動・視点・ジャンプ・ダッシュ設定を保持するモデル
-/// </summary>
-public class PlayerConfig : MonoBehaviour
+/// <summary>用途別のプレイヤー設定SOをまとめる入口となるコンポーネント</summary>
+[DisallowMultipleComponent]
+public sealed class PlayerConfig : MonoBehaviour
 {
-    /// <summary>
-    /// 通常移動速度の設定値
-    /// </summary>
-    [Header("Movement")]
-    [SerializeField] private float walkSpeed = 7.5f;
+    [SerializeField, PlayerSettingLabel("ステータス設定"), Tooltip("初期体力、移動能力、攻撃倍率などを設定するSO")]
+    private PlayerStatsSettings stats;
+    [SerializeField, PlayerSettingLabel("操作設定"), Tooltip("移動、ジャンプ、視点操作などの調整値を設定するSO")]
+    private PlayerControlSettings control;
+    [SerializeField, PlayerSettingLabel("衝突判定設定"), Tooltip("本体サイズ、敵との接触、押し出しを設定するSO")]
+    private PlayerCollisionSettings collision;
+    [SerializeField, PlayerSettingLabel("カメラ演出設定"), Tooltip("操作に応じた視点高さと視野角の変化を設定するSO")]
+    private PlayerCameraSettings cameraSettings;
+    [SerializeField, PlayerSettingLabel("レベル成長設定"), Tooltip("初期レベルと必要経験値の増加を設定するSO")]
+    private PlayerProgressionSettings progression;
 
-    /// <summary>
-    /// 通常移動時の速度
-    /// </summary>
-    public float WalkSpeed => walkSpeed;
+    /// <summary>初期ステータスの共有設定</summary>
+    public PlayerStatsSettings Stats => stats;
+    /// <summary>操作方法の共有設定</summary>
+    public PlayerControlSettings Control => control;
+    /// <summary>本体寸法と接触の共有設定</summary>
+    public PlayerCollisionSettings Collision => collision;
+    /// <summary>カメラ演出の共有設定</summary>
+    public PlayerCameraSettings Camera => cameraSettings;
+    /// <summary>レベル成長の共有設定</summary>
+    public PlayerProgressionSettings Progression => progression;
 
-    /// <summary>
-    /// 走行速度の設定値
-    /// </summary>
-    [SerializeField] private float runSpeed = 10f;
+    /// <summary>設定の不足と数値の不正を確認する</summary>
+    public bool Validate(out string error)
+    {
+        PlayerSettingsAsset[] settings = { stats, control, collision, cameraSettings, progression };
+        string[] labels = { "ステータス", "操作", "衝突判定", "カメラ演出", "レベル成長" };
+        for (int i = 0; i < settings.Length; i++)
+        {
+            if (settings[i] == null) { error = labels[i] + "設定SOが未設定です"; return false; }
+            if (!settings[i].Validate(out error)) { error = labels[i] + ": " + error; return false; }
+        }
+        if (string.IsNullOrEmpty(LayerMask.LayerToName(collision.BodyLayer))
+            || string.IsNullOrEmpty(LayerMask.LayerToName(collision.PushZoneLayer)))
+        {
+            error = "本体と接触領域には登録済みのレイヤーを指定してください";
+            return false;
+        }
+        for (int layer = 0; layer < 32; layer++)
+        {
+            if ((collision.EnemyLayers.value & (1 << layer)) != 0 && string.IsNullOrEmpty(LayerMask.LayerToName(layer)))
+            {
+                error = "敵の対象には登録済みのレイヤーを指定してください";
+                return false;
+            }
+        }
+        error = null;
+        return true;
+    }
 
-    /// <summary>
-    /// 走行時の速度
-    /// </summary>
-    public float RunSpeed => runSpeed;
-
-    /// <summary>
-    /// 地上で入力を離した時の減速量
-    /// </summary>
-    [SerializeField] private float groundDeceleration = 30f;
-
-    /// <summary>
-    /// 地上で入力を離した時の減速量
-    /// </summary>
-    public float GroundDeceleration => groundDeceleration;
-
-    /// <summary>
-    /// 地上で速度を目標速度へ近づける加速量
-    /// </summary>
-    [SerializeField] private float groundAcceleration = 24f;
-
-    /// <summary>
-    /// 地上で速度を目標速度へ近づける加速量
-    /// </summary>
-    public float GroundAcceleration => groundAcceleration;
-
-    /// <summary>
-    /// 空中で入力を離した後も慣性を残したまま減衰させる強さ
-    /// </summary>
-    [SerializeField] private float airDeceleration = 45f;
-
-    /// <summary>
-    /// 空中で入力を離した後も慣性を残したまま減衰させる強さ
-    /// </summary>
-    public float AirDeceleration => airDeceleration;
-
-    /// <summary>
-    /// ジャンプ長押し補正を受け付ける時間
-    /// </summary>
-    [Header("Jump")]
-    [SerializeField] private float jumpHoldDuration = 0.20f;
-
-    /// <summary>
-    /// ジャンプ長押し補正を受け付ける時間
-    /// </summary>
-    public float JumpHoldDuration => jumpHoldDuration;
-
-    /// <summary>
-    /// ジャンプ長押し時に適用する最大倍率
-    /// </summary>
-    [SerializeField] private float jumpHoldMaxMultiplier = 1.2f;
-
-    /// <summary>
-    /// ジャンプ長押し時に適用する最大倍率
-    /// </summary>
-    public float JumpHoldMaxMultiplier => jumpHoldMaxMultiplier;
-
-    /// <summary>
-    /// 垂直方向へ毎フレーム加算する重力加速度
-    /// </summary>
-    [SerializeField] private float gravity = -18f;
-
-    /// <summary>
-    /// 垂直方向へ毎フレーム加算する重力加速度
-    /// </summary>
-    public float Gravity => gravity;
-
-    /// <summary>
-    /// 視点感度の設定値
-    /// </summary>
-    [Header("Look")]
-    [SerializeField] private float lookSensitivity = 0.08f;
-
-    /// <summary>
-    /// 視点移動の感度
-    /// </summary>
-    public float LookSensitivity => lookSensitivity;
-
-    /// <summary>
-    /// ゲームパッド右スティックの旋回速度（度/秒）
-    /// </summary>
-    [SerializeField, Min(0f)] private float gamepadLookSensitivity = 60f;
-
-    public float GamepadLookSensitivity => gamepadLookSensitivity;
-
-    /// <summary>
-    /// 右スティックのニュートラル付近を無視する範囲
-    /// </summary>
-    [SerializeField, Range(0f, 0.95f)] private float gamepadLookDeadzone = 0.25f;
-
-    public float GamepadLookDeadzone => gamepadLookDeadzone;
-
-    /// <summary>
-    /// ピッチ最小角度の設定値
-    /// </summary>
-    [SerializeField] private float minPitch = -80f;
-
-    /// <summary>
-    /// 上下視点の最小角度
-    /// </summary>
-    public float MinPitch => minPitch;
-
-    /// <summary>
-    /// ピッチ最大角度の設定値
-    /// </summary>
-    [SerializeField] private float maxPitch = 80f;
-
-    /// <summary>
-    /// 上下視点の最大角度
-    /// </summary>
-    public float MaxPitch => maxPitch;
-
-    /// <summary>
-    /// 地面判定レイの開始位置オフセット
-    /// </summary>
-    [Header("Ground Check")]
-    [SerializeField] private float groundRayStartOffset = 0.5f;
-
-    /// <summary>
-    /// 地面判定レイの開始位置オフセット
-    /// </summary>
-    public float GroundRayStartOffset => groundRayStartOffset;
-
-    /// <summary>
-    /// 地面判定レイの距離
-    /// </summary>
-    [SerializeField] private float groundCheckDistance = 2f;
-
-    /// <summary>
-    /// 地面判定レイの距離
-    /// </summary>
-    public float GroundCheckDistance => groundCheckDistance;
-
-    /// <summary>
-    /// 地面判定対象レイヤー
-    /// </summary>
-    [SerializeField] private LayerMask groundLayers = ~0;
-
-    /// <summary>
-    /// 地面判定対象レイヤー
-    /// </summary>
-    public LayerMask GroundLayers => groundLayers;
-
-    /// <summary>
-    /// ジャンプ時の初速
-    /// </summary>
-    [SerializeField] private float jumpForce = 8f;
-
-    /// <summary>
-    /// ジャンプ時の初速
-    /// </summary>
-    public float JumpForce => jumpForce;
-
-    /// <summary>
-    /// プレイヤーの初期HP
-    /// </summary>
-    [Header("Stats")]
-    [SerializeField] private int initialHP = 100;
-
-    /// <summary>
-    /// プレイヤーの初期HP
-    /// </summary>
-    public int InitialHP => initialHP;
-
-    /// <summary>
-    /// ダッシュで移動する距離
-    /// </summary>
-    [Header("Dash")]
-    [SerializeField, Min(0f)] private float dashDistance = 6f;
-
-    /// <summary>
-    /// ダッシュで移動する距離
-    /// </summary>
-    public float DashDistance => dashDistance;
-
-    /// <summary>
-    /// ダッシュ移動を継続する時間
-    /// </summary>
-    [SerializeField, Min(0.01f)] private float dashDuration = 0.12f;
-
-    /// <summary>
-    /// ダッシュ移動を継続する時間
-    /// </summary>
-    public float DashDuration => dashDuration;
-
-    /// <summary>
-    /// 次のダッシュを開始できるまでの待ち時間
-    /// </summary>
-    [SerializeField, Min(0f)] private float dashCooldown = 0.5f;
-
-    /// <summary>
-    /// 次のダッシュを開始できるまでの待ち時間
-    /// </summary>
-    public float DashCooldown => dashCooldown;
-
-    [Header("Slide")]
-    [SerializeField, Min(0f)] private float slideSpeed = 12f;
-    [SerializeField, Min(0f)] private float slideMinInertiaSpeed = 1.5f;
-    [SerializeField, Min(0f)] private float slideTurnRateDegreesPerSecond = 180f;
-
-    [Header("Fast Fall")]
-    [SerializeField, Min(0f)] private float fastFallEntrySpeed = 20f;
-    [SerializeField, Min(0f)] private float fastFallAcceleration = 90f;
-    [SerializeField, Min(0f)] private float fastFallTerminalSpeed = 35f;
-
-    [Header("Slide Camera")]
-    [SerializeField, Min(0f)] private float slideCameraHeightMultiplier = 0.5f;
-    [SerializeField, Min(0f)] private float slideCameraHeightLerpSpeed = 12f;
-
-    [Header("Speed Field Of View")]
-    [SerializeField, Min(0f)] private float sprintFieldOfViewIncrease = 6f;
-    [SerializeField, Min(0f)] private float slideFieldOfViewIncrease = 12f;
-    [SerializeField, Min(0f)] private float fieldOfViewIncreaseLerpSpeed = 10f;
-    [SerializeField, Min(0f)] private float fieldOfViewDecreaseLerpSpeed = 6f;
-
-    [Header("Pickup")]
-    [Tooltip("アイテムを引き寄せ始める距離（プレイヤーとアイテムの中心間）。離すのはこれ＋1m を超えたとき")]
-    [SerializeField, Min(0f)] private float pickupRadius = 3f;
-
-    public float SlideSpeed => slideSpeed;
-    public float SlideMinInertiaSpeed => slideMinInertiaSpeed;
-    public float SlideTurnRateDegreesPerSecond => slideTurnRateDegreesPerSecond;
-    public float FastFallEntrySpeed => fastFallEntrySpeed;
-    public float FastFallAcceleration => fastFallAcceleration;
-    public float FastFallTerminalSpeed => fastFallTerminalSpeed;
-    public float SlideCameraHeightMultiplier => slideCameraHeightMultiplier;
-    public float SlideCameraHeightLerpSpeed => slideCameraHeightLerpSpeed;
-    public float SprintFieldOfViewIncrease => sprintFieldOfViewIncrease;
-    public float SlideFieldOfViewIncrease => slideFieldOfViewIncrease;
-    public float FieldOfViewIncreaseLerpSpeed => fieldOfViewIncreaseLerpSpeed;
-    public float FieldOfViewDecreaseLerpSpeed => fieldOfViewDecreaseLerpSpeed;
-    public float PickupRadius => pickupRadius;
+    /// <summary>開始時の設定を複製し、共有アセットから実行中の状態を分離する</summary>
+    public PlayerSettingsSnapshot CreateRuntimeSnapshot() => new PlayerSettingsSnapshot(this);
 }

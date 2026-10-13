@@ -6,24 +6,27 @@ using UnityEngine;
 public class PlayerViewOffsetController
 {
     private Transform cameraLookPivotTransform;
-    private PlayerConfig settings;
+    private PlayerCameraSettings settings;
     private Vector3 defaultLocalPosition;
     private bool slideActive;
 
+    /// <summary>カメラ支点と高さの演出設定を関連付ける</summary>
     public PlayerViewOffsetController(
         Transform cameraLookPivotTransform,
-        PlayerConfig settings)
+        PlayerCameraSettings settings)
     {
         this.cameraLookPivotTransform = cameraLookPivotTransform;
         this.settings = settings;
         defaultLocalPosition = cameraLookPivotTransform.localPosition;
     }
 
+    /// <summary>スライド用の視点高さを使用するか設定する</summary>
     public void SetSlideActive(bool isActive)
     {
         slideActive = isActive;
     }
 
+    /// <summary>現在の姿勢に応じた視点高さへ滑らかに近づける</summary>
     public void Update(float deltaTime)
     {
         Vector3 localPosition = cameraLookPivotTransform.localPosition;

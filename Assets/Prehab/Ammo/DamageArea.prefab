@@ -4933,6 +4933,7 @@ GameObject:
   - component: {fileID: 6017380263142868539}
   - component: {fileID: 8507236809112742344}
   - component: {fileID: 7290815563214477201}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: DamageArea
   m_TagString: Untagged
@@ -9929,7 +9930,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75294e0224254e718c36a43dcaab9739, type: 3}
-  m_Name: 
+  m_Name: ""
   m_EditorClassIdentifier: Assembly-CSharp::ExplosionHeightFade
   fadeHeight: 4
   opacity: 0.7
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371946893808914018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 8507236809112742344}
+  targetColliders:
+  - {fileID: 6017380263142868539}

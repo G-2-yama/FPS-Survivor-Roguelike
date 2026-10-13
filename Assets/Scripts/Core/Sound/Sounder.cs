@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>効果音の選択と再生方法を管理する</summary>
 
 [RequireComponent(typeof(AudioSource))]
 public class Sounder : MonoBehaviour
@@ -11,11 +12,13 @@ public class Sounder : MonoBehaviour
 
     private Dictionary<(SoundCategory, int), SoundData> soundDictionary;
     private Dictionary<SoundCategory, List<SoundData>> categoryCandidates;
+    /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {
         InitializeDictionary();
     }
+    /// <summary>効果音設定をカテゴリと番号で参照できるよう準備する</summary>
 
     private void InitializeDictionary()
     {
@@ -43,12 +46,14 @@ public class Sounder : MonoBehaviour
             candidates.Add(data);
         }
     }
+    /// <summary>新しい効果音設定を反映する</summary>
 
     public void SetSoundDB(SoundDB newDB)
     {
         soundDatabase = newDB;
         InitializeDictionary();
     }
+    /// <summary>保持済みの部品参照を使って位置付きの効果音を再生する</summary>
     private void PlayPooledSound(SoundData data)
     {
         if (!PooledSoundPlayer.CanPlay(data.clip))
@@ -56,14 +61,14 @@ public class Sounder : MonoBehaviour
             return;
         }
 
-        GameObject obj =
-            PoolManager.Instance.Get(soundprefab);
+        PooledInstance spawned = PoolManager.Instance.Rent(soundprefab);
+        GameObject obj = spawned.GameObject;
 
         obj.transform.position = transform.position;
         obj.transform.rotation = Quaternion.identity;
 
         PooledSoundPlayer player =
-            obj.GetComponent<PooledSoundPlayer>();
+            spawned.RequireSoundPlayer();
 
         player.Play(data);
     }
@@ -118,6 +123,7 @@ public class Sounder : MonoBehaviour
                 break;
         }
     }
+    /// <summary>現在の効果音の再生を停止する</summary>
 
     public void Stop()
     {

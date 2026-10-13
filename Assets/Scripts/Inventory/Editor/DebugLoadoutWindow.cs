@@ -5,22 +5,24 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>プレイ中の装備とプレイヤーの成長状態を変更するデバッグ画面</summary>
 public class DebugLoadoutWindow : EditorWindow
 {
     private Dictionary<WeaponSlotGroup, List<List<WeaponData>>> weaponChains;
     private List<List<Item>> itemChains;
 
     private Player player;
-    private ExpManager expManager;
     private Vector2 scroll;
     private Action pendingChange;
 
+    /// <summary>メニューからデバッグ画面を開く</summary>
     [MenuItem("Tools/Debug Loadout")]
     private static void Open()
     {
         GetWindow<DebugLoadoutWindow>("Debug Loadout");
     }
 
+    /// <summary>武器とアイテムの強化段階を読み込み、選択肢を準備する</summary>
     private void OnEnable()
     {
         List<List<WeaponData>> allWeaponChains = BuildChains(LoadAll<WeaponData>().Where(w => !w.IsEmpty), w => w.NextLevelData);
@@ -30,6 +32,7 @@ public class DebugLoadoutWindow : EditorWindow
         itemChains = BuildChains(LoadAll<Item>(), i => i.NextLevelItem);
     }
 
+    /// <summary>プレイ中の状態変化を画面に反映する</summary>
     private void OnInspectorUpdate()
     {
         if (Application.isPlaying)
@@ -38,6 +41,7 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>装備と成長状態を表示し、描画完了後に変更を適用する</summary>
     private void OnGUI()
     {
         if (!Application.isPlaying)
@@ -78,6 +82,7 @@ public class DebugLoadoutWindow : EditorWindow
 
         EditorGUILayout.EndScrollView();
 
+        // 装備変更やレベルアップ通知で画面構成が変わるため、レイアウトを閉じてから実行する
         if (pendingChange != null)
         {
             Action change = pendingChange;
@@ -87,6 +92,7 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>指定スロットの武器選択を表示し、装備変更を予約する</summary>
     private void DrawWeaponSlot(PlayerInventory inventory, SlotType slot)
     {
         if (!weaponChains.TryGetValue(slot.GetGroup(), out List<List<WeaponData>> chains))
@@ -107,6 +113,7 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>指定スロットのアイテム選択を表示し、装備変更を予約する</summary>
     private void DrawItemSlot(PlayerInventory inventory, int index)
     {
         Item current = inventory.Items[index];
@@ -121,6 +128,7 @@ public class DebugLoadoutWindow : EditorWindow
         pendingChange = () => ReplaceItems(inventory, desired);
     }
 
+    /// <summary>現在のアイテムを解除してから選択された構成を装備する</summary>
     private static void ReplaceItems(PlayerInventory inventory, Item[] desired)
     {
         for (int i = inventory.Items.Count - 1; i >= 0; i--)
@@ -134,27 +142,27 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>プレイヤーの成長状態を表示し、必要経験値の加算を予約する</summary>
     private void DrawPlayerLevel()
     {
-        if (expManager == null)
+        if (player.Stats == null)
         {
-            expManager = FindAnyObjectByType<ExpManager>();
+            EditorGUILayout.HelpBox("Player の初期化が完了していません", MessageType.Warning);
+            return;
         }
 
-        string required = expManager != null ? expManager.LevelUpRequiredExp.ToString("0.#") : "?";
         EditorGUILayout.LabelField("レベル", player.Level.ToString());
-        EditorGUILayout.LabelField("経験値", $"{player.Exp:0.#} / {required}");
+        EditorGUILayout.LabelField("経験値", $"{player.Exp:0.#} / {player.LevelUpRequiredExp:0.#}");
         EditorGUILayout.LabelField("未消化のレベルアップ", player.PendingLevelUps.ToString());
 
-        using (new EditorGUI.DisabledScope(expManager == null))
+        if (GUILayout.Button("レベルアップ"))
         {
-            if (GUILayout.Button("レベルアップ"))
-            {
-                pendingChange = () => player.AddExp(expManager.LevelUpRequiredExp);
-            }
+            // 成長状態を管理するPlayerへ経験値を渡し、通常の強化選択とUI通知も発生させる
+            pendingChange = () => player.AddExp(player.LevelUpRequiredExp);
         }
     }
 
+    /// <summary>種類と強化段階の選択欄を表示し、選択されたアセットを返す</summary>
     private static T DrawChainSelector<T>(string label, List<List<T>> chains, T current, Func<T, string> displayName) where T : Object
     {
         int chainIndex = chains.FindIndex(chain => chain.Contains(current));
@@ -184,12 +192,14 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>種類の選択欄に使う表示名とアセット名を組み立てる</summary>
     private static string ChainLabel<T>(T root, Func<T, string> displayName) where T : Object
     {
         string name = displayName(root);
         return string.IsNullOrEmpty(name) ? root.name : $"{name} ({root.name})";
     }
 
+    /// <summary>武器の種類を対応するスロット群へ変換する</summary>
     private static WeaponSlotGroup ToSlotGroup(WeaponType type)
     {
         switch (type)
@@ -205,6 +215,7 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
+    /// <summary>指定型のアセットをパス順で読み込み、重複と欠損を除外する</summary>
     private static IEnumerable<T> LoadAll<T>() where T : Object
     {
         return AssetDatabase.FindAssets($"t:{typeof(T).Name}")
@@ -215,6 +226,7 @@ public class DebugLoadoutWindow : EditorWindow
             .Where(asset => asset != null);
     }
 
+    /// <summary>次段階への参照をたどり、種類ごとの強化段階を構築する</summary>
     private static List<List<T>> BuildChains<T>(IEnumerable<T> assets, Func<T, T> next) where T : Object
     {
         List<T> all = assets.ToList();
@@ -224,6 +236,7 @@ public class DebugLoadoutWindow : EditorWindow
         foreach (T root in all.Where(asset => !hasPrevious.Contains(asset)))
         {
             List<T> chain = new List<T>();
+            // 誤って循環する参照が設定されていても同じアセットで走査を止める
             for (T asset = root; asset != null && !chain.Contains(asset); asset = next(asset))
             {
                 chain.Add(asset);

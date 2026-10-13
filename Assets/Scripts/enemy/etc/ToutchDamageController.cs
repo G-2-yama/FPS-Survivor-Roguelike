@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class ToutchDamageController : MonoBehaviour
+/// <summary>敵の接触ダメージ量を提供する</summary>
+public class ToutchDamageController : MonoBehaviour, IContactDamageSource
 {
-    [SerializeField] private int damageAmount = 100;
+    [SerializeField, Min(0), PlayerSettingLabel("Damage Amount"), Tooltip("プレイヤーとの最初の接触時に与えるダメージ量")]
+    private int damageAmount = 100;
 
     public int DamageAmount => damageAmount;
 }

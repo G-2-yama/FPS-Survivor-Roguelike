@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6689207877471317752}
   - component: {fileID: 8496615387957828556}
   - component: {fileID: 5145504960374110724}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: micromissile 1
   m_TagString: Untagged
@@ -330,3 +331,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7094019221188705548, guid: 78ffe20f134c47843932cc3e475ff93f, type: 3}
   m_PrefabInstance: {fileID: 5079089486708136024}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6710789455330182112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 5145504960374110724}
+  targetColliders:
+  - {fileID: 6689207877471317752}

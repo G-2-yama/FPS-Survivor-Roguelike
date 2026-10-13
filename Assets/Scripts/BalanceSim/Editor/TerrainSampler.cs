@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace BalanceSim.Editor
 {
+    /// <summary>プレイヤーの衝突寸法に基づいて通行可能な地形を読み取る</summary>
     public static class TerrainSampler
     {
+        /// <summary>同じ地形範囲とプレイヤー寸法の読取結果を再利用する</summary>
         public sealed class Cache
         {
             internal SimTerrainDef def;
@@ -14,6 +16,7 @@ namespace BalanceSim.Editor
             internal float top;
             internal float blockedRatio;
 
+            /// <summary>地形と高さの条件が保存済みの結果に一致するか確認する</summary>
             internal bool Matches(float originX, float originZ, float tileSize, int gridSize, int cells, float bottom, float top)
             {
                 return def != null && def.originX == originX && def.originZ == originZ && def.tileSize == tileSize && def.gridSize == gridSize
@@ -21,6 +24,7 @@ namespace BalanceSim.Editor
             }
         }
 
+        /// <summary>衝突SOの本体高さと段差を使って地形を格子状に検査する</summary>
         public static SimTerrainDef Sample(StageManager stage, Player player, float requestedCellSize, Cache cache, List<string> warnings, out float blockedRatio)
         {
             float tileSize = stage.TileSize;
@@ -38,11 +42,12 @@ namespace BalanceSim.Editor
             float originZ = panels.Count > 0 ? panels.Min(p => p.transform.position.z) - tileSize * 0.5f : 0f;
 
             Physics.SyncTransforms();
-            var controller = player.GetComponent<CharacterController>();
-            float height = controller != null ? controller.height : 2f;
-            float stepOffset = controller != null ? controller.stepOffset : 0.3f;
+            PlayerCollisionSettings collision = player.Config.Collision;
+            float verticalScale = Mathf.Abs(player.transform.lossyScale.y);
+            float height = collision.Height * verticalScale;
+            float stepOffset = collision.StepOffset * verticalScale;
             Vector3 playerPosition = player.transform.position;
-            float groundY = playerPosition.y - height * 0.5f;
+            float groundY = player.transform.TransformPoint(collision.Center).y - height * 0.5f;
             if (Physics.Raycast(playerPosition, Vector3.down, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
             {
                 groundY = hit.point.y;
@@ -110,6 +115,7 @@ namespace BalanceSim.Editor
             return def;
         }
 
+        /// <summary>開始位置が通行不能なマスに含まれる場合に警告する</summary>
         private static void WarnIfStartBlocked(SimTerrainDef def, Vector3 playerPosition, List<string> warnings)
         {
             if (new Terrain(def).IsBlocked(new Vec2(playerPosition.x, playerPosition.z)))

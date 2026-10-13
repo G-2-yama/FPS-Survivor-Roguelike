@@ -6,11 +6,6 @@ using UnityEngine;
 public class PlayerJumpController
 {
     /// <summary>
-    /// 地上接地で回復する最大ジャンプ回数
-    /// </summary>
-    private const int MaxJumpCount = 2;
-
-    /// <summary>
     /// 速度を適用するモーター
     /// </summary>
     private PlayerMotor motor;
@@ -18,13 +13,14 @@ public class PlayerJumpController
     /// <summary>
     /// プレイヤー移動設定
     /// </summary>
-    private PlayerConfig settings;
+    private PlayerControlSettings settings;
     private PlayerStats stats;
 
     /// <summary>
     /// 長押しジャンプで追加できる残り上向き速度
     /// </summary>
     private float remainingJumpHoldBonus;
+    private float jumpHoldBonusPerSecond;
 
     /// <summary>
     /// 長押しジャンプ補正を適用できる残り時間
@@ -40,18 +36,19 @@ public class PlayerJumpController
     /// <summary>
     /// 現在残っているジャンプ可能回数
     /// </summary>
-    private int remainingJumpCount = MaxJumpCount;
+    private int remainingJumpCount;
 
     /// <summary>
     /// ジャンプ処理に必要な参照を初期化する
     /// </summary>
     /// <param name="motor">速度を適用するモーター</param>
     /// <param name="settings">ジャンプ設定</param>
-    public PlayerJumpController(PlayerMotor motor, PlayerConfig settings,PlayerStats stats)
+    public PlayerJumpController(PlayerMotor motor, PlayerControlSettings settings,PlayerStats stats)
     {
         this.motor = motor;
         this.settings = settings;
         this.stats = stats;
+        remainingJumpCount = settings.MaxJumpCount;
     }
 
     /// <summary>
@@ -64,16 +61,17 @@ public class PlayerJumpController
 
         if (isGrounded && !wasGrounded)
         {
-            remainingJumpCount = MaxJumpCount;
+            remainingJumpCount = settings.MaxJumpCount;
         }
-        else if (!isGrounded && wasGrounded && remainingJumpCount == MaxJumpCount)
+        else if (!isGrounded && wasGrounded && remainingJumpCount == settings.MaxJumpCount)
         {
-            remainingJumpCount = MaxJumpCount - 1;
+            remainingJumpCount = settings.MaxJumpCount - 1;
         }
 
         wasGrounded = isGrounded;
     }
 
+    /// <summary>接触コールバックからジャンプ回復可能な床との接触を記録する</summary>
     public void RegisterRecoverableGroundContact()
     {
         hadRecoverableGroundContact = true;
@@ -103,6 +101,7 @@ public class PlayerJumpController
         motor.VerticalVelocity = stats.JumpForce;
         remainingJumpHoldBonus = stats.JumpForce * (settings.JumpHoldMaxMultiplier - 1f);
         jumpHoldTimer = settings.JumpHoldDuration;
+        jumpHoldBonusPerSecond = jumpHoldTimer > 0f ? remainingJumpHoldBonus / jumpHoldTimer : 0f;
     }
 
     /// <summary>
@@ -121,9 +120,7 @@ public class PlayerJumpController
             return;
         }
 
-        float holdBonusPerSecond = settings.JumpForce * (settings.JumpHoldMaxMultiplier - 1f)
-            / settings.JumpHoldDuration;
-        float appliedBonus = Mathf.Min(holdBonusPerSecond * deltaTime, remainingJumpHoldBonus);
+        float appliedBonus = Mathf.Min(jumpHoldBonusPerSecond * deltaTime, remainingJumpHoldBonus);
         motor.VerticalVelocity += appliedBonus;
         remainingJumpHoldBonus -= appliedBonus;
         jumpHoldTimer = Mathf.Max(0f, jumpHoldTimer - deltaTime);

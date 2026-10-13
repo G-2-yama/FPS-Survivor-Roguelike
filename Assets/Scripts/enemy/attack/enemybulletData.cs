@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>敵の弾と発射時のエフェクト設定を保持する</summary>
 
 [CreateAssetMenu(menuName = "Enemy/BulletData")]
 public class BulletData : ScriptableObject
@@ -8,10 +9,15 @@ public class BulletData : ScriptableObject
     public GameObject AmmpPrefab;
 
     public GameObject EffectPrefab;
+    /// <summary>既存の呼び出しへ発射した弾のGameObjectを返す</summary>
 
-    public GameObject Spawn(Transform shotPoint, Vector3 direction)
+    public GameObject Spawn(Transform shotPoint, Vector3 direction) => SpawnInstance(shotPoint, direction).GameObject;
+
+    /// <summary>初期化済みの部品参照を持つ弾を発射する</summary>
+    public PooledInstance SpawnInstance(Transform shotPoint, Vector3 direction)
     {
-        GameObject bullet = PoolManager.Instance.Get(AmmpPrefab);
+        PooledInstance spawned = PoolManager.Instance.Rent(AmmpPrefab);
+        GameObject bullet = spawned.GameObject;
         bullet.transform.SetPositionAndRotation(
             shotPoint.position,
             Quaternion.LookRotation(direction));
@@ -23,11 +29,12 @@ public class BulletData : ScriptableObject
                 Quaternion.LookRotation(direction));
         }
 
-        if (bullet.TryGetComponent<Rigidbody>(out var rb))
+        Rigidbody rb = spawned.Body;
+        if (rb != null)
         {
             rb.linearVelocity = direction * Speed;
         }
 
-        return bullet;
+        return spawned;
     }
 }

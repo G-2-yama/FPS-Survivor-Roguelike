@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 6995750176957242906}
   - component: {fileID: 1125085710326520904}
   - component: {fileID: 3864722256053646906}
+  - component: {fileID: 2000020000}
   m_Layer: 0
   m_Name: EvoHGAmmo
   m_TagString: Untagged
@@ -283,3 +284,18 @@ MonoBehaviour:
   trackingRange: 15
   rotateSpeed: 360
   moveSpeed: 20
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8260587519104356623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 1125085710326520904}
+  targetColliders:
+  - {fileID: 6995750176957242906}

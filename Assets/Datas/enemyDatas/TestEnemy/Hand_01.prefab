@@ -1039,6 +1039,8 @@ GameObject:
   - component: {fileID: 1900059208238999892}
   - component: {fileID: 8657360911285493561}
   - component: {fileID: 6216012737257803136}
+  - component: {fileID: 2000020000}
+  - component: {fileID: 8221517094275849616}
   m_Layer: 6
   m_Name: Hand_01
   m_TagString: Untagged
@@ -1126,6 +1128,10 @@ MonoBehaviour:
   attackController: {fileID: 1102831624122084395}
   whiteFlash: {fileID: 1900059208238999892}
   enemyBrain: {fileID: 1569221163882400225}
+  contactDamageSource: {fileID: 0}
+  playerObstacle: {fileID: 0}
+  layerColliders:
+  - {fileID: 6906571294790027216}
   deathDelay: 0.3
   destroyDamageDamping: 0.5
   dropList:
@@ -1135,6 +1141,7 @@ MonoBehaviour:
     weight: 20
   sounder: {fileID: 6216012737257803136}
   DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
+  contactTarget: {fileID: 8221517094275849616}
 --- !u!114 &1102831624122084395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,6 +1176,7 @@ MonoBehaviour:
   attack: {fileID: 1102831624122084395}
   animator: {fileID: 6395455165829920910}
   uniqueAnimation: {fileID: 0}
+  poseSwitcher: {fileID: 0}
 --- !u!114 &6976466877076121580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1372,6 +1380,36 @@ MonoBehaviour:
   soundDatabase: {fileID: 11400000, guid: a83f51adca313fb45a4ec59a3c403ec6, type: 2}
   audioSource: {fileID: 8657360911285493561}
   soundprefab: {fileID: 3969328536136947537, guid: 196832cdb90ac2c48af47bfdcbfa656b, type: 3}
+--- !u!114 &2000020000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3264956460053762192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
+  targetSource: {fileID: 3726898599986634073}
+  targetColliders:
+  - {fileID: 6906571294790027216}
+--- !u!114 &8221517094275849616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3264956460053762192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
+  body: {fileID: 0}
+  damageSource: {fileID: 0}
+  radiusOverride: 0
 --- !u!1 &3270054321088439362
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using UnityEngine;
+/// <summary>範囲内の登録済み対象へ攻撃個体を発射する</summary>
 
 [CreateAssetMenu(menuName = "Weapons/FireMode/AutoTargetProjectile")]
 public class AutoTargetFire : FireModeData
@@ -7,25 +8,28 @@ public class AutoTargetFire : FireModeData
     [SerializeField] private GameObject prefab;
     [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1f, 0f);
 
+    /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
         Collider target = FindNearestEnemy(weaponOwner.transform.position);
 
         Vector3 direction = target != null
-            ? (target.transform.position - Camera.main.transform.position).normalized
+            ? (target.transform.position - weapon.AimTransform.position).normalized
             : GetFireDirection(weapon);
 
         Quaternion rotation = Quaternion.LookRotation(direction);
 
-        GameObject bullet = PoolManager.Instance.Get(prefab);
-        bullet.transform.SetPositionAndRotation(Camera.main.transform.position + rotation * spawnOffset, rotation);
+        PooledInstance spawned = PoolManager.Instance.Rent(prefab);
+        GameObject bullet = spawned.GameObject;
+        bullet.transform.SetPositionAndRotation(weapon.AimTransform.position + rotation * spawnOffset, rotation);
 
-        var damage = bullet.GetComponent<DamageBase>();
+        var damage = spawned.RequireDamage();
         damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
 
-        var movement = bullet.GetComponent<MovementBase>();
+        MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);
     }
+    /// <summary>物理判定の候補から条件を満たす最も近い登録済み対象を選ぶ</summary>
 
     private Collider FindNearestEnemy(Vector3 center)
     {
@@ -36,7 +40,7 @@ public class AutoTargetFire : FireModeData
 
         foreach (Collider col in colliders)
         {
-            if (!col.TryGetComponent(out IDamageable damageable))
+            if (!DamageTargetRegistry.TryResolve(col, out IDamageable damageable))
                 continue;
 
             if ((damageable.TeamType & (TeamType.Enemy | TeamType.Boss)) == 0)
