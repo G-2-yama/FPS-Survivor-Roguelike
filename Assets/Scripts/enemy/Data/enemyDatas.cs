@@ -31,10 +31,6 @@ public class EnemyConfig : ScriptableObject
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
 
-    public void IncreaseDistance(float amount)
-    {
-        currentdistance += amount;
-    }
     public void Initialize()
     {
         currentdistance = engagedistance;

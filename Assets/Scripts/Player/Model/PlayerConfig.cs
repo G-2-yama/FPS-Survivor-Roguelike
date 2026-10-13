@@ -235,6 +235,10 @@ public class PlayerConfig : MonoBehaviour
     [SerializeField, Min(0f)] private float fieldOfViewIncreaseLerpSpeed = 10f;
     [SerializeField, Min(0f)] private float fieldOfViewDecreaseLerpSpeed = 6f;
 
+    [Header("Pickup")]
+    [Tooltip("アイテムを引き寄せ始める距離（プレイヤーとアイテムの中心間）。離すのはこれ＋1m を超えたとき")]
+    [SerializeField, Min(0f)] private float pickupRadius = 3f;
+
     public float SlideSpeed => slideSpeed;
     public float SlideMinInertiaSpeed => slideMinInertiaSpeed;
     public float SlideTurnRateDegreesPerSecond => slideTurnRateDegreesPerSecond;
@@ -247,4 +251,5 @@ public class PlayerConfig : MonoBehaviour
     public float SlideFieldOfViewIncrease => slideFieldOfViewIncrease;
     public float FieldOfViewIncreaseLerpSpeed => fieldOfViewIncreaseLerpSpeed;
     public float FieldOfViewDecreaseLerpSpeed => fieldOfViewDecreaseLerpSpeed;
+    public float PickupRadius => pickupRadius;
 }

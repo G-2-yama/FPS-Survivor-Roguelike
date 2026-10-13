@@ -21,6 +21,8 @@ public class PlayerStats
     public float DamageMultiplier { get; private set; }
     public float KnockbackForceMultiplier { get; private set; }
 
+    public float PickupRadius { get; private set; }
+
     public PlayerStats(PlayerConfig baseStats)
     {
         MaxHP = baseStats.InitialHP;
@@ -32,6 +34,7 @@ public class PlayerStats
         DashCooldown = baseStats.DashCooldown;
         DamageMultiplier = 1f;
         KnockbackForceMultiplier = 1f;
+        PickupRadius = baseStats.PickupRadius;
     }
 
     public void AddMaxHP(int value)
@@ -77,5 +80,10 @@ public class PlayerStats
     public void AddKnockbackForceMultiplier(float multiplier)
     {
         KnockbackForceMultiplier += multiplier;
+    }
+
+    public void AddPickupRadius(float value)
+    {
+        PickupRadius += value;
     }
 }

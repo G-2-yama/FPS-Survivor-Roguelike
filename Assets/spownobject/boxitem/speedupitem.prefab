@@ -102,8 +102,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6610174817604422170}
   - component: {fileID: 1261105073541379437}
-  - component: {fileID: 3063875979176916502}
-  - component: {fileID: 6764737531609444669}
   - component: {fileID: 3733792369783622590}
   - component: {fileID: 2361475402351978197}
   m_Layer: 7
@@ -151,38 +149,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0758247, y: 1.4614046, z: 3.6502364}
   m_Center: {x: -0.15974998, y: 0.23070237, z: 1.7401494}
---- !u!114 &3063875979176916502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2347276547269274607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f396d1bc534a274691d17c74a934e82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
-  rb: {fileID: 2361475402351978197}
-  config: {fileID: 11400000, guid: 90f4e7d1b5fbb9f4dabb0fc49e7ad59c, type: 2}
-  targetProvider: {fileID: 6764737531609444669}
-  attack: {fileID: 0}
-  animator: {fileID: 0}
-  uniqueAnimation: {fileID: 0}
---- !u!114 &6764737531609444669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2347276547269274607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5a3ab6446e3bda4ebbb8d29d7ef8fe4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyTargetProvider
-  currentTarget: {fileID: 0}
-  playerTag: Player
 --- !u!114 &3733792369783622590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279aedafa8ede0b4db32db234d7d2b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::speedupitem
-  enemyBrain: {fileID: 3063875979176916502}
+  maxTilt: 15
+  minSink: 0
+  maxSink: 0
   upspeedrate: 10
   duration: 2.5
 --- !u!54 &2361475402351978197
@@ -221,7 +189,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -236,7 +204,6 @@ GameObject:
   - component: {fileID: 6360286582384228469}
   - component: {fileID: 3339078434502497279}
   - component: {fileID: 7438246110831365039}
-  - component: {fileID: 4366023138898065711}
   m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
@@ -317,24 +284,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4366023138898065711
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8174718219829870937}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.017987946, y: 0.036329824, z: 0.004664426}
-  m_Center: {x: -0.000000059604645, y: -0.01032449, z: -0.008733392}
