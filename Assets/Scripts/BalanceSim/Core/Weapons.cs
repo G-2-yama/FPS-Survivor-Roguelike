@@ -200,8 +200,6 @@ namespace BalanceSim
         private readonly List<RayHit> _rayHits = new();
         private readonly List<Body> _overlaps = new();
         private readonly List<Body> _chainHits = new();
-        private readonly List<Body> _staleKeys = new();
-        private readonly HashSet<Body> _overlapSet = new();
         private readonly Dictionary<string, Vec2> _stepPositions = new();
         private readonly Dictionary<string, (int damage, float knockback)> _lastInitialized = new();
         private Action<SimWeaponDef> _fire;
@@ -765,10 +763,21 @@ namespace BalanceSim
         private void UpdateHoming(PlayerProjectile projectile, SimProjectileMoveDef move, float dt)
         {
             float rangeSqr = move.trackingRange * move.trackingRange;
-            if (projectile.Target == null || !IsPresent(projectile.Target)
-                || (projectile.Target.Position - projectile.Position).SqrLength > rangeSqr)
+            if (projectile.Target != null && (!IsPresent(projectile.Target)
+                || (projectile.Target.Position - projectile.Position).SqrLength > rangeSqr))
             {
-                projectile.Target = FindNearestBody(projectile.Position, move.trackingRange, projectile.Def.targetTeam);
+                projectile.Target = null;
+                projectile.SearchTimer = 0f;
+            }
+
+            if (projectile.Target == null)
+            {
+                projectile.SearchTimer -= dt;
+                if (projectile.SearchTimer <= 0f)
+                {
+                    projectile.SearchTimer = move.searchInterval;
+                    projectile.Target = FindNearestBody(projectile.Position, move.trackingRange, projectile.Def.targetTeam);
+                }
             }
 
             if (projectile.Target != null)
@@ -943,34 +952,16 @@ namespace BalanceSim
                 return;
             }
 
-            foreach (Body body in _overlaps)
+            projectile.AreaTimer += dt;
+            if (projectile.AreaTimer < projectile.Def.interval)
             {
-                float timer = projectile.Timers.TryGetValue(body, out float value) ? value : 0f;
-                timer += dt;
-                if (timer >= projectile.Def.interval)
-                {
-                    Damage(body, projectile.Damage, projectile.Knockback);
-                    timer = 0f;
-                }
-                projectile.Timers[body] = timer;
+                return;
             }
 
-            if (projectile.Timers.Count > _overlaps.Count)
+            projectile.AreaTimer = 0f;
+            foreach (Body body in _overlaps)
             {
-                _overlapSet.Clear();
-                _overlapSet.UnionWith(_overlaps);
-                _staleKeys.Clear();
-                foreach (Body body in projectile.Timers.Keys)
-                {
-                    if (!_overlapSet.Contains(body))
-                    {
-                        _staleKeys.Add(body);
-                    }
-                }
-                foreach (Body body in _staleKeys)
-                {
-                    projectile.Timers.Remove(body);
-                }
+                Damage(body, projectile.Damage, projectile.Knockback);
             }
         }
 

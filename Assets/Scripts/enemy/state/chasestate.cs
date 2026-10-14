@@ -50,6 +50,9 @@ public class ChaseState : IState
             return;
         }
 
+        if (enemy.TryRelocate(distance, targetPosition))
+            return;
+
         enemy.UpdateFar(distance);
 
         enemy.Config.chaseMovedata.Move(

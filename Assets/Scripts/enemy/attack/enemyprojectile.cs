@@ -38,6 +38,10 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     public void SetSpawner(EnemyGenerator generator)
     {
         this.generator = generator;
+        if (enemyBrain != null)
+        {
+            enemyBrain.SetSpawner(generator);
+        }
     }
     /// <summary>取得した個体へ今回の攻撃設定を渡す</summary>
 

@@ -84,6 +84,7 @@ namespace BalanceSim
         public float spawnRadius;
         public int maxSpawnTry;
         public int maxEnemyCount;
+        public float relocateDistance;
         public List<SimSpawnDirection> directions = new();
         public List<SimPhase> phases = new();
     }
@@ -379,6 +380,7 @@ namespace BalanceSim
         public float speed;
         public float trackingRange;
         public float rotateSpeed;
+        public float searchInterval;
         public float width;
         public float length;
         public float duration;

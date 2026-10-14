@@ -12,6 +12,7 @@ public class DebugLoadoutWindow : EditorWindow
     private List<List<Item>> itemChains;
 
     private Player player;
+    private GameManager gameManager;
     private Vector2 scroll;
     private Action pendingChange;
 
@@ -155,10 +156,21 @@ public class DebugLoadoutWindow : EditorWindow
         EditorGUILayout.LabelField("経験値", $"{player.Exp:0.#} / {player.LevelUpRequiredExp:0.#}");
         EditorGUILayout.LabelField("未消化のレベルアップ", player.PendingLevelUps.ToString());
 
-        if (GUILayout.Button("レベルアップ"))
+        if (gameManager == null)
         {
-            // 成長状態を管理するPlayerへ経験値を渡し、通常の強化選択とUI通知も発生させる
-            pendingChange = () => player.AddExp(player.LevelUpRequiredExp);
+            gameManager = FindAnyObjectByType<GameManager>();
+        }
+
+        GameStateMachine stateMachine = gameManager != null ? gameManager.GameStateMachine : null;
+        bool isPlaying = stateMachine != null && stateMachine.CurrentState == stateMachine.PlayingState;
+
+        using (new EditorGUI.DisabledScope(!isPlaying))
+        {
+            if (GUILayout.Button("レベルアップ"))
+            {
+                // 成長状態を管理するPlayerへ経験値を渡し、通常の強化選択とUI通知も発生させる
+                pendingChange = () => player.AddExp(player.LevelUpRequiredExp);
+            }
         }
     }
 

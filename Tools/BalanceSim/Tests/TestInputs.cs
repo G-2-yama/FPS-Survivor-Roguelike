@@ -66,6 +66,7 @@ internal static class TestInputs
             spawnRadius = 80f,
             maxSpawnTry = 5,
             maxEnemyCount = maxEnemyCount,
+            relocateDistance = 85f,
             directions = new List<SimSpawnDirection> { new() { angle = 180f, weight = 1f } },
             phases = new List<SimPhase>
             {

@@ -41,6 +41,7 @@ public class EnemyBrain : MonoBehaviour
 
     private bool canThin;
 
+    private EnemyGenerator spawner;
 
     private void Awake()
     {
@@ -88,9 +89,42 @@ public class EnemyBrain : MonoBehaviour
         IsFar = false;
     }
 
+    public void SetSpawner(EnemyGenerator generator)
+    {
+        spawner = generator;
+    }
+
+    internal bool TryRelocate(float distance, Vector3 targetPosition)
+    {
+        if (spawner == null)
+            return false;
+
+        bool isTooFar = distance > spawner.RelocateDistance;
+        bool hasFallen = cachedTransform.position.y < targetPosition.y - spawner.FallRelocateDepth;
+        if (!isTooFar && !hasFallen)
+            return false;
+
+        if (!spawner.TryGetRelocatePosition(out Vector3 destination))
+            return false;
+
+        if (rb != null)
+        {
+            rb.position = destination;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            cachedTransform.position = destination;
+        }
+
+        return true;
+    }
+
     private void OnDisable()
     {
         EnemyBrainRunner.Unregister(this);
+        spawner = null;
         ClearFar();
         attack?.CancelAttack();
     }
