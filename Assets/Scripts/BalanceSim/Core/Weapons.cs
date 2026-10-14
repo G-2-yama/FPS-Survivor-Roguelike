@@ -765,10 +765,21 @@ namespace BalanceSim
         private void UpdateHoming(PlayerProjectile projectile, SimProjectileMoveDef move, float dt)
         {
             float rangeSqr = move.trackingRange * move.trackingRange;
-            if (projectile.Target == null || !IsPresent(projectile.Target)
-                || (projectile.Target.Position - projectile.Position).SqrLength > rangeSqr)
+            if (projectile.Target != null && (!IsPresent(projectile.Target)
+                || (projectile.Target.Position - projectile.Position).SqrLength > rangeSqr))
             {
-                projectile.Target = FindNearestBody(projectile.Position, move.trackingRange, projectile.Def.targetTeam);
+                projectile.Target = null;
+                projectile.SearchTimer = 0f;
+            }
+
+            if (projectile.Target == null)
+            {
+                projectile.SearchTimer -= dt;
+                if (projectile.SearchTimer <= 0f)
+                {
+                    projectile.SearchTimer = move.searchInterval;
+                    projectile.Target = FindNearestBody(projectile.Position, move.trackingRange, projectile.Def.targetTeam);
+                }
             }
 
             if (projectile.Target != null)

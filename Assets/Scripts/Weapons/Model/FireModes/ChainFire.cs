@@ -65,7 +65,8 @@ public class ChainFire : FireModeData
 
         for (int i = 0; i < chainCount; i++)
         {
-            Collider nextTarget = FindNearestEnemy(currentTarget, hitTargets, out IDamageable damageable);
+            Collider nextTarget = DamageTargetSearch.FindNearest(
+                currentTarget.transform.position, chainRange, targetTeam & ~TeamType.EnemyAmmo, out IDamageable damageable, hitTargets);
 
             if (nextTarget == null)
                 break;
@@ -78,52 +79,6 @@ public class ChainFire : FireModeData
 
             currentTarget = nextTarget;
         }
-    }
-
-    /// <summary>未処理のダメージ対象から最も近いColliderを探す</summary>
-    /// <param name="originTarget">連鎖の現在の終点となる対象</param>
-    /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
-    /// <returns>最も近い対象、範囲内にいない場合はnull</returns>
-    private Collider FindNearestEnemy(Collider originTarget, List<Collider> hitTargets, out IDamageable target)
-    {
-        target = null;
-        Collider[] colliders =
-            Physics.OverlapSphere(originTarget.transform.position, chainRange);
-
-        Collider nearest = null;
-        float nearestDistance = float.MaxValue;
-
-        foreach (Collider col in colliders)
-        {
-            if (col == originTarget)
-                continue;
-
-            // 今回のチェイン中に既に当たった敵だけ除外
-            if (hitTargets.Contains(col))
-                continue;
-
-            if (!DamageTargetRegistry.TryResolve(col, out IDamageable damageable))
-                continue;
-
-            if (damageable.TeamType == TeamType.EnemyAmmo)
-                continue;
-
-            if ((damageable.TeamType & targetTeam) == 0)
-                continue;
-
-            float distance = Vector3.Distance(
-                originTarget.transform.position,
-                col.transform.position);
-
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearest = col;
-                target = damageable;
-            }
-        }
-
-        return nearest;
     }
 
     /// <summary>武器能力を反映したダメージを連鎖対象へ適用する</summary>

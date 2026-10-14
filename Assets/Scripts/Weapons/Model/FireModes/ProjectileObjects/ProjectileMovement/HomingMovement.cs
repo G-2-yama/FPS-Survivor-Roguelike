@@ -6,9 +6,11 @@ public class TrackingMovement : MovementBase
     [SerializeField] private float trackingRange = 15f;
     [SerializeField] private float rotateSpeed = 360f;
     [SerializeField] private float moveSpeed = 20f;
+    [SerializeField] private float searchInterval = 0.1f;
 
     private Transform target;
     private Collider targetCollider;
+    private float searchTimer;
     private DamageBase damageBase;
     /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
@@ -23,6 +25,7 @@ public class TrackingMovement : MovementBase
         base.Initialize(owner, direction);
         target = null;
         targetCollider = null;
+        searchTimer = 0f;
     }
     /// <summary>保持済みの参照を使って個体の状態を更新する</summary>
 
@@ -53,37 +56,29 @@ public class TrackingMovement : MovementBase
     private void SearchTarget()
     {
         // 既にターゲットがいて範囲内ならそのまま
-        if (target != null && DamageTargetRegistry.TryResolve(targetCollider, out _))
+        if (target != null)
         {
             float sqrDist = (target.position - transform.position).sqrMagnitude;
 
-            if (sqrDist <= trackingRange * trackingRange)
+            if (DamageTargetRegistry.TryResolve(targetCollider, out _) && sqrDist <= trackingRange * trackingRange)
                 return;
+
+            target = null;
+            targetCollider = null;
+            searchTimer = 0f;
         }
 
-        target = null;
-        targetCollider = null;
+        searchTimer -= Time.deltaTime;
+        if (searchTimer > 0f)
+            return;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, trackingRange);
+        searchTimer = searchInterval;
 
-        float nearest = float.MaxValue;
-
-        foreach (Collider hit in hits)
+        Collider nearest = DamageTargetSearch.FindNearest(transform.position, trackingRange, damageBase.TargetTeam, out _);
+        if (nearest != null)
         {
-            if (!DamageTargetRegistry.TryResolve(hit, out IDamageable damageable))
-                continue;
-
-            if ((damageable.TeamType & damageBase.TargetTeam) == 0)
-                continue;
-
-            float sqrDist = (hit.transform.position - transform.position).sqrMagnitude;
-
-            if (sqrDist < nearest)
-            {
-                nearest = sqrDist;
-                target = hit.transform;
-                targetCollider = hit;
-            }
+            target = nearest.transform;
+            targetCollider = nearest;
         }
     }
 }

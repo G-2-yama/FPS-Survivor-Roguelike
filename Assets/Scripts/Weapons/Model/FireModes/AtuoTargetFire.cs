@@ -11,7 +11,8 @@ public class AutoTargetFire : FireModeData
     /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
-        Collider target = FindNearestEnemy(weaponOwner.transform.position);
+        Collider target = DamageTargetSearch.FindNearest(
+            weaponOwner.transform.position, searchRadius, TeamType.Enemy | TeamType.Boss, out _);
 
         Vector3 direction = target != null
             ? (target.transform.position - weapon.AimTransform.position).normalized
@@ -28,33 +29,5 @@ public class AutoTargetFire : FireModeData
 
         MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);
-    }
-    /// <summary>物理判定の候補から条件を満たす最も近い登録済み対象を選ぶ</summary>
-
-    private Collider FindNearestEnemy(Vector3 center)
-    {
-        Collider[] colliders = Physics.OverlapSphere(center, searchRadius);
-
-        Collider nearest = null;
-        float nearestDistance = float.MaxValue;
-
-        foreach (Collider col in colliders)
-        {
-            if (!DamageTargetRegistry.TryResolve(col, out IDamageable damageable))
-                continue;
-
-            if ((damageable.TeamType & (TeamType.Enemy | TeamType.Boss)) == 0)
-                continue;
-
-            float sqrDistance = (col.transform.position - center).sqrMagnitude;
-
-            if (sqrDistance < nearestDistance)
-            {
-                nearestDistance = sqrDistance;
-                nearest = col;
-            }
-        }
-
-        return nearest;
     }
 }

@@ -187,6 +187,7 @@ namespace BalanceSim.Editor
                     move.trackingRange = SerializedReader.Float(tracking, "trackingRange");
                     move.rotateSpeed = SerializedReader.Float(tracking, "rotateSpeed");
                     move.speed = SerializedReader.Float(tracking, "moveSpeed");
+                    move.searchInterval = SerializedReader.Float(tracking, "searchInterval");
                     break;
                 case BoomerangMovement boomerang:
                     move.kind = SimProjectileMoveKind.Boomerang;

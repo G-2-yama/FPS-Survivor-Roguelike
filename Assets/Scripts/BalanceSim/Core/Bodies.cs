@@ -59,6 +59,7 @@ namespace BalanceSim
         public Vec2 LocalFacing = Vec2.Forward;
         public Vec2 Direction;
         public Body Target;
+        public float SearchTimer;
         public float OrbitAngle;
         public readonly HashSet<Body> Inside = new();
         public readonly Dictionary<Body, float> Timers = new();
