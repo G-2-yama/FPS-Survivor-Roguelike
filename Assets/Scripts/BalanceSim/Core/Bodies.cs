@@ -62,7 +62,7 @@ namespace BalanceSim
         public float SearchTimer;
         public float OrbitAngle;
         public readonly HashSet<Body> Inside = new();
-        public readonly Dictionary<Body, float> Timers = new();
+        public float AreaTimer;
     }
 
     public sealed class AreaAgent

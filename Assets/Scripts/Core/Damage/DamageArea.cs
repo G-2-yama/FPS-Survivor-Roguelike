@@ -11,22 +11,18 @@ public class DamageArea : DamageBase
     [SerializeField]
     private float interval = 1f;
 
-    /// <summary>1対象の接触時間と解除通知元をまとめて保持する</summary>
+    /// <summary>1対象の接触Colliderと解除通知元をまとめて保持する</summary>
     private sealed class Contact
     {
         public readonly HashSet<Collider> Colliders = new();
         public IDamageable Target;
         public DamageTargetBinding Binding;
-        public float Timer;
-        public int Version;
 
         /// <summary>終了した活動期間の参照を解放して次の接触に備える</summary>
         public void Reset()
         {
-            Version++;
             Target = null;
             Binding = null;
-            Timer = 0f;
             Colliders.Clear();
         }
     }
@@ -34,23 +30,19 @@ public class DamageArea : DamageBase
     private readonly Dictionary<IDamageable, Contact> contacts = new();
     private readonly Dictionary<Collider, Contact> colliderContacts = new();
     private readonly Stack<Contact> reusableContacts = new();
+    private readonly List<IDamageable> tickBuffer = new();
     private Action<IDamageable> unavailableHandler;
+    private float tickTimer;
     [SerializeField] private DamageAreaScaleController scaleController;
 
     /// <summary>侵入したColliderへ単発モードのダメージを適用する</summary>
     private void OnTriggerEnter(Collider other)
     {
-        if (mode != DamageAreaMode.OnEnterOnce)
+        if (mode == DamageAreaMode.OnEnterOnce)
+        {
+            TryDamage(other, out _);
             return;
-
-        TryDamage(other, out _);
-    }
-    /// <summary>接触が続く対象の状態を更新する</summary>
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (mode != DamageAreaMode.Interval)
-            return;
+        }
 
         if (!DamageTargetRegistry.TryResolveBinding(other, out DamageTargetBinding binding))
             return;
@@ -59,18 +51,37 @@ public class DamageArea : DamageBase
         if ((damageable.TeamType & targetTeam) == 0)
             return;
 
-        Contact contact = ResolveContact(other, damageable, binding);
+        ResolveContact(other, damageable, binding);
+    }
 
-        // 現在の仕様に合わせ、同じ敵の複数Colliderも通知ごとに時間を加算する
-        contact.Timer += Time.deltaTime;
+    private void FixedUpdate()
+    {
+        if (mode != DamageAreaMode.Interval)
+            return;
 
-        if (contact.Timer >= interval)
+        tickTimer += Time.deltaTime;
+
+        if (tickTimer < interval)
+            return;
+
+        tickTimer = 0f;
+        DamageContacts();
+    }
+
+    private void DamageContacts()
+    {
+        tickBuffer.Clear();
+        tickBuffer.AddRange(contacts.Keys);
+
+        foreach (IDamageable target in tickBuffer)
         {
-            int version = contact.Version;
-            damageable.TakeDamage(damage, knockbackForce);
-            // TakeDamageの途中で返却され、同じ状態が再利用される場合も古い値を書き戻さない
-            if (contact.Version == version) contact.Timer = 0f;
+            if (!contacts.ContainsKey(target))
+                continue;
+
+            target.TakeDamage(damage, knockbackForce);
         }
+
+        tickBuffer.Clear();
     }
 
     /// <summary>継続通知の状態を再利用し、新規Colliderを対象の接触状態へ登録する</summary>
@@ -95,10 +106,12 @@ public class DamageArea : DamageBase
 
     private void OnTriggerExit(Collider other)
     {
-        if (!colliderContacts.TryGetValue(other, out Contact contact))
+        if (!colliderContacts.Remove(other, out Contact contact))
             return;
-        // 現在の仕様に合わせ、1つのColliderの退出でその対象の時間をリセットする
-        ForgetTarget(contact.Target);
+
+        contact.Colliders.Remove(other);
+        if (contact.Colliders.Count == 0)
+            ForgetTarget(contact.Target);
     }
     /// <summary>取得した個体へ今回の攻撃設定を渡す</summary>
     public override void Initialize(int damage, float knockback)
@@ -115,6 +128,7 @@ public class DamageArea : DamageBase
         base.OnGet();
 
         ClearTargets();
+        tickTimer = 0f;
 
         // 前回のスケールを初期化
         scaleController?.ResetScale();
@@ -130,7 +144,7 @@ public class DamageArea : DamageBase
         base.OnRelease();
     }
 
-    /// <summary>返却や無効化した対象の接触時間と購読を破棄する</summary>
+    /// <summary>返却や無効化した対象の接触状態と購読を破棄する</summary>
     private void ForgetTarget(IDamageable target)
     {
         if (!contacts.TryGetValue(target, out Contact contact)) return;
