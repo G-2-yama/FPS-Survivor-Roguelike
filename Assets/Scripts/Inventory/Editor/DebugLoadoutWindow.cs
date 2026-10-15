@@ -10,6 +10,7 @@ public class DebugLoadoutWindow : EditorWindow
 {
     private Dictionary<WeaponSlotGroup, List<WeaponData>> weaponDefinitions;
     private List<Item> itemDefinitions;
+    private readonly Dictionary<AttributeDefinition, int> reachableCounts = new Dictionary<AttributeDefinition, int>();
 
     private Player player;
     private GameManager gameManager;
@@ -31,6 +32,7 @@ public class DebugLoadoutWindow : EditorWindow
             .GroupBy(w => ToSlotGroup(w.WeaponType))
             .ToDictionary(g => g.Key, g => g.ToList());
         itemDefinitions = LoadAll<Item>().ToList();
+        reachableCounts.Clear();
     }
 
     /// <summary>プレイ中の状態変化を画面に反映する</summary>
@@ -174,6 +176,7 @@ public class DebugLoadoutWindow : EditorWindow
             return;
         }
 
+        PlayerInventory inventory = player.Inventory;
         foreach (AttributeDefinition attribute in tracker.Catalog.All.Where(a => a != null))
         {
             bool isBase = attribute.Kind == AttributeKind.Base;
@@ -181,8 +184,154 @@ public class DebugLoadoutWindow : EditorWindow
             string threshold = isBase ? $"{count} / {attribute.MaxThreshold}" : $"{count} / {attribute.ActivateThreshold}";
             string state = tracker.IsMax(attribute) ? "最大" : tracker.IsActive(attribute) ? "有効" : "";
             string label = isBase ? $"[{attribute.DisplayName}]" : $"({attribute.DisplayName})";
-            EditorGUILayout.LabelField(label, $"{threshold}  {state}");
+
+            if (!reachableCounts.TryGetValue(attribute, out int reachable))
+            {
+                reachable = BuildAttributeLoadout(attribute, int.MaxValue, inventory.Items.Count).Count;
+                reachableCounts[attribute] = reachable;
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(label, $"{threshold}  {state}");
+                EditorGUILayout.LabelField($"届く最大 {reachable}", GUILayout.Width(80));
+                DrawAttributeFillButton("有効化", attribute, attribute.ActivateThreshold, reachable, inventory);
+                if (isBase)
+                {
+                    DrawAttributeFillButton("最大", attribute, attribute.MaxThreshold, reachable, inventory);
+                }
+                else
+                {
+                    GUILayout.Space(64);
+                }
+            }
         }
+    }
+
+    private void DrawAttributeFillButton(string label, AttributeDefinition attribute, int target, int reachable,
+        PlayerInventory inventory)
+    {
+        using (new EditorGUI.DisabledScope(reachable < target))
+        {
+            if (GUILayout.Button(label, GUILayout.Width(60)))
+            {
+                AttributeLoadout loadout = BuildAttributeLoadout(attribute, target, inventory.Items.Count);
+                pendingChange = () => ApplyAttributeLoadout(inventory, loadout);
+            }
+        }
+    }
+
+    private class AttributeCandidate
+    {
+        public WeaponData Weapon;
+        public Item Item;
+        public int Weight;
+    }
+
+    private class AttributeLoadout
+    {
+        public readonly Dictionary<SlotType, WeaponData> Weapons = new Dictionary<SlotType, WeaponData>();
+        public readonly List<Item> Items = new List<Item>();
+        public int Count;
+    }
+
+    private AttributeLoadout BuildAttributeLoadout(AttributeDefinition attribute, int target, int itemCapacity)
+    {
+        List<AttributeCandidate> candidates = weaponDefinitions.Values
+            .SelectMany(list => list)
+            .Where(w => w.Attributes.Contains(attribute))
+            .GroupBy(w => string.IsNullOrEmpty(w.WeaponId) ? w.name : w.WeaponId)
+            .Select(g => g.First())
+            .Select(w => new AttributeCandidate
+            {
+                Weapon = w,
+                Weight = w.WeaponType == WeaponType.Main && w.IsEvoLevel(w.MaxLevelIndex) ? 2 : 1,
+            })
+            .ToList();
+
+        IEnumerable<Item> uniqueItems = itemDefinitions
+            .GroupBy(i => string.IsNullOrEmpty(i.ItemId) ? i.name : i.ItemId)
+            .Select(g => g.First())
+            .ToList();
+        candidates.AddRange(uniqueItems
+            .Where(i => i.Attributes.Contains(attribute))
+            .Select(i => new AttributeCandidate { Item = i, Weight = 1 }));
+
+        if (attribute.Kind == AttributeKind.Base)
+        {
+            Item allBases = uniqueItems.FirstOrDefault(i => i.CountsAsAllBases && !i.Attributes.Contains(attribute));
+            if (allBases != null)
+            {
+                candidates.Add(new AttributeCandidate { Item = allBases, Weight = 1 });
+            }
+        }
+
+        var loadout = new AttributeLoadout();
+        while (loadout.Count < target)
+        {
+            int need = target - loadout.Count;
+            AttributeCandidate next = candidates
+                .Where(c => CanPlace(loadout, c, itemCapacity))
+                .OrderByDescending(c => c.Weight <= need)
+                .ThenByDescending(c => c.Weight)
+                .FirstOrDefault();
+            if (next == null)
+            {
+                break;
+            }
+
+            if (next.Weapon != null)
+            {
+                loadout.Weapons[FreeSlot(loadout, next.Weapon).Value] = next.Weapon;
+            }
+            else
+            {
+                loadout.Items.Add(next.Item);
+            }
+
+            loadout.Count += next.Weight;
+            candidates.Remove(next);
+        }
+
+        return loadout;
+    }
+
+    private static bool CanPlace(AttributeLoadout loadout, AttributeCandidate candidate, int itemCapacity)
+    {
+        return candidate.Weapon != null
+            ? FreeSlot(loadout, candidate.Weapon).HasValue
+            : loadout.Items.Count < itemCapacity;
+    }
+
+    private static SlotType? FreeSlot(AttributeLoadout loadout, WeaponData weapon)
+    {
+        WeaponSlotGroup group = ToSlotGroup(weapon.WeaponType);
+        foreach (SlotType slot in Enum.GetValues(typeof(SlotType)))
+        {
+            if (slot.GetGroup() == group && !loadout.Weapons.ContainsKey(slot))
+            {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private static void ApplyAttributeLoadout(PlayerInventory inventory, AttributeLoadout loadout)
+    {
+        foreach (SlotType slot in Enum.GetValues(typeof(SlotType)))
+        {
+            if (loadout.Weapons.TryGetValue(slot, out WeaponData weapon))
+            {
+                inventory.EquipWeapon(slot, weapon, weapon.MaxLevelIndex);
+            }
+            else
+            {
+                inventory.DiscardWeapon(slot);
+            }
+        }
+
+        ReplaceItems(inventory, loadout.Items.Select(i => (i, i.MaxLevel - 1)).ToArray());
     }
 
     /// <summary>プレイヤーの成長状態を表示し、必要経験値の加算を予約する</summary>
