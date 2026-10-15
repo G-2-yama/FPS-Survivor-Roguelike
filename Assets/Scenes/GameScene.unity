@@ -4504,6 +4504,7 @@ MonoBehaviour:
   inventory: {fileID: 1569679481}
   sounder: {fileID: 709705776}
   timedBuffManager: {fileID: 275487198}
+  attributeCatalog: {fileID: 11400000, guid: 0177bd98fbf24afaa248df5be5ce0cdb, type: 2}
 --- !u!114 &275487194
 MonoBehaviour:
   m_ObjectHideFlags: 0

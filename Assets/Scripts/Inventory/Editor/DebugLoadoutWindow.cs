@@ -78,6 +78,10 @@ public class DebugLoadoutWindow : EditorWindow
         }
 
         EditorGUILayout.Space();
+        EditorGUILayout.LabelField("属性", EditorStyles.boldLabel);
+        DrawAttributes();
+
+        EditorGUILayout.Space();
         EditorGUILayout.LabelField("プレイヤー", EditorStyles.boldLabel);
         DrawPlayerLevel();
 
@@ -158,6 +162,26 @@ public class DebugLoadoutWindow : EditorWindow
         foreach ((Item item, int level) in desired.Where(d => d.item != null))
         {
             inventory.EquipItem(item, level);
+        }
+    }
+
+    private void DrawAttributes()
+    {
+        AttributeTracker tracker = player.Attributes;
+        if (tracker == null || tracker.Catalog == null)
+        {
+            EditorGUILayout.HelpBox("属性の一覧が設定されていません", MessageType.Warning);
+            return;
+        }
+
+        foreach (AttributeDefinition attribute in tracker.Catalog.All.Where(a => a != null))
+        {
+            bool isBase = attribute.Kind == AttributeKind.Base;
+            int count = tracker.GetCount(attribute);
+            string threshold = isBase ? $"{count} / {attribute.MaxThreshold}" : $"{count} / {attribute.ActivateThreshold}";
+            string state = tracker.IsMax(attribute) ? "最大" : tracker.IsActive(attribute) ? "有効" : "";
+            string label = isBase ? $"[{attribute.DisplayName}]" : $"({attribute.DisplayName})";
+            EditorGUILayout.LabelField(label, $"{threshold}  {state}");
         }
     }
 

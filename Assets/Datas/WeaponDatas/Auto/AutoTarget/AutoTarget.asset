@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: AutoTarget
   artwork: {fileID: 0}
   weaponType: 2
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: ebb1e84c509b46388c6e1182296f9691, type: 2}
+  - {fileID: 11400000, guid: c080b3a286914608bb5d38ef2d2523ab, type: 2}
   traits: []
   levels:
   - displayName: "\u30AA\u30FC\u30C8\u30BF\u30EC\u30C3\u30C8"

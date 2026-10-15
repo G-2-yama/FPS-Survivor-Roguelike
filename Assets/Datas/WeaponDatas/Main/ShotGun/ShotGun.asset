@@ -15,7 +15,8 @@ MonoBehaviour:
   weaponId: ShotGun
   artwork: {fileID: 21300000, guid: 7507488a32980a447a03debd1d70f5c2, type: 3}
   weaponType: 0
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: e25b2db2877c4b58967602095406442b, type: 2}
   traits: []
   levels:
   - displayName: "\u30B7\u30E7\u30C3\u30C8\u30AC\u30F3"

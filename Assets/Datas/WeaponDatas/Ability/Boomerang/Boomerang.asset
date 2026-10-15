@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: Boomerang
   artwork: {fileID: 0}
   weaponType: 1
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 22088cae60e0488bb4197e489f2305fe, type: 2}
+  - {fileID: 11400000, guid: c6a86b553a37433bae74ba1469319451, type: 2}
   traits: []
   levels:
   - displayName: "\u30D6\u30FC\u30E1\u30E9\u30F3"

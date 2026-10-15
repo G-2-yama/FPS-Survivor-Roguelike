@@ -15,7 +15,8 @@ MonoBehaviour:
   weaponId: Sword
   artwork: {fileID: 21300000, guid: 4618367f8968837459477522f0d38564, type: 3}
   weaponType: 0
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 22088cae60e0488bb4197e489f2305fe, type: 2}
   traits: []
   levels:
   - displayName: "\u5263"

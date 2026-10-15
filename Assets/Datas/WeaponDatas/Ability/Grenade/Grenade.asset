@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: Grenade
   artwork: {fileID: 0}
   weaponType: 1
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: e25b2db2877c4b58967602095406442b, type: 2}
+  - {fileID: 11400000, guid: 6d4c526da0b2462590cd71188511b19c, type: 2}
   traits: []
   levels:
   - displayName: "\u30B0\u30EC\u30CD\u30FC\u30C9"

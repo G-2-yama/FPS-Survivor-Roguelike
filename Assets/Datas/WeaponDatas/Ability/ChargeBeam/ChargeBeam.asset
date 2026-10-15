@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: ChargeBeam
   artwork: {fileID: 0}
   weaponType: 1
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 0671e5606e6741bda1ee176b42c607e4, type: 2}
+  - {fileID: 11400000, guid: 85777e10c23442bf922b66cf2611cfdb, type: 2}
   traits: []
   levels:
   - displayName: "\u30C1\u30E3\u30FC\u30B8\u30D3\u30FC\u30E0"

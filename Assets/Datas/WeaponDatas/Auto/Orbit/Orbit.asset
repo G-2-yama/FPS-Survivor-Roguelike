@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: Orbit
   artwork: {fileID: 0}
   weaponType: 2
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 0671e5606e6741bda1ee176b42c607e4, type: 2}
+  - {fileID: 11400000, guid: edfe89064f5d40018e9ad6db1904ecb8, type: 2}
   traits: []
   levels:
   - displayName: "\u30AA\u30FC\u30D3\u30C3\u30C8"

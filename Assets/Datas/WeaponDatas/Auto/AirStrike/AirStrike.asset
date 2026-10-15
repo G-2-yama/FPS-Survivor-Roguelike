@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: AirStrike
   artwork: {fileID: 0}
   weaponType: 2
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 6d4c526da0b2462590cd71188511b19c, type: 2}
+  - {fileID: 11400000, guid: 12145cae2fcd4144818a7e5a836c34cf, type: 2}
   traits: []
   levels:
   - displayName: "\u30A8\u30A2\u30B9\u30C8\u30E9\u30A4\u30AF"

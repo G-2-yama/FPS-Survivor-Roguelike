@@ -15,7 +15,8 @@ MonoBehaviour:
   weaponId: AssaultRifle
   artwork: {fileID: 21300000, guid: b959c9ee556546647ac51093b6c30408, type: 3}
   weaponType: 0
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: ebb1e84c509b46388c6e1182296f9691, type: 2}
   traits: []
   levels:
   - displayName: AR

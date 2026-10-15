@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponId: Aura
   artwork: {fileID: 0}
   weaponType: 2
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: ebb1e84c509b46388c6e1182296f9691, type: 2}
+  - {fileID: 11400000, guid: 2aae9273be404ca9b01b29bc6dae6f50, type: 2}
   traits: []
   levels:
   - displayName: "\u30AA\u30FC\u30E9"

@@ -15,7 +15,10 @@ MonoBehaviour:
   weaponId: Molotov
   artwork: {fileID: 0}
   weaponType: 1
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: ebb1e84c509b46388c6e1182296f9691, type: 2}
+  - {fileID: 11400000, guid: edfe89064f5d40018e9ad6db1904ecb8, type: 2}
+  - {fileID: 11400000, guid: 85777e10c23442bf922b66cf2611cfdb, type: 2}
   traits: []
   levels:
   - displayName: "\u706B\u708E\u74F6"

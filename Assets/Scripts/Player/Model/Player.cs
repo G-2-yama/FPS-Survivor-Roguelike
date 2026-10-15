@@ -19,7 +19,10 @@ public class Player : MonoBehaviour, IDamageable
     private Sounder sounder;
     [SerializeField, PlayerSettingLabel("Timed Buff Manager"), Tooltip("プレイヤーの一時強化を管理するコンポーネント")]
     private TimedBuffManager timedBuffManager;
+    [SerializeField, PlayerSettingLabel("Attribute Catalog"), Tooltip("属性を数えるときに使う属性の一覧")]
+    private AttributeCatalog attributeCatalog;
     private PlayerProgression progression;
+    private AttributeEffectRunner attributeEffectRunner;
     private int pendingLevelUps;
     private bool isWeaponSyncEnabled;
     private CharacterController bodyController;
@@ -34,6 +37,7 @@ public class Player : MonoBehaviour, IDamageable
     public PlayerStats Stats { get; private set; }
     public Health Health => Stats?.Health;
     public TimedBuffManager TimedBuffManager { get; private set; }
+    public AttributeTracker Attributes { get; private set; }
     public float Exp => progression?.Experience ?? 0f;
     public float LevelUpRequiredExp => progression?.RequiredExperience ?? Config.Progression.LevelUpRequiredExp;
     public int Level => progression?.Level ?? Config.Progression.InitialLevel;
@@ -129,6 +133,8 @@ public class Player : MonoBehaviour, IDamageable
         pendingLevelUps = progression.AddExperience(initialExperience);
         // MonoBehaviourをnewで生成せず、実際に更新されるコンポーネントを使用する
         TimedBuffManager = timedBuffManager;
+        Attributes = new AttributeTracker(inventory, attributeCatalog);
+        attributeEffectRunner = new AttributeEffectRunner(this, Attributes);
         Health.OnDeath += HandleDeath;
     }
 
@@ -136,6 +142,8 @@ public class Player : MonoBehaviour, IDamageable
     private void OnDestroy()
     {
         if (Health != null) Health.OnDeath -= HandleDeath;
+        attributeEffectRunner?.Dispose();
+        Attributes?.Dispose();
         Settings?.Dispose();
     }
 

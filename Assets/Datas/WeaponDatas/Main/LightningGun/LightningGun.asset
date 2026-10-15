@@ -15,7 +15,8 @@ MonoBehaviour:
   weaponId: LightningGun
   artwork: {fileID: 21300000, guid: e1d9ae16319bf3048a5c4a17e01d10e4, type: 3}
   weaponType: 0
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: 0671e5606e6741bda1ee176b42c607e4, type: 2}
   traits: []
   levels:
   - displayName: "\u30E9\u30A4\u30C8\u30CB\u30F3\u30B0\u30AC\u30F3"
