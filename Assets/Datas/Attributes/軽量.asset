@@ -18,10 +18,10 @@ MonoBehaviour:
   - count: 3
     text: "\u79FB\u52D5\u901F\u5EA6\u30FB\u30B8\u30E3\u30F3\u30D7\u9AD8\u5EA6\u30FB\u30C0\u30C3\u30B7\u30E5\u901F\u5EA6\u304C\u4E0A\u304C\u308B"
     condition: 
-  - count: 6
+  - count: 5
     text: "\u79FB\u52D5\u901F\u5EA6\u306B\u5FDC\u3058\u3066\u706B\u529B\u4E0A\u6607\u3001\u3055\u3089\u306B\u901F\u5EA6\u306B\u5FDC\u3058\u305F\u78BA\u7387\u3067\u30C0\u30E1\u30FC\u30B8\u3092\u7121\u52B9\u5316\u3059\u308B"
     condition: 
   activateThreshold: 3
-  maxThreshold: 6
+  maxThreshold: 5
   activeEffects: []
   maxEffects: []
