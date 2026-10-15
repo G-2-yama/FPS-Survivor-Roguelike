@@ -6409,7 +6409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TimerView
   timerText: {fileID: 1082225622}
   timer: {fileID: 383212504}
-  displayFormat: 1
+  displayFormat: 0
 --- !u!114 &383212504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7287,6 +7287,7 @@ MonoBehaviour:
   upgradeManager: {fileID: 1653113031}
   inventoryController: {fileID: 1569679480}
   sounder: {fileID: 419950870}
+  syncItem: {fileID: 11400000, guid: 32879d6c60e2d5a4190c9a2665fa1537, type: 2}
 --- !u!4 &419950868
 Transform:
   m_ObjectHideFlags: 0

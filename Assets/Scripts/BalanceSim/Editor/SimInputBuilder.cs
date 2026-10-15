@@ -190,8 +190,7 @@ namespace BalanceSim.Editor
             {
                 var weapon = SerializedReader.Ref<Weapon>(player.Inventory, field);
                 WeaponData data = weapon != null ? weapon.WeaponData : null;
-                weapons.Add(data);
-                input.player.initialWeapons.Add(data != null && !data.IsEmpty ? data.name : string.Empty);
+                input.player.initialWeapons.Add(weapons.Add(data));
             }
         }
 
@@ -291,16 +290,14 @@ namespace BalanceSim.Editor
                     {
                         def.kind = SimUpgradeKind.WeaponUnlock;
                         var target = SerializedReader.Ref<WeaponData>(upgrade, "target");
-                        weapons.Add(target);
-                        def.weapon = target != null && !target.IsEmpty ? target.name : string.Empty;
+                        def.weapon = weapons.Add(target);
                         break;
                     }
                     case GetItem:
                     {
                         def.kind = SimUpgradeKind.GetItem;
                         var target = SerializedReader.Ref<Item>(upgrade, "target");
-                        items.Add(target);
-                        def.item = target != null ? target.name : string.Empty;
+                        def.item = items.Add(target);
                         break;
                     }
                     case ItemLevelUp:
@@ -355,53 +352,81 @@ namespace BalanceSim.Editor
                 _warnings = warnings;
             }
 
-            /// <summary>武器とその強化先を一覧へ登録する</summary>
-            public void Add(WeaponData data)
+            /// <summary>武器の全レベルを一覧へ登録し、レベル0の名前を返す</summary>
+            public string Add(WeaponData data)
             {
-                while (data != null && !data.IsEmpty)
+                if (data == null || data.IsEmpty)
                 {
-                    if (_known.TryGetValue(data.name, out WeaponData known))
-                    {
-                        if (known != data)
-                        {
-                            _warnings.Add($"同じ名前の武器データが複数あります: {data.name}");
-                        }
-                        return;
-                    }
+                    return string.Empty;
+                }
 
-                    _known[data.name] = data;
-                    WeaponData next = data.NextLevelData;
+                string id = IdOf(data);
+                if (_known.TryGetValue(id, out WeaponData known))
+                {
+                    if (known != data)
+                    {
+                        _warnings.Add($"同じ weaponId の武器データが複数あります: {id}");
+                    }
+                    return LevelName(known, 0);
+                }
+
+                _known[id] = data;
+                if (data.LevelCount == 0)
+                {
+                    _warnings.Add($"武器 {data.name} にレベルがありません");
+                }
+
+                for (int level = 0; level < data.LevelCount; level++)
+                {
+                    WeaponLevelData current = data.GetLevel(level);
+                    string name = LevelName(data, level);
                     _weapons.Add(new SimWeaponDef
                     {
-                        name = data.name,
+                        name = name,
                         type = (SimWeaponType)(int)data.WeaponType,
-                        next = next != null && !next.IsEmpty ? next.name : string.Empty,
-                        autoFire = data.AutoFire,
-                        autoReload = data.AutoReload,
-                        fullAuto = data.TriggerType == WeaponTriggerType.FullAuto,
-                        damage = data.Damage,
-                        knockback = data.KnockbackForce,
-                        spreadAngle = data.SpreadAngle,
-                        fireInterval = data.FireInterval,
-                        burstCount = data.BurstCount,
-                        burstInterval = data.BurstInterval,
-                        magazineSize = data.MagazineSize,
-                        reloadTime = data.ReloadTime,
-                        fireMode = ReadFireMode(data),
+                        next = level + 1 < data.LevelCount ? LevelName(data, level + 1) : string.Empty,
+                        autoFire = current.AutoFire,
+                        autoReload = current.AutoReload,
+                        fullAuto = current.TriggerType == WeaponTriggerType.FullAuto,
+                        damage = current.Damage,
+                        knockback = current.KnockbackForce,
+                        spreadAngle = current.SpreadAngle,
+                        fireInterval = current.FireInterval,
+                        burstCount = current.BurstCount,
+                        burstInterval = current.BurstInterval,
+                        magazineSize = current.MagazineSize,
+                        reloadTime = current.ReloadTime,
+                        fireMode = ReadFireMode(current, name),
                     });
-                    data = next;
                 }
+                return LevelName(data, 0);
+            }
+
+            private string IdOf(WeaponData data)
+            {
+                if (!string.IsNullOrEmpty(data.WeaponId))
+                {
+                    return data.WeaponId;
+                }
+                _warnings.Add($"武器 {data.name} に weaponId がありません。アセット名で代用します");
+                return data.name;
+            }
+
+            private static string LevelName(WeaponData data, int level)
+            {
+                string id = string.IsNullOrEmpty(data.WeaponId) ? data.name : data.WeaponId;
+                return data.IsEvoLevel(level) ? $"{id}_Evo" : $"{id}_{level:00}";
             }
 
             /// <summary>武器の攻撃方式をシミュレーションの攻撃定義へ変換する</summary>
-            private SimFireModeDef ReadFireMode(WeaponData data)
+            private SimFireModeDef ReadFireMode(WeaponLevelData data, string weaponName)
             {
                 FireModeData mode = data.FireModeData;
                 var def = new SimFireModeDef { name = mode != null ? mode.name : string.Empty };
                 switch (mode)
                 {
                     case null:
-                        _warnings.Add($"武器 {data.name} に射撃方式がありません。撃っても何も起きないものとして扱います");
+                        _warnings.Add($"武器 {weaponName} に射撃方式がありません。撃っても何も起きないものとして扱います");
                         break;
                     case ChainFire chain:
                         def.kind = SimFireModeKind.Chain;
@@ -455,7 +480,7 @@ namespace BalanceSim.Editor
                         break;
                     }
                     default:
-                        _warnings.Add($"武器 {data.name} の射撃方式 {mode.GetType().Name} は未対応です。撃っても何も起きないものとして扱います");
+                        _warnings.Add($"武器 {weaponName} の射撃方式 {mode.GetType().Name} は未対応です。撃っても何も起きないものとして扱います");
                         break;
                 }
 
@@ -490,55 +515,77 @@ namespace BalanceSim.Editor
                 _warnings = warnings;
             }
 
-            /// <summary>アイテムとその強化先を一覧へ登録する</summary>
-            public void Add(Item item)
+            /// <summary>アイテムの全レベルを一覧へ登録し、レベル0の名前を返す</summary>
+            public string Add(Item item)
             {
-                while (item != null)
+                if (item == null)
                 {
-                    if (_known.TryGetValue(item.name, out Item known))
-                    {
-                        if (known != item)
-                        {
-                            _warnings.Add($"同じ名前のアイテムが複数あります: {item.name}");
-                        }
-                        return;
-                    }
-
-                    _known[item.name] = item;
-                    _items.Add(Read(item));
-                    item = item.NextLevelItem;
+                    return string.Empty;
                 }
+
+                string id = IdOf(item);
+                if (_known.TryGetValue(id, out Item known))
+                {
+                    if (known != item)
+                    {
+                        _warnings.Add($"同じ itemId のアイテムが複数あります: {id}");
+                    }
+                    return LevelName(known, 0);
+                }
+
+                _known[id] = item;
+                for (int level = 0; level < item.MaxLevel; level++)
+                {
+                    _items.Add(Read(item, level));
+                }
+                return LevelName(item, 0);
+            }
+
+            private string IdOf(Item item)
+            {
+                if (!string.IsNullOrEmpty(item.ItemId))
+                {
+                    return item.ItemId;
+                }
+                _warnings.Add($"アイテム {item.name} に itemId がありません。アセット名で代用します");
+                return item.name;
+            }
+
+            private static string LevelName(Item item, int level)
+            {
+                string id = string.IsNullOrEmpty(item.ItemId) ? item.name : item.ItemId;
+                return $"{id}_{level:00}";
             }
 
             /// <summary>アイテム効果をシミュレーション用の定義へ変換する</summary>
-            private SimItemDef Read(Item item)
+            private SimItemDef Read(Item item, int level)
             {
                 var def = new SimItemDef
                 {
-                    name = item.name,
-                    next = item.NextLevelItem != null ? item.NextLevelItem.name : string.Empty,
+                    name = LevelName(item, level),
+                    next = level + 1 < item.MaxLevel ? LevelName(item, level + 1) : string.Empty,
                 };
 
                 switch (item)
                 {
                     case HealthUpItem:
                         def.kind = SimItemKind.HealthUp;
-                        def.amount = SerializedReader.Int(item, "HealthIncreaseAmount");
+                        def.amount = SerializedReader.Int(item, $"healthIncreasePerLevel.Array.data[{level}]");
                         break;
                     case Expcatcher:
                     {
                         def.kind = SimItemKind.ExpCatcher;
-                        def.amount = SerializedReader.Float(item, "increaseamount");
+                        def.amount = SerializedReader.Float(item, $"increasePerLevel.Array.data[{level}]");
                         def.rangeKey = PrefabReader.PickupRangeKey;
                         break;
                     }
                     case DamageUpItem:
                         def.kind = SimItemKind.DamageUp;
-                        def.amount = SerializedReader.Float(item, "DamageIncreaseAmount");
+                        def.amount = SerializedReader.Float(item, $"damageIncreasePerLevel.Array.data[{level}]");
                         break;
                     case KnockbackUpItem:
                         def.kind = SimItemKind.KnockbackUp;
-                        def.amount = SerializedReader.Float(item, "KnockbackIncreaseAmount");
+                        def.amount = SerializedReader.Float(item, $"knockbackIncreasePerLevel.Array.data[{level}]");
                         break;
                     case SyncWeaponItem:
                         def.kind = SimItemKind.SyncWeapon;

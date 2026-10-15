@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sounder sounder;
     public Sounder Sounder => sounder;
 
+    [Tooltip("タイトルでシンクロ ON を選んだときに、開始時にアイテム枠へ入れるアイテム")]
+    [SerializeField] private Item syncItem;
+
     private GameController gameController;
     private GameStateMachine gameStateMachine;
     public GameStateMachine GameStateMachine => gameStateMachine;
@@ -67,7 +70,13 @@ public class GameManager : MonoBehaviour
         if (GameStartSettings.StartingWeapon != null)
             player.Inventory.EquipWeapon(SlotType.LeftMain, GameStartSettings.StartingWeapon);
 
-        player.SetWeaponSync(GameStartSettings.WeaponSync);
+        if (GameStartSettings.WeaponSync)
+        {
+            if (syncItem != null)
+                player.Inventory.EquipItem(syncItem);
+            else
+                Debug.LogError("シンクロのアイテムが設定されていません", this);
+        }
     }
 
     private void OnDestroy()

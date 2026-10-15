@@ -47,10 +47,10 @@ public class InventoryUI : MonoBehaviour
     {
         foreach (var slotUI in weaponSlotUIs)
         {
-            WeaponData data =
-                inventory.GetWeaponData(slotUI.SlotType);
+            Weapon weapon =
+                inventory.GetWeapon(slotUI.SlotType);
 
-            slotUI.Refresh(data);
+            slotUI.Refresh(weapon);
         }
     }
 
@@ -61,7 +61,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < itemSlotUIs.Length; i++)
         {
-            Item item = inventory.Items[i];
+            Item item = inventory.Items[i]?.Item;
 
             itemSlotUIs[i].Refresh(item, i);
         }
@@ -70,14 +70,14 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// Weaponスロット1つを更新する。
     /// </summary>
-    private void RefreshWeaponSlot(SlotType slotType, WeaponData data)
+    private void RefreshWeaponSlot(SlotType slotType, Weapon weapon)
     {
         foreach (var slotUI in weaponSlotUIs)
         {
             if (slotUI.SlotType != slotType)
                 continue;
 
-            slotUI.Refresh(data);
+            slotUI.Refresh(weapon);
             return;
         }
     }

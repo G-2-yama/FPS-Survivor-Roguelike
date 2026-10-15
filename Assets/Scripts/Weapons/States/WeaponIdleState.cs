@@ -13,7 +13,7 @@ public class WeaponIdleState : WeaponState
         }
         _weapon.WeaponView.SetReloadProgress(1f);
 
-        if (_weapon.WeaponData.AutoFire)
+        if (_weapon.CurrentLevel.AutoFire)
         {
             stateMachine.ChangeState<WeaponFiringState>();
         }

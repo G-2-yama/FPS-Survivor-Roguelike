@@ -34,8 +34,8 @@ public class WeaponBalanceWindow : EditorWindow
     }
 
 
-    private readonly List<WeaponData> _weapons = new();
-    private readonly Dictionary<WeaponData, BalanceInfo> _balanceInfos = new();
+    private readonly List<(WeaponData weapon, int level)> _weapons = new();
+    private readonly Dictionary<(WeaponData weapon, int level), BalanceInfo> _balanceInfos = new();
 
     private Vector2 _scrollPosition;
 
@@ -92,29 +92,43 @@ public class WeaponBalanceWindow : EditorWindow
                 continue;
             }
 
-            _weapons.Add(weapon);
-            _balanceInfos.Add(weapon, LoadBalanceInfo(weapon));
+            for (int level = 0; level < weapon.LevelCount; level++)
+            {
+                _weapons.Add((weapon, level));
+                _balanceInfos.Add((weapon, level), LoadBalanceInfo(weapon, level));
+            }
         }
 
-        _weapons.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+        _weapons.Sort((a, b) =>
+        {
+            int byName = string.CompareOrdinal(a.weapon.name, b.weapon.name);
+            return byName != 0 ? byName : a.level.CompareTo(b.level);
+        });
     }
 
 
     /// <summary>
     /// WeaponData固有の保存キー取得用GUIDを取得する。
     /// </summary>
-    private string GetGuid(WeaponData weapon)
+    private string GetGuid(WeaponData weapon, int level)
     {
-        return AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(weapon));
+        string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(weapon));
+        return level == 0 ? guid : $"{guid}_L{level}";
+    }
+
+
+    private static string LevelLabel(WeaponData weapon, int level)
+    {
+        return weapon.IsEvoLevel(level) ? "Evo" : $"Lv{level + 1}";
     }
 
 
     /// <summary>
     /// EditorPrefsから調整値を読み込む。
     /// </summary>
-    private BalanceInfo LoadBalanceInfo(WeaponData weapon)
+    private BalanceInfo LoadBalanceInfo(WeaponData weapon, int level)
     {
-        string guid = GetGuid(weapon);
+        string guid = GetGuid(weapon, level);
 
         return new BalanceInfo
         {
@@ -128,9 +142,9 @@ public class WeaponBalanceWindow : EditorWindow
     /// <summary>
     /// 調整値をEditorPrefsへ保存する。
     /// </summary>
-    private void SaveBalanceInfo(WeaponData weapon, BalanceInfo info)
+    private void SaveBalanceInfo(WeaponData weapon, int level, BalanceInfo info)
     {
-        string guid = GetGuid(weapon);
+        string guid = GetGuid(weapon, level);
 
         EditorPrefs.SetFloat($"{guid}_HitsPerEnemy", info.HitsPerEnemy);
         EditorPrefs.SetFloat($"{guid}_HitRate", info.HitRate);
@@ -152,9 +166,9 @@ public class WeaponBalanceWindow : EditorWindow
 
         _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
-        foreach (WeaponData weapon in _weapons)
+        foreach ((WeaponData weapon, int level) in _weapons)
         {
-            DrawRow(weapon);
+            DrawRow(weapon, level);
         }
 
         EditorGUILayout.EndScrollView();
@@ -186,31 +200,32 @@ public class WeaponBalanceWindow : EditorWindow
     /// <summary>
     /// 武器1行分を描画する。
     /// </summary>
-    private void DrawRow(WeaponData weapon)
+    private void DrawRow(WeaponData weapon, int level)
     {
-        BalanceInfo info = _balanceInfos[weapon];
+        BalanceInfo info = _balanceInfos[(weapon, level)];
+        WeaponLevelData data = weapon.GetLevel(level);
 
         EditorGUILayout.BeginHorizontal();
 
         // ScriptableObject名
-        if (GUILayout.Button(weapon.name, GUILayout.Width(DataWidth)))
+        if (GUILayout.Button($"{weapon.name} {LevelLabel(weapon, level)}", GUILayout.Width(DataWidth)))
         {
             Selection.activeObject = weapon;
             EditorGUIUtility.PingObject(weapon);
         }
 
         // 表示名
-        GUILayout.Label(weapon.DisplayName, GUILayout.Width(NameWidth));
+        GUILayout.Label(data.DisplayName, GUILayout.Width(NameWidth));
 
         // 基本ステータス
-        GUILayout.Label(weapon.Damage.ToString(), GUILayout.Width(DamageWidth));
-        GUILayout.Label(weapon.KnockbackForce.ToString("F1"), GUILayout.Width(KnockbackWidth));
+        GUILayout.Label(data.Damage.ToString(), GUILayout.Width(DamageWidth));
+        GUILayout.Label(data.KnockbackForce.ToString("F1"), GUILayout.Width(KnockbackWidth));
 
         // 通常DPS
-        GUILayout.Label(CalculateNormalDPS(weapon).ToString("F1"), GUILayout.Width(NormalDpsWidth));
+        GUILayout.Label(CalculateNormalDPS(data).ToString("F1"), GUILayout.Width(NormalDpsWidth));
 
         // 1サイクル時間
-        GUILayout.Label(CalculateCycleTime(weapon).ToString("F2"), GUILayout.Width(CycleTimeWidth));
+        GUILayout.Label(CalculateCycleTime(data).ToString("F2"), GUILayout.Width(CycleTimeWidth));
 
         info.HitRate = EditorGUILayout.Slider(info.HitRate, 0f, 1f, GUILayout.Width(HitRateWidth));
 
@@ -219,9 +234,9 @@ public class WeaponBalanceWindow : EditorWindow
         info.HitsPerEnemy = Mathf.Max(1, EditorGUILayout.FloatField(info.HitsPerEnemy, GUILayout.Width(HitsPerEnemyWidth)));
 
         // 実戦想定DPS
-        GUILayout.Label(CalculateEffectiveDPS(weapon, info).ToString("F1"),GUILayout.Width(EffectiveDpsWidth));
-        
-        SaveBalanceInfo(weapon, info);
+        GUILayout.Label(CalculateEffectiveDPS(data, info).ToString("F1"),GUILayout.Width(EffectiveDpsWidth));
+
+        SaveBalanceInfo(weapon, level, info);
 
         EditorGUILayout.EndHorizontal();
     }
@@ -233,7 +248,7 @@ public class WeaponBalanceWindow : EditorWindow
     /// <summary>
     /// 1マガジン撃ち切りからリロード完了までの時間を計算する。
     /// </summary>
-    private float CalculateCycleTime(WeaponData weapon)
+    private float CalculateCycleTime(WeaponLevelData weapon)
     {
         float time = 0f;
         for(int currentMagazine = weapon.MagazineSize; 0 < currentMagazine;)
@@ -258,7 +273,7 @@ public class WeaponBalanceWindow : EditorWindow
     /// 通常DPSを計算する。
     /// 命中率や敵数補正は含まない。
     /// </summary>
-    private float CalculateNormalDPS(WeaponData weapon)
+    private float CalculateNormalDPS(WeaponLevelData weapon)
     {
         float cycleTime = CalculateCycleTime(weapon);
 
@@ -275,7 +290,7 @@ public class WeaponBalanceWindow : EditorWindow
     /// <summary>
     /// 実戦を想定したDPSを計算する。
     /// </summary>
-    private float CalculateEffectiveDPS(WeaponData weapon, BalanceInfo info)
+    private float CalculateEffectiveDPS(WeaponLevelData weapon, BalanceInfo info)
     {
         float cycleTime = CalculateCycleTime(weapon);
 

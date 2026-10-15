@@ -39,9 +39,9 @@ public abstract class WeaponView : MonoBehaviour
             return;
         }
 
-        weaponIcon.sprite = weapon.WeaponData.Icon;
+        weaponIcon.sprite = weapon.CurrentLevel.Icon;
 
-        SetWeaponModel(weapon.WeaponData);
+        SetWeaponModel(weapon.CurrentLevel);
     }
 
     public virtual void UpdateAmmo(int current, int max) { }
@@ -55,7 +55,7 @@ public abstract class WeaponView : MonoBehaviour
 
     public virtual void PlayFireAnimation(float duration) { }
 
-    protected void SetWeaponModel(WeaponData data)
+    protected void SetWeaponModel(WeaponLevelData data)
     {
         GameObject prefab = data != null ? data.WeaponModelPrefab : null;
         if (weaponModelInstance != null && currentModelPrefab == prefab)

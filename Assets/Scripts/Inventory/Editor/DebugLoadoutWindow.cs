@@ -8,8 +8,8 @@ using Object = UnityEngine.Object;
 /// <summary>プレイ中の装備とプレイヤーの成長状態を変更するデバッグ画面</summary>
 public class DebugLoadoutWindow : EditorWindow
 {
-    private Dictionary<WeaponSlotGroup, List<List<WeaponData>>> weaponChains;
-    private List<List<Item>> itemChains;
+    private Dictionary<WeaponSlotGroup, List<WeaponData>> weaponDefinitions;
+    private List<Item> itemDefinitions;
 
     private Player player;
     private GameManager gameManager;
@@ -26,11 +26,11 @@ public class DebugLoadoutWindow : EditorWindow
     /// <summary>武器とアイテムの強化段階を読み込み、選択肢を準備する</summary>
     private void OnEnable()
     {
-        List<List<WeaponData>> allWeaponChains = BuildChains(LoadAll<WeaponData>().Where(w => !w.IsEmpty), w => w.NextLevelData);
-        weaponChains = allWeaponChains
-            .GroupBy(chain => ToSlotGroup(chain[0].WeaponType))
+        weaponDefinitions = LoadAll<WeaponData>()
+            .Where(w => !w.IsEmpty)
+            .GroupBy(w => ToSlotGroup(w.WeaponType))
             .ToDictionary(g => g.Key, g => g.ToList());
-        itemChains = BuildChains(LoadAll<Item>(), i => i.NextLevelItem);
+        itemDefinitions = LoadAll<Item>().ToList();
     }
 
     /// <summary>プレイ中の状態変化を画面に反映する</summary>
@@ -96,50 +96,68 @@ public class DebugLoadoutWindow : EditorWindow
     /// <summary>指定スロットの武器選択を表示し、装備変更を予約する</summary>
     private void DrawWeaponSlot(PlayerInventory inventory, SlotType slot)
     {
-        if (!weaponChains.TryGetValue(slot.GetGroup(), out List<List<WeaponData>> chains))
+        if (!weaponDefinitions.TryGetValue(slot.GetGroup(), out List<WeaponData> definitions))
         {
-            chains = new List<List<WeaponData>>();
+            definitions = new List<WeaponData>();
         }
 
-        WeaponData current = inventory.GetWeaponData(slot);
-        if (current != null && current.IsEmpty)
-        {
-            current = null;
-        }
+        Weapon weapon = inventory.GetWeapon(slot);
+        WeaponData current = weapon != null && weapon.HasWeapon ? weapon.WeaponData : null;
+        int currentLevel = current != null ? weapon.Level : 0;
 
-        WeaponData selected = DrawChainSelector(slot.ToString(), chains, current, w => w.DisplayName);
-        if (selected != current)
+        if (DrawLevelSelector(slot.ToString(), definitions, current, currentLevel, w => w.DisplayName, WeaponLevelLabels,
+                out WeaponData selected, out int selectedLevel))
         {
-            pendingChange = () => inventory.EquipWeapon(slot, selected);
+            pendingChange = () => inventory.EquipWeapon(slot, selected, selectedLevel);
         }
+    }
+
+    /// <summary>武器のレベル選択欄に使う表示を組み立てる</summary>
+    private static string[] WeaponLevelLabels(WeaponData data)
+    {
+        return Enumerable.Range(0, Mathf.Max(1, data.LevelCount))
+            .Select(i => data.IsEvoLevel(i) ? "Evo" : $"Lv{i + 1}")
+            .ToArray();
+    }
+
+    /// <summary>アイテムのレベル選択欄に使う表示を組み立てる</summary>
+    private static string[] ItemLevelLabels(Item item)
+    {
+        return Enumerable.Range(0, Mathf.Max(1, item.MaxLevel))
+            .Select(i => $"Lv{i + 1}")
+            .ToArray();
     }
 
     /// <summary>指定スロットのアイテム選択を表示し、装備変更を予約する</summary>
     private void DrawItemSlot(PlayerInventory inventory, int index)
     {
-        Item current = inventory.Items[index];
-        Item selected = DrawChainSelector($"Item {index}", itemChains, current, i => i.DisplayName);
-        if (selected == current)
+        OwnedItem owned = inventory.Items[index];
+        Item current = owned?.Item;
+        int currentLevel = owned?.Level ?? 0;
+        if (!DrawLevelSelector($"Item {index}", itemDefinitions, current, currentLevel, i => i.DisplayName, ItemLevelLabels,
+                out Item selected, out int selectedLevel))
         {
             return;
         }
 
-        Item[] desired = inventory.Items.ToArray();
-        desired[index] = selected;
+        (Item item, int level)[] desired = inventory.Items
+            .Select(o => o != null ? (o.Item, o.Level) : ((Item)null, 0))
+            .ToArray();
+        desired[index] = (selected, selectedLevel);
         pendingChange = () => ReplaceItems(inventory, desired);
     }
 
     /// <summary>現在のアイテムを解除してから選択された構成を装備する</summary>
-    private static void ReplaceItems(PlayerInventory inventory, Item[] desired)
+    private static void ReplaceItems(PlayerInventory inventory, (Item item, int level)[] desired)
     {
         for (int i = inventory.Items.Count - 1; i >= 0; i--)
         {
             inventory.DiscardItem(i);
         }
 
-        foreach (Item item in desired.Where(item => item != null))
+        foreach ((Item item, int level) in desired.Where(d => d.item != null))
         {
-            inventory.EquipItem(item);
+            inventory.EquipItem(item, level);
         }
     }
 
@@ -174,38 +192,48 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
-    /// <summary>種類と強化段階の選択欄を表示し、選択されたアセットを返す</summary>
-    private static T DrawChainSelector<T>(string label, List<List<T>> chains, T current, Func<T, string> displayName) where T : Object
+    /// <summary>種類とレベルの選択欄を表示し、変更があれば選択された定義とレベルを返す</summary>
+    private static bool DrawLevelSelector<T>(string label, List<T> definitions, T current, int currentLevel,
+        Func<T, string> displayName, Func<T, string[]> levelLabels, out T selected, out int selectedLevel) where T : Object
     {
-        int chainIndex = chains.FindIndex(chain => chain.Contains(current));
-        int levelIndex = chainIndex >= 0 ? chains[chainIndex].IndexOf(current) : -1;
+        selected = current;
+        selectedLevel = currentLevel;
 
-        string[] chainLabels = new[] { "なし" }
-            .Concat(chains.Select(chain => ChainLabel(chain[0], displayName)))
+        int definitionIndex = current != null ? definitions.IndexOf(current) : -1;
+
+        string[] definitionLabels = new[] { "なし" }
+            .Concat(definitions.Select(definition => DefinitionLabel(definition, displayName)))
             .ToArray();
 
         using (new EditorGUILayout.HorizontalScope())
         {
-            int newChainIndex = EditorGUILayout.Popup(label, chainIndex + 1, chainLabels) - 1;
-            if (newChainIndex != chainIndex)
+            int newDefinitionIndex = EditorGUILayout.Popup(label, definitionIndex + 1, definitionLabels) - 1;
+            if (newDefinitionIndex != definitionIndex)
             {
-                return newChainIndex >= 0 ? chains[newChainIndex][0] : null;
+                selected = newDefinitionIndex >= 0 ? definitions[newDefinitionIndex] : null;
+                selectedLevel = 0;
+                return true;
             }
 
-            if (chainIndex < 0)
+            if (definitionIndex < 0)
             {
-                return current;
+                return false;
             }
 
-            List<T> chain = chains[chainIndex];
-            string[] levelLabels = chain.Select((asset, i) => $"Lv{i + 1}  {asset.name}").ToArray();
-            int newLevelIndex = EditorGUILayout.Popup(levelIndex, levelLabels, GUILayout.Width(160));
-            return chain[newLevelIndex];
+            string[] labels = levelLabels(current);
+            int newLevel = EditorGUILayout.Popup(Mathf.Clamp(currentLevel, 0, labels.Length - 1), labels, GUILayout.Width(160));
+            if (newLevel == currentLevel)
+            {
+                return false;
+            }
+
+            selectedLevel = newLevel;
+            return true;
         }
     }
 
     /// <summary>種類の選択欄に使う表示名とアセット名を組み立てる</summary>
-    private static string ChainLabel<T>(T root, Func<T, string> displayName) where T : Object
+    private static string DefinitionLabel<T>(T root, Func<T, string> displayName) where T : Object
     {
         string name = displayName(root);
         return string.IsNullOrEmpty(name) ? root.name : $"{name} ({root.name})";
@@ -236,25 +264,5 @@ public class DebugLoadoutWindow : EditorWindow
             .OrderBy(path => path)
             .Select(AssetDatabase.LoadAssetAtPath<T>)
             .Where(asset => asset != null);
-    }
-
-    /// <summary>次段階への参照をたどり、種類ごとの強化段階を構築する</summary>
-    private static List<List<T>> BuildChains<T>(IEnumerable<T> assets, Func<T, T> next) where T : Object
-    {
-        List<T> all = assets.ToList();
-        HashSet<T> hasPrevious = new HashSet<T>(all.Select(next).Where(asset => asset != null));
-
-        List<List<T>> chains = new List<List<T>>();
-        foreach (T root in all.Where(asset => !hasPrevious.Contains(asset)))
-        {
-            List<T> chain = new List<T>();
-            // 誤って循環する参照が設定されていても同じアセットで走査を止める
-            for (T asset = root; asset != null && !chain.Contains(asset); asset = next(asset))
-            {
-                chain.Add(asset);
-            }
-            chains.Add(chain);
-        }
-        return chains;
     }
 }

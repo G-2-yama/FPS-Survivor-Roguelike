@@ -37,9 +37,9 @@ public static class MergeCompatibilityValidation
             manager.AddComponent<LifetimeRunner>();
             PoolManager pool = manager.AddComponent<PoolManager>();
             TestStepFire(pool);
-            TestChargeBeam(pool, "Assets/Datas/WeaponDatas/AbilityDatas/ChargeShot/00_ChargeBeam.prefab");
-            TestChargeBeam(pool, "Assets/Datas/WeaponDatas/AbilityDatas/ChargeShot/EvoChargeBeam.prefab");
-            TestExplosion(pool, "Assets/Datas/WeaponDatas/AbilityDatas/Grenade/01_GranadeDamageArea.prefab");
+            TestChargeBeam(pool, "Assets/Datas/WeaponDatas/Ability/ChargeBeam/00_ChargeBeam.prefab");
+            TestChargeBeam(pool, "Assets/Datas/WeaponDatas/Ability/ChargeBeam/EvoChargeBeam.prefab");
+            TestExplosion(pool, "Assets/Datas/WeaponDatas/Ability/Grenade/01_GranadeDamageArea.prefab");
             TestExplosion(pool, "Assets/Prehab/Ammo/DamageArea.prefab");
             File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "MergeCompatibilityResults.txt"), $"PASS {checks} checks");
             Debug.Log($"developとの統合検証に成功しました {checks}項目");
@@ -64,7 +64,7 @@ public static class MergeCompatibilityValidation
         aim.transform.position = player.transform.position + Vector3.up * 2f;
         root.SetActive(false);
         var weapon = root.AddComponent<Weapon>();
-        var data = Object.Instantiate(AssetDatabase.LoadAssetAtPath<WeaponData>("Assets/Datas/WeaponDatas/MainWepaonDatas/AssaultRifle/AR_00.asset"));
+        var data = Object.Instantiate(AssetDatabase.LoadAssetAtPath<WeaponData>("Assets/Datas/WeaponDatas/Main/AssaultRifle/AssaultRifle.asset"));
         SetReference(weapon, "weaponData", data);
         SetReference(weapon, "weaponOwner", player);
         SetReference(weapon, "weaponView", root.AddComponent<CombatWeaponViewProbe>());
@@ -73,8 +73,8 @@ public static class MergeCompatibilityValidation
         root.SetActive(true);
         foreach (string path in new[]
         {
-            "Assets/Datas/WeaponDatas/AutoWeapon/FireStep/00_StepFireF.asset",
-            "Assets/Datas/WeaponDatas/AutoWeapon/FireStep/EvoStepFireF.asset"
+            "Assets/Datas/WeaponDatas/Auto/StepFire/00_StepFireF.asset",
+            "Assets/Datas/WeaponDatas/Auto/StepFire/EvoStepFireF.asset"
         })
         {
             var step = Object.Instantiate(AssetDatabase.LoadAssetAtPath<StepFire>(path));

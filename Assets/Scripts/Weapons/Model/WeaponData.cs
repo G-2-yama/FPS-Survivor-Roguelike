@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,115 +10,89 @@ public class WeaponData : ScriptableObject
     public virtual bool IsEmpty => false;
 
     [Header("Identity")]
-    [SerializeField] private WeaponIdentity identity;
-    public WeaponIdentity Identity => identity;
-
-    [Header("Visual")]
-    [SerializeField] private WeaponVisual visual;
-    public WeaponVisual Visual => visual;
-    [SerializeField] private SoundDB soundDB;
-    public SoundDB SoundDB => soundDB;
-
-    [Header("Classification")]
-    [SerializeField] private WeaponClassification classification;
-    public WeaponClassification Classification => classification;
-
-    [Header("Trigger")]
-    [SerializeField] private WeaponTriggerConfig trigger;
-    public WeaponTriggerConfig Trigger => trigger;
-
-    [Header("Stats")]
-    [SerializeField] private DamageProfile damage;
-    [SerializeField] private FireRhythmProfile fireRhythm;
-    [SerializeField] private Recoil recoil;
-    [SerializeField] private AmmoProfile ammo;
-
-    [Header("Level")]
-    [SerializeField] private WeaponData nextLevelData;
-    public WeaponData NextLevelData => nextLevelData;
-
-    // =========================
-    // Trigger
-    // =========================
-
-    public bool AutoFire => trigger.AutoFire;
-    public bool AutoReload => trigger.AutoReload;
-    public WeaponTriggerType TriggerType => trigger.TriggerType;
-
-    // =========================
-    // Classification
-    // =========================
-
-    public WeaponType WeaponType => classification.WeaponType;
-    public FireModeData FireModeData => classification.FireModeData;
-
-    // =========================
-    // Visual
-    // =========================
-
-    public GameObject WeaponModelPrefab => visual.WeaponModelPrefab;
-
-    // =========================
-    // Identity
-    // =========================
-
-    public Sprite Icon => identity.Icon;
-    public Sprite Artwork => identity.Artwork;
-    public string DisplayName => identity.DisplayName;
-    public string WeaponId => identity.WeaponId;
-    public string Description => identity.Description;
-
-    // =========================
-    // Damage
-    // =========================
-    public DamageProfile DamageProfile => damage;
-
-    public int Damage => damage.Damage;
-    public float KnockbackForce => damage.KnockbackForce;
-    public float SpreadAngle => damage.SpreadAngle;
-
-    // =========================
-    // Fire Rhythm
-    // =========================
-
-    public float FireInterval => fireRhythm.FireInterval;
-    public int BurstCount => fireRhythm.BurstCount;
-    public float BurstInterval => fireRhythm.BurstInterval;
-    public float ChargeTime => fireRhythm.ChargeTime;
-
-    // =========================
-    // Ammo
-    // =========================
-
-    public int MagazineSize => ammo.MagazineSize;
-    public float ReloadTime => ammo.ReloadTime;
-
-    // =========================
-    // Recoil
-    // =========================
-
-    public Recoil Recoil => recoil ?? Recoil.Empty;
-}
-
-/// <summary>
-/// 武器の識別・UI表示に関するデータ
-/// </summary>
-[System.Serializable]
-public class WeaponIdentity
-{
-    [SerializeField] private string weaponId = "weapon_default";
-    [SerializeField] private string displayName = "New Weapon";
-    [SerializeField] private string description = "現在のレベルの武器の説明文が入ります";
-    [SerializeField] private Sprite icon;
-
+    [Tooltip("装備の ID。同じ装備かどうかの判定に使う")]
+    [SerializeField] private string weaponId;
     [Tooltip("タイトル画面の装備選択で大きく表示する画像 未設定でも動作します")]
     [SerializeField] private Sprite artwork;
 
+    [Header("Classification")]
+    [Tooltip("全レベル共通の武器の種類")]
+    [SerializeField] private WeaponType weaponType = WeaponType.Main;
+
+    [Header("Attributes")]
+    [Tooltip("この装備が持つ属性")]
+    [SerializeField] private List<AttributeDefinition> attributes = new List<AttributeDefinition>();
+    [Tooltip("この装備の固有効果")]
+    [SerializeField] private List<WeaponTrait> traits = new List<WeaponTrait>();
+
+    [Header("Levels")]
+    [Tooltip("レベル順の値。各要素はそのレベルの全部の値（差分ではない）")]
+    [SerializeField] private List<WeaponLevelData> levels = new List<WeaponLevelData>();
+    [Tooltip("最後のレベルを Evo として扱う")]
+    [SerializeField] private bool lastLevelIsEvo = true;
+
     public string WeaponId => weaponId;
-    public string DisplayName => displayName;
-    public string Description => description;
-    public Sprite Icon => icon;
     public Sprite Artwork => artwork;
+    public WeaponType WeaponType => weaponType;
+    public IReadOnlyList<AttributeDefinition> Attributes => attributes;
+    public IReadOnlyList<WeaponTrait> Traits => traits;
+
+    public int LevelCount => levels.Count;
+    public int MaxLevelIndex => Mathf.Max(0, levels.Count - 1);
+
+    public WeaponLevelData GetLevel(int level)
+    {
+        return level >= 0 && level < levels.Count ? levels[level] : WeaponLevelData.Empty;
+    }
+
+    public bool IsEvoLevel(int level) => lastLevelIsEvo && level == MaxLevelIndex && LevelCount > 1;
+
+    public string DisplayName => GetLevel(0).DisplayName;
+    public string Description => GetLevel(0).Description;
+    public Sprite Icon => GetLevel(0).Icon;
+
+    /// <summary>
+    /// 武器の基礎ステータスを比較し、変化した項目のみを返す。
+    /// 時間短縮や反動軽減、強化に伴う低下も変更前後の値で確認できる。
+    /// </summary>
+    public IReadOnlyList<LevelChange> GetLevelChanges(int level)
+    {
+        var changes = new List<LevelChange>();
+        if (level < 0 || level + 1 >= levels.Count)
+            return changes;
+
+        WeaponLevelData current = levels[level];
+        WeaponLevelData next = levels[level + 1];
+
+        LevelChange.AddIfChanged(changes, "ダメージ", current.Damage, next.Damage);
+        LevelChange.AddIfChanged(changes, "装弾数", current.MagazineSize, next.MagazineSize);
+        LevelChange.AddIfChanged(changes, "リロード時間", current.ReloadTime, next.ReloadTime, "秒");
+        LevelChange.AddIfChanged(changes, "射撃間隔", current.FireInterval, next.FireInterval, "秒");
+        LevelChange.AddIfChanged(changes, "バースト数", current.BurstCount, next.BurstCount);
+        // 単発射撃ではバースト間隔は使われない。
+        if (current.BurstCount > 1 || next.BurstCount > 1)
+            LevelChange.AddIfChanged(changes, "バースト間隔", current.BurstInterval, next.BurstInterval, "秒");
+        LevelChange.AddIfChanged(changes, "チャージ時間", current.ChargeTime, next.ChargeTime, "秒");
+        LevelChange.AddIfChanged(changes, "ノックバック", current.KnockbackForce, next.KnockbackForce);
+        LevelChange.AddIfChanged(changes, "拡散角度", current.SpreadAngle, next.SpreadAngle, "度");
+        LevelChange.AddIfChanged(changes, "縦反動", current.Recoil.PitchKick, next.Recoil.PitchKick);
+        LevelChange.AddIfChanged(changes, "横反動", current.Recoil.YawKick, next.Recoil.YawKick);
+        LevelChange.AddIfChanged(changes, "横反動のばらつき", current.Recoil.YawRandomness, next.Recoil.YawRandomness);
+        LevelChange.AddIfChanged(changes, "反動の復元力", current.Recoil.ReturnStrength, next.Recoil.ReturnStrength);
+        LevelChange.AddIfChanged(changes, "反動の減衰", current.Recoil.Damping, next.Recoil.Damping);
+        LevelChange.AddIfChanged(changes, "縦反動の上限", current.Recoil.MaxPitch, next.Recoil.MaxPitch);
+
+        if (current.AutoFire != next.AutoFire)
+            changes.Add(LevelChange.Switch("自動射撃", next.AutoFire));
+        if (current.AutoReload != next.AutoReload)
+            changes.Add(LevelChange.Switch("自動リロード", next.AutoReload));
+        if (current.TriggerType != next.TriggerType)
+            changes.Add(new LevelChange("射撃方式", "", next.TriggerType == WeaponTriggerType.FullAuto ? "フルオート" : "セミオート"));
+        if (current.FireModeData != next.FireModeData)
+            changes.Add(LevelChange.LabelOnly("攻撃パターン変更"));
+
+        return changes;
+    }
 }
 
 /// <summary>
@@ -143,19 +118,6 @@ public class WeaponTriggerConfig
     public bool AutoFire => autoFire;
     public bool AutoReload => autoReload;
     public WeaponTriggerType TriggerType => triggerType;
-}
-
-/// <summary>
-/// ゲームプレイ上の分類に関するデータ
-/// </summary>
-[System.Serializable]
-public class WeaponClassification
-{
-    [SerializeField] private WeaponType weaponType = WeaponType.Main;
-    [SerializeField] private FireModeData fireModeData;
-
-    public WeaponType WeaponType => weaponType;
-    public FireModeData FireModeData => fireModeData;
 }
 
 public enum WeaponTriggerType

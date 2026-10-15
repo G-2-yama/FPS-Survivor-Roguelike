@@ -293,7 +293,7 @@ public static class CombatReferenceValidation
         var sound = weaponRoot.AddComponent<Sounder>();
         var weaponReferences = new SerializedObject(weapon);
         WeaponData data = Object.Instantiate(AssetDatabase.LoadAssetAtPath<WeaponData>(
-            "Assets/Datas/WeaponDatas/MainWepaonDatas/AssaultRifle/AR_00.asset"));
+            "Assets/Datas/WeaponDatas/Main/AssaultRifle/AssaultRifle.asset"));
         weaponReferences.FindProperty("weaponData").objectReferenceValue = data;
         weaponReferences.FindProperty("weaponOwner").objectReferenceValue = owner;
         weaponReferences.FindProperty("weaponView").objectReferenceValue = view;
@@ -301,7 +301,7 @@ public static class CombatReferenceValidation
         weaponReferences.FindProperty("aimTransform").objectReferenceValue = aim;
         weaponReferences.ApplyModifiedPropertiesWithoutUndo();
         weaponRoot.SetActive(true);
-        int expected = data.DamageProfile.GetDamageAmount(owner);
+        int expected = data.GetLevel(0).DamageProfile.GetDamageAmount(owner);
         var ignored = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         ignored.transform.position = new Vector3(100f, 10f, 103f);
         Collider ignoredCollider = ignored.GetComponent<Collider>();

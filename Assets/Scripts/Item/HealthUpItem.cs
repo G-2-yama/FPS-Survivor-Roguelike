@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -5,24 +6,32 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/healthUp")]
 public class HealthUpItem : Item
 {
-    [SerializeField, Min(0), PlayerSettingLabel("Health Increase Amount"), Tooltip("最大HPと現在HPに加算する値")]
-    private int HealthIncreaseAmount = 200;
+    [SerializeField, Min(0), Tooltip("レベル順の最大HPと現在HPへの加算量（合計値）")]
+    private int[] healthIncreasePerLevel = { 200 };
 
-    /// <summary>体力強化の取得が可能か判定する</summary>
-    public override bool IsAvailable()
-    {
-        return true;
-    }
+    public override int MaxLevel => healthIncreasePerLevel.Length;
 
     /// <summary>最大HPを強化する</summary>
-    public override void Apply()
+    public override void Apply(Player player, int level)
     {
-        player.Stats.AddMaxHP(HealthIncreaseAmount);
+        player.Stats.AddMaxHP(ValueAt(healthIncreasePerLevel, level));
     }
 
     /// <summary>適用した最大HP強化を解除する</summary>
-    public override void Revert()
+    public override void Revert(Player player, int level)
     {
-        player.Stats.AddMaxHP(-HealthIncreaseAmount);
+        player.Stats.AddMaxHP(-ValueAt(healthIncreasePerLevel, level));
+    }
+
+    public override IReadOnlyList<LevelChange> GetLevelChanges(int level)
+    {
+        var changes = new List<LevelChange>();
+        if (level >= 0 && level + 1 < healthIncreasePerLevel.Length)
+        {
+            changes.Add(new LevelChange("最大体力",
+                LevelChange.Signed(healthIncreasePerLevel[level]),
+                LevelChange.Signed(healthIncreasePerLevel[level + 1])));
+        }
+        return changes;
     }
 }

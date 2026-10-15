@@ -30,13 +30,13 @@ public abstract class FireModeData : ScriptableObject
     /// </summary>
     protected int GetDamageAmount(Weapon weapon, Player weaponOwner)
     {
-        return weapon.WeaponData.DamageProfile.GetDamageAmount(weaponOwner);
+        return weapon.CurrentLevel.DamageProfile.GetDamageAmount(weaponOwner);
     }
     /// <summary>所有者の強化を反映したノックバック量を計算する</summary>
 
     protected float GetKnockbackForce(Weapon weapon, Player weaponOwner)
     {
-        return weapon.WeaponData.DamageProfile.GetKnockbackForce(weaponOwner);
+        return weapon.CurrentLevel.DamageProfile.GetKnockbackForce(weaponOwner);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public abstract class FireModeData : ScriptableObject
             return Vector3.zero;
         }
 
-        float spread = weapon.WeaponData.SpreadAngle * 0.5f;
+        float spread = weapon.CurrentLevel.SpreadAngle * 0.5f;
 
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);

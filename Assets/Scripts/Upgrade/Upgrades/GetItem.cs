@@ -8,6 +8,9 @@ public class GetItem : UpgradeBase
     public override bool IsAvailable()
     {
         UpdateDescription();
+        if (target != null && player.Inventory.HasItemInGroup(target.ExclusiveGroup))
+            return false;
+
         foreach (var item in player.Inventory.Items)
         {
             if (item == null) return true;

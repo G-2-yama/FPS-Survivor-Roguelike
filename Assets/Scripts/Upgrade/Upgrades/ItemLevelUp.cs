@@ -8,25 +8,23 @@ public class ItemLevelUp : UpgradeBase
 
     public override bool IsAvailable()
     {
-        UpdateDesription(player.Inventory.Items[itemIndex]?.NextLevelItem);
-        return player.Inventory.Items[itemIndex]?.NextLevelItem != null;
+        OwnedItem owned = player.Inventory.Items[itemIndex];
+        if (owned == null || !owned.CanLevelUp)
+            return false;
+
+        UpdateDesription(owned);
+        return true;
     }
 
     public override void Apply()
     {
-        Item targetItem = player.Inventory.Items[itemIndex];
-        player.Inventory.DiscardItem(itemIndex);
-        player.Inventory.EquipItem(targetItem.NextLevelItem);
+        player.Inventory.LevelUpItem(itemIndex);
     }
 
-    private void UpdateDesription(Item nextItem)
+    private void UpdateDesription(OwnedItem owned)
     {
-        if (nextItem == null)
-        {
-            return;
-        }
-        icon = nextItem.Icon;
-        displayName = nextItem.DisplayName + " 強化";
-        description = nextItem.Description;
+        icon = owned.Item.Icon;
+        displayName = owned.Item.DisplayName + " 強化";
+        description = owned.Item.GetLevelUpDescription(owned.Level);
     }
 }

@@ -28,6 +28,12 @@ public class Weapon : MonoBehaviour
     private WeaponStateMachine stateMachine;
     public WeaponStateMachine StateMachine => stateMachine;
 
+    private int level;
+    public int Level => level;
+    public WeaponLevelData CurrentLevel => weaponData.GetLevel(level);
+    public bool IsEvo => weaponData.IsEvoLevel(level);
+    public bool CanLevelUp => HasWeapon && level < weaponData.MaxLevelIndex;
+
     public bool HasWeapon => !weaponData.IsEmpty;
     /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
@@ -48,23 +54,27 @@ public class Weapon : MonoBehaviour
     /// 新しい武器を装備するメソッド
     /// </summary>
     /// <param name="newData">新しい武器データ</param>
+    /// <param name="newLevel">新しいレベル（0 始まり）</param>
     /// <param name="ammo">新しい残弾数</param>
-    public void Equip(WeaponData newData, int ammo = -1)
+    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
     {
         if (newData == null || newData.IsEmpty)
         {
             weaponData = EmptyWeaponData.Instance;
+            level = 0;
             currentAmmo = 0;
         }
         else
         {
             weaponData = newData;
+            level = Mathf.Clamp(newLevel, 0, weaponData.MaxLevelIndex);
             // 反動の状態は複製していない武器データのアセット上にあり、前回の再生の値（NaN を含む）が残っているため0から始める
-            weaponData.Recoil.Reset();
+            CurrentLevel.Recoil.Reset();
 
             // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-            currentAmmo = (ammo < 0) ? weaponData.MagazineSize : Mathf.Clamp(ammo, 0, weaponData.MagazineSize);
-            sounder.SetSoundDB(newData.SoundDB);    
+            int magazineSize = CurrentLevel.MagazineSize;
+            currentAmmo = (ammo < 0) ? magazineSize : Mathf.Clamp(ammo, 0, magazineSize);
+            sounder.SetSoundDB(CurrentLevel.SoundDB);
         }
 
         weaponView.RefreshView(this);
@@ -76,13 +86,13 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void LevelUp()
     {
-        if (!HasWeapon)
+        if (!CanLevelUp)
         {
             return;
         }
 
-        weaponData = weaponData.NextLevelData;
-        sounder.SetSoundDB(weaponData.SoundDB);
+        level++;
+        sounder.SetSoundDB(CurrentLevel.SoundDB);
         weaponView.RefreshView(this);
     }
 
@@ -98,8 +108,8 @@ public class Weapon : MonoBehaviour
         }
 
         currentAmmo--;
-        weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
-        weaponData.FireModeData.Fire(this, weaponOwner);
+        weaponView.UpdateAmmo(currentAmmo, CurrentLevel.MagazineSize);
+        CurrentLevel.FireModeData.Fire(this, weaponOwner);
         OnAnyFired?.Invoke();
 
         return true;
@@ -115,7 +125,7 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        currentAmmo = weaponData.MagazineSize;
-        weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
+        currentAmmo = CurrentLevel.MagazineSize;
+        weaponView.UpdateAmmo(currentAmmo, CurrentLevel.MagazineSize);
     }
 }

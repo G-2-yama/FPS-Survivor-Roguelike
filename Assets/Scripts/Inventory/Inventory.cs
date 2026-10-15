@@ -20,12 +20,12 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>
     /// Weaponスロットの内容が変更されたときに通知する。
     /// </summary>
-    public event Action<SlotType, WeaponData> OnSlotChanged;
+    public event Action<SlotType, Weapon> OnSlotChanged;
 
 
-    private Item[] items = new Item[6];
+    private OwnedItem[] items = new OwnedItem[6];
 
-    public IReadOnlyList<Item> Items => items;
+    public IReadOnlyList<OwnedItem> Items => items;
 
     /// <summary>
     /// Itemの状態が変更されたときに通知する。
@@ -59,23 +59,36 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
-    public WeaponData GetWeaponData(SlotType slot)
+    public Weapon GetWeapon(SlotType slot)
     {
         if (!weaponSlots.TryGetValue(slot, out var weapon))
             return null;
 
-        return weapon?.WeaponData;
+        return weapon;
     }
 
 
-    public void EquipWeapon(SlotType slot, WeaponData data, int ammo = -1)
+    public void EquipWeapon(SlotType slot, WeaponData data, int level = 0, int ammo = -1)
     {
         if (!weaponSlots.TryGetValue(slot, out var weapon))
             return;
 
-        weapon.Equip(data, ammo);
+        weapon.Equip(data, level, ammo);
 
-        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
+        OnSlotChanged?.Invoke(slot, weapon);
+    }
+
+
+    public bool LevelUpWeapon(SlotType slot)
+    {
+        if (!weaponSlots.TryGetValue(slot, out var weapon) || weapon == null || !weapon.CanLevelUp)
+            return false;
+
+        weapon.LevelUp();
+
+        OnSlotChanged?.Invoke(slot, weapon);
+
+        return true;
     }
 
 
@@ -97,15 +110,17 @@ public class PlayerInventory : MonoBehaviour
         Weapon weaponB = weaponSlots[slotB];
 
         WeaponData dataA = weaponA.WeaponData;
+        int levelA = weaponA.Level;
         int ammoA = weaponA.CurrentAmmo;
         WeaponData dataB = weaponB.WeaponData;
+        int levelB = weaponB.Level;
         int ammoB = weaponB.CurrentAmmo;
 
-        weaponA.Equip(dataB, ammoB);
-        weaponB.Equip(dataA, ammoA);
+        weaponA.Equip(dataB, levelB, ammoB);
+        weaponB.Equip(dataA, levelA, ammoA);
 
-        OnSlotChanged?.Invoke(slotA, weaponA.WeaponData);
-        OnSlotChanged?.Invoke(slotB, weaponB.WeaponData);
+        OnSlotChanged?.Invoke(slotA, weaponA);
+        OnSlotChanged?.Invoke(slotB, weaponB);
 
         return true;
     }
@@ -121,7 +136,7 @@ public class PlayerInventory : MonoBehaviour
 
         weapon.Equip(null);
 
-        OnSlotChanged?.Invoke(slot, weapon.WeaponData);
+        OnSlotChanged?.Invoke(slot, weapon);
 
         return true;
     }
@@ -131,7 +146,7 @@ public class PlayerInventory : MonoBehaviour
     // Item
     // =====================================================
 
-    public bool EquipItem(Item item)
+    public bool EquipItem(Item item, int level = 0)
     {
         if (item == null)
             return false;
@@ -141,10 +156,10 @@ public class PlayerInventory : MonoBehaviour
             if (items[i] != null)
                 continue;
 
-            items[i] = item;
+            var owned = new OwnedItem(item, Mathf.Clamp(level, 0, Mathf.Max(0, item.MaxLevel - 1)));
+            items[i] = owned;
 
-            item.Initialize(player);
-            item.Apply();
+            item.Apply(player, owned.Level);
 
             OnItemsChanged?.Invoke();
 
@@ -152,6 +167,39 @@ public class PlayerInventory : MonoBehaviour
         }
 
         // インベントリが満杯
+        return false;
+    }
+
+
+    public bool LevelUpItem(int index)
+    {
+        if (index < 0 || index >= items.Length)
+            return false;
+
+        OwnedItem owned = items[index];
+        if (owned == null || !owned.CanLevelUp)
+            return false;
+
+        owned.Item.Revert(player, owned.Level);
+        owned.Level++;
+        owned.Item.Apply(player, owned.Level);
+
+        OnItemsChanged?.Invoke();
+
+        return true;
+    }
+
+
+    public bool HasItemInGroup(ItemGroup group)
+    {
+        if (group == null)
+            return false;
+
+        foreach (OwnedItem owned in items)
+        {
+            if (owned != null && owned.Item.ExclusiveGroup == group)
+                return true;
+        }
         return false;
     }
 
@@ -164,7 +212,7 @@ public class PlayerInventory : MonoBehaviour
         if (items[index] == null)
             return false;
 
-        items[index].Revert();
+        items[index].Item.Revert(player, items[index].Level);
 
         // アイテムを削除
         items[index] = null;

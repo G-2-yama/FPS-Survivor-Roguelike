@@ -19,15 +19,15 @@ public class WeaponCooldownState : WeaponState
             return;
         }
 
-        if (_weapon.WeaponData.AutoReload && _weapon.CurrentAmmo <= 0)
+        if (_weapon.CurrentLevel.AutoReload && _weapon.CurrentAmmo <= 0)
         {
             stateMachine.ChangeState<WeaponReloadingState>();
             return;
         }
 
-        bool keepFiring = _weapon.WeaponData.TriggerType == WeaponTriggerType.FullAuto && isPressed;
+        bool keepFiring = _weapon.CurrentLevel.TriggerType == WeaponTriggerType.FullAuto && isPressed;
 
-        if (keepFiring || _weapon.WeaponData.AutoFire)
+        if (keepFiring || _weapon.CurrentLevel.AutoFire)
         {
             if (Time.frameCount == enterFrame && endTime <= stateMachine.BurstStartTime)
             {

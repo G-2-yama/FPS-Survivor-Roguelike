@@ -1,23 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Items/damageUp")]
 public class DamageUpItem : Item
 {
-    [SerializeField] private float DamageIncreaseAmount = 0.1f;
+    [Tooltip("レベル順のダメージ倍率の加算量（合計値）")]
+    [SerializeField] private float[] damageIncreasePerLevel = { 0.1f };
 
-    public override bool IsAvailable()
+    public override int MaxLevel => damageIncreasePerLevel.Length;
+
+    public override void Apply(Player player, int level)
     {
-        return true;
+        player.Stats.AddDamageMultiplier(ValueAt(damageIncreasePerLevel, level));
     }
 
-    public override void Apply()
+    public override void Revert(Player player, int level)
     {
-        player.Stats.AddDamageMultiplier(DamageIncreaseAmount);
+        player.Stats.AddDamageMultiplier(-ValueAt(damageIncreasePerLevel, level));
     }
-    
-    public override void Revert()
+
+    public override IReadOnlyList<LevelChange> GetLevelChanges(int level)
     {
-        player.Stats.AddDamageMultiplier(-DamageIncreaseAmount);
+        var changes = new List<LevelChange>();
+        if (level >= 0 && level + 1 < damageIncreasePerLevel.Length)
+        {
+            changes.Add(new LevelChange("ダメージ",
+                LevelChange.SignedPercent(damageIncreasePerLevel[level]),
+                LevelChange.SignedPercent(damageIncreasePerLevel[level + 1])));
+        }
+        return changes;
     }
 }

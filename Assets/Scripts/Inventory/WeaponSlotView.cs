@@ -19,9 +19,9 @@ public class WeaponSlotView : MonoBehaviour
     public SlotType SlotType => slotType;
 
     // インベントリUIから呼ばれる表示更新
-    public void Refresh(WeaponData data)
+    public void Refresh(Weapon weapon)
     {
-        if (data.IsEmpty)
+        if (weapon == null || !weapon.HasWeapon)
         {
             weaponIcon.sprite = null;
             weaponIcon.gameObject.SetActive(false);
@@ -29,9 +29,9 @@ public class WeaponSlotView : MonoBehaviour
             return;
         }
 
-        weaponIcon.sprite = data.Icon;
+        weaponIcon.sprite = weapon.CurrentLevel.Icon;
         weaponIcon.gameObject.SetActive(true);
-        weaponNameText.text = data.DisplayName;
+        weaponNameText.text = weapon.CurrentLevel.DisplayName;
     }
 
     /// <summary>

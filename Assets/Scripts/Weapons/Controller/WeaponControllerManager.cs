@@ -68,7 +68,7 @@ public class WeaponControllerManager : MonoBehaviour
             if (controller == null)
                 continue;
 
-            var recoil = controller.Weapon?.WeaponData?.Recoil;
+            var recoil = controller.Weapon?.CurrentLevel.Recoil;
 
             if (recoil == null)
                 continue;
