@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-/// <summary>プレイ中の装備とプレイヤーの成長状態を変更するデバッグ画面</summary>
+/// <summary>ゲームの進行、装備、プレイヤーの成長状態を変更するデバッグ画面</summary>
 public class DebugLoadoutWindow : EditorWindow
 {
     private Dictionary<WeaponSlotGroup, List<List<WeaponData>>> weaponChains;
@@ -17,10 +17,10 @@ public class DebugLoadoutWindow : EditorWindow
     private Action pendingChange;
 
     /// <summary>メニューからデバッグ画面を開く</summary>
-    [MenuItem("Tools/Debug Loadout")]
+    [MenuItem("Tools/Debug")]
     private static void Open()
     {
-        GetWindow<DebugLoadoutWindow>("Debug Loadout");
+        GetWindow<DebugLoadoutWindow>("Debug");
     }
 
     /// <summary>武器とアイテムの強化段階を読み込み、選択肢を準備する</summary>
@@ -42,9 +42,12 @@ public class DebugLoadoutWindow : EditorWindow
         }
     }
 
-    /// <summary>装備と成長状態を表示し、描画完了後に変更を適用する</summary>
+    /// <summary>ゲームの進行、装備、成長状態を表示し、描画完了後に変更を適用する</summary>
     private void OnGUI()
     {
+        DrawGameControls();
+        EditorGUILayout.Space();
+
         if (!Application.isPlaying)
         {
             EditorGUILayout.HelpBox("プレイ中のみ使えます", MessageType.Info);
@@ -90,6 +93,40 @@ public class DebugLoadoutWindow : EditorWindow
             pendingChange = null;
             change();
             Repaint();
+        }
+    }
+
+    private void DrawGameControls()
+    {
+        EditorGUILayout.LabelField("ゲーム", EditorStyles.boldLabel);
+
+        using (var check = new EditorGUI.ChangeCheckScope())
+        {
+            bool killerEnabled = EditorGUILayout.ToggleLeft(
+                $"PerfKiller（{PerfKiller.Interval}秒ごとに{PerfKiller.KillCount}体倒す）", PerfKiller.Enabled);
+            if (check.changed)
+            {
+                PerfKiller.Enabled = killerEnabled;
+            }
+        }
+
+        if (Application.isPlaying && gameManager == null)
+        {
+            gameManager = FindAnyObjectByType<GameManager>();
+        }
+
+        using (new EditorGUI.DisabledScope(!Application.isPlaying || gameManager == null))
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            if (GUILayout.Button("クリア"))
+            {
+                gameManager.DebugClear();
+            }
+
+            if (GUILayout.Button("ゲームオーバー"))
+            {
+                gameManager.DebugGameOver();
+            }
         }
     }
 
