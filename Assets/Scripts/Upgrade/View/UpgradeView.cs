@@ -3,10 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UpgradeView : MonoBehaviour
 {
     [SerializeField] private Canvas upgradeCanvas;
+    [SerializeField] private GraphicRaycaster upgradeGraphicRaycaster;
     [SerializeField] private UpgradeButtonView[] upgradeButtonsViews;
     [SerializeField] private UIFader uiFader;
     [SerializeField, Min(0.01f)] private float cardFadeDuration = 0.25f;
@@ -14,6 +17,11 @@ public class UpgradeView : MonoBehaviour
     [SerializeField, Min(0f)] private float cardSlideDistance = 60f;
 
     private CancellationTokenSource revealCancellation;
+    private readonly List<RaycastResult> focusRaycastResults = new List<RaycastResult>(8);
+    private PointerEventData focusPointerEventData;
+    private Vector2 lastFocusScreenPosition;
+    private bool hasFocusScreenPosition;
+    private bool focusNeedsRefresh = true;
 
     /// <summary>
     /// 各カードの表示に必要な情報を初期化する
@@ -32,6 +40,8 @@ public class UpgradeView : MonoBehaviour
     /// <param name="choices">選択肢のリスト</param>
     public void Setup(List<UpgradeBase> choices)
     {
+        focusNeedsRefresh = true;
+
         for (int i = 0; i < upgradeButtonsViews.Length; i++)
         {
             if (i < choices.Count)
@@ -44,6 +54,69 @@ public class UpgradeView : MonoBehaviour
                 upgradeButtonsViews[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    /// <summary>
+    /// 仮想カーソルの位置にある選択肢へフォーカスを合わせる
+    /// </summary>
+    public void FocusAtScreenPosition(Vector2 screenPosition)
+    {
+        if (!focusNeedsRefresh
+            && hasFocusScreenPosition
+            && lastFocusScreenPosition == screenPosition)
+        {
+            return;
+        }
+
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null || upgradeGraphicRaycaster == null)
+        {
+            return;
+        }
+
+        if (focusPointerEventData == null)
+        {
+            focusPointerEventData = new PointerEventData(eventSystem);
+        }
+
+        focusPointerEventData.Reset();
+        focusPointerEventData.position = screenPosition;
+        focusRaycastResults.Clear();
+        upgradeGraphicRaycaster.Raycast(focusPointerEventData, focusRaycastResults);
+
+        UpgradeButtonView focusedButton = null;
+        foreach (RaycastResult raycastResult in focusRaycastResults)
+        {
+            foreach (UpgradeButtonView buttonView in upgradeButtonsViews)
+            {
+                if (buttonView.CanReceivePointerFocus
+                    && buttonView.ContainsRaycastTarget(raycastResult.gameObject))
+                {
+                    focusedButton = buttonView;
+                    break;
+                }
+            }
+
+            if (focusedButton != null || raycastResult.gameObject != null)
+            {
+                break;
+            }
+        }
+
+        foreach (UpgradeButtonView buttonView in upgradeButtonsViews)
+        {
+            buttonView.SetPointerFocus(buttonView == focusedButton);
+        }
+
+        if (eventSystem != null
+            && eventSystem.currentSelectedGameObject != (focusedButton != null ? focusedButton.gameObject : null))
+        {
+            eventSystem.SetSelectedGameObject(focusedButton != null ? focusedButton.gameObject : null);
+        }
+
+        lastFocusScreenPosition = screenPosition;
+        hasFocusScreenPosition = true;
+        focusNeedsRefresh = false;
     }
 
     /// <summary>
@@ -119,6 +192,8 @@ public class UpgradeView : MonoBehaviour
             {
                 buttonView.SetRevealInteractable(true);
             }
+
+            focusNeedsRefresh = true;
         }
         catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
         {

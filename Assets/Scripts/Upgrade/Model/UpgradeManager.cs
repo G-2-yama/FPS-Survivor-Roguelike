@@ -58,6 +58,14 @@ public class UpgradeManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 仮想カーソル位置に応じてレベルアップ選択肢のフォーカスを更新する
+    /// </summary>
+    public void FocusUpgradeAtScreenPosition(Vector2 screenPosition)
+    {
+        upgradeView.FocusAtScreenPosition(screenPosition);
+    }
+
+    /// <summary>
     /// ランダムで強化項目を3つ選ぶ
     /// </summary>
     private void GenerateChoices()
