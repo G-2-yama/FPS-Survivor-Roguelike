@@ -22,6 +22,9 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     public event Action<SlotType, Weapon> OnSlotChanged;
 
+    public event Action<Weapon> WeaponFired;
+    public event Action<Weapon> WeaponReloadCompleted;
+
 
     private OwnedItem[] items = new OwnedItem[6];
 
@@ -44,7 +47,30 @@ public class PlayerInventory : MonoBehaviour
             { SlotType.LeftAutoWeapon,  leftAutoWeapon },
             { SlotType.RightAutoWeapon, rightAutoWeapon },
         };
+
+        foreach (Weapon weapon in weaponSlots.Values)
+        {
+            if (weapon == null) continue;
+            weapon.Fired += HandleWeaponFired;
+            weapon.ReloadCompleted += HandleWeaponReloadCompleted;
+        }
     }
+
+    private void OnDestroy()
+    {
+        if (weaponSlots == null) return;
+
+        foreach (Weapon weapon in weaponSlots.Values)
+        {
+            if (weapon == null) continue;
+            weapon.Fired -= HandleWeaponFired;
+            weapon.ReloadCompleted -= HandleWeaponReloadCompleted;
+        }
+    }
+
+    private void HandleWeaponFired(Weapon weapon) => WeaponFired?.Invoke(weapon);
+
+    private void HandleWeaponReloadCompleted(Weapon weapon) => WeaponReloadCompleted?.Invoke(weapon);
 
 
     // =====================================================

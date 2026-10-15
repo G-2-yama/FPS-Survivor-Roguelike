@@ -95,10 +95,15 @@ public class PlayerContext
     }
 
     /// <summary>
-    /// 残りジャンプ回数があればジャンプを開始する
+    /// 移動ロック中でなく、残りジャンプ回数があればジャンプを開始する
     /// </summary>
     public bool TryJump()
     {
+        if (Player.IsMovementLocked)
+        {
+            return false;
+        }
+
         return JumpController.TryJump();
     }
 }

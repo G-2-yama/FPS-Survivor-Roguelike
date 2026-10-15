@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool isWeaponSyncEnabled;
     private CharacterController bodyController;
     private readonly List<WeaponEffect> weaponEffects = new List<WeaponEffect>();
+    private readonly HashSet<object> movementLocks = new HashSet<object>();
 
     public PlayerConfig Config => config;
     public PlayerSettingsSnapshot Settings { get; private set; }
@@ -39,6 +40,8 @@ public class Player : MonoBehaviour, IDamageable
     public int PendingLevelUps => pendingLevelUps;
     public bool IsWeaponSync => isWeaponSyncEnabled;
     public IReadOnlyList<WeaponEffect> WeaponEffects => weaponEffects;
+    public bool IsStationary { get; private set; }
+    public bool IsMovementLocked => movementLocks.Count > 0;
     /// <summary>現在の姿勢を反映した本体の足元位置を取得する</summary>
     public Vector3 FootPosition
     {
@@ -76,6 +79,20 @@ public class Player : MonoBehaviour, IDamageable
         {
             weapon.RefreshStats();
         }
+    }
+
+    internal void SetStationary(bool stationary) => IsStationary = stationary;
+
+    public void AddMovementLock(object key)
+    {
+        if (key == null) return;
+        movementLocks.Add(key);
+    }
+
+    public void RemoveMovementLock(object key)
+    {
+        if (key == null) return;
+        movementLocks.Remove(key);
     }
 
     /// <summary>衝突初期化時に本体参照を関連付け、攻撃ごとのコンポーネント検索を避ける</summary>
@@ -143,5 +160,9 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     /// <summary>体力の死亡通知をプレイヤーの購読者へ伝える</summary>
-    private void HandleDeath() => OnDeath?.Invoke();
+    private void HandleDeath()
+    {
+        movementLocks.Clear();
+        OnDeath?.Invoke();
+    }
 }

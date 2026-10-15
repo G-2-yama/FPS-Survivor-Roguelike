@@ -47,6 +47,12 @@ public class PlayerStateCoordinator
             return;
         }
 
+        float stationaryThreshold = context.ControlSettings.StationarySpeedThreshold;
+        context.Player.SetStationary(
+            context.Motor.IsGrounded()
+            && context.Motor.HorizontalVelocity.sqrMagnitude < stationaryThreshold * stationaryThreshold);
+        bool isMovementLocked = context.Player.IsMovementLocked;
+
         actionStateMachine.Update(deltaTime);
 
         if (!actionStateMachine.IsBlockingNormalMovement)
@@ -65,6 +71,7 @@ public class PlayerStateCoordinator
 
         bool hasMoveInput = context.Controls.MoveInput.sqrMagnitude > 0.0001f;
         bool isSprinting = !actionStateMachine.IsBlockingNormalMovement
+            && !isMovementLocked
             && context.Controls.SprintHeld
             && hasMoveInput
             && context.Motor.IsGrounded();
@@ -72,6 +79,12 @@ public class PlayerStateCoordinator
 
         if (actionStateMachine.IsBlockingNormalMovement)
         {
+            return;
+        }
+
+        if (isMovementLocked)
+        {
+            context.Locomotion.Move(Vector2.zero, false, false, deltaTime);
             return;
         }
 

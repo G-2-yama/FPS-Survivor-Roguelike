@@ -3,6 +3,8 @@
 /// </summary>
 public class PlayerActionStateMachine : StateMachine<PlayerActionState>
 {
+    private PlayerContext context;
+
     /// <summary>
     /// 特殊動作を行っていない状態
     /// </summary>
@@ -34,6 +36,7 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     /// </summary>
     public PlayerActionStateMachine(PlayerContext context)
     {
+        this.context = context;
         noActionState = new PlayerNoActionState(context, this);
         dashActionState = new PlayerDashActionState(context, this);
         slideActionState = new PlayerSlideActionState(context, this);
@@ -59,11 +62,11 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
     }
 
     /// <summary>
-    /// ダッシュ開始条件を満たしている場合にダッシュ動作へ遷移する
+    /// 移動ロック中でなく、ダッシュ開始条件を満たしている場合にダッシュ動作へ遷移する
     /// </summary>
     public bool TryChangeToDashActionState()
     {
-        if (!dashActionState.CanEnter())
+        if (context.Player.IsMovementLocked || !dashActionState.CanEnter())
         {
             return false;
         }
@@ -74,7 +77,7 @@ public class PlayerActionStateMachine : StateMachine<PlayerActionState>
 
     public bool TryChangeToSlideActionState()
     {
-        if (!slideActionState.CanEnter())
+        if (context.Player.IsMovementLocked || !slideActionState.CanEnter())
         {
             return false;
         }

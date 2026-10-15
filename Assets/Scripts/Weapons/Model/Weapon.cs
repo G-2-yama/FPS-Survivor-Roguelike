@@ -4,6 +4,8 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public static event System.Action OnAnyFired;
+    public event System.Action<Weapon> Fired;
+    public event System.Action<Weapon> ReloadCompleted;
 
     [SerializeField] private Player weaponOwner;
     public Player WeaponOwner => weaponOwner;
@@ -37,6 +39,9 @@ public class Weapon : MonoBehaviour
     private WeaponRuntime runtime = new WeaponRuntime();
     public WeaponRuntime Runtime => runtime;
 
+    private bool isReloading;
+    public bool IsReloading => isReloading;
+
     public bool HasWeapon => !weaponData.IsEmpty;
 
     public int MagazineSize => Mathf.Max(1, Mathf.FloorToInt(CurrentLevel.MagazineSize * BuildModifiers().MagazineMultiplier + 0.0001f));
@@ -62,6 +67,13 @@ public class Weapon : MonoBehaviour
     private WeaponStatModifiers BuildModifiers()
     {
         WeaponStatModifiers mods = WeaponStatModifiers.Default;
+
+        var traits = weaponData.Traits;
+        for (int i = 0; i < traits.Count; i++)
+        {
+            if (traits[i] != null) traits[i].ModifyStats(this, ref mods);
+        }
+
         if (weaponOwner == null)
             return mods;
 
@@ -95,6 +107,7 @@ public class Weapon : MonoBehaviour
     /// <param name="ammo">新しい残弾数</param>
     public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1, WeaponRuntime newRuntime = null)
     {
+        CancelReload();
         runtime = newRuntime ?? new WeaponRuntime();
 
         if (newData == null || newData.IsEmpty)
@@ -161,9 +174,52 @@ public class Weapon : MonoBehaviour
         currentAmmo--;
         weaponView.UpdateAmmo(currentAmmo, MagazineSize);
         FireModeData.Fire(this, weaponOwner);
+
+        runtime.ShotsSinceReload++;
+        var traits = weaponData.Traits;
+        for (int i = 0; i < traits.Count; i++)
+        {
+            if (traits[i] != null) traits[i].OnFired(this);
+        }
+        if (weaponOwner != null)
+        {
+            var effects = weaponOwner.WeaponEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                effects[i].OnFired(this);
+            }
+        }
+        Fired?.Invoke(this);
         OnAnyFired?.Invoke();
 
         return true;
+    }
+
+    public float BeginReload()
+    {
+        isReloading = true;
+        runtime.LastReloadConsumedRatio = Mathf.Clamp01(1f - (float)currentAmmo / MagazineSize);
+
+        var ctx = new ReloadStartContext();
+        var traits = weaponData.Traits;
+        for (int i = 0; i < traits.Count; i++)
+        {
+            if (traits[i] != null) traits[i].OnReloadStart(this, ref ctx);
+        }
+        if (weaponOwner != null)
+        {
+            var effects = weaponOwner.WeaponEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                effects[i].OnReloadStart(this, ref ctx);
+            }
+            if (ctx.LockMovement)
+            {
+                weaponOwner.AddMovementLock(this);
+            }
+        }
+
+        return Mathf.Max(ReloadTime, 0.01f);
     }
 
     /// <summary>
@@ -173,11 +229,60 @@ public class Weapon : MonoBehaviour
     {
         if (!HasWeapon)
         {
+            EndReload();
             return;
+        }
+
+        var traits = weaponData.Traits;
+        for (int i = 0; i < traits.Count; i++)
+        {
+            if (traits[i] != null) traits[i].OnReloadComplete(this);
+        }
+        if (weaponOwner != null)
+        {
+            var effects = weaponOwner.WeaponEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                effects[i].OnReloadComplete(this);
+            }
         }
 
         int magazineSize = MagazineSize;
         currentAmmo = magazineSize;
         weaponView.UpdateAmmo(currentAmmo, magazineSize);
+        runtime.ShotsSinceReload = 0;
+
+        EndReload();
+        ReloadCompleted?.Invoke(this);
+    }
+
+    public void CancelReload()
+    {
+        if (!isReloading)
+        {
+            return;
+        }
+
+        var traits = weaponData.Traits;
+        for (int i = 0; i < traits.Count; i++)
+        {
+            if (traits[i] != null) traits[i].OnReloadCanceled(this);
+        }
+        if (weaponOwner != null)
+        {
+            var effects = weaponOwner.WeaponEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                effects[i].OnReloadCanceled(this);
+            }
+        }
+
+        EndReload();
+    }
+
+    private void EndReload()
+    {
+        isReloading = false;
+        if (weaponOwner != null) weaponOwner.RemoveMovementLock(this);
     }
 }

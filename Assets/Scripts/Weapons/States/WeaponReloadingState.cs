@@ -12,7 +12,7 @@ public class WeaponReloadingState : WeaponState
 
     public override void Enter()
     {
-        _duration = Mathf.Max(_weapon.ReloadTime, 0.01f);
+        _duration = _weapon.BeginReload();
         _timer = _duration;
         _weapon.WeaponView.PlayReloadAnimation(_duration);
         _weapon.Sounder.Play(SoundCategory.ReloadEnter);
@@ -43,7 +43,7 @@ public class WeaponReloadingState : WeaponState
 
     public override void Exit()
     {
-        
+        _weapon.CancelReload();
     }
 
 

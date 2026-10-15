@@ -29,6 +29,11 @@ public sealed class PlayerControlSettings : PlayerSettingsAsset
     /// <summary>接地を維持するための垂直速度 負の値で床へ向かう 単位はm/秒</summary>
     public float GroundedVerticalVelocity => groundedVerticalVelocity;
 
+    [SerializeField, Min(0f), PlayerSettingLabel("Stationary Speed Threshold"), Tooltip("接地中の水平速度がこれ未満なら立ち止まっているとみなす 単位はm/秒")]
+    private float stationarySpeedThreshold = 0.1f;
+
+    public float StationarySpeedThreshold => stationarySpeedThreshold;
+
     [Header("Jump")]
     [SerializeField, Min(1f), PlayerSettingLabel("Max Jump Count"), Tooltip("接地で回復するジャンプ回数 2なら二段ジャンプ")]
     private int maxJumpCount = 2;
@@ -124,6 +129,7 @@ public sealed class PlayerControlSettings : PlayerSettingsAsset
         if (!IsFinite(gravity) || gravity > 0f) { error = "重力の値が有効範囲外です"; return false; }
         if (!IsFinite(airReverseToZeroTime) || airReverseToZeroTime < 0.01f) { error = "空中切り返し時間の値が有効範囲外です"; return false; }
         if (!IsFinite(groundedVerticalVelocity) || groundedVerticalVelocity > 0f) { error = "接地中の下向き速度の値が有効範囲外です"; return false; }
+        if (!IsFinite(stationarySpeedThreshold) || stationarySpeedThreshold < 0f) { error = "立ち止まりとみなす速度の値が有効範囲外です"; return false; }
         if (maxJumpCount < 1) { error = "最大ジャンプ回数の値が有効範囲外です"; return false; }
         if (!IsFinite(jumpHoldDuration) || jumpHoldDuration < 0f) { error = "長押し受付時間の値が有効範囲外です"; return false; }
         if (!IsFinite(jumpHoldMaxMultiplier) || jumpHoldMaxMultiplier < 1f) { error = "長押し最大倍率の値が有効範囲外です"; return false; }
