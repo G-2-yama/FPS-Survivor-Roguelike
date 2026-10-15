@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -12,12 +13,19 @@ public class WeaponSlotView : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
     [Tooltip("Evo などの色")]
     [SerializeField] private UIPalette palette;
+    [Tooltip("左上に並べる属性のバッジ")]
+    [SerializeField] private AttributeBadgeListView attributeBadges;
+    [Tooltip("Evo したメイン武器の名前の後ろに付ける文字")]
+    [SerializeField] private string evoSuffix = " (+2)";
 
     private Color initialColor;
+
+    public event Action<AttributeDefinition> AttributeClicked;
 
     private void Awake()
     {
         initialColor = Button.color;
+        attributeBadges.BadgeClicked += attribute => AttributeClicked?.Invoke(attribute);
     }
 
     public SlotType SlotType => slotType;
@@ -36,10 +44,18 @@ public class WeaponSlotView : MonoBehaviour
 
         weaponIcon.sprite = weapon.Icon;
         weaponIcon.gameObject.SetActive(true);
-        weaponNameText.text = weapon.IsEvo ? palette.ColorizeEvo(weapon.DisplayName) : weapon.DisplayName;
+        weaponNameText.text = weapon.IsEvo ? palette.ColorizeEvo(weapon.DisplayName + EvoSuffixOf(weapon)) : weapon.DisplayName;
         levelText.gameObject.SetActive(true);
         levelText.text = weapon.IsEvo ? palette.ColorizeEvo("Evo") : $"Lv{weapon.Level + 1}";
     }
+
+    public void ShowAttributes(Weapon weapon, AttributeSnapshot snapshot)
+    {
+        bool hasWeapon = weapon != null && weapon.HasWeapon;
+        attributeBadges.Show(hasWeapon ? weapon.WeaponData.Attributes : Array.Empty<AttributeDefinition>(), snapshot);
+    }
+
+    private string EvoSuffixOf(Weapon weapon) => weapon.WeaponData.WeaponType == WeaponType.Main ? evoSuffix : "";
 
     /// <summary>
     /// 選択状態の表示切り替え

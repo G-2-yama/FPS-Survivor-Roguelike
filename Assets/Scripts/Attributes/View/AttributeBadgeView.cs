@@ -76,6 +76,12 @@ public class AttributeBadgeView : MonoBehaviour, IPointerEnterHandler, IPointerE
         frameImage.color = state.ToColor(palette, palette.AttributeIdleFrameColor);
     }
 
+    public void FitWidthToName()
+    {
+        if (TryGetComponent(out LayoutElement element))
+            element.minWidth = -1f;
+    }
+
     public void SetClickable(bool clickable)
     {
         Initialize();

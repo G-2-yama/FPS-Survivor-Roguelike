@@ -5156,6 +5156,7 @@ MonoBehaviour:
   Button: {fileID: 306585407}
   weaponNameText: {fileID: 1599175180}
   levelText: {fileID: 1700000024}
+  attributeBadges: {fileID: 2100000102}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!224 &306585406
 RectTransform:
@@ -5172,6 +5173,7 @@ RectTransform:
   - {fileID: 197229298}
   - {fileID: 1599175179}
   - {fileID: 1700000022}
+  - {fileID: 2100000101}
   m_Father: {fileID: 960375098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -9953,6 +9955,7 @@ RectTransform:
   - {fileID: 657444923}
   - {fileID: 1862198676}
   - {fileID: 1700000046}
+  - {fileID: 2100000125}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -10070,6 +10073,7 @@ MonoBehaviour:
   Button: {fileID: 556581655}
   itemNameText: {fileID: 1862198679}
   levelText: {fileID: 1700000048}
+  attributeBadges: {fileID: 2100000126}
 --- !u!114 &556581658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11749,6 +11753,7 @@ RectTransform:
   - {fileID: 1162332255}
   - {fileID: 1264295994}
   - {fileID: 1700000050}
+  - {fileID: 2100000122}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -11866,6 +11871,7 @@ MonoBehaviour:
   Button: {fileID: 723830211}
   itemNameText: {fileID: 1264295997}
   levelText: {fileID: 1700000052}
+  attributeBadges: {fileID: 2100000123}
 --- !u!114 &723830214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12186,6 +12192,7 @@ RectTransform:
   - {fileID: 614532326}
   - {fileID: 1519347402}
   - {fileID: 1700000026}
+  - {fileID: 2100000110}
   m_Father: {fileID: 1083353973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -12210,6 +12217,7 @@ MonoBehaviour:
   Button: {fileID: 797005006}
   weaponNameText: {fileID: 1519347405}
   levelText: {fileID: 1700000028}
+  attributeBadges: {fileID: 2100000111}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!114 &797005005
 MonoBehaviour:
@@ -14360,6 +14368,7 @@ RectTransform:
   - {fileID: 1235975816}
   - {fileID: 1459613072}
   - {fileID: 1700000054}
+  - {fileID: 2100000131}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -14477,6 +14486,7 @@ MonoBehaviour:
   Button: {fileID: 967759489}
   itemNameText: {fileID: 1459613075}
   levelText: {fileID: 1700000056}
+  attributeBadges: {fileID: 2100000132}
 --- !u!114 &967759492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17809,6 +17819,7 @@ RectTransform:
   - {fileID: 834711279}
   - {fileID: 966179716}
   - {fileID: 1700000030}
+  - {fileID: 2100000107}
   m_Father: {fileID: 1083353973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -17833,6 +17844,7 @@ MonoBehaviour:
   Button: {fileID: 1145654491}
   weaponNameText: {fileID: 966179719}
   levelText: {fileID: 1700000032}
+  attributeBadges: {fileID: 2100000108}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!114 &1145654490
 MonoBehaviour:
@@ -18149,6 +18161,7 @@ RectTransform:
   - {fileID: 644135457}
   - {fileID: 251768715}
   - {fileID: 1700000034}
+  - {fileID: 2100000113}
   m_Father: {fileID: 1839994084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -18173,6 +18186,7 @@ MonoBehaviour:
   Button: {fileID: 1150411211}
   weaponNameText: {fileID: 251768718}
   levelText: {fileID: 1700000036}
+  attributeBadges: {fileID: 2100000114}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!114 &1150411210
 MonoBehaviour:
@@ -19543,6 +19557,7 @@ RectTransform:
   - {fileID: 497837118}
   - {fileID: 491711091}
   - {fileID: 1700000058}
+  - {fileID: 2100000128}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -19660,6 +19675,7 @@ MonoBehaviour:
   Button: {fileID: 1195703140}
   itemNameText: {fileID: 491711094}
   levelText: {fileID: 1700000060}
+  attributeBadges: {fileID: 2100000129}
 --- !u!114 &1195703143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23825,6 +23841,7 @@ MonoBehaviour:
   Button: {fileID: 1526897109}
   weaponNameText: {fileID: 1629099114}
   levelText: {fileID: 1700000040}
+  attributeBadges: {fileID: 2100000105}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!224 &1526897108
 RectTransform:
@@ -23841,6 +23858,7 @@ RectTransform:
   - {fileID: 1105608999}
   - {fileID: 1629099113}
   - {fileID: 1700000038}
+  - {fileID: 2100000104}
   m_Father: {fileID: 960375098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -24198,7 +24216,9 @@ RectTransform:
   - {fileID: 1888381299}
   - {fileID: 1376672739}
   - {fileID: 931489463}
+  - {fileID: 2100000137}
   - {fileID: 1852135503}
+  - {fileID: 2100000140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -24235,6 +24255,9 @@ MonoBehaviour:
   - {fileID: 967759491}
   - {fileID: 1666192003}
   discardSlotUI: {fileID: 1376672740}
+  player: {fileID: 275487193}
+  attributeSummary: {fileID: 2100000138}
+  attributeDetailPanel: {fileID: 2100000141}
 --- !u!114 &1562638437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25340,6 +25363,7 @@ MonoBehaviour:
   Button: {fileID: 1666192005}
   itemNameText: {fileID: 1120076412}
   levelText: {fileID: 1700000064}
+  attributeBadges: {fileID: 2100000135}
 --- !u!224 &1666192004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25355,6 +25379,7 @@ RectTransform:
   - {fileID: 394178200}
   - {fileID: 1120076411}
   - {fileID: 1700000062}
+  - {fileID: 2100000134}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -29139,6 +29164,7 @@ RectTransform:
   - {fileID: 1460328760}
   - {fileID: 854556491}
   - {fileID: 1700000066}
+  - {fileID: 2100000119}
   m_Father: {fileID: 1888381299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -29256,6 +29282,7 @@ MonoBehaviour:
   Button: {fileID: 1973173859}
   itemNameText: {fileID: 854556494}
   levelText: {fileID: 1700000068}
+  attributeBadges: {fileID: 2100000120}
 --- !u!114 &1973173862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30640,6 +30667,7 @@ RectTransform:
   - {fileID: 283540923}
   - {fileID: 1144000009}
   - {fileID: 1700000042}
+  - {fileID: 2100000116}
   m_Father: {fileID: 1839994084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -30664,6 +30692,7 @@ MonoBehaviour:
   Button: {fileID: 2084488929}
   weaponNameText: {fileID: 1144000012}
   levelText: {fileID: 1700000044}
+  attributeBadges: {fileID: 2100000117}
   palette: {fileID: 11400000, guid: 52c8863eee332514807c938390fe9a21, type: 2}
 --- !u!114 &2084488928
 MonoBehaviour:
@@ -32558,6 +32587,716 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f56860ea19e7c44db4fbd62dcec907b, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeDetailPanel
+--- !u!1001 &2100000100
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 306585406}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000101 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000102 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000100}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000103
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1526897108}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000104 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000103}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000106
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1145654488}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000107 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000106}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000108 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000106}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000109
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 797005003}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000110 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000109}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000111 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000112
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1150411208}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000113 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000112}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000112}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000115
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2084488926}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000116 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000115}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000118
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1973173857}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000119 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000120 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000118}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 723830209}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000122 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000124
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 556581653}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000125 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000124}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000124}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000127
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1195703138}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000128 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000129 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000127}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000130
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 967759487}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000131 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000130}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000133
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1666192004}
+    m_Modifications:
+    - target: {fileID: 7875567921988703444, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_Name
+      value: AttributeBadges
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+--- !u!224 &2100000134 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3659702704596072746, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000133}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000135 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816749902912892904, guid: 687e4beea05614f428b3391d25dcb000, type: 3}
+  m_PrefabInstance: {fileID: 2100000133}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122d2f2cd7a49914480f48e68c7a9956, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeBadgeListView
+--- !u!1001 &2100000136
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1562638435}
+    m_Modifications:
+    - target: {fileID: 2549414563325357727, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+      propertyPath: m_Name
+      value: AttributeSummary
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095987321919338268, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095987321919338268, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -62.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+--- !u!224 &2100000137 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2095987321919338268, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+  m_PrefabInstance: {fileID: 2100000136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000138 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7608547960198507016, guid: 5db12c3c59e565348bb864e0f8517ae8, type: 3}
+  m_PrefabInstance: {fileID: 2100000136}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cd7cfa2a2dac140b43425175aab737, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeSummaryView
+--- !u!1001 &2100000139
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1562638435}
+    m_Modifications:
+    - target: {fileID: 9220683986224755621, guid: 38e513157487b3b49ab002dbab80ca00, type: 3}
+      propertyPath: m_Name
+      value: AttributeDetailPanel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 38e513157487b3b49ab002dbab80ca00, type: 3}
+--- !u!224 &2100000140 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5154511817001867167, guid: 38e513157487b3b49ab002dbab80ca00, type: 3}
+  m_PrefabInstance: {fileID: 2100000139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2100000141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 544913483139400530, guid: 38e513157487b3b49ab002dbab80ca00, type: 3}
+  m_PrefabInstance: {fileID: 2100000139}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f56860ea19e7c44db4fbd62dcec907b, type: 3}
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::AttributeDetailPanel
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

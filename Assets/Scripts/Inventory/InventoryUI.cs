@@ -11,16 +11,40 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private ItemSlotView[] itemSlotUIs;
     [SerializeField] private DiscardSlotView discardSlotUI;
 
+    [Header("Attributes")]
+    [Tooltip("属性の数を持つプレイヤー")]
+    [SerializeField] private Player player;
+    [Tooltip("見出しの右に並べる、持っている属性のまとめ")]
+    [SerializeField] private AttributeSummaryView attributeSummary;
+    [Tooltip("属性のバッジを押したときに開く詳細パネル")]
+    [SerializeField] private AttributeDetailPanel attributeDetailPanel;
+
     // 選択中のWeaponスロット
     private WeaponSlotView selectedWeaponSlot;
 
     // 選択中のItemスロット
     private ItemSlotView selectedItemSlot;
 
+    private AttributeTracker attributeTracker;
+    private AttributeSnapshot attributeSnapshot;
+
+    private void Awake()
+    {
+        foreach (var slotUI in weaponSlotUIs)
+            slotUI.AttributeClicked += OpenAttributeDetail;
+        foreach (var slotUI in itemSlotUIs)
+            slotUI.AttributeClicked += OpenAttributeDetail;
+        attributeSummary.BadgeClicked += OpenAttributeDetail;
+    }
+
     private void OnEnable()
     {
         inventory.OnSlotChanged += RefreshWeaponSlot;
         inventory.OnItemsChanged += RefreshItems;
+
+        attributeTracker = player.Attributes;
+        if (attributeTracker != null)
+            attributeTracker.Changed += RefreshAttributes;
 
         RefreshAll();
     }
@@ -29,6 +53,12 @@ public class InventoryUI : MonoBehaviour
     {
         inventory.OnSlotChanged -= RefreshWeaponSlot;
         inventory.OnItemsChanged -= RefreshItems;
+
+        if (attributeTracker != null)
+            attributeTracker.Changed -= RefreshAttributes;
+        attributeTracker = null;
+
+        attributeDetailPanel.Close();
     }
 
     /// <summary>
@@ -38,6 +68,30 @@ public class InventoryUI : MonoBehaviour
     {
         RefreshWeapons();
         RefreshItems();
+        RefreshAttributes();
+    }
+
+    private void RefreshAttributes()
+    {
+        if (attributeTracker == null)
+            return;
+
+        attributeSnapshot = new AttributeSnapshot(
+            AttributeTracker.OwnedWeapons(inventory), AttributeTracker.OwnedItems(inventory), attributeTracker.Catalog);
+
+        foreach (var slotUI in weaponSlotUIs)
+            slotUI.ShowAttributes(inventory.GetWeapon(slotUI.SlotType), attributeSnapshot);
+
+        for (int i = 0; i < itemSlotUIs.Length; i++)
+            itemSlotUIs[i].ShowAttributes(inventory.Items[i], attributeSnapshot);
+
+        attributeSummary.Show(attributeSnapshot);
+    }
+
+    private void OpenAttributeDetail(AttributeDefinition attribute)
+    {
+        if (attributeSnapshot != null)
+            attributeDetailPanel.Show(attribute, attributeSnapshot);
     }
 
     /// <summary>
