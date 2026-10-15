@@ -25,8 +25,21 @@ public class LoadoutMenu : MonoBehaviour
     [Tooltip("シンクロをオフにするボタン")]
     [SerializeField] private TitleChoiceView weaponSyncOffButton;
 
+    [Header("Attributes")]
+    [Tooltip("属性の一覧と、詳細パネルに並べる装備")]
+    [SerializeField] private AttributeCatalog attributeCatalog;
+
+    [Tooltip("シンクロ ON のときに数えるアイテム GameManager の syncItem と同じものを設定します")]
+    [SerializeField] private Item syncItem;
+
+    [Tooltip("属性のバッジを押したときに開く詳細パネル")]
+    [SerializeField] private AttributeDetailPanel attributeDetailPanel;
+
+    private AttributeSnapshot attributeSnapshot;
+
     private void Start()
     {
+        detailView.AttributeClicked += OpenAttributeDetail;
         CreateWeaponOptions();
 
         weaponSyncOnButton.Button.onClick.AddListener(() => SetWeaponSync(true));
@@ -54,12 +67,14 @@ public class LoadoutMenu : MonoBehaviour
         }
 
         detailView.Show(GameStartSettings.StartingWeapon);
+        RefreshAttributes();
     }
 
     private void SelectWeapon(WeaponData weaponData)
     {
         GameStartSettings.StartingWeapon = weaponData;
         detailView.Show(weaponData);
+        RefreshAttributes();
     }
 
     private void SetWeaponSync(bool isOn)
@@ -67,5 +82,26 @@ public class LoadoutMenu : MonoBehaviour
         GameStartSettings.WeaponSync = isOn;
         weaponSyncOnButton.SetOn(isOn);
         weaponSyncOffButton.SetOn(!isOn);
+        RefreshAttributes();
+    }
+
+    private void RefreshAttributes()
+    {
+        WeaponData weaponData = GameStartSettings.StartingWeapon;
+        if (weaponData == null)
+            return;
+
+        var items = new List<Item>();
+        if (GameStartSettings.WeaponSync && syncItem != null)
+            items.Add(syncItem);
+
+        attributeSnapshot = new AttributeSnapshot(new[] { (weaponData, 0) }, items, attributeCatalog);
+        detailView.ShowAttributes(weaponData, attributeSnapshot);
+    }
+
+    private void OpenAttributeDetail(AttributeDefinition attribute)
+    {
+        if (attributeSnapshot != null)
+            attributeDetailPanel.Show(attribute, attributeSnapshot);
     }
 }
