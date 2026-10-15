@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -44,16 +45,24 @@ public class AttributeRowView : MonoBehaviour
     private readonly List<Image> pips = new List<Image>();
     private readonly List<Image> blinkingPips = new List<Image>();
 
-    public void Setup(AttributeDefinition attribute, int before, int after)
+    public event Action<AttributeDefinition> BadgeClicked;
+
+    public void Setup(AttributeDefinition attribute, int before, int after) => Setup(attribute, before, after, true);
+
+    public void ShowCount(AttributeDefinition attribute, int count) => Setup(attribute, count, count, false);
+
+    private void Setup(AttributeDefinition attribute, int before, int after, bool isPreview)
     {
         if (badge == null)
         {
             badge = Instantiate(badgePrefab, transform);
             badge.transform.SetAsFirstSibling();
+            badge.Clicked += clicked => BadgeClicked?.Invoke(clicked);
         }
 
         AttributeDisplayState state = AttributeDisplayStates.Of(attribute, after);
         badge.Setup(attribute, state);
+        badge.SetClickable(isPreview);
 
         bool isBase = attribute.Kind == AttributeKind.Base;
         int total = isBase ? attribute.MaxThreshold : attribute.ActivateThreshold;
@@ -67,7 +76,7 @@ public class AttributeRowView : MonoBehaviour
             overText.color = state.ToColor(palette, filledPipColor);
         }
 
-        bool unchanged = before == after;
+        bool unchanged = isPreview && before == after;
         gaugeGroup.alpha = unchanged ? unchangedAlpha : 1f;
         unchangedText.gameObject.SetActive(unchanged);
         unchangedText.alpha = unchangedAlpha;

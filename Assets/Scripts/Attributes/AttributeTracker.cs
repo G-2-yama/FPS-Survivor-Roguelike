@@ -72,7 +72,7 @@ public class AttributeTracker
             if (data == null || data.IsEmpty)
                 continue;
 
-            string id = string.IsNullOrEmpty(data.WeaponId) ? data.name : data.WeaponId;
+            string id = IdOf(data);
             int weight = data.WeaponType == WeaponType.Main && data.IsEvoLevel(level) ? 2 : 1;
             if (!weightById.TryGetValue(id, out var current) || current.weight < weight)
                 weightById[id] = (data, weight);
@@ -88,7 +88,7 @@ public class AttributeTracker
         bool countsAsAllBases = false;
         foreach (Item item in items)
         {
-            if (item == null || !seenItems.Add(string.IsNullOrEmpty(item.ItemId) ? item.name : item.ItemId))
+            if (item == null || !seenItems.Add(IdOf(item)))
                 continue;
 
             AddAll(result, item.Attributes, 1);
@@ -106,6 +106,10 @@ public class AttributeTracker
 
         return result;
     }
+
+    public static string IdOf(WeaponData data) => string.IsNullOrEmpty(data.WeaponId) ? data.name : data.WeaponId;
+
+    public static string IdOf(Item item) => string.IsNullOrEmpty(item.ItemId) ? item.name : item.ItemId;
 
     private static void AddAll(Dictionary<AttributeDefinition, int> counts, IReadOnlyList<AttributeDefinition> attributes, int amount)
     {

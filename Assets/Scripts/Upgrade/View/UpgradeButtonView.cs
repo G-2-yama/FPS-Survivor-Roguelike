@@ -26,6 +26,8 @@ public class UpgradeButtonView : MonoBehaviour
     [SerializeField, Min(0f)] private float attributeRowGap = 28f;
 
     private readonly List<AttributeRowView> attributeRows = new List<AttributeRowView>();
+    private AttributeSnapshot attributeSnapshot;
+    private AttributeDetailPanel attributeDetailPanel;
     private RectTransform descriptionRect;
     private Vector2 descriptionOffsetMin;
 
@@ -100,8 +102,10 @@ public class UpgradeButtonView : MonoBehaviour
     /// アップグレードの名前、説明、アイコン、レアリティの色を設定する
     /// </summary>
     /// <param name="upgrade">表示するアップグレード</param>
-    public void Setup(UpgradeBase upgrade, IReadOnlyList<AttributeChange> attributeChanges)
+    public void Setup(UpgradeBase upgrade, AttributePreview attributePreview, AttributeDetailPanel detailPanel)
     {
+        attributeSnapshot = attributePreview?.After;
+        attributeDetailPanel = detailPanel;
         buttonText.text = upgrade.DisplayName;
         descriptionText.text = upgrade.Description;
         iconImage.sprite = upgrade.Icon;
@@ -114,13 +118,17 @@ public class UpgradeButtonView : MonoBehaviour
         ButtonImage.color = upgrade.Rarity.GetColor(0.1f);
         FrameImage.color = upgrade.Rarity.GetColor(1f);
 
-        SetupAttributeRows(attributeChanges);
+        SetupAttributeRows(attributePreview != null ? attributePreview.GetChanges() : new List<AttributeChange>());
     }
 
     private void SetupAttributeRows(IReadOnlyList<AttributeChange> changes)
     {
         while (attributeRows.Count < changes.Count)
-            attributeRows.Add(Instantiate(attributeRowPrefab, attributeRowContainer));
+        {
+            AttributeRowView row = Instantiate(attributeRowPrefab, attributeRowContainer);
+            row.BadgeClicked += OpenAttributeDetail;
+            attributeRows.Add(row);
+        }
 
         for (int i = 0; i < attributeRows.Count; i++)
         {
@@ -131,6 +139,12 @@ public class UpgradeButtonView : MonoBehaviour
         }
 
         attributeRowContainer.gameObject.SetActive(changes.Count > 0);
+    }
+
+    private void OpenAttributeDetail(AttributeDefinition attribute)
+    {
+        if (attributeDetailPanel != null)
+            attributeDetailPanel.Show(attribute, attributeSnapshot);
     }
 
     public void LayoutAttributeRows()

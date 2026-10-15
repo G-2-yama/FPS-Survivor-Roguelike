@@ -12,6 +12,8 @@ public class UpgradeView : MonoBehaviour
     [SerializeField, Min(0.01f)] private float cardFadeDuration = 0.25f;
     [SerializeField, Min(0f)] private float cardFadeInterval = 0.1f;
     [SerializeField, Min(0f)] private float cardSlideDistance = 60f;
+    [Tooltip("カードの属性のバッジを押したときに開く詳細パネル")]
+    [SerializeField] private AttributeDetailPanel attributeDetailPanel;
 
     private CancellationTokenSource revealCancellation;
 
@@ -30,14 +32,14 @@ public class UpgradeView : MonoBehaviour
     /// アップグレードの選択肢をセットアップする
     /// </summary>
     /// <param name="choices">選択肢のリスト</param>
-    public void Setup(List<UpgradeBase> choices, IReadOnlyList<IReadOnlyList<AttributeChange>> attributeChanges)
+    public void Setup(List<UpgradeBase> choices, IReadOnlyList<AttributePreview> attributePreviews)
     {
         for (int i = 0; i < upgradeButtonsViews.Length; i++)
         {
             if (i < choices.Count)
             {
                 upgradeButtonsViews[i].gameObject.SetActive(true);
-                upgradeButtonsViews[i].Setup(choices[i], attributeChanges[i]);
+                upgradeButtonsViews[i].Setup(choices[i], attributePreviews[i], attributeDetailPanel);
             }
             else
             {
@@ -53,6 +55,7 @@ public class UpgradeView : MonoBehaviour
     {
         // カードのない初期状態に戻す
         StopReveal();
+        attributeDetailPanel.Close();
         foreach (var buttonView in upgradeButtonsViews)
         {
             buttonView.SetRevealState(0f, false, cardSlideDistance);

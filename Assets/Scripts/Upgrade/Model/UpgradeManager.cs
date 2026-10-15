@@ -45,19 +45,19 @@ public class UpgradeManager : MonoBehaviour
     public void ShowUpgradeUI()
     {
         GenerateChoices();
-        upgradeView.Setup(currentChoices, currentChoices.Select(BuildAttributeChanges).ToList());
+        upgradeView.Setup(currentChoices, currentChoices.Select(BuildAttributePreview).ToList());
         upgradeView.Show();
     }
 
-    private IReadOnlyList<AttributeChange> BuildAttributeChanges(UpgradeBase upgrade)
+    private AttributePreview BuildAttributePreview(UpgradeBase upgrade)
     {
         Player player = gameController.Player;
         if (player.Attributes == null)
-            return new List<AttributeChange>();
+            return null;
 
         var preview = new AttributePreview(player.Inventory, player.Attributes);
         upgrade.AddToPreview(preview);
-        return preview.GetChanges();
+        return preview;
     }
 
     /// <summary>

@@ -24,3 +24,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: edfe89064f5d40018e9ad6db1904ecb8, type: 2}
   - {fileID: 11400000, guid: 6d4c526da0b2462590cd71188511b19c, type: 2}
   - {fileID: 11400000, guid: 85777e10c23442bf922b66cf2611cfdb, type: 2}
+  weapons:
+  - {fileID: 11400000, guid: 84b9664e77a22404ea31f018d4fbf0fc, type: 2}
+  - {fileID: 11400000, guid: f4503d1cc0058f646abf352204f0d921, type: 2}
+  - {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
+  - {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  - {fileID: 11400000, guid: c213b36bc91d25d4aae7d68949affece, type: 2}
+  - {fileID: 11400000, guid: c0ee9f1519d67804a9450cb64f0392e7, type: 2}
+  - {fileID: 11400000, guid: 6613df0c9c0e5a24093c1d2252dc951d, type: 2}
+  - {fileID: 11400000, guid: ed2e0fb318a276044a0cb7d94245056f, type: 2}
+  - {fileID: 11400000, guid: 281d7ac504ed3ed439f6984723262ed9, type: 2}
+  - {fileID: 11400000, guid: 22057eea795cbf048bf850063b40e57b, type: 2}
+  - {fileID: 11400000, guid: d91c1213cad4fd0409323b4e9e63834c, type: 2}
+  - {fileID: 11400000, guid: e73ca687b727fd44c8bf8b6cab37c899, type: 2}
+  - {fileID: 11400000, guid: d24713427b67b904c8167c9587e9d017, type: 2}
+  - {fileID: 11400000, guid: 5abbaf4cb820c714a9a55d44e96243f3, type: 2}
+  - {fileID: 11400000, guid: cce0145410f44da4083228bb6974b1d3, type: 2}
+  - {fileID: 11400000, guid: e1952f8c0f4b6e147a71cbdcf6daf349, type: 2}
+  items:
+  - {fileID: 11400000, guid: 22e3d64ee86e9ce4faaad378fc892711, type: 2}
+  - {fileID: 11400000, guid: 80a47db9620fb444f9a8100e04109be6, type: 2}
+  - {fileID: 11400000, guid: a0cbea89a504f29488c8c165fa940177, type: 2}
+  - {fileID: 11400000, guid: 4aa33de62a66d1241b14435e5f242a50, type: 2}
+  - {fileID: 11400000, guid: 32879d6c60e2d5a4190c9a2665fa1537, type: 2}

@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AttributeDefinition
   displayName: "\u7A7A\u4E2D"
   kind: 1
-  description: 
+  effectTexts:
+  - count: 3
+    text: "\u30B8\u30E3\u30F3\u30D7\u529B\u3068\u6EDE\u7A7A\u6642\u9593\u304C\u4F38\u3073\u308B"
+    condition: 
+  - count: 3
+    text: "\u7A7A\u4E2D\u306B\u3044\u308B\u9593\u3001\u5168\u706B\u529B\u304C\u4E0A\u304C\u308B"
+    condition: "3\u79D2\u4EE5\u4E0A\u7A7A\u4E2D\u306B\u3044\u308B\u9593"
   activateThreshold: 3
   maxThreshold: 7
   activeEffects: []
