@@ -17,5 +17,7 @@ MonoBehaviour:
   description: 
   activateThreshold: 4
   maxThreshold: 7
-  activeEffects: []
-  maxEffects: []
+  activeEffects:
+  - {fileID: 11400000, guid: 5b9dfe7fc8cf4c4ca625109d517b2ff2, type: 2}
+  maxEffects:
+  - {fileID: 11400000, guid: 4c9273c243de4a59bb45a990e4772276, type: 2}

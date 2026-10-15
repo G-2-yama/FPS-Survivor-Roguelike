@@ -17,7 +17,8 @@ MonoBehaviour:
   weaponType: 0
   attributes:
   - {fileID: 11400000, guid: ebb1e84c509b46388c6e1182296f9691, type: 2}
-  traits: []
+  traits:
+  - {fileID: 11400000, guid: 280b09a0dd3a4d40a54960585c065c81, type: 2}
   levels:
   - displayName: AR
     description: "\u9023\u5C04\u53EF\u80FD\u306A\u6271\u3044\u3084\u3059\u3044\u30A2\u30B5\u30EB\u30C8\u30E9\u30A4\u30D5\u30EB"
