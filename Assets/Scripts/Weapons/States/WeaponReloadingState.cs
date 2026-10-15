@@ -12,7 +12,7 @@ public class WeaponReloadingState : WeaponState
 
     public override void Enter()
     {
-        _duration = Mathf.Max(_weapon.CurrentLevel.ReloadTime, 0.01f);
+        _duration = Mathf.Max(_weapon.ReloadTime, 0.01f);
         _timer = _duration;
         _weapon.WeaponView.PlayReloadAnimation(_duration);
         _weapon.Sounder.Play(SoundCategory.ReloadEnter);
@@ -30,7 +30,7 @@ public class WeaponReloadingState : WeaponState
             _weapon.Reload();
             _weapon.Sounder.Play(SoundCategory.ReloadEnd);
 
-            if (_weapon.CurrentLevel.TriggerType == WeaponTriggerType.FullAuto && isPressed)
+            if (_weapon.TriggerType == WeaponTriggerType.FullAuto && isPressed)
             {
                 stateMachine.ChangeState<WeaponFiringState>();
             }

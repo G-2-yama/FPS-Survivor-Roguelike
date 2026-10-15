@@ -36,7 +36,7 @@ public class AreaFireData : FireModeData
         bullet.transform.SetPositionAndRotation(spawnPosition, Quaternion.LookRotation(direction));
 
         var damage = spawned.RequireDamage();
-        damage.Initialize(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
+        damage.Initialize(weapon.GetDamageAmount(), weapon.GetKnockbackForce());
 
         MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);

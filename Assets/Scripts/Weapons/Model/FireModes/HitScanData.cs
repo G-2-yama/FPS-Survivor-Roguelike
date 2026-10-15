@@ -24,6 +24,9 @@ public class HitScanData : FireModeData
         RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
+        int damage = weapon.GetDamageAmount();
+        float knockback = weapon.GetKnockbackForce();
+
         foreach (var hit in hits)
         {
             // プレイヤー所有の押し出し判定を飛ばし、その先の対象も検索する
@@ -40,7 +43,7 @@ public class HitScanData : FireModeData
 
                 TryEnableHitEffect(hit.point);
 
-                ApplyDamage(weapon, damageable, weaponOwner);
+                damageable.TakeDamage(damage, knockback);
 
                 if(damageable.TeamType != TeamType.EnemyAmmo)
                 {
@@ -61,14 +64,5 @@ public class HitScanData : FireModeData
             tracer.RequireTracer().Initialize(weapon.transform.position, endPoint, 0.1f);
         }
 
-    }
-
-    /// <summary>武器能力を反映したダメージを対象へ適用する</summary>
-    /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
-    /// <param name="damageable">ヒットスキャンが選択したダメージ対象</param>
-    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
-    private void ApplyDamage(Weapon weapon, IDamageable damageable, Player weaponOwner)
-    {
-        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner), GetKnockbackForce(weapon, weaponOwner));
     }
 }

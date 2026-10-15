@@ -112,12 +112,14 @@ public class PlayerInventory : MonoBehaviour
         WeaponData dataA = weaponA.WeaponData;
         int levelA = weaponA.Level;
         int ammoA = weaponA.CurrentAmmo;
+        WeaponRuntime runtimeA = weaponA.Runtime;
         WeaponData dataB = weaponB.WeaponData;
         int levelB = weaponB.Level;
         int ammoB = weaponB.CurrentAmmo;
+        WeaponRuntime runtimeB = weaponB.Runtime;
 
-        weaponA.Equip(dataB, levelB, ammoB);
-        weaponB.Equip(dataA, levelA, ammoA);
+        weaponA.Equip(dataB, levelB, ammoB, runtimeB);
+        weaponB.Equip(dataA, levelA, ammoA, runtimeA);
 
         OnSlotChanged?.Invoke(slotA, weaponA);
         OnSlotChanged?.Invoke(slotB, weaponB);

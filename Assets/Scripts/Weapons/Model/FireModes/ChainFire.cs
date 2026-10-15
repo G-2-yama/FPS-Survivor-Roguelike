@@ -26,6 +26,8 @@ public class ChainFire : FireModeData
         RaycastHit[] hits = Physics.SphereCastAll(ray, hitRadius, maxRange);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
+        int damage = weapon.GetDamageAmount();
+
         foreach (var hit in hits)
         {
             // プレイヤー自身の接触判定を飛ばし、その先のヒット候補を調べる
@@ -42,13 +44,13 @@ public class ChainFire : FireModeData
                 continue;
 
             TryEnableHitEffect(hit.collider.transform.position);
-            ApplyDamage(weapon, damageable, weaponOwner);
+            damageable.TakeDamage(damage);
 
             if (damageable.TeamType == TeamType.EnemyAmmo)
                 continue;
 
             hitTargets.Add(hit.collider);
-            ChainDamage(hit.collider, weapon, weaponOwner, hitTargets);
+            ChainDamage(hit.collider, damage, hitTargets);
 
             break;
         }
@@ -56,10 +58,9 @@ public class ChainFire : FireModeData
 
     /// <summary>現在の対象の近くにいる敵を探し、追加でダメージを与える</summary>
     /// <param name="startTarget">連鎖の起点となる対象</param>
-    /// <param name="weapon">ダメージ値を持つ武器</param>
-    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
+    /// <param name="damage">連鎖先に与えるダメージ</param>
     /// <param name="hitTargets">連鎖中に処理済みのCollider</param>
-    private void ChainDamage(Collider startTarget, Weapon weapon, Player weaponOwner, List<Collider> hitTargets)
+    private void ChainDamage(Collider startTarget, int damage, List<Collider> hitTargets)
     {
         Collider currentTarget = startTarget;
 
@@ -75,18 +76,9 @@ public class ChainFire : FireModeData
 
             TryEnableHitEffect(nextTarget.transform.position);
 
-            ApplyDamage(weapon, damageable, weaponOwner);
+            damageable.TakeDamage(damage);
 
             currentTarget = nextTarget;
         }
-    }
-
-    /// <summary>武器能力を反映したダメージを連鎖対象へ適用する</summary>
-    /// <param name="weapon">基礎ダメージとノックバック量を持つ武器</param>
-    /// <param name="damageable">連鎖先として選択されたダメージ対象</param>
-    /// <param name="weaponOwner">強化効果を適用するプレイヤー</param>
-    private void ApplyDamage(Weapon weapon, IDamageable damageable, Player weaponOwner)
-    {
-        damageable.TakeDamage(GetDamageAmount(weapon, weaponOwner));
     }
 }

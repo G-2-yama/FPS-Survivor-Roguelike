@@ -301,7 +301,7 @@ public static class CombatReferenceValidation
         weaponReferences.FindProperty("aimTransform").objectReferenceValue = aim;
         weaponReferences.ApplyModifiedPropertiesWithoutUndo();
         weaponRoot.SetActive(true);
-        int expected = data.GetLevel(0).DamageProfile.GetDamageAmount(owner);
+        int expected = weapon.GetDamageAmount();
         var ignored = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         ignored.transform.position = new Vector3(100f, 10f, 103f);
         Collider ignoredCollider = ignored.GetComponent<Collider>();

@@ -30,11 +30,48 @@ public class Weapon : MonoBehaviour
 
     private int level;
     public int Level => level;
-    public WeaponLevelData CurrentLevel => weaponData.GetLevel(level);
+    private WeaponLevelData CurrentLevel => weaponData.GetLevel(level);
     public bool IsEvo => weaponData.IsEvoLevel(level);
     public bool CanLevelUp => HasWeapon && level < weaponData.MaxLevelIndex;
 
+    private WeaponRuntime runtime = new WeaponRuntime();
+    public WeaponRuntime Runtime => runtime;
+
     public bool HasWeapon => !weaponData.IsEmpty;
+
+    public int MagazineSize => Mathf.Max(1, Mathf.FloorToInt(CurrentLevel.MagazineSize * BuildModifiers().MagazineMultiplier + 0.0001f));
+    public float ReloadTime => CurrentLevel.ReloadTime * BuildModifiers().ReloadTimeMultiplier;
+    public int GetDamageAmount() => (int)(weaponOwner.Stats.DamageMultiplier * BuildModifiers().DamageMultiplier * CurrentLevel.Damage);
+    public float GetKnockbackForce() => weaponOwner.Stats.KnockbackForceMultiplier * CurrentLevel.KnockbackForce;
+
+    public float FireInterval => CurrentLevel.FireInterval;
+    public float BurstInterval => CurrentLevel.BurstInterval;
+    public float ChargeTime => CurrentLevel.ChargeTime;
+    public float SpreadAngle => CurrentLevel.SpreadAngle;
+    public int BurstCount => CurrentLevel.BurstCount;
+    public bool AutoFire => CurrentLevel.AutoFire;
+    public bool AutoReload => CurrentLevel.AutoReload;
+    public WeaponTriggerType TriggerType => CurrentLevel.TriggerType;
+    public FireModeData FireModeData => CurrentLevel.FireModeData;
+    public Recoil Recoil => CurrentLevel.Recoil;
+    public SoundDB SoundDB => CurrentLevel.SoundDB;
+    public string DisplayName => CurrentLevel.DisplayName;
+    public Sprite Icon => CurrentLevel.Icon;
+    public GameObject WeaponModelPrefab => CurrentLevel.WeaponModelPrefab;
+
+    private WeaponStatModifiers BuildModifiers()
+    {
+        WeaponStatModifiers mods = WeaponStatModifiers.Default;
+        if (weaponOwner == null)
+            return mods;
+
+        var effects = weaponOwner.WeaponEffects;
+        for (int i = 0; i < effects.Count; i++)
+        {
+            effects[i].ModifyStats(this, ref mods);
+        }
+        return mods;
+    }
     /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
@@ -56,8 +93,10 @@ public class Weapon : MonoBehaviour
     /// <param name="newData">新しい武器データ</param>
     /// <param name="newLevel">新しいレベル（0 始まり）</param>
     /// <param name="ammo">新しい残弾数</param>
-    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1)
+    public void Equip(WeaponData newData, int newLevel = 0, int ammo = -1, WeaponRuntime newRuntime = null)
     {
+        runtime = newRuntime ?? new WeaponRuntime();
+
         if (newData == null || newData.IsEmpty)
         {
             weaponData = EmptyWeaponData.Instance;
@@ -69,12 +108,12 @@ public class Weapon : MonoBehaviour
             weaponData = newData;
             level = Mathf.Clamp(newLevel, 0, weaponData.MaxLevelIndex);
             // 反動の状態は複製していない武器データのアセット上にあり、前回の再生の値（NaN を含む）が残っているため0から始める
-            CurrentLevel.Recoil.Reset();
+            Recoil.Reset();
 
             // ammoが-1ならフルリロード、それ以外なら指定された弾数をセット
-            int magazineSize = CurrentLevel.MagazineSize;
+            int magazineSize = MagazineSize;
             currentAmmo = (ammo < 0) ? magazineSize : Mathf.Clamp(ammo, 0, magazineSize);
-            sounder.SetSoundDB(CurrentLevel.SoundDB);
+            sounder.SetSoundDB(SoundDB);
         }
 
         weaponView.RefreshView(this);
@@ -92,8 +131,20 @@ public class Weapon : MonoBehaviour
         }
 
         level++;
-        sounder.SetSoundDB(CurrentLevel.SoundDB);
+        sounder.SetSoundDB(SoundDB);
         weaponView.RefreshView(this);
+    }
+
+    public void RefreshStats()
+    {
+        if (!HasWeapon)
+        {
+            return;
+        }
+
+        int magazineSize = MagazineSize;
+        currentAmmo = Mathf.Min(currentAmmo, magazineSize);
+        weaponView.UpdateAmmo(currentAmmo, magazineSize);
     }
 
     /// <summary>
@@ -108,8 +159,8 @@ public class Weapon : MonoBehaviour
         }
 
         currentAmmo--;
-        weaponView.UpdateAmmo(currentAmmo, CurrentLevel.MagazineSize);
-        CurrentLevel.FireModeData.Fire(this, weaponOwner);
+        weaponView.UpdateAmmo(currentAmmo, MagazineSize);
+        FireModeData.Fire(this, weaponOwner);
         OnAnyFired?.Invoke();
 
         return true;
@@ -125,7 +176,8 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        currentAmmo = CurrentLevel.MagazineSize;
-        weaponView.UpdateAmmo(currentAmmo, CurrentLevel.MagazineSize);
+        int magazineSize = MagazineSize;
+        currentAmmo = magazineSize;
+        weaponView.UpdateAmmo(currentAmmo, magazineSize);
     }
 }

@@ -29,9 +29,9 @@ public class WeaponSlotView : MonoBehaviour
             return;
         }
 
-        weaponIcon.sprite = weapon.CurrentLevel.Icon;
+        weaponIcon.sprite = weapon.Icon;
         weaponIcon.gameObject.SetActive(true);
-        weaponNameText.text = weapon.CurrentLevel.DisplayName;
+        weaponNameText.text = weapon.DisplayName;
     }
 
     /// <summary>

@@ -12,7 +12,7 @@ public class WeaponFiringState : WeaponState
 
     public override void Enter()
     {
-        burstRemaining = _weapon.CurrentLevel.BurstCount;
+        burstRemaining = _weapon.BurstCount;
         hasFired = false;
         nextFireTime = stateMachine.ResumeTime ?? Time.time;
         stateMachine.ResumeTime = null;
@@ -21,7 +21,7 @@ public class WeaponFiringState : WeaponState
 
     public override void Update(bool isPressed)
     {
-        float interval = _weapon.CurrentLevel.BurstInterval;
+        float interval = _weapon.BurstInterval;
 
         // 遅れていた射撃を可能な限り消化する
         while (burstRemaining > 0 && Time.time >= nextFireTime)
@@ -34,7 +34,7 @@ public class WeaponFiringState : WeaponState
             }
 
             // 各弾のモーションを、次の発射までの時間に収める。
-            float animationDuration = burstRemaining > 1 ? interval : _weapon.CurrentLevel.FireInterval;
+            float animationDuration = burstRemaining > 1 ? interval : _weapon.FireInterval;
             _weapon.WeaponView.PlayFireAnimation(animationDuration);
 
             // 発射音は従来どおりバースト開始時に再生する。
@@ -44,7 +44,7 @@ public class WeaponFiringState : WeaponState
                 hasFired = true;
             }
 
-            _weapon.CurrentLevel.Recoil.AddRecoil();
+            _weapon.Recoil.AddRecoil();
 
             burstRemaining--;
 
@@ -60,7 +60,7 @@ public class WeaponFiringState : WeaponState
 
     private void EnterCooldown(float lastShotTime)
     {
-        stateMachine.CooldownEndTime = lastShotTime + _weapon.CurrentLevel.FireInterval;
+        stateMachine.CooldownEndTime = lastShotTime + _weapon.FireInterval;
         stateMachine.ChangeState<WeaponCooldownState>();
     }
 

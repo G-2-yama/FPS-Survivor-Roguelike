@@ -150,16 +150,6 @@ public sealed class DamageProfile
     public float SpreadAngle => spreadAngle;
 
     private DamageProfile() { }
-
-    public int GetDamageAmount(Player weaponOwner)
-    {
-        return (int)(weaponOwner.Stats.DamageMultiplier * damage);
-    }
-
-    public float GetKnockbackForce(Player weaponOwner)
-    {
-        return weaponOwner.Stats.KnockbackForceMultiplier * knockbackForce;
-    }
 }
 
 /// <summary>

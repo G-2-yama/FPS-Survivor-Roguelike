@@ -1,5 +1,5 @@
 using UnityEngine;
-/// <summary>武器の攻撃方式と共通のダメージ補正を提供する</summary>
+/// <summary>武器の攻撃方式を提供する</summary>
 
 public abstract class FireModeData : ScriptableObject
 {
@@ -26,20 +26,6 @@ public abstract class FireModeData : ScriptableObject
     }
 
     /// <summary>
-    /// 武器の攻撃力を整数ダメージとして取得する
-    /// </summary>
-    protected int GetDamageAmount(Weapon weapon, Player weaponOwner)
-    {
-        return weapon.CurrentLevel.DamageProfile.GetDamageAmount(weaponOwner);
-    }
-    /// <summary>所有者の強化を反映したノックバック量を計算する</summary>
-
-    protected float GetKnockbackForce(Weapon weapon, Player weaponOwner)
-    {
-        return weapon.CurrentLevel.DamageProfile.GetKnockbackForce(weaponOwner);
-    }
-
-    /// <summary>
     /// 発射方向をスプレッド角度に基づいてランダムに決定するメソッド
     /// </summary>
     /// <param name="weapon">攻撃を行う武器</param>
@@ -51,7 +37,7 @@ public abstract class FireModeData : ScriptableObject
             return Vector3.zero;
         }
 
-        float spread = weapon.CurrentLevel.SpreadAngle * 0.5f;
+        float spread = weapon.SpreadAngle * 0.5f;
 
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);

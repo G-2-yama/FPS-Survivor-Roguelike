@@ -57,7 +57,6 @@ public class WeaponLevelData
     public bool AutoReload => trigger.AutoReload;
     public WeaponTriggerType TriggerType => trigger.TriggerType;
 
-    public DamageProfile DamageProfile => damage;
     public int Damage => damage.Damage;
     public float KnockbackForce => damage.KnockbackForce;
     public float SpreadAngle => damage.SpreadAngle;

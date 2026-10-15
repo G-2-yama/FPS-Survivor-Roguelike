@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour, IDamageable
     private int pendingLevelUps;
     private bool isWeaponSyncEnabled;
     private CharacterController bodyController;
+    private readonly List<WeaponEffect> weaponEffects = new List<WeaponEffect>();
 
     public PlayerConfig Config => config;
     public PlayerSettingsSnapshot Settings { get; private set; }
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour, IDamageable
     public int Level => progression?.Level ?? Config.Progression.InitialLevel;
     public int PendingLevelUps => pendingLevelUps;
     public bool IsWeaponSync => isWeaponSyncEnabled;
+    public IReadOnlyList<WeaponEffect> WeaponEffects => weaponEffects;
     /// <summary>現在の姿勢を反映した本体の足元位置を取得する</summary>
     public Vector3 FootPosition
     {
@@ -53,6 +56,27 @@ public class Player : MonoBehaviour, IDamageable
 
     /// <summary>装備中の武器状態を同期するか設定する</summary>
     public void SetWeaponSync(bool enabled) => isWeaponSyncEnabled = enabled;
+
+    public void AddWeaponEffect(WeaponEffect effect)
+    {
+        if (effect == null) return;
+        weaponEffects.Add(effect);
+        RefreshWeaponStats();
+    }
+
+    public void RemoveWeaponEffect(WeaponEffect effect)
+    {
+        if (!weaponEffects.Remove(effect)) return;
+        RefreshWeaponStats();
+    }
+
+    private void RefreshWeaponStats()
+    {
+        foreach (Weapon weapon in inventory.WeaponSlots.Values)
+        {
+            weapon.RefreshStats();
+        }
+    }
 
     /// <summary>衝突初期化時に本体参照を関連付け、攻撃ごとのコンポーネント検索を避ける</summary>
     internal void SetBodyController(CharacterController controller) => bodyController = controller;
