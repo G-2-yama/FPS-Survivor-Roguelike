@@ -11,6 +11,10 @@ public class UpgradeButtonView : MonoBehaviour
     [SerializeField] private TMP_Text buttonText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Image iconImage;
+    [Tooltip("名前の下に出すレベル。レベルの無い候補では隠す")]
+    [SerializeField] private TMP_Text levelText;
+    [Tooltip("Evo などの色")]
+    [SerializeField] private UIPalette palette;
 
     private CanvasGroup revealCanvasGroup;
     private RectTransform revealRectTransform;
@@ -86,7 +90,18 @@ public class UpgradeButtonView : MonoBehaviour
         descriptionText.text = upgrade.Description;
         iconImage.sprite = upgrade.Icon;
 
+        UpgradeLevelStep? step = upgrade.LevelStep;
+        levelText.gameObject.SetActive(step.HasValue);
+        if (step.HasValue)
+            levelText.text = FormatLevel(step.Value);
+
         ButtonImage.color = upgrade.Rarity.GetColor(0.1f);
         FrameImage.color = upgrade.Rarity.GetColor(1f);
+    }
+
+    private string FormatLevel(UpgradeLevelStep step)
+    {
+        string next = step.NextIsEvo ? palette.ColorizeEvo("Evo") : step.Next.ToString();
+        return step.Current > 0 ? $"Lv{step.Current} → {next}" : $"Lv{next}";
     }
 }

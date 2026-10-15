@@ -33,6 +33,22 @@ public static class RarityExtensions
     }
 }
 
+public readonly struct UpgradeLevelStep
+{
+    public readonly int Current;
+    public readonly int Next;
+    public readonly bool NextIsEvo;
+
+    public UpgradeLevelStep(int current, int next, bool nextIsEvo)
+    {
+        Current = current;
+        Next = next;
+        NextIsEvo = nextIsEvo;
+    }
+
+    public static UpgradeLevelStep Acquire => new UpgradeLevelStep(0, 1, false);
+}
+
 public abstract class UpgradeBase : ScriptableObject
 {
     [SerializeField] protected string displayName;
@@ -48,6 +64,8 @@ public abstract class UpgradeBase : ScriptableObject
 
     [SerializeField][Min(0)] protected int weight = 100;
     public int Weight => weight;
+
+    public UpgradeLevelStep? LevelStep { get; protected set; }
 
     protected Player player;
 

@@ -25,6 +25,7 @@ public class ItemLevelUp : UpgradeBase
     {
         icon = owned.Item.Icon;
         displayName = owned.Item.DisplayName + " 強化";
+        LevelStep = new UpgradeLevelStep(owned.Level + 1, owned.Level + 2, false);
         description = owned.Item.GetLevelUpDescription(owned.Level);
     }
 }

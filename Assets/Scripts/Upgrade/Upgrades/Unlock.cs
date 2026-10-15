@@ -73,6 +73,7 @@ public class Unlock : UpgradeBase
 
         icon = target.Icon;
         displayName = target.DisplayName + " 解放";
+        LevelStep = UpgradeLevelStep.Acquire;
         description = target.Description;
     }
 }

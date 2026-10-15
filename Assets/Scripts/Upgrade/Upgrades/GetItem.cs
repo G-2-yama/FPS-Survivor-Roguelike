@@ -35,6 +35,7 @@ public class GetItem : UpgradeBase
 
         icon = target.Icon;
         displayName = target.DisplayName + " 解放";
+        LevelStep = target.MaxLevel > 1 ? UpgradeLevelStep.Acquire : null;
         description = target.Description;
     }
 }

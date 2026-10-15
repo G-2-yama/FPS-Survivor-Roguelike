@@ -61,9 +61,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < itemSlotUIs.Length; i++)
         {
-            Item item = inventory.Items[i]?.Item;
-
-            itemSlotUIs[i].Refresh(item, i);
+            itemSlotUIs[i].Refresh(inventory.Items[i], i);
         }
     }
 

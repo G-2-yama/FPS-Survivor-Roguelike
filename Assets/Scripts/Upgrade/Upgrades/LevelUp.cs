@@ -30,6 +30,7 @@ public class LevelUp : UpgradeBase
         WeaponLevelData next = weapon.WeaponData.GetLevel(weapon.Level + 1);
         icon = next.Icon;
         displayName = next.DisplayName + " 強化";
+        LevelStep = new UpgradeLevelStep(weapon.Level + 1, weapon.Level + 2, weapon.WeaponData.IsEvoLevel(weapon.Level + 1));
 
         IReadOnlyList<LevelChange> changes = weapon.WeaponData.GetLevelChanges(weapon.Level);
         description = changes.Count > 0 ? string.Join("\n", changes.Select(c => c.ToString())) : "基礎ステータスの変化なし";

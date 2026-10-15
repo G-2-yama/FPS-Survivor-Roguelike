@@ -8,6 +8,10 @@ public class WeaponSlotView : MonoBehaviour
     [SerializeField] private Image weaponIcon;
     [SerializeField] private Image Button;
     [SerializeField] private TMP_Text weaponNameText;
+    [Tooltip("右上に出すレベル")]
+    [SerializeField] private TMP_Text levelText;
+    [Tooltip("Evo などの色")]
+    [SerializeField] private UIPalette palette;
 
     private Color initialColor;
 
@@ -26,12 +30,15 @@ public class WeaponSlotView : MonoBehaviour
             weaponIcon.sprite = null;
             weaponIcon.gameObject.SetActive(false);
             weaponNameText.text = "Empty";
+            levelText.gameObject.SetActive(false);
             return;
         }
 
         weaponIcon.sprite = weapon.Icon;
         weaponIcon.gameObject.SetActive(true);
-        weaponNameText.text = weapon.DisplayName;
+        weaponNameText.text = weapon.IsEvo ? palette.ColorizeEvo(weapon.DisplayName) : weapon.DisplayName;
+        levelText.gameObject.SetActive(true);
+        levelText.text = weapon.IsEvo ? palette.ColorizeEvo("Evo") : $"Lv{weapon.Level + 1}";
     }
 
     /// <summary>

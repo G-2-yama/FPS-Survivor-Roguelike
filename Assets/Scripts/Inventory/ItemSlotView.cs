@@ -11,28 +11,34 @@ public class ItemSlotView : MonoBehaviour
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image Button;
     [SerializeField] private TMP_Text itemNameText;
- 
+    [Tooltip("右上に出すレベル。レベルの無いアイテムでは隠す")]
+    [SerializeField] private TMP_Text levelText;
+
     /// <summary>Items リスト上のインデックス。InventoryUI が割り当てる。</summary>
     public int ItemIndex { get; private set; } = -1;
  
     /// <summary>
     /// 表示内容とインデックスを更新する
     /// </summary>
-    public void Refresh(Item item, int index)
+    public void Refresh(OwnedItem owned, int index)
     {
         ItemIndex = index;
- 
-        if (item == null)
+
+        if (owned == null)
         {
             itemIcon.sprite  = null;
             itemIcon.gameObject.SetActive(false);
             itemNameText.text = "Empty";
+            levelText.gameObject.SetActive(false);
             return;
         }
- 
+
+        Item item = owned.Item;
         itemIcon.sprite   = item.Icon;
         itemIcon.gameObject.SetActive(true);
         itemNameText.text = item.DisplayName;
+        levelText.gameObject.SetActive(item.MaxLevel > 1);
+        levelText.text = $"Lv{owned.Level + 1}";
     }
  
     /// <summary>
