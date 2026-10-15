@@ -75,7 +75,9 @@ public abstract class UpgradeBase : ScriptableObject
     }
 
     public virtual bool IsAvailable() => true;
-        
+
+    public virtual void AddToPreview(AttributePreview preview) { }
+
     /// <summary>
     /// このアップグレードを対象のゲームオブジェクトに適用します
     /// </summary>

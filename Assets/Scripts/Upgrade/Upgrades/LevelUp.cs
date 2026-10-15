@@ -22,6 +22,13 @@ public class LevelUp : UpgradeBase
         player.Inventory.LevelUpWeapon(targetType);
     }
 
+    public override void AddToPreview(AttributePreview preview)
+    {
+        Weapon weapon = player.Inventory.GetWeapon(targetType);
+        if (weapon != null && weapon.HasWeapon)
+            preview.AddWeapon(weapon.WeaponData, weapon.Level + 1);
+    }
+
     /// <summary>
     /// 武器のレベルアップの説明更新
     /// </summary>

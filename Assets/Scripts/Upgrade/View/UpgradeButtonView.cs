@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -16,6 +17,18 @@ public class UpgradeButtonView : MonoBehaviour
     [Tooltip("Evo などの色")]
     [SerializeField] private UIPalette palette;
 
+    [Header("Attributes")]
+    [Tooltip("属性の行のプレハブ")]
+    [SerializeField] private AttributeRowView attributeRowPrefab;
+    [Tooltip("属性の行を並べる親。説明の文のすぐ下に置き直す")]
+    [SerializeField] private RectTransform attributeRowContainer;
+    [Tooltip("説明の文と属性の行の間")]
+    [SerializeField, Min(0f)] private float attributeRowGap = 28f;
+
+    private readonly List<AttributeRowView> attributeRows = new List<AttributeRowView>();
+    private RectTransform descriptionRect;
+    private Vector2 descriptionOffsetMin;
+
     private CanvasGroup revealCanvasGroup;
     private RectTransform revealRectTransform;
     private Vector2 revealTargetPosition;
@@ -30,6 +43,9 @@ public class UpgradeButtonView : MonoBehaviour
         revealCanvasGroup = GetComponent<CanvasGroup>();
         if (revealCanvasGroup == null)
             revealCanvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        descriptionRect = descriptionText.rectTransform;
+        descriptionOffsetMin = descriptionRect.offsetMin;
     }
 
     /// <summary>
@@ -84,7 +100,7 @@ public class UpgradeButtonView : MonoBehaviour
     /// アップグレードの名前、説明、アイコン、レアリティの色を設定する
     /// </summary>
     /// <param name="upgrade">表示するアップグレード</param>
-    public void Setup(UpgradeBase upgrade)
+    public void Setup(UpgradeBase upgrade, IReadOnlyList<AttributeChange> attributeChanges)
     {
         buttonText.text = upgrade.DisplayName;
         descriptionText.text = upgrade.Description;
@@ -97,6 +113,45 @@ public class UpgradeButtonView : MonoBehaviour
 
         ButtonImage.color = upgrade.Rarity.GetColor(0.1f);
         FrameImage.color = upgrade.Rarity.GetColor(1f);
+
+        SetupAttributeRows(attributeChanges);
+    }
+
+    private void SetupAttributeRows(IReadOnlyList<AttributeChange> changes)
+    {
+        while (attributeRows.Count < changes.Count)
+            attributeRows.Add(Instantiate(attributeRowPrefab, attributeRowContainer));
+
+        for (int i = 0; i < attributeRows.Count; i++)
+        {
+            bool used = i < changes.Count;
+            attributeRows[i].gameObject.SetActive(used);
+            if (used)
+                attributeRows[i].Setup(changes[i].Attribute, changes[i].Before, changes[i].After);
+        }
+
+        attributeRowContainer.gameObject.SetActive(changes.Count > 0);
+    }
+
+    public void LayoutAttributeRows()
+    {
+        descriptionRect.offsetMin = descriptionOffsetMin;
+        if (!attributeRowContainer.gameObject.activeSelf)
+            return;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(attributeRowContainer);
+        float rowsHeight = attributeRowContainer.rect.height;
+        descriptionRect.offsetMin = descriptionOffsetMin + Vector2.up * (rowsHeight + attributeRowGap);
+
+        descriptionText.ForceMeshUpdate(true);
+        float textHeight = string.IsNullOrEmpty(descriptionText.text) ? 0f : descriptionText.GetRenderedValues(true).y;
+        if (float.IsNaN(textHeight) || textHeight < 0f)
+            textHeight = 0f;
+
+        float descriptionTop = descriptionRect.localPosition.y + descriptionRect.rect.yMax;
+        Vector3 position = attributeRowContainer.localPosition;
+        position.y = descriptionTop - textHeight - attributeRowGap - attributeRowContainer.rect.yMax;
+        attributeRowContainer.localPosition = position;
     }
 
     private string FormatLevel(UpgradeLevelStep step)

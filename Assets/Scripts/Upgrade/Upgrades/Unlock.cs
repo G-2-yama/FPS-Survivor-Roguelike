@@ -61,6 +61,11 @@ public class Unlock : UpgradeBase
         }
     }
 
+    public override void AddToPreview(AttributePreview preview)
+    {
+        preview.AddWeapon(target, 0);
+    }
+
     /// <summary>
     /// 武器取得の説明更新
     /// </summary>

@@ -21,6 +21,11 @@ public class ItemLevelUp : UpgradeBase
         player.Inventory.LevelUpItem(itemIndex);
     }
 
+    public override void AddToPreview(AttributePreview preview)
+    {
+        preview.AddItem(player.Inventory.Items[itemIndex]?.Item);
+    }
+
     private void UpdateDesription(OwnedItem owned)
     {
         icon = owned.Item.Icon;

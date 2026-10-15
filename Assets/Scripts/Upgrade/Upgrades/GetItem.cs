@@ -23,6 +23,11 @@ public class GetItem : UpgradeBase
         player.Inventory.EquipItem(target);
     }
 
+    public override void AddToPreview(AttributePreview preview)
+    {
+        preview.AddItem(target);
+    }
+
     /// <summary>
     /// アイテム取得の説明更新
     /// </summary>

@@ -30,14 +30,14 @@ public class UpgradeView : MonoBehaviour
     /// アップグレードの選択肢をセットアップする
     /// </summary>
     /// <param name="choices">選択肢のリスト</param>
-    public void Setup(List<UpgradeBase> choices)
+    public void Setup(List<UpgradeBase> choices, IReadOnlyList<IReadOnlyList<AttributeChange>> attributeChanges)
     {
         for (int i = 0; i < upgradeButtonsViews.Length; i++)
         {
             if (i < choices.Count)
             {
                 upgradeButtonsViews[i].gameObject.SetActive(true);
-                upgradeButtonsViews[i].Setup(choices[i]);
+                upgradeButtonsViews[i].Setup(choices[i], attributeChanges[i]);
             }
             else
             {
@@ -60,6 +60,11 @@ public class UpgradeView : MonoBehaviour
 
         // UIの表示
         upgradeCanvas.gameObject.SetActive(true);
+        foreach (var buttonView in upgradeButtonsViews)
+        {
+            if (buttonView.gameObject.activeSelf)
+                buttonView.LayoutAttributeRows();
+        }
         uiFader.FadeIn();
 
         // 表示処理の開始
