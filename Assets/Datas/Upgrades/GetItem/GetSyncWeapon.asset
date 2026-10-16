@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GetSyncWeapon
   m_EditorClassIdentifier: Assembly-CSharp::GetItem
   displayName: "\u30B7\u30F3\u30AF\u30ED"
-  description: "\u5168\u3066\u306E\u6B66\u5668\u3092\u540C\u6642\u306B\u4F7F\u3046"
+  description: "\u30E1\u30A4\u30F3\u6B66\u5668\u3092\u6483\u3064\u3068\u3001\u30A2\u30D3\u30EA\u30C6\u30A3\u3082\u540C\u6642\u306B\u767A\u52D5\u3057\u307E\u3059"
   icon: {fileID: 21300000, guid: 06d075db707b13d4883335cc19422a0e, type: 3}
   rarity: 3
   weight: 10

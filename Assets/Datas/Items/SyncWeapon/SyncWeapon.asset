@@ -15,7 +15,7 @@ MonoBehaviour:
   itemId: SyncWeapon
   displayName: "\u30B7\u30F3\u30AF\u30ED"
   icon: {fileID: 21300000, guid: 06d075db707b13d4883335cc19422a0e, type: 3}
-  description: "\u540C\u671F\u3055\u305B\u308B"
+  description: "\u30E1\u30A4\u30F3\u6B66\u5668\u3092\u6483\u3064\u3068\u3001\u30A2\u30D3\u30EA\u30C6\u30A3\u3082\u540C\u6642\u306B\u767A\u52D5\u3057\u307E\u3059"
   levelDescriptions: []
   attributes: []
   countsAsAllBases: 1

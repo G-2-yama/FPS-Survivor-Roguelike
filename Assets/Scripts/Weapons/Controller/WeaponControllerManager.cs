@@ -50,13 +50,26 @@ public class WeaponControllerManager : MonoBehaviour
         if (!player.IsWeaponSync)
             return;
 
+        if (GroupOf(source) != WeaponSlotGroup.Main)
+            return;
+
         foreach (var controller in controllers)
         {
-            if (controller == null || controller == source)
+            if (controller == null || GroupOf(controller) != WeaponSlotGroup.Ability)
                 continue;
 
             action(controller);
         }
+    }
+
+    private WeaponSlotGroup? GroupOf(WeaponController controller)
+    {
+        foreach (var slot in player.Inventory.WeaponSlots)
+        {
+            if (slot.Value == controller.Weapon)
+                return slot.Key.GetGroup();
+        }
+        return null;
     }
 
     public Vector2 GetTotalRecoil(float deltaTime)
