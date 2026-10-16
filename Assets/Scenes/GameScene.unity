@@ -15292,6 +15292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameView
   hudCanvas: {fileID: 879235458}
   gameEndCanvas: {fileID: 94670761}
+  firstSelectedButton: {fileID: 253276473}
   resultText: {fileID: 1820958936}
   elapsedTimeText: {fileID: 256675794}
   killCountText: {fileID: 1069166545}

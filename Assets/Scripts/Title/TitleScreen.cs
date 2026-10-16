@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面のパネル遷移とカーソル入力を管理する
+/// </summary>
 public class TitleScreen : MonoBehaviour
 {
     [Header("パネル")]
@@ -46,6 +49,9 @@ public class TitleScreen : MonoBehaviour
     [Tooltip("起動時に動かす要素 開始の遅れは各要素で設定します")]
     [SerializeField] private List<TitleSlideIn> introEffects = new List<TitleSlideIn>();
 
+    [Tooltip("タイトル画面でゲームパッドの仮想カーソルを制御する")]
+    [SerializeField] private GamepadVirtualMouseCursor gamepadVirtualMouseCursor;
+
     [Tooltip("グリッチが始まってからパネルを差し替えるまでの時間（秒）")]
     [SerializeField] private float panelSwapDelay = 0.12f;
 
@@ -69,6 +75,18 @@ public class TitleScreen : MonoBehaviour
         ActivatePanel(titlePanel);
         foreach (var effect in introEffects)
             effect.Play();
+    }
+
+    /// <summary>
+    /// タイトル画面の入力元に合わせて仮想カーソルとOSカーソルを切り替える
+    /// </summary>
+    private void Update()
+    {
+        bool gamepadOwnsPointer = gamepadVirtualMouseCursor != null
+            && gamepadVirtualMouseCursor.UpdatePointer(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = !gamepadOwnsPointer;
     }
 
     private void ShowPanel(GameObject panel)

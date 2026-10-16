@@ -1,6 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+/// <summary>
+/// クリア画面とゲームオーバー画面の表示と初期選択を管理する
+/// </summary>
 public class GameEndView : MonoBehaviour
 {
     [Header("プレイ中")]
@@ -9,6 +14,9 @@ public class GameEndView : MonoBehaviour
 
     [Header("終了画面")]
     [SerializeField] private Canvas gameEndCanvas;
+
+    [Tooltip("画面を開いたときに最初に選択するボタン")]
+    [SerializeField] private Button firstSelectedButton;
 
     [Tooltip("クリア・ゲームオーバーの表記を出すテキスト")]
     [SerializeField] private TMP_Text resultText;
@@ -56,6 +64,12 @@ public class GameEndView : MonoBehaviour
         SetText(hitsPerFireText, stats.HitsPerFire.ToString("0.00"));
 
         gameEndCanvas.gameObject.SetActive(true);
+
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem != null && firstSelectedButton != null)
+        {
+            eventSystem.SetSelectedGameObject(firstSelectedButton.gameObject);
+        }
     }
 
     private static void SetText(TMP_Text target, string value)

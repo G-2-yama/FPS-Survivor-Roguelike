@@ -1,9 +1,13 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StartWeaponOptionView : MonoBehaviour
+/// <summary>
+/// タイトル画面の初期武器選択肢を表示する
+/// </summary>
+public class StartWeaponOptionView : MonoBehaviour, IPointerEnterHandler
 {
     [Tooltip("選択状態を切り替えるトグル")]
     [SerializeField] private Toggle toggle;
@@ -37,6 +41,16 @@ public class StartWeaponOptionView : MonoBehaviour
             if (selected)
                 onSelected();
         });
+    }
+
+    /// <summary>
+    /// ポインターが武器選択肢に入ったときにゲームパッド決定の対象にする
+    /// </summary>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem != null && eventSystem.currentSelectedGameObject != gameObject)
+            eventSystem.SetSelectedGameObject(gameObject);
     }
 
     private void ShowSelected(bool isSelected)

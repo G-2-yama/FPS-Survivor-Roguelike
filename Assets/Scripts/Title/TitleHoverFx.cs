@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面のボタンにホバー演出を適用する
+/// </summary>
 public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Serializable]
@@ -83,8 +86,15 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         Apply();
     }
 
+    /// <summary>
+    /// ホバーしたボタンをゲームパッド決定の対象にする
+    /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem != null && eventSystem.currentSelectedGameObject != gameObject)
+            eventSystem.SetSelectedGameObject(gameObject);
+
         if (isHovered)
             return;
 
