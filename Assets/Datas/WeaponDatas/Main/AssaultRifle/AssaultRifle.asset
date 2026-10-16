@@ -32,7 +32,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 10
+      damage: 4
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -62,7 +62,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 10
+      damage: 4
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -92,7 +92,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 15
+      damage: 6
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -122,7 +122,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 15
+      damage: 6
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -152,7 +152,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 25
+      damage: 7
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -182,7 +182,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 35
+      damage: 9
       knockbackForce: 1
       spreadAngle: 0
     fireRhythm:
@@ -212,11 +212,11 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 50
+      damage: 9
       knockbackForce: 10
       spreadAngle: 0
     fireRhythm:
-      fireInterval: 0.025
+      fireInterval: 0.0375
       burstCount: 1
       burstInterval: 0.025
       chargeTime: 0
@@ -228,6 +228,6 @@ MonoBehaviour:
       damping: 9
       maxPitch: 10
     ammo:
-      magazineSize: 999
+      magazineSize: 100
       reloadTime: 1.2
   lastLevelIsEvo: 1

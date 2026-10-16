@@ -71,7 +71,7 @@ public static class PlayerSettingsValidation
             Assert(player.Config.Stats.InitialHP == 1000, "初期HPの移行値が異なります");
             Assert(Mathf.Approximately(player.Config.Stats.DashDistance, 5.5f), "ダッシュ距離の移行値が異なります");
             Assert(Mathf.Approximately(player.Config.Progression.LevelUpRequiredExp, 50f), "必要経験値の移行値が異なります");
-            Assert(Mathf.Approximately(player.Config.Progression.LevelUpRate, 1.08f), "経験値倍率の移行値が異なります");
+            Assert(Mathf.Approximately(player.Config.Progression.LevelUpRate, 1.1f), "経験値倍率の移行値が異なります");
             Assert(player.GetComponent<ExpManager>() == null, "旧経験値コンポーネントが残っています");
             Assert(player.GetComponent<TimedBuffManager>() != null, "強化管理コンポーネントの移行に失敗しています");
             Record("GameSceneの移行値、設定参照、Missing Script");
@@ -118,7 +118,7 @@ public static class PlayerSettingsValidation
             new List<string>(), out _);
         Assert(built != null && built.player.maxHp == 1000 && Mathf.Approximately(built.player.runSpeed, 10f)
             && Mathf.Approximately(built.player.levelUpRequiredExp, 50f)
-            && Mathf.Approximately(built.player.levelUpRate, 1.08f),
+            && Mathf.Approximately(built.player.levelUpRate, 1.1f),
             "バランス検証用の初期能力または成長値の読取に失敗しました");
         Record("既存のバランスシミュレーターによる新SOの読取");
     }
@@ -128,8 +128,8 @@ public static class PlayerSettingsValidation
     {
         var progression = new PlayerProgression(settings);
         Assert(progression.AddExperience(200f) == 3, "複数レベルアップの回数が異なります");
-        Assert(Mathf.Abs(progression.Experience - 37.68f) < 0.001f, "残余経験値が異なります");
-        Assert(Mathf.Abs(progression.RequiredExperience - 62.9856f) < 0.001f, "次の必要経験値が異なります");
+        Assert(Mathf.Abs(progression.Experience - 34.5f) < 0.001f, "残余経験値が異なります");
+        Assert(Mathf.Abs(progression.RequiredExperience - 66.55f) < 0.001f, "次の必要経験値が異なります");
         var constant = Object.Instantiate(settings);
         var serialized = new SerializedObject(constant);
         serialized.FindProperty("levelUpRate").floatValue = 1f;

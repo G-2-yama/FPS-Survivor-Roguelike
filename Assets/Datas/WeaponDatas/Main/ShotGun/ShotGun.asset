@@ -31,7 +31,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 10
+      damage: 4
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -61,7 +61,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 10
+      damage: 4
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -91,7 +91,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 10
+      damage: 6
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -121,7 +121,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 15
+      damage: 6
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -151,7 +151,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 15
+      damage: 7
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -181,7 +181,7 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 0
     damage:
-      damage: 15
+      damage: 8
       knockbackForce: 1
       spreadAngle: 15
     fireRhythm:
@@ -211,11 +211,11 @@ MonoBehaviour:
       autoReload: 1
       triggerType: 1
     damage:
-      damage: 20
+      damage: 8
       knockbackForce: 1
       spreadAngle: 7
     fireRhythm:
-      fireInterval: 0.2
+      fireInterval: 0.475
       burstCount: 30
       burstInterval: 0
       chargeTime: 0
