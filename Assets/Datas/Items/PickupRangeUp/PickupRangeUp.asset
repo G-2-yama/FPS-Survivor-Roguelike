@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: be97b668ed70d8447b018c2ddf00ec88, type: 3}
   description: "\u53D6\u5F97\u7BC4\u56F2\u304C\u62E1\u5927\u3059\u308B"
   levelDescriptions: []
-  attributes: []
+  attributes:
+  - {fileID: 11400000, guid: edfe89064f5d40018e9ad6db1904ecb8, type: 2}
   countsAsAllBases: 0
   exclusiveGroup: {fileID: 0}
   increasePerLevel:
