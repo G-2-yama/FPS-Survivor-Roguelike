@@ -23,5 +23,6 @@ MonoBehaviour:
     condition: "\u8FD1\u304F\u306B\u6575\u304C\u4E00\u5B9A\u6570\u4EE5\u4E0A\u3044\u308B\u9593"
   activateThreshold: 3
   maxThreshold: 7
-  activeEffects: []
+  activeEffects:
+  - {fileID: 11400000, guid: 800c48e2fbb79331800a77b3d72ea10a, type: 2}
   maxEffects: []
