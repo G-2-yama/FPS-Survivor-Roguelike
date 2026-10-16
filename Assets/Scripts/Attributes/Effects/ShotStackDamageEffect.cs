@@ -4,8 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShotStackDamageEffect", menuName = "Attributes/Effects/Shot Stack Damage")]
 public class ShotStackDamageEffect : AttributeEffectDefinition
 {
-    [Tooltip("リロード後に1発撃つごとに増えるダメージの割合（0.001 で +0.1%）")]
-    [SerializeField, Min(0f)] private float damageBonusPerShot = 0.001f;
+    [Tooltip("リロード後にこの発数を撃つごとにダメージが増える")]
+    [SerializeField, Min(1)] private int shotsPerStep = 5;
+    [Tooltip("1段ごとに足すダメージ")]
+    [SerializeField, Min(0)] private int damagePerStep = 1;
 
     public override WeaponEffect CreateEffect(AttributeDefinition owner) => new Instance(this, owner);
 
@@ -23,7 +25,7 @@ public class ShotStackDamageEffect : AttributeEffectDefinition
         public override void ModifyStats(Weapon weapon, ref WeaponStatModifiers mods)
         {
             if (weapon.WeaponData.Attributes.Contains(owner))
-                mods.DamageMultiplier *= 1f + definition.damageBonusPerShot * weapon.Runtime.ShotsSinceReload;
+                mods.FlatDamageBonus += weapon.Runtime.ShotsSinceReload / definition.shotsPerStep * definition.damagePerStep;
         }
     }
 }

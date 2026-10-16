@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585d5f4ce90f4c63843d3fa3245029f2, type: 3}
   m_Name: "\u6483\u3061\u7D9A\u3051\u308B\u307B\u3069\u706B\u529B"
   m_EditorClassIdentifier: Assembly-CSharp::ShotStackDamageEffect
-  damageBonusPerShot: 0.005
+  shotsPerStep: 5
+  damagePerStep: 1

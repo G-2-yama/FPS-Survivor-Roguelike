@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: "\u5F3E\u5009\u306E\u6210\u9577"
   m_EditorClassIdentifier: Assembly-CSharp::MagazineGrowthEffect
   consumedRatioThreshold: 0.7
-  growthMultiplier: 1.1
-  fullConsumedGrowthMultiplier: 1.2
+  growthMultiplier: 1.05
+  fullConsumedGrowthMultiplier: 1.1
+  maxScale: 5
+  uncappedWeapons:
+  - {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
+  excludedWeapons:
+  - {fileID: 11400000, guid: 6613df0c9c0e5a24093c1d2252dc951d, type: 2}
