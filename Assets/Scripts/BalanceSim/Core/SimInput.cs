@@ -103,6 +103,8 @@ namespace BalanceSim
         public float startTime;
         public int minSpawnCount;
         public float spawnInterval;
+        public float hpMultiplier = 1f;
+        public float attackMultiplier = 1f;
         public List<SimSpawnEntry> enemies = new();
     }
 

@@ -32,6 +32,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     protected bool hasHit = false;
     protected int damage;
     protected float knockbackForce;
+    protected float attackMultiplier = 1f;
     private EnemyGenerator generator;
     /// <summary>個体を生成した敵生成器を関連付ける</summary>
 
@@ -49,7 +50,29 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     {
         this.damage = damage;
         this.knockbackForce = knockbackForce;
-      
+
+    }
+
+    public void ApplyStatMultipliers(float hpMultiplier, float attackMultiplier)
+    {
+        ReleaseHealth();
+        CreateHealth(Mathf.Max(1, EnemyStatScaling.Scale(config.MaxHp, hpMultiplier)));
+        this.attackMultiplier = attackMultiplier;
+    }
+
+    private void CreateHealth(int maxHp)
+    {
+        health = new Health(maxHp);
+        health.OnDeath += HandleDeath;
+    }
+
+    private void ReleaseHealth()
+    {
+        if (health == null)
+            return;
+
+        health.OnDeath -= HandleDeath;
+        health = null;
     }
     /// <summary>受けたダメージを個体の体力へ適用する</summary>
 
@@ -87,8 +110,8 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         damageEffectManager=DamageEffectManager.Instance;
         hasHit = false;
         deathType= DeathType.Normal;
-        health = new Health(config.MaxHp);
-        health.OnDeath += HandleDeath;
+        CreateHealth(config.MaxHp);
+        attackMultiplier = 1f;
         if (enemyBrain != null)
         {
             enemyBrain.ResetBrain();
@@ -100,12 +123,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     public override void OnRelease()
     {
         hasHit = true;
-
-        if (health != null)
-        {
-            health.OnDeath -= HandleDeath;
-            health = null;
-        }
+        ReleaseHealth();
 
         if (generator != null)
         {

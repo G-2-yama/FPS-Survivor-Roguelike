@@ -10,11 +10,14 @@ public class EnemyAttackController : MonoBehaviour
 
     private Coroutine currentAttackRoutine;
     private float nextAttackTime;
+    private float attackMultiplier = 1f;
 
     public Transform CurrentTarget => targetProvider != null ? targetProvider.CurrentTarget : null;
     public Transform ShotPoint => shotPoint;
     public ProjectileLauncher Launcher => launcher;
-    public int AttackPower => config != null ? config.AttackPower : 0;
+    public int AttackPower => config != null ? EnemyStatScaling.Scale(config.AttackPower, attackMultiplier) : 0;
+
+    public void SetAttackMultiplier(float multiplier) => attackMultiplier = multiplier;
 
     public bool CanAttack()
     {

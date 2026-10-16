@@ -11,6 +11,8 @@ public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner
 
     [SerializeField] protected int damage = 10;
     [SerializeField] protected float knockbackForce = 5f;
+    public int Damage => damage;
+    public float KnockbackForce => knockbackForce;
 
     [SerializeField] protected float lifetime = 0f;
     public float Lifetime => lifetime;

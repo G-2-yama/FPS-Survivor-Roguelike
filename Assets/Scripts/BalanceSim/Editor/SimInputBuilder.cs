@@ -243,6 +243,8 @@ namespace BalanceSim.Editor
                 startTime = phase.StartTime,
                 minSpawnCount = phase.MinSpawnCount,
                 spawnInterval = phase.SpawnInterval,
+                hpMultiplier = phase.HpMultiplier,
+                attackMultiplier = phase.AttackMultiplier,
             };
 
             if (phase.Enemies == null)

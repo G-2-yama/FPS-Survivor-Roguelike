@@ -111,9 +111,39 @@ public class Enemy : PoolableObject, IDamageable
             contactDamageSource,
             playerObstacle == null);
 
-        Health = new Health(config.MaxHp);
+        CreateHealth(config.MaxHp);
+        SetAttackMultiplier(1f);
+    }
+
+    public void ApplyStatMultipliers(float hpMultiplier, float attackMultiplier)
+    {
+        ReleaseHealth();
+        CreateHealth(Mathf.Max(1, EnemyStatScaling.Scale(config.MaxHp, hpMultiplier)));
+        SetAttackMultiplier(attackMultiplier);
+    }
+
+    private void CreateHealth(int maxHp)
+    {
+        Health = new Health(maxHp);
         Health.OnDamaged += HandleDamaged;
         Health.OnDeath += HandleDeath;
+    }
+
+    private void ReleaseHealth()
+    {
+        if (Health == null)
+            return;
+
+        Health.OnDamaged -= HandleDamaged;
+        Health.OnDeath -= HandleDeath;
+        Health = null;
+    }
+
+    private void SetAttackMultiplier(float multiplier)
+    {
+        attackController?.SetAttackMultiplier(multiplier);
+        if (contactDamageSource is ToutchDamageController touchDamage)
+            touchDamage.SetDamageMultiplier(multiplier);
     }
 
     /// <summary>通常の敵レイヤーを適用し、専用コンポーネントを持つ例外オブジェクトには専用レイヤーを再適用する</summary>
@@ -143,13 +173,7 @@ public class Enemy : PoolableObject, IDamageable
     {
         contactTarget?.Invalidate();
         attackController?.CancelAttack();
-
-        if (Health != null)
-        {
-            Health.OnDamaged -= HandleDamaged;
-            Health.OnDeath -= HandleDeath;
-            Health = null;
-        }
+        ReleaseHealth();
     }
 
     /// <summary>敵に適用されたダメージ量を通知する</summary>

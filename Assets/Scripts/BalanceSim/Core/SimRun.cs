@@ -292,7 +292,8 @@ namespace BalanceSim
                         Def = def,
                         Generator = generator,
                         Position = position,
-                        Hp = def.maxHp,
+                        Hp = Math.Max(1, ScaleStat(def.maxHp, phase.hpMultiplier)),
+                        AttackMultiplier = phase.attackMultiplier,
                         IsThreat = def.touchDamage > 0 || def.attack.shotCount > 0 || def.contactArea.enabled,
                     };
                     generator.ActiveEnemies.Add(enemy);
@@ -652,21 +653,24 @@ namespace BalanceSim
                         Position = shotPoint,
                         Velocity = direction * shot.speed,
                         Facing = direction,
-                        Damage = attack.attackPower,
+                        Damage = ScaleStat(attack.attackPower, enemy.AttackMultiplier),
                         Hp = shot.hp,
                     });
                     break;
                 case SimShotKind.Area:
-                    SpawnArea(shot.area, shotPoint, direction, time);
+                    SpawnArea(shot.area, shot.area.damage, shotPoint, direction, time);
                     break;
             }
         }
 
-        private void SpawnArea(SimAreaDef def, Vec2 origin, Vec2 forward, float time)
+        private static int ScaleStat(int value, float multiplier) => (int)Math.Floor(value * multiplier + 0.5f);
+
+        private void SpawnArea(SimAreaDef def, int damage, Vec2 origin, Vec2 forward, float time)
         {
             _areas.Add(new AreaAgent
             {
                 Def = def,
+                Damage = damage,
                 Origin = origin,
                 Forward = forward,
                 ExpireTime = def.lifetime > 0f ? time + def.lifetime : float.PositiveInfinity,
@@ -764,7 +768,7 @@ namespace BalanceSim
                 bool inside = AreaContainsPlayer(area);
                 if (inside && !area.PlayerInside)
                 {
-                    _player.TakeDamage(area.Def.damage);
+                    _player.TakeDamage(area.Damage);
                 }
                 area.PlayerInside = inside;
             }
@@ -871,12 +875,12 @@ namespace BalanceSim
                 {
                     if (enemy.Def.touchDamage > 0)
                     {
-                        _player.TakeDamage(enemy.Def.touchDamage);
+                        _player.TakeDamage(ScaleStat(enemy.Def.touchDamage, enemy.AttackMultiplier));
                     }
 
                     if (enemy.Def.contactArea.enabled)
                     {
-                        SpawnArea(enemy.Def.contactArea, enemy.Position, Vec2.Forward, time);
+                        SpawnArea(enemy.Def.contactArea, ScaleStat(enemy.Def.contactArea.damage, enemy.AttackMultiplier), enemy.Position, Vec2.Forward, time);
                         enemy.Generator.ActiveEnemies.Remove(enemy);
                         Release(enemy);
                     }

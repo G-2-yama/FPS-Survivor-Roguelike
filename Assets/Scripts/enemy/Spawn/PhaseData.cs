@@ -14,6 +14,14 @@ public class PhaseData : ScriptableObject
     [SerializeField] private float spawnInterval = 1f;
     public float SpawnInterval => spawnInterval;
 
+    [Tooltip("このフェーズで出る敵の最大HPに掛ける倍率")]
+    [SerializeField, Min(0f)] private float hpMultiplier = 1f;
+    public float HpMultiplier => hpMultiplier;
+
+    [Tooltip("このフェーズで出る敵の攻撃力（弾・接触・爆発のダメージ）に掛ける倍率")]
+    [SerializeField, Min(0f)] private float attackMultiplier = 1f;
+    public float AttackMultiplier => attackMultiplier;
+
     [SerializeField] private List<EnemySpawnData> enemies;
     public IReadOnlyList<EnemySpawnData> Enemies => enemies;
 }

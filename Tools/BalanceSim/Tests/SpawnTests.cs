@@ -60,6 +60,26 @@ public class SpawnTests
     }
 
     [Fact]
+    public void PhaseAttackMultiplierScalesContactAreaDamage()
+    {
+        SimInput input = TestInputs.Minimal(timeLimit: 40f);
+        SimEnemyDef ball = TestInputs.HarmlessEnemy("Ball");
+        ball.hasEnemyComponent = false;
+        ball.chase = new SimMovementDef { kind = SimMovementKind.Toward, acceleration = 60f, maxSpeed = 30f };
+        ball.combat = ball.chase;
+        ball.contactArea = new SimAreaDef { enabled = true, damage = 10, lifetime = 1f, halfX = 1f, halfZ = 1f };
+        input.enemies.Add(ball);
+        SimGeneratorDef generator = TestInputs.Generator("Ball", minSpawnCount: 1, spawnInterval: 100f);
+        generator.spawnRadius = 20f;
+        generator.phases[0].attackMultiplier = 1.5f;
+        input.generators.Add(generator);
+
+        SimResult result = Simulator.Run(input, () => new RandomChoicePolicy());
+
+        Assert.Equal(985f, Series(result, "HP").p50[^1]);
+    }
+
+    [Fact]
     public void SameSeedGivesSameResult()
     {
         SimInput input = TestInputs.Minimal(timeLimit: 10f);

@@ -161,6 +161,23 @@ public class WeaponTests
         Assert.Equal(2f, Series(result, "撃破数").p50[^1]);
     }
 
+    [Theory]
+    [InlineData(1f, 1f)]
+    [InlineData(1.5f, 0f)]
+    public void PhaseHpMultiplierScalesEnemyHp(float hpMultiplier, float expectedKills)
+    {
+        SimInput input = StandingPlayer(timeLimit: 2f);
+        input.weapons.Add(TestInputs.Weapon("HG_00", TestInputs.HitScan(), damage: 10));
+        input.enemies.Add(TestInputs.HarmlessEnemy("Bit"));
+        SimGeneratorDef generator = AheadGenerator("bit", "Bit", 20f);
+        generator.phases[0].hpMultiplier = hpMultiplier;
+        input.generators.Add(generator);
+
+        SimResult result = Simulator.Run(input, () => new RandomChoicePolicy());
+
+        Assert.Equal(expectedKills, Series(result, "撃破数").p50[^1]);
+    }
+
     [Fact]
     public void StraightBulletHitsEnemy()
     {

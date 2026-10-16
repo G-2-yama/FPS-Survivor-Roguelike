@@ -130,10 +130,12 @@ public class EnemyGenerator : MonoBehaviour
                 if (enemyComponent != null)
                 {
                     enemyComponent.SetSpawner(this);
+                    enemyComponent.ApplyStatMultipliers(phase.HpMultiplier, phase.AttackMultiplier);
                 }
                 else if (projectile != null)
                 {
                     projectile.SetSpawner(this);
+                    projectile.ApplyStatMultipliers(phase.HpMultiplier, phase.AttackMultiplier);
                 }
 
                 return;

@@ -5,7 +5,12 @@ public class ballprojectile : enemyplojectileobject
 {
     /// <summary>保持済みの登録情報を使って対象への命中を処理する</summary>
     [SerializeField] private GameObject prefab;
-    
+    private DamageBase explosionSource;
+
+    private void Awake()
+    {
+        explosionSource = prefab != null ? prefab.GetComponent<DamageBase>() : null;
+    }
 
     protected override void HandleHit(Collider collider)
     {
@@ -16,8 +21,14 @@ public class ballprojectile : enemyplojectileobject
                 return;
             }
             hasHit = true;
-            GameObject area = PoolManager.Instance.Get(prefab);
-            area.transform.position = transform.position;
+            PooledInstance area = PoolManager.Instance.Rent(prefab);
+            area.GameObject.transform.position = transform.position;
+            if (explosionSource != null)
+            {
+                area.RequireDamage().Initialize(
+                    EnemyStatScaling.Scale(explosionSource.Damage, attackMultiplier),
+                    explosionSource.KnockbackForce);
+            }
             Sounder?.Play(SoundCategory.Enemy);
             Release();
         }

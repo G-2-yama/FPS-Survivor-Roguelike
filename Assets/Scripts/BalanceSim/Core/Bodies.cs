@@ -24,6 +24,7 @@ namespace BalanceSim
         public GeneratorState Generator;
         public Presence Presence = Presence.Active;
         public int Hp;
+        public float AttackMultiplier = 1f;
         public bool InContact;
         public float DeathTime = -1f;
         public float NextAttackTime;
@@ -68,6 +69,7 @@ namespace BalanceSim
     public sealed class AreaAgent
     {
         public SimAreaDef Def;
+        public int Damage;
         public Vec2 Origin;
         public Vec2 Forward;
         public float ExpireTime;
