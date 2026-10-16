@@ -9,6 +9,8 @@ public class NormalProjectileFire : FireModeData
     [SerializeField] private Vector3 Offset = new Vector3(0f, 0f, 0.0f);
     [SerializeField] private bool isTracking = false;
 
+    protected override GameObject SpawnPrefab => prefab;
+
 
     /// <inheritdoc />
     public override void Fire(Weapon weapon, Player weaponOwner)
@@ -18,8 +20,7 @@ public class NormalProjectileFire : FireModeData
         PooledInstance spawned = PoolManager.Instance.Rent(prefab);
         GameObject bullet = spawned.GameObject;
 
-        var damage = spawned.RequireDamage();
-        damage.Initialize(weapon.GetDamageAmount(), weapon.GetKnockbackForce());
+        InitializeDamage(spawned, weapon);
 
         MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);

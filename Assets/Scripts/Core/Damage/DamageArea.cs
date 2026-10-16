@@ -33,6 +33,8 @@ public class DamageArea : DamageBase
     private readonly List<IDamageable> tickBuffer = new();
     private Action<IDamageable> unavailableHandler;
     private float tickTimer;
+    private float spawnTime;
+    private int damagePerSecond;
     [SerializeField] private DamageAreaScaleController scaleController;
 
     /// <summary>侵入したColliderへ単発モードのダメージを適用する</summary>
@@ -78,7 +80,7 @@ public class DamageArea : DamageBase
             if (!contacts.ContainsKey(target))
                 continue;
 
-            target.TakeDamage(damage, knockbackForce);
+            target.TakeDamage(CurrentDamage, knockbackForce);
         }
 
         tickBuffer.Clear();
@@ -121,6 +123,16 @@ public class DamageArea : DamageBase
         // 新しいダメージ値が設定された後に拡縮
         scaleController?.SetScaleByDamage(damage);
     }
+
+    public override void ApplyAreaModifiers(float extraLifetime, int damagePerSecond)
+    {
+        this.damagePerSecond = damagePerSecond;
+        if (lifetime > 0f && extraLifetime > 0f)
+            LifetimeRunner.Register(this, lifetime + extraLifetime);
+    }
+
+    protected override int CurrentDamage =>
+        damagePerSecond > 0 ? damage + Mathf.FloorToInt(Time.time - spawnTime) * damagePerSecond : damage;
     /// <summary>新しい活動期間の状態を準備する</summary>
 
     public override void OnGet()
@@ -129,6 +141,8 @@ public class DamageArea : DamageBase
 
         ClearTargets();
         tickTimer = 0f;
+        spawnTime = Time.time;
+        damagePerSecond = 0;
 
         // 前回のスケールを初期化
         scaleController?.ResetScale();

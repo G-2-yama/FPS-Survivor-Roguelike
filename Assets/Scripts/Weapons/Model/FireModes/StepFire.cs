@@ -9,6 +9,8 @@ public class StepFire : FireModeData
     [SerializeField] private float stepInterval = 0.5f;
 
     private Vector3 previousPosition;
+
+    protected override GameObject SpawnPrefab => prefab;
     /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
 
     public override void Fire(Weapon weapon, Player weaponOwner)
@@ -32,8 +34,7 @@ public class StepFire : FireModeData
 
         GameObject bullet = spawned.GameObject;
 
-        var damage = spawned.RequireDamage();
-        damage.Initialize(weapon.GetDamageAmount(), weapon.GetKnockbackForce());
+        InitializeDamage(spawned, weapon);
 
         MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);

@@ -46,6 +46,16 @@ public class Player : MonoBehaviour, IDamageable
     public IReadOnlyList<WeaponEffect> WeaponEffects => weaponEffects;
     public bool IsStationary { get; private set; }
     public bool IsMovementLocked => movementLocks.Count > 0;
+    public float HorizontalSpeed
+    {
+        get
+        {
+            if (bodyController == null) return 0f;
+            Vector3 velocity = bodyController.velocity;
+            velocity.y = 0f;
+            return velocity.magnitude;
+        }
+    }
     /// <summary>現在の姿勢を反映した本体の足元位置を取得する</summary>
     public Vector3 FootPosition
     {
@@ -68,12 +78,14 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (effect == null) return;
         weaponEffects.Add(effect);
+        effect.OnAdded(this);
         RefreshWeaponStats();
     }
 
     public void RemoveWeaponEffect(WeaponEffect effect)
     {
         if (!weaponEffects.Remove(effect)) return;
+        effect.OnRemoved(this);
         RefreshWeaponStats();
     }
 
@@ -148,7 +160,20 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     /// <summary>プレイヤーの体力にダメージを適用する</summary>
-    public void TakeDamage(int damage, float knockbackForce) => Health?.TakeDamage(damage);
+    public void TakeDamage(int damage, float knockbackForce)
+    {
+        if (NegatesDamage()) return;
+        Health?.TakeDamage(damage);
+    }
+
+    private bool NegatesDamage()
+    {
+        for (int i = 0; i < weaponEffects.Count; i++)
+        {
+            if (weaponEffects[i].NegatesDamage(this)) return true;
+        }
+        return false;
+    }
 
     /// <summary>経験値と全レベルアップを確定してからUIへ通知する</summary>
     public void AddExp(float amount)

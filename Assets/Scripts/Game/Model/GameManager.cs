@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     public void DebugGameOver()
     {
-        player.TakeDamage(player.Health.CurrentHP, 0f);
+        player.Health.TakeDamage(player.Health.CurrentHP);
     }
 #endif
 }

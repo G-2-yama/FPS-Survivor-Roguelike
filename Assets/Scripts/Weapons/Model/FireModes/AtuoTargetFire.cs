@@ -8,6 +8,8 @@ public class AutoTargetFire : FireModeData
     [SerializeField] private GameObject prefab;
     [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1f, 0f);
 
+    protected override GameObject SpawnPrefab => prefab;
+
     /// <summary>武器と所有者の設定を使って攻撃を実行する</summary>
     public override void Fire(Weapon weapon, Player weaponOwner)
     {
@@ -24,8 +26,7 @@ public class AutoTargetFire : FireModeData
         GameObject bullet = spawned.GameObject;
         bullet.transform.SetPositionAndRotation(weapon.AimTransform.position + rotation * spawnOffset, rotation);
 
-        var damage = spawned.RequireDamage();
-        damage.Initialize(weapon.GetDamageAmount(), weapon.GetKnockbackForce());
+        InitializeDamage(spawned, weapon);
 
         MovementBase movement = spawned.Movement;
         movement?.Initialize(weaponOwner.transform, direction);

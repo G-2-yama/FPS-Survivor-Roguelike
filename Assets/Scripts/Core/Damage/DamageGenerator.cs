@@ -6,12 +6,43 @@ public class DamageGenerator : DamageBase
 {
     [SerializeField] private List<GameObject> explosionPrefabs;
     [SerializeField] private Sounder sounder;
+    private float areaExtraLifetime;
+    private int areaDamagePerSecond;
+
+    public float AreaLifetime
+    {
+        get
+        {
+            float result = 0f;
+            if (explosionPrefabs == null)
+                return result;
+            foreach (GameObject prefab in explosionPrefabs)
+            {
+                if (prefab != null && prefab.TryGetComponent(out DamageArea area))
+                    result = Mathf.Max(result, area.Lifetime);
+            }
+            return result;
+        }
+    }
 
     /// <summary>取得した個体へ今回の攻撃設定を渡す</summary>
     public override void Initialize(int damage, float knockback)
     {
         base.Initialize(damage, knockback);
         // 爆発の値は生成した個体へ渡し共有Prefabを変更しない
+    }
+
+    public override void ApplyAreaModifiers(float extraLifetime, int damagePerSecond)
+    {
+        areaExtraLifetime = extraLifetime;
+        areaDamagePerSecond = damagePerSecond;
+    }
+
+    public override void OnGet()
+    {
+        base.OnGet();
+        areaExtraLifetime = 0f;
+        areaDamagePerSecond = 0;
     }
     /// <summary>侵入したColliderとの接触処理を開始する</summary>
 
@@ -54,7 +85,9 @@ public class DamageGenerator : DamageBase
 
             obj.transform.position = transform.position;
 
-            explosion.RequireDamage().Initialize(damage, knockbackForce);
+            DamageBase explosionDamage = explosion.RequireDamage();
+            explosionDamage.Initialize(damage, knockbackForce);
+            explosionDamage.ApplyAreaModifiers(areaExtraLifetime, areaDamagePerSecond);
         }
 
         Release();

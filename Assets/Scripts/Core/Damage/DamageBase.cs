@@ -33,6 +33,10 @@ public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner
         this.damage = damage;
         this.knockbackForce = knockback;
     }
+
+    public virtual void ApplyAreaModifiers(float extraLifetime, int damagePerSecond) { }
+
+    protected virtual int CurrentDamage => damage;
     /// <summary>受けたダメージを個体の体力へ適用する</summary>
 
     public void TakeDamage(int damage, float knockback)
@@ -64,7 +68,7 @@ public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner
             return false;
         }
 
-        target.TakeDamage(damage, knockbackForce);
+        target.TakeDamage(CurrentDamage, knockbackForce);
         return true;
     }
     /// <summary>新しい活動期間の状態を準備する</summary>

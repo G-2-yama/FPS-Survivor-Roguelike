@@ -46,8 +46,17 @@ public class Weapon : MonoBehaviour
 
     public int MagazineSize => Mathf.Max(1, Mathf.FloorToInt(CurrentLevel.MagazineSize * BuildModifiers().MagazineMultiplier + 0.0001f));
     public float ReloadTime => CurrentLevel.ReloadTime * BuildModifiers().ReloadTimeMultiplier;
-    public int GetDamageAmount() => (int)(weaponOwner.Stats.DamageMultiplier * BuildModifiers().DamageMultiplier * CurrentLevel.Damage);
-    public float GetKnockbackForce() => weaponOwner.Stats.KnockbackForceMultiplier * CurrentLevel.KnockbackForce;
+    public int GetDamageAmount()
+    {
+        WeaponStatModifiers mods = BuildModifiers();
+        return (int)(weaponOwner.Stats.DamageMultiplier * mods.DamageMultiplier * CurrentLevel.Damage) + mods.FlatDamageBonus;
+    }
+    public float GetKnockbackForce() => weaponOwner.Stats.KnockbackForceMultiplier * (CurrentLevel.KnockbackForce + BuildModifiers().KnockbackBonus);
+    public (float extraLifetime, int damagePerSecond) GetAreaModifiers()
+    {
+        WeaponStatModifiers mods = BuildModifiers();
+        return (mods.AreaExtraLifetime, mods.AreaDamagePerSecond);
+    }
 
     public float FireInterval => CurrentLevel.FireInterval;
     public float BurstInterval => CurrentLevel.BurstInterval;
