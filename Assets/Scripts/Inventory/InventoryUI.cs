@@ -19,11 +19,18 @@ public class InventoryUI : MonoBehaviour
     [Tooltip("属性のバッジを押したときに開く詳細パネル")]
     [SerializeField] private AttributeDetailPanel attributeDetailPanel;
 
+    [Header("Tooltip")]
+    [Tooltip("スロットにカーソルを合わせたときに出す説明と能力値")]
+    [SerializeField] private SlotTooltipView tooltip;
+
     // 選択中のWeaponスロット
     private WeaponSlotView selectedWeaponSlot;
 
     // 選択中のItemスロット
     private ItemSlotView selectedItemSlot;
+
+    private WeaponSlotView hoveredWeaponSlot;
+    private ItemSlotView hoveredItemSlot;
 
     private AttributeTracker attributeTracker;
     private AttributeSnapshot attributeSnapshot;
@@ -31,9 +38,17 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         foreach (var slotUI in weaponSlotUIs)
+        {
             slotUI.AttributeClicked += OpenAttributeDetail;
+            slotUI.PointerEntered += OnWeaponSlotEntered;
+            slotUI.PointerExited += OnWeaponSlotExited;
+        }
         foreach (var slotUI in itemSlotUIs)
+        {
             slotUI.AttributeClicked += OpenAttributeDetail;
+            slotUI.PointerEntered += OnItemSlotEntered;
+            slotUI.PointerExited += OnItemSlotExited;
+        }
         attributeSummary.BadgeClicked += OpenAttributeDetail;
     }
 
@@ -59,6 +74,10 @@ public class InventoryUI : MonoBehaviour
         attributeTracker = null;
 
         attributeDetailPanel.Close();
+
+        hoveredWeaponSlot = null;
+        hoveredItemSlot = null;
+        tooltip.Hide();
     }
 
     /// <summary>
@@ -86,6 +105,7 @@ public class InventoryUI : MonoBehaviour
             itemSlotUIs[i].ShowAttributes(inventory.Items[i], attributeSnapshot);
 
         attributeSummary.Show(attributeSnapshot);
+        RefreshTooltip();
     }
 
     private void OpenAttributeDetail(AttributeDefinition attribute)
@@ -117,6 +137,7 @@ public class InventoryUI : MonoBehaviour
         {
             itemSlotUIs[i].Refresh(inventory.Items[i], i);
         }
+        RefreshTooltip();
     }
 
     /// <summary>
@@ -130,8 +151,72 @@ public class InventoryUI : MonoBehaviour
                 continue;
 
             slotUI.Refresh(weapon);
+            RefreshTooltip();
             return;
         }
+    }
+
+
+    // =====================================================
+    // Tooltip
+    // =====================================================
+
+    private void OnWeaponSlotEntered(WeaponSlotView slot)
+    {
+        hoveredItemSlot = null;
+        hoveredWeaponSlot = slot;
+        RefreshTooltip();
+    }
+
+    private void OnWeaponSlotExited(WeaponSlotView slot)
+    {
+        if (hoveredWeaponSlot != slot)
+            return;
+
+        hoveredWeaponSlot = null;
+        RefreshTooltip();
+    }
+
+    private void OnItemSlotEntered(ItemSlotView slot)
+    {
+        hoveredWeaponSlot = null;
+        hoveredItemSlot = slot;
+        RefreshTooltip();
+    }
+
+    private void OnItemSlotExited(ItemSlotView slot)
+    {
+        if (hoveredItemSlot != slot)
+            return;
+
+        hoveredItemSlot = null;
+        RefreshTooltip();
+    }
+
+    private void RefreshTooltip()
+    {
+        if (hoveredWeaponSlot != null)
+        {
+            Weapon weapon = inventory.GetWeapon(hoveredWeaponSlot.SlotType);
+            if (weapon != null && weapon.HasWeapon)
+            {
+                tooltip.Show(SlotTooltipContent.For(weapon), (RectTransform)hoveredWeaponSlot.transform);
+                return;
+            }
+        }
+
+        if (hoveredItemSlot != null)
+        {
+            int index = hoveredItemSlot.ItemIndex;
+            OwnedItem owned = index >= 0 && index < inventory.Items.Count ? inventory.Items[index] : null;
+            if (owned != null && owned.Item != null)
+            {
+                tooltip.Show(SlotTooltipContent.For(owned.Item), (RectTransform)hoveredItemSlot.transform);
+                return;
+            }
+        }
+
+        tooltip.Hide();
     }
 
 

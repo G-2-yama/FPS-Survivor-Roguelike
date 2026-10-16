@@ -61,6 +61,7 @@ public class Weapon : MonoBehaviour
     public Recoil Recoil => CurrentLevel.Recoil;
     public SoundDB SoundDB => CurrentLevel.SoundDB;
     public string DisplayName => CurrentLevel.DisplayName;
+    public string Description => CurrentLevel.Description;
     public Sprite Icon => CurrentLevel.Icon;
     public GameObject WeaponModelPrefab => CurrentLevel.WeaponModelPrefab;
 

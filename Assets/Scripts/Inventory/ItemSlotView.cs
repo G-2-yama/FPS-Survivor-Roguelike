@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
- 
+
 /// <summary>
 /// アイテムスロットのUI表示コンポーネント。
 /// インデックスでアイテムを識別し、InventoryUIから表示更新・ハイライトを受け取る。
 /// </summary>
-public class ItemSlotView : MonoBehaviour
+public class ItemSlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image Button;
@@ -21,6 +22,12 @@ public class ItemSlotView : MonoBehaviour
     public int ItemIndex { get; private set; } = -1;
 
     public event Action<AttributeDefinition> AttributeClicked;
+    public event Action<ItemSlotView> PointerEntered;
+    public event Action<ItemSlotView> PointerExited;
+
+    public void OnPointerEnter(PointerEventData eventData) => PointerEntered?.Invoke(this);
+
+    public void OnPointerExit(PointerEventData eventData) => PointerExited?.Invoke(this);
 
     private void Awake()
     {

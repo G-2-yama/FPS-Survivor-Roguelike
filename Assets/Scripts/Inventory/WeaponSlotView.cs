@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WeaponSlotView : MonoBehaviour
+public class WeaponSlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private SlotType slotType;
     [SerializeField] private Image weaponIcon;
@@ -21,6 +22,12 @@ public class WeaponSlotView : MonoBehaviour
     private Color initialColor;
 
     public event Action<AttributeDefinition> AttributeClicked;
+    public event Action<WeaponSlotView> PointerEntered;
+    public event Action<WeaponSlotView> PointerExited;
+
+    public void OnPointerEnter(PointerEventData eventData) => PointerEntered?.Invoke(this);
+
+    public void OnPointerExit(PointerEventData eventData) => PointerExited?.Invoke(this);
 
     private void Awake()
     {
