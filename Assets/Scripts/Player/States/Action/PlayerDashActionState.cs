@@ -75,6 +75,7 @@ public class PlayerDashActionState : PlayerActionState
 
         dashTimer = context.Player.Stats.DashDuration;
         dashSpeed = context.Player.Stats.DashDistance / dashTimer;
+        context.Player.SetDashing(true);
         context.Locomotion.ClearHorizontalVelocity();
         context.ActionTrail?.Begin(PlayerActionTrail.ActionType.Dash);
         context.ActionConcentrationLine?.Begin(PlayerActionConcentrationLine.ActionType.Dash);
@@ -105,6 +106,7 @@ public class PlayerDashActionState : PlayerActionState
         dashTimer = 0f;
         dashDirection = Vector3.zero;
         cooldownTimer = context.Player.Stats.DashCooldown;
+        context.Player.SetDashing(false);
         context.ActionTrail?.End(PlayerActionTrail.ActionType.Dash);
         context.ActionConcentrationLine?.End(PlayerActionConcentrationLine.ActionType.Dash);
     }

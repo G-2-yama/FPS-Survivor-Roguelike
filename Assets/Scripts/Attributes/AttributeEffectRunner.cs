@@ -6,6 +6,7 @@ public class AttributeEffectRunner
     private readonly AttributeTracker tracker;
     private readonly Dictionary<AttributeDefinition, List<WeaponEffect>> appliedActive = new Dictionary<AttributeDefinition, List<WeaponEffect>>();
     private readonly Dictionary<AttributeDefinition, List<WeaponEffect>> appliedMax = new Dictionary<AttributeDefinition, List<WeaponEffect>>();
+    private readonly Dictionary<AttributeDefinition, List<WeaponEffect>> appliedCondition = new Dictionary<AttributeDefinition, List<WeaponEffect>>();
 
     public AttributeEffectRunner(Player player, AttributeTracker tracker)
     {
@@ -31,6 +32,7 @@ public class AttributeEffectRunner
 
             Apply(attribute, tracker.IsActive(attribute), attribute.ActiveEffects, appliedActive);
             Apply(attribute, tracker.IsMax(attribute), attribute.MaxEffects, appliedMax);
+            Apply(attribute, tracker.IsConditionMet(attribute), attribute.ConditionEffects, appliedCondition);
         }
     }
 

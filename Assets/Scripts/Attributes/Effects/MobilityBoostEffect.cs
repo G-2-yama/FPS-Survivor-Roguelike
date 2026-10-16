@@ -9,6 +9,12 @@ public class MobilityBoostEffect : AttributeEffectDefinition
     [SerializeField, Min(0f)] private float jumpForceBonusRatio = 0.1f;
     [Tooltip("ダッシュの速度の倍率。距離は変えず、時間を短くする")]
     [SerializeField, Min(1f)] private float dashSpeedMultiplier = 1.3f;
+    [Tooltip("ダッシュのクールタイムから引く秒数")]
+    [SerializeField, Min(0f)] private float dashCooldownReduction;
+    [Tooltip("ダッシュの距離に足す割合（0.5 で +50%）。時間は変えないので、速度も同じ割合で上がる")]
+    [SerializeField, Min(0f)] private float dashDistanceBonusRatio;
+    [Tooltip("ダッシュ中の被ダメージを無効化する")]
+    [SerializeField] private bool dashInvincible;
 
     public override WeaponEffect CreateEffect(AttributeDefinition owner) => new Instance(this);
 
@@ -19,6 +25,8 @@ public class MobilityBoostEffect : AttributeEffectDefinition
         private float runSpeedDelta;
         private float jumpForceDelta;
         private float dashDurationDelta;
+        private float dashCooldownDelta;
+        private float dashDistanceDelta;
 
         public Instance(MobilityBoostEffect definition)
         {
@@ -32,11 +40,15 @@ public class MobilityBoostEffect : AttributeEffectDefinition
             runSpeedDelta = stats.RunSpeed * definition.moveSpeedBonusRatio;
             jumpForceDelta = stats.JumpForce * definition.jumpForceBonusRatio;
             dashDurationDelta = stats.DashDuration * (1f / definition.dashSpeedMultiplier - 1f);
+            dashCooldownDelta = -Mathf.Min(definition.dashCooldownReduction, stats.DashCooldown);
+            dashDistanceDelta = stats.DashDistance * definition.dashDistanceBonusRatio;
 
             stats.AddWalkSpeed(walkSpeedDelta);
             stats.AddRunSpeed(runSpeedDelta);
             stats.AddJumpForce(jumpForceDelta);
             stats.AddDashDuration(dashDurationDelta);
+            stats.AddDashCooldown(dashCooldownDelta);
+            stats.AddDashDistance(dashDistanceDelta);
         }
 
         public override void OnRemoved(Player player)
@@ -46,6 +58,10 @@ public class MobilityBoostEffect : AttributeEffectDefinition
             stats.AddRunSpeed(-runSpeedDelta);
             stats.AddJumpForce(-jumpForceDelta);
             stats.AddDashDuration(-dashDurationDelta);
+            stats.AddDashCooldown(-dashCooldownDelta);
+            stats.AddDashDistance(-dashDistanceDelta);
         }
+
+        public override bool NegatesDamage(Player player) => definition.dashInvincible && player.IsDashing;
     }
 }

@@ -16,12 +16,16 @@ MonoBehaviour:
   kind: 1
   effectTexts:
   - count: 3
-    text: "\u79FB\u52D5\u901F\u5EA6+10%\u3001\u30C0\u30C3\u30B7\u30E5\u306E\u30AF\u30FC\u30EB\u30BF\u30A4\u30E0-0.5\u79D2"
+    text: "\u79FB\u52D5\u901F\u5EA6+10%\u3001\u30C0\u30C3\u30B7\u30E5\u306E\u30AF\u30FC\u30EB\u30BF\u30A4\u30E0-0.25\u79D2"
     condition: 
   - count: 4
-    text: "\u30C0\u30C3\u30B7\u30E5\u306E\u8DDD\u96E2\u304C\u4F38\u3073\u3001\u30C0\u30C3\u30B7\u30E5\u4E2D\u306F\u7121\u6575\u306B\u306A\u308B"
+    text: "\u30C0\u30C3\u30B7\u30E5\u306E\u8DDD\u96E2+50%\u3001\u30C0\u30C3\u30B7\u30E5\u4E2D\u306F\u7121\u6575\u306B\u306A\u308B"
     condition: 
   activateThreshold: 3
   maxThreshold: 7
-  activeEffects: []
+  conditionThreshold: 4
+  activeEffects:
+  - {fileID: 11400000, guid: fafb4430ef650deafa09123a7dca6866, type: 2}
   maxEffects: []
+  conditionEffects:
+  - {fileID: 11400000, guid: 9c3a0b8d447929012e54a524d47e10e1, type: 2}

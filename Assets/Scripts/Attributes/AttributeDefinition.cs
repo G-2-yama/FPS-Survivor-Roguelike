@@ -40,12 +40,16 @@ public class AttributeDefinition : ScriptableObject
     [SerializeField, Min(1)] private int activateThreshold = 4;
     [Tooltip("この数以上で最大になる。基盤だけが使う")]
     [SerializeField, Min(1)] private int maxThreshold = 7;
+    [Tooltip("この数以上で「数で満たす条件の効果」が働く。0 なら使わない")]
+    [SerializeField, Min(0)] private int conditionThreshold;
 
     [Header("Effects")]
     [Tooltip("有効化している間に働く効果")]
     [SerializeField] private List<AttributeEffectDefinition> activeEffects = new List<AttributeEffectDefinition>();
     [Tooltip("最大の間に働く効果")]
     [SerializeField] private List<AttributeEffectDefinition> maxEffects = new List<AttributeEffectDefinition>();
+    [Tooltip("数で満たす条件の効果。数が conditionThreshold 以上の間に働く")]
+    [SerializeField] private List<AttributeEffectDefinition> conditionEffects = new List<AttributeEffectDefinition>();
 
     public string DisplayName => displayName;
     public AttributeKind Kind => kind;
@@ -54,8 +58,11 @@ public class AttributeDefinition : ScriptableObject
     public int MaxThreshold => maxThreshold;
     public IReadOnlyList<AttributeEffectDefinition> ActiveEffects => activeEffects;
     public IReadOnlyList<AttributeEffectDefinition> MaxEffects => maxEffects;
+    public IReadOnlyList<AttributeEffectDefinition> ConditionEffects => conditionEffects;
 
     public bool IsActiveAt(int count) => count >= activateThreshold;
 
     public bool IsMaxAt(int count) => kind == AttributeKind.Base && count >= maxThreshold;
+
+    public bool IsConditionMetAt(int count) => conditionThreshold > 0 && count >= conditionThreshold;
 }

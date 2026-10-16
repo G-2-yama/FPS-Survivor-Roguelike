@@ -34,6 +34,8 @@ public class AttributeTracker
 
     public bool IsMax(AttributeDefinition attribute) => attribute != null && attribute.IsMaxAt(GetCount(attribute));
 
+    public bool IsConditionMet(AttributeDefinition attribute) => attribute != null && attribute.IsConditionMetAt(GetCount(attribute));
+
     public void Recount()
     {
         counts = Count(OwnedWeapons(inventory), OwnedItems(inventory), catalog);

@@ -45,6 +45,7 @@ public class Player : MonoBehaviour, IDamageable
     public bool IsWeaponSync => isWeaponSyncEnabled;
     public IReadOnlyList<WeaponEffect> WeaponEffects => weaponEffects;
     public bool IsStationary { get; private set; }
+    public bool IsDashing { get; private set; }
     public bool IsMovementLocked => movementLocks.Count > 0;
     public float HorizontalSpeed
     {
@@ -98,6 +99,8 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     internal void SetStationary(bool stationary) => IsStationary = stationary;
+
+    internal void SetDashing(bool dashing) => IsDashing = dashing;
 
     public void AddMovementLock(object key)
     {
