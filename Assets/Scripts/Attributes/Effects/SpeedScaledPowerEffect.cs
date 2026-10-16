@@ -8,8 +8,10 @@ public class SpeedScaledPowerEffect : AttributeEffectDefinition
     [SerializeField, Min(0.01f)] private float referenceSpeed = 15f;
     [Tooltip("最大のときに所属装備のダメージに足す割合（0.3 で +30%）")]
     [SerializeField, Min(0f)] private float maxDamageBonusRatio = 0.3f;
-    [Tooltip("最大のときに被ダメージを無効化する確率")]
-    [SerializeField, Range(0f, 1f)] private float maxNegateChance = 0.3f;
+    [Tooltip("この水平速度（m/s）以上のときだけ、被ダメージを無効化できる")]
+    [SerializeField, Min(0f)] private float negateSpeedThreshold = 15f;
+    [Tooltip("被ダメージを無効化する確率")]
+    [SerializeField, Range(0f, 1f)] private float negateChance = 0.3f;
 
     public override WeaponEffect CreateEffect(AttributeDefinition owner) => new Instance(this, owner);
 
@@ -33,6 +35,6 @@ public class SpeedScaledPowerEffect : AttributeEffectDefinition
         }
 
         public override bool NegatesDamage(Player player) =>
-            Random.value < definition.maxNegateChance * definition.SpeedRatio(player);
+            player != null && player.HorizontalSpeed >= definition.negateSpeedThreshold && Random.value < definition.negateChance;
     }
 }
