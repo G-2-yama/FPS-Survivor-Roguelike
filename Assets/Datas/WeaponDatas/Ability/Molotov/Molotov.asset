@@ -139,7 +139,7 @@ MonoBehaviour:
       damping: 18
       maxPitch: 20
     ammo:
-      magazineSize: 1
+      magazineSize: 2
       reloadTime: 1.5
   - displayName: "\u706B\u708E\u74F6"
     description: "\u30EA\u30ED\u30FC\u30C9\u6642\u95931.5->1.0"
@@ -169,7 +169,7 @@ MonoBehaviour:
       damping: 18
       maxPitch: 20
     ammo:
-      magazineSize: 1
+      magazineSize: 2
       reloadTime: 1
   - displayName: "\u706B\u708E\u74F6"
     description: "\u30C0\u30E1\u30FC\u30B85->10"
@@ -199,7 +199,7 @@ MonoBehaviour:
       damping: 18
       maxPitch: 20
     ammo:
-      magazineSize: 1
+      magazineSize: 2
       reloadTime: 1
   - displayName: "Evo\u706B\u708E\u74F6"
     description: "\u5468\u56F2\u306B\u706B\u708E\u74F6\u3092\u307E\u304D\u6563\u3089\u3059"
@@ -229,6 +229,6 @@ MonoBehaviour:
       damping: 18
       maxPitch: 20
     ammo:
-      magazineSize: 1
+      magazineSize: 3
       reloadTime: 1
   lastLevelIsEvo: 1
