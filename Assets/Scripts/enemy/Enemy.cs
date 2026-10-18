@@ -63,6 +63,7 @@ public class Enemy : PoolableObject, IDamageable
         enemyBrain.SetSpawner(generator);
     }
 
+    
 
     /// <summary>設定されたダメージを適用し、可能な場合はノックバック状態へ移行する</summary>
     /// <param name="damage">受ける基礎ダメージ</param>
@@ -106,11 +107,12 @@ public class Enemy : PoolableObject, IDamageable
         damageEffectManager = DamageEffectManager.Instance;
         enemyBrain.ResetBrain();
         isDead = false;
+
         contactTarget.BeginLife(
             enemyBrain.Rb,
             contactDamageSource,
             playerObstacle == null);
-
+        finalDamage = 0;
         Health = new Health(config.MaxHp);
         Health.OnDamaged += HandleDamaged;
         Health.OnDeath += HandleDeath;

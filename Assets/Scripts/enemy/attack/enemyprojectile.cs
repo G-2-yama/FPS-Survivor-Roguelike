@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 
 [RequireComponent(typeof(DamageTargetBinding))]
-public class enemyplojectileobject : PoolableObject, IDamageable
+public class enemyplojectileobject : PoolableObject, IDamageable, IInitialize
 {
     /// <summary>ドロップするPrefabと選択時の重みを定義する</summary>
     [System.Serializable]
@@ -33,6 +33,9 @@ public class enemyplojectileobject : PoolableObject, IDamageable
     protected int damage;
     protected float knockbackForce;
     private EnemyGenerator generator;
+    [SerializeField] private GameObject DestroyDamagePrefab;
+    int finalDamage = 0;
+    [SerializeField] private float destroyDamageDamping = 0.7f;
     /// <summary>個体を生成した敵生成器を関連付ける</summary>
 
     public void SetSpawner(EnemyGenerator generator)
@@ -70,6 +73,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         }
        
         health?.TakeDamage(config.Damagelange*damage);
+        finalDamage= config.Damagelange*damage;
     }
     /// <summary>侵入したColliderとの接触処理を開始する</summary>
 
@@ -87,6 +91,7 @@ public class enemyplojectileobject : PoolableObject, IDamageable
         damageEffectManager=DamageEffectManager.Instance;
         hasHit = false;
         deathType= DeathType.Normal;
+       
         health = new Health(config.MaxHp);
         health.OnDeath += HandleDeath;
         if (enemyBrain != null)
@@ -156,6 +161,17 @@ public class enemyplojectileobject : PoolableObject, IDamageable
             {
                 item.transform.position = transform.position;
                 item.transform.rotation = transform.rotation;
+            }
+        }
+        if (DestroyDamagePrefab != null)
+        {
+            PooledInstance explosion = PoolManager.Instance.Rent(DestroyDamagePrefab);
+            GameObject destroyDamage = explosion.GameObject;
+            destroyDamage.transform.position = transform.position;
+            destroyDamage.transform.rotation = transform.rotation;
+            if ((int)(finalDamage * destroyDamageDamping) > 0)
+            {
+                explosion.RequireDamage().Initialize((int)(finalDamage * destroyDamageDamping), 0);
             }
         }
         Release();

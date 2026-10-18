@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4805234922ec5d243a0e384fc2e3c2e4, type: 3}
-  m_Name: handenemybullet
+  m_Name: Hand_02
   m_EditorClassIdentifier: Assembly-CSharp::BulletData
   Speed: 0
   Lifetime: 3
