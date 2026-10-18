@@ -1,18 +1,16 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public class UpgradeButtonView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UpgradeButtonView : MonoBehaviour
 {
     [SerializeField] Image ButtonImage;
     [SerializeField] Image FrameImage;
     [SerializeField] private TMP_Text buttonText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Image iconImage;
-    [SerializeField] private UIHoverScaler hoverScaler;
 
     private CanvasGroup revealCanvasGroup;
     private RectTransform revealRectTransform;
@@ -76,56 +74,6 @@ public class UpgradeButtonView : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         revealCanvasGroup.interactable = interactable;
         revealCanvasGroup.blocksRaycasts = interactable;
-    }
-
-    /// <summary>
-    /// 選択肢が現在フォーカスを受け付けられるかを返す
-    /// </summary>
-    public bool CanReceivePointerFocus =>
-        gameObject.activeInHierarchy
-        && revealCanvasGroup != null
-        && revealCanvasGroup.interactable
-        && revealCanvasGroup.blocksRaycasts;
-
-    /// <summary>
-    /// レイキャスト対象がこの選択肢の子階層にあるかを返す
-    /// </summary>
-    public bool ContainsRaycastTarget(GameObject target)
-    {
-        return target != null
-            && (target.transform == transform || target.transform.IsChildOf(transform));
-    }
-
-    /// <summary>
-    /// 選択肢のフォーカス表示を更新する
-    /// </summary>
-    public void SetPointerFocus(bool isFocused)
-    {
-        hoverScaler?.SetPointerFocus(isFocused);
-    }
-
-    /// <summary>
-    /// ポインターが選択肢に入ったときに決定対象としてフォーカスする
-    /// </summary>
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem != null && gameObject.activeInHierarchy && revealCanvasGroup.interactable)
-        {
-            eventSystem.SetSelectedGameObject(gameObject);
-        }
-    }
-
-    /// <summary>
-    /// ポインターが選択肢から離れたときに古いフォーカスを解除する
-    /// </summary>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem != null && eventSystem.currentSelectedGameObject == gameObject)
-        {
-            eventSystem.SetSelectedGameObject(null);
-        }
     }
 
     /// <summary>

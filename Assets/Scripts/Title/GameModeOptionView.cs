@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
 using TMPro;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
 /// タイトル画面のゲームモード選択肢を表示する
 /// </summary>
-public class GameModeOptionView : MonoBehaviour, IPointerEnterHandler
+public class GameModeOptionView : MonoBehaviour
 {
     [Tooltip("押すとこのモードを選ぶボタン")]
     [SerializeField] private Button button;
@@ -54,16 +53,6 @@ public class GameModeOptionView : MonoBehaviour, IPointerEnterHandler
         }
 
         button.onClick.AddListener(() => onSelected());
-    }
-
-    /// <summary>
-    /// ポインターがモード選択肢に入ったときにゲームパッド決定の対象にする
-    /// </summary>
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem != null && eventSystem.currentSelectedGameObject != gameObject)
-            eventSystem.SetSelectedGameObject(gameObject);
     }
 
     private static string FormatTime(float seconds)

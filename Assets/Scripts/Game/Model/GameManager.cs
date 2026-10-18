@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /// <summary>
 /// ゲーム全体の開始処理とゲーム状態ごとの入力制御を管理する
@@ -18,6 +19,19 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("ゲーム内カーソルの入力元を切り替えるコンポーネント")]
     [SerializeField] private GamepadVirtualMouseCursor gamepadVirtualMouseCursor;
+
+    [Header("UI Raycast Routing")]
+    [Tooltip("通常プレイ中にUI入力を受け付けるGraphicRaycaster")]
+    [SerializeField] private GraphicRaycaster gameplayGraphicRaycaster;
+
+    [Tooltip("レベルアップ中にUI入力を受け付けるGraphicRaycaster")]
+    [SerializeField] private GraphicRaycaster upgradeGraphicRaycaster;
+
+    [Tooltip("インベントリ表示中にUI入力を受け付けるGraphicRaycaster")]
+    [SerializeField] private GraphicRaycaster inventoryGraphicRaycaster;
+
+    [Tooltip("ゲーム終了画面でUI入力を受け付けるGraphicRaycaster")]
+    [SerializeField] private GraphicRaycaster endGraphicRaycaster;
 
     [SerializeField] private Timer timer;
     public Timer Timer => timer;
@@ -62,7 +76,8 @@ public class GameManager : MonoBehaviour
         sounder.Play(SoundCategory.BGM);
         UpdateCursorControl();
         gameplayInputController.UpdateInput(gameStateMachine.CurrentState);
-        gameStateMachine.OnStateChanged += gameplayInputController.UpdateInput;
+        ApplyUIRaycastState(gameStateMachine.CurrentState);
+        gameStateMachine.OnStateChanged += HandleGameStateChanged;
     }
 
     /// <summary>
@@ -84,12 +99,42 @@ public class GameManager : MonoBehaviour
         bool gamepadOwnsPointer = gamepadVirtualMouseCursor != null
             && gamepadVirtualMouseCursor.UpdatePointer(cursorAllowed);
 
-        if (currentState == gameStateMachine.UpgradeState && gamepadOwnsPointer)
-        {
-            upgradeManager.FocusUpgradeAtScreenPosition(gamepadVirtualMouseCursor.CursorPosition);
-        }
-
         gameplayCursorController.UpdateCursor(currentState, gamepadOwnsPointer);
+    }
+
+    /// <summary>
+    /// 状態遷移時に入力対象の画面とレイキャスターを切り替える
+    /// </summary>
+    /// <param name="currentState">遷移後のゲーム状態</param>
+    private void HandleGameStateChanged(GameState currentState)
+    {
+        gameplayInputController.UpdateInput(currentState);
+        ApplyUIRaycastState(currentState);
+    }
+
+    /// <summary>
+    /// 表示中の画面だけがポインター入力を受けるようレイキャスターを切り替える
+    /// </summary>
+    /// <param name="currentState">現在のゲーム状態</param>
+    private void ApplyUIRaycastState(GameState currentState)
+    {
+        SetRaycasterEnabled(gameplayGraphicRaycaster, currentState == gameStateMachine.PlayingState);
+        SetRaycasterEnabled(upgradeGraphicRaycaster, currentState == gameStateMachine.UpgradeState);
+        SetRaycasterEnabled(inventoryGraphicRaycaster, currentState == gameStateMachine.InventoryState);
+        SetRaycasterEnabled(endGraphicRaycaster, currentState == gameStateMachine.EndState);
+    }
+
+    /// <summary>
+    /// レイキャスターの状態が変わるときだけ有効状態を書き換える
+    /// </summary>
+    /// <param name="raycaster">状態を切り替えるレイキャスター</param>
+    /// <param name="enabled">入力を受け付ける場合はtrue</param>
+    private static void SetRaycasterEnabled(GraphicRaycaster raycaster, bool enabled)
+    {
+        if (raycaster != null && raycaster.enabled != enabled)
+        {
+            raycaster.enabled = enabled;
+        }
     }
 
     /// <summary>

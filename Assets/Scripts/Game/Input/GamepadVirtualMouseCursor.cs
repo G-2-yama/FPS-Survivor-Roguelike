@@ -32,11 +32,18 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
     private float previousRightTrigger;
     private PointerOwner pointerOwner;
     private bool hasPublishedVirtualPosition;
+    private bool virtualCursorActive;
+    private bool virtualLeftClickPressed;
 
     /// <summary>
     /// 現在のカーソル位置を画面座標で返す
     /// </summary>
     public Vector2 CursorPosition => cursorPosition;
+
+    /// <summary>
+    /// ゲームパッド仮想カーソルが現在表示されているかを返す
+    /// </summary>
+    public bool IsVirtualCursorActive => virtualCursorActive;
 
     private enum PointerOwner
     {
@@ -52,6 +59,8 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
         physicalMouse = Mouse.current;
         virtualMouse = InputSystem.AddDevice<Mouse>("Gamepad Virtual Mouse");
         pointerOwner = PointerOwner.PhysicalMouse;
+        virtualCursorActive = false;
+        virtualLeftClickPressed = false;
         cursorPosition = GetPhysicalMousePosition();
         previousDpad = Vector2.zero;
         previousLeftStick = Vector2.zero;
@@ -80,6 +89,8 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
     private void OnDisable()
     {
         SetVirtualCursorVisible(false);
+        virtualCursorActive = false;
+        virtualLeftClickPressed = false;
         PublishVirtualPosition(Vector2.zero);
 
         if (virtualMouse != null && virtualMouse.added)
@@ -125,12 +136,14 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
 
         bool isGamepadOwner = pointerOwner == PointerOwner.Gamepad;
         bool showVirtualCursor = isGamepadOwner && cursorAllowed;
+        virtualCursorActive = showVirtualCursor;
         SetVirtualCursorVisible(showVirtualCursor);
 
         if (!isGamepadOwner)
         {
-            if (wasGamepadOwner)
+            if (wasGamepadOwner || virtualLeftClickPressed)
             {
+                virtualLeftClickPressed = false;
                 cursorPosition = GetPhysicalMousePosition();
                 PublishVirtualPosition(Vector2.zero);
                 hasPublishedVirtualPosition = false;
@@ -147,14 +160,23 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
 
         if (!cursorAllowed || gamepad == null)
         {
+            if (virtualLeftClickPressed)
+            {
+                virtualLeftClickPressed = false;
+                PublishVirtualPosition(Vector2.zero);
+            }
+
             return true;
         }
 
         Vector2 dpad = gamepad.dpad.ReadValue();
         Vector2 stick = gamepad.leftStick.ReadValue();
         Vector2 movement = (dpad * GetDpadSpeed() + stick * GetStickSpeed()) * Time.unscaledDeltaTime;
+        bool clickPressed = IsGamepadClickPressed(gamepad);
+        bool clickChanged = virtualLeftClickPressed != clickPressed;
+        virtualLeftClickPressed = clickPressed;
 
-        if (!hasPublishedVirtualPosition || movement.sqrMagnitude > 0f)
+        if (!hasPublishedVirtualPosition || movement.sqrMagnitude > 0f || clickChanged)
         {
             cursorPosition = ClampToScreen(cursorPosition + movement);
             PublishVirtualPosition(movement);
@@ -234,6 +256,16 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
     }
 
     /// <summary>
+    /// UI決定ボタンと左右トリガーを仮想マウスの左クリックとして扱う
+    /// </summary>
+    private static bool IsGamepadClickPressed(Gamepad gamepad)
+    {
+        return gamepad.buttonEast.isPressed
+            || gamepad.leftTrigger.isPressed
+            || gamepad.rightTrigger.isPressed;
+    }
+
+    /// <summary>
     /// 現在の物理マウス位置を画面内の座標にする
     /// </summary>
     private Vector2 GetPhysicalMousePosition()
@@ -286,6 +318,7 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
             position = cursorPosition,
             delta = movement
         };
+        state.WithButton(MouseButton.Left, virtualLeftClickPressed);
 
         InputState.Change(virtualMouse, state);
     }

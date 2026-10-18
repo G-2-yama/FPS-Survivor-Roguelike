@@ -41,7 +41,7 @@ public class UIHoverScaler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SetPointerFocus(true);
+        targetScale = defaultScale * hoverScale;
     }
 
     /// <summary>
@@ -49,14 +49,7 @@ public class UIHoverScaler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
-        SetPointerFocus(false);
+        targetScale = defaultScale;
     }
 
-    /// <summary>
-    /// ポインター操作以外から指定されたフォーカス状態を反映する
-    /// </summary>
-    public void SetPointerFocus(bool isFocused)
-    {
-        targetScale = isFocused ? defaultScale * hoverScale : defaultScale;
-    }
 }

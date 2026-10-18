@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -55,14 +54,6 @@ public class UpgradeManager : MonoBehaviour
     public void HideUpgradeUI()
     {
         upgradeView.Hide();
-    }
-
-    /// <summary>
-    /// 仮想カーソル位置に応じてレベルアップ選択肢のフォーカスを更新する
-    /// </summary>
-    public void FocusUpgradeAtScreenPosition(Vector2 screenPosition)
-    {
-        upgradeView.FocusAtScreenPosition(screenPosition);
     }
 
     /// <summary>

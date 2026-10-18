@@ -91,10 +91,6 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem != null && eventSystem.currentSelectedGameObject != gameObject)
-            eventSystem.SetSelectedGameObject(gameObject);
-
         if (isHovered)
             return;
 
