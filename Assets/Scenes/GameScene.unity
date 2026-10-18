@@ -186,8 +186,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Auto
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -794,8 +794,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &69015982
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,8 +987,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &83808288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,6 +1089,8 @@ MonoBehaviour:
   maxSpawnTry: 5
   activeEnemies: []
   maxEnemyCount: 1500
+  relocateDistance: 85
+  fallRelocateDepth: 30
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1644,8 +1642,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &116450158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,8 +2128,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &170879959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,7 +2304,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b2b1f0ac74a49f8a64d72ff31f56b6c, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnemyPushZone
 --- !u!136 &180629989
 CapsuleCollider:
@@ -2529,8 +2523,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &197229297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2968,8 +2960,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Auto
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3156,8 +3148,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &240814476
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,8 +3415,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Inventory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3750,8 +3740,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &253276470
 GameObject:
   m_ObjectHideFlags: 0
@@ -3946,8 +3934,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Time
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4587,7 +4575,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acd29e46936978a44a4cffad231058d2, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupMagnet
   pullSpeed: 80
   maxHeight: 2
@@ -4859,8 +4847,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &286779754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5034,8 +5020,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &296001861
 GameObject:
   m_ObjectHideFlags: 0
@@ -5457,8 +5441,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Triangle
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5645,8 +5629,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &328223104
 GameObject:
   m_ObjectHideFlags: 0
@@ -5951,8 +5933,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Fire
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6375,8 +6357,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &383212502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7939,8 +7919,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &454838534
 GameObject:
   m_ObjectHideFlags: 0
@@ -8600,8 +8578,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &491112069
 GameObject:
   m_ObjectHideFlags: 0
@@ -9121,8 +9097,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &512261115
 GameObject:
   m_ObjectHideFlags: 0
@@ -9825,8 +9799,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &553230705
 GameObject:
   m_ObjectHideFlags: 0
@@ -10753,8 +10725,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Retry
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11983,8 +11955,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &754599593
 GameObject:
   m_ObjectHideFlags: 0
@@ -12470,8 +12440,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &824503142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12694,8 +12662,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -13387,8 +13353,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &902955985
 GameObject:
   m_ObjectHideFlags: 0
@@ -14738,8 +14702,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1017971787
 GameObject:
   m_ObjectHideFlags: 0
@@ -14949,6 +14911,8 @@ MonoBehaviour:
   maxSpawnTry: 1
   activeEnemies: []
   maxEnemyCount: 4
+  relocateDistance: 85
+  fallRelocateDepth: 30
 --- !u!1001 &1025497343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15067,8 +15031,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1027326533
 GameObject:
   m_ObjectHideFlags: 0
@@ -15684,8 +15646,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1067647110
 GameObject:
   m_ObjectHideFlags: 0
@@ -15784,8 +15744,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Kill
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -16559,8 +16519,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1099282832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16679,8 +16637,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1105608998
 GameObject:
   m_ObjectHideFlags: 0
@@ -17253,7 +17209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59c8cf8610c5219468b522c71f81f7e1, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupRunner
 --- !u!114 &1130347062
 MonoBehaviour:
@@ -17265,7 +17221,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bda0718638c260249bfea7240e15510c, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoostFireCullerRunner
 --- !u!114 &1130347063
 MonoBehaviour:
@@ -17277,7 +17233,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47f2103dd7f04724eaa53d4d1d56c571, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrainRunner
 --- !u!114 &1130347064
 MonoBehaviour:
@@ -17289,7 +17245,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1c29163ab298c49bfdf9e8dbd17794, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifetimeRunner
 --- !u!4 &1130347065
 Transform:
@@ -17476,8 +17432,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1144000008
 GameObject:
   m_ObjectHideFlags: 0
@@ -17674,8 +17628,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -18087,8 +18041,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1150411207
 GameObject:
   m_ObjectHideFlags: 0
@@ -18510,8 +18462,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1155700518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18630,8 +18580,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1160648192
 GameObject:
   m_ObjectHideFlags: 0
@@ -18699,8 +18647,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Options
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -19856,8 +19804,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: A
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -21394,8 +21342,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1376494706
 GameObject:
   m_ObjectHideFlags: 0
@@ -21802,8 +21748,75 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
+--- !u!1001 &1396147197
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.858136
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -14.589272
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -23.72111
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_Name
+      value: Bit_00
+      objectReference: {fileID: 0}
+    - target: {fileID: 7542480432056242900, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f39163344472e4f40a496dc3a569f485, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418872037}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+--- !u!4 &1396147198 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+  m_PrefabInstance: {fileID: 1396147197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1406515094
 GameObject:
   m_ObjectHideFlags: 0
@@ -22052,8 +22065,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1409653945
 GameObject:
   m_ObjectHideFlags: 0
@@ -22255,6 +22266,130 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponControllerManager
   player: {fileID: 275487193}
+--- !u!1001 &1418872036
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1396147198}
+    m_Modifications:
+    - target: {fileID: 2000020000, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: targetSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000020000, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'targetColliders.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933798852626595605, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: shotPoint
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3365508
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0731349
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1293775
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.019335788
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.052713
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0089497
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_Name
+      value: Bit_aura
+      objectReference: {fileID: 0}
+    - target: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7542480432056242900, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f94256d5670de14aa4164b0f3c1b77d, type: 2}
+    - target: {fileID: 7542480432056242900, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f94256d5670de14aa4164b0f3c1b77d, type: 2}
+    - target: {fileID: 7542480432056242900, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f94256d5670de14aa4164b0f3c1b77d, type: 2}
+    - target: {fileID: 7542480432056242900, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f94256d5670de14aa4164b0f3c1b77d, type: 2}
+    m_RemovedComponents:
+    - {fileID: 3399542025029340652, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 6515575751581878923, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 5154964929320662522, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 351978529155683102, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 4933798852626595605, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 1800572802802244149, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: -517846635209720168, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 7862773016890114749, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 4657746142798485403, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 3273962408429500559, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 255385233847080976, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 2000020000, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    - {fileID: 3484526640886153629, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4903604902548013119, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+--- !u!4 &1418872037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6422507741764824080, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+  m_PrefabInstance: {fileID: 1418872036}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1429867609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22373,8 +22508,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1447789687
 GameObject:
   m_ObjectHideFlags: 0
@@ -23133,8 +23266,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: B
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23607,8 +23740,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1519347401
 GameObject:
   m_ObjectHideFlags: 0
@@ -23971,8 +24102,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Damage
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -24403,8 +24534,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1599175176
 GameObject:
   m_ObjectHideFlags: 0
@@ -25719,8 +25848,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1701374483
 GameObject:
   m_ObjectHideFlags: 0
@@ -25780,8 +25907,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: HitPerFire
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25976,8 +26103,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1717197981
 GameObject:
   m_ObjectHideFlags: 0
@@ -26223,8 +26348,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1727859574
 GameObject:
   m_ObjectHideFlags: 0
@@ -26588,8 +26711,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1744913923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26759,8 +26880,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1749464710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26879,8 +26998,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1763201855
 GameObject:
   m_ObjectHideFlags: 0
@@ -27129,8 +27246,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1800776558
 GameObject:
   m_ObjectHideFlags: 0
@@ -27296,8 +27411,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Result
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -28222,8 +28337,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1888381298
 GameObject:
   m_ObjectHideFlags: 0
@@ -28733,8 +28846,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1931748021
 GameObject:
   m_ObjectHideFlags: 0
@@ -29054,8 +29165,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1973173856
 GameObject:
   m_ObjectHideFlags: 0
@@ -29377,8 +29486,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1992518791
 GameObject:
   m_ObjectHideFlags: 0
@@ -29543,7 +29650,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
   targetSource: {fileID: 275487193}
   targetColliders:
@@ -30125,8 +30232,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Square
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
-  m_sharedMaterial: {fileID: 4599482588056873098, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -30440,8 +30547,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2077242146
 GameObject:
   m_ObjectHideFlags: 0
@@ -31125,8 +31230,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2094314867
 GameObject:
   m_ObjectHideFlags: 0
@@ -31802,8 +31905,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &2132145362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31977,8 +32078,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2139449808
 GameObject:
   m_ObjectHideFlags: 0
@@ -32261,3 +32360,4 @@ SceneRoots:
   - {fileID: 1653113032}
   - {fileID: 467297659}
   - {fileID: 1130347065}
+  - {fileID: 1396147197}
