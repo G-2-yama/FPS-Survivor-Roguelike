@@ -1,235 +1,336 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 /// <summary>
-/// ƒQ[ƒ€ƒpƒbƒh‚Ì•ûŒü“ü—Í‚ğ Input System ‚Ì‰¼‘zƒ}ƒEƒX‚É•ÏŠ·‚·‚éƒNƒ‰ƒX
-/// Šù‘¶‚Ìƒ}ƒEƒX‘Î‰ UI ‚ğASelectable ‚Ìİ’è‚È‚µ‚Å‘€ì‚Å‚«‚é‚æ‚¤‚É‚·‚é
+/// ç‰©ç†ãƒã‚¦ã‚¹ã¨ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«ã®å…¥åŠ›å…ƒã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+/// ãƒ›ãƒãƒ¼å‡¦ç†ã¯ InputSystemUIInputModule ã«ä»»ã›ã‚‹
 /// </summary>
 public sealed class GamepadVirtualMouseCursor : MonoBehaviour
 {
-    private const float DpadSpeed = 480f;
-    private const float StickSpeed = 960f;
+    private const float ActivityThreshold = 0.01f;
+    private const float GamepadAxisChangeThreshold = 0.0001f;
 
+    [Tooltip("ã‚«ãƒ¼ã‚½ãƒ«é€Ÿåº¦ã¨è¦‹ãŸç›®ã‚’ç®¡ç†ã™ã‚‹è¨­å®š")]
+    [SerializeField] private GameUICursorSettings settings;
+
+    [Tooltip("ç”»é¢ä¸Šã§ç§»å‹•ã™ã‚‹ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«ã® RectTransform")]
+    [SerializeField] private RectTransform cursorTransform;
+
+    [Tooltip("ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«ã® Image")]
+    [SerializeField] private Image cursorImage;
+
+    private Mouse physicalMouse;
     private Mouse virtualMouse;
     private Vector2 cursorPosition;
-    private RectTransform cursorTransform;
-    private PointerEventData pointerEventData;
-    private GameObject pressedObject;
-    private GameObject hoveredObject;
-    private bool wasPrimaryPressed;
-    private readonly List<RaycastResult> raycastResults = new();
+    private Vector2 previousDpad;
+    private Vector2 previousLeftStick;
+    private Vector2 previousRightStick;
+    private float previousLeftTrigger;
+    private float previousRightTrigger;
+    private PointerOwner pointerOwner;
+    private bool hasPublishedVirtualPosition;
+    private bool virtualCursorActive;
+    private bool virtualLeftClickPressed;
 
     /// <summary>
-    /// ƒV[ƒ““ÇŒã‚É‰¼‘zƒJ[ƒ\ƒ‹‚ğ1‚Â‚¾‚¯¶¬‚·‚éƒƒ\ƒbƒh
+    /// ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’ç”»é¢åº§æ¨™ã§è¿”ã™
     /// </summary>
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void CreateIfNeeded()
-    {
-        if (FindFirstObjectByType<GamepadVirtualMouseCursor>() != null)
-        {
-            return;
-        }
+    public Vector2 CursorPosition => cursorPosition;
 
-        GameObject cursorObject = new(nameof(GamepadVirtualMouseCursor));
-        DontDestroyOnLoad(cursorObject);
-        cursorObject.AddComponent<GamepadVirtualMouseCursor>();
+    /// <summary>
+    /// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«ãŒç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã™
+    /// </summary>
+    public bool IsVirtualCursorActive => virtualCursorActive;
+
+    private enum PointerOwner
+    {
+        PhysicalMouse,
+        Gamepad
     }
 
     /// <summary>
-    /// Input System ã‚Ì‰¼‘zƒ}ƒEƒX‚Æ•\¦—pƒJ[ƒ\ƒ‹‚ğ‰Šú‰»‚·‚éƒƒ\ƒbƒh
+    /// ä»®æƒ³ãƒã‚¦ã‚¹ã‚’åˆæœŸåŒ–ã—ã€è¨­å®šæ¸ˆã¿ã®ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºã‚’é©ç”¨ã™ã‚‹
     /// </summary>
     private void OnEnable()
     {
+        physicalMouse = Mouse.current;
         virtualMouse = InputSystem.AddDevice<Mouse>("Gamepad Virtual Mouse");
-        cursorPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        UpdateVirtualMouseState(Vector2.zero, false, false);
-        CreateCursorVisual();
+        pointerOwner = PointerOwner.PhysicalMouse;
+        virtualCursorActive = false;
+        virtualLeftClickPressed = false;
+        cursorPosition = GetPhysicalMousePosition();
+        previousDpad = Vector2.zero;
+        previousLeftStick = Vector2.zero;
+        previousRightStick = Vector2.zero;
+        previousLeftTrigger = 0f;
+        previousRightTrigger = 0f;
+        hasPublishedVirtualPosition = false;
+        PublishVirtualPosition(Vector2.zero);
+
+        if (settings != null && cursorTransform != null)
+        {
+            cursorTransform.sizeDelta = Vector2.one * settings.CursorSize;
+        }
+
+        if (settings != null && cursorImage != null)
+        {
+            cursorImage.color = settings.CursorColor;
+        }
+
+        SetVirtualCursorVisible(false);
     }
 
     /// <summary>
-    /// “o˜^Ï‚İ‚Ì‰¼‘zƒ}ƒEƒX‚ğ Input System ‚©‚ç‰ğœ‚·‚éƒƒ\ƒbƒh
+    /// Input System ã«è¿½åŠ ã—ãŸä»®æƒ³ãƒã‚¦ã‚¹ã‚’è§£é™¤ã™ã‚‹
     /// </summary>
     private void OnDisable()
     {
+        SetVirtualCursorVisible(false);
+        virtualCursorActive = false;
+        virtualLeftClickPressed = false;
+        PublishVirtualPosition(Vector2.zero);
+
         if (virtualMouse != null && virtualMouse.added)
         {
             InputSystem.RemoveDevice(virtualMouse);
         }
+
+        virtualMouse = null;
     }
 
     /// <summary>
-    /// ƒJ[ƒ\ƒ‹•\¦’†‚¾‚¯ƒQ[ƒ€ƒpƒbƒh“ü—Í‚ğ‰¼‘zƒ}ƒEƒX‚Ö”½‰f‚·‚éƒƒ\ƒbƒh
+    /// å…¥åŠ›çŠ¶æ³ã«å¿œã˜ã¦ãƒ›ãƒãƒ¼ã‚’åˆ¶å¾¡ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿ãƒ¼ã®æ‰€æœ‰è€…ã‚’æ›´æ–°ã™ã‚‹
     /// </summary>
-    private void Update()
+    /// <param name="cursorAllowed">ç¾åœ¨ã®ã‚²ãƒ¼ãƒ çŠ¶æ…‹ã§ã‚«ãƒ¼ã‚½ãƒ«æ“ä½œãŒè¨±å¯ã•ã‚Œã¦ã„ã‚‹ã‹</param>
+    /// <returns>ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãŒãƒã‚¤ãƒ³ã‚¿ãƒ¼ã‚’æ‰€æœ‰ã—ã¦ã„ã‚‹ã‹</returns>
+    public bool UpdatePointer(bool cursorAllowed)
     {
+        bool wasGamepadOwner = pointerOwner == PointerOwner.Gamepad;
+
+        // ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ã®è¦–ç‚¹æ“ä½œã‚’UIã‚«ãƒ¼ã‚½ãƒ«ã®æ“ä½œã¨ã—ã¦æ‰±ã‚ãªã„
+        if (cursorAllowed
+            && Cursor.lockState != CursorLockMode.Locked
+            && HasPhysicalMouseActivity())
+        {
+            pointerOwner = PointerOwner.PhysicalMouse;
+        }
+
         Gamepad gamepad = Gamepad.current;
-        bool canControlCursor = gamepad != null && Cursor.visible;
-        cursorTransform.gameObject.SetActive(canControlCursor);
-
-        if (!canControlCursor)
+        // åŒã˜ãƒ•ãƒ¬ãƒ¼ãƒ ã«ä¸¡æ–¹ã®å…¥åŠ›ãŒã‚ã£ãŸå ´åˆã¯ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã‚’å„ªå…ˆã™ã‚‹
+        if (gamepad != null && HasGamepadActivity(gamepad))
         {
-            UpdateVirtualMouseState(Vector2.zero, false, false);
-            ProcessPrimaryClick(false, Vector2.zero);
-            return;
+            pointerOwner = PointerOwner.Gamepad;
+        }
+        else if (gamepad == null)
+        {
+            pointerOwner = PointerOwner.PhysicalMouse;
+            previousDpad = Vector2.zero;
+            previousLeftStick = Vector2.zero;
+            previousRightStick = Vector2.zero;
+            previousLeftTrigger = 0f;
+            previousRightTrigger = 0f;
         }
 
-        Vector2 dpadInput = gamepad.dpad.ReadValue();
-        Vector2 stickInput = gamepad.leftStick.ReadValue();
-        Vector2 movement = (dpadInput * DpadSpeed + stickInput * StickSpeed) * Time.unscaledDeltaTime;
+        bool isGamepadOwner = pointerOwner == PointerOwner.Gamepad;
+        bool showVirtualCursor = isGamepadOwner && cursorAllowed;
+        virtualCursorActive = showVirtualCursor;
+        SetVirtualCursorVisible(showVirtualCursor);
 
-        cursorPosition = new Vector2(
-            Mathf.Clamp(cursorPosition.x + movement.x, 0f, Screen.width),
-            Mathf.Clamp(cursorPosition.y + movement.y, 0f, Screen.height));
+        if (!isGamepadOwner)
+        {
+            if (wasGamepadOwner || virtualLeftClickPressed)
+            {
+                virtualLeftClickPressed = false;
+                cursorPosition = GetPhysicalMousePosition();
+                PublishVirtualPosition(Vector2.zero);
+                hasPublishedVirtualPosition = false;
+            }
 
-        UpdateVirtualMouseState(
-            movement,
-            false,
-            false);
+            return false;
+        }
 
-        ProcessPrimaryClick(gamepad.buttonSouth.isPressed, movement);
+        if (!wasGamepadOwner)
+        {
+            cursorPosition = GetPhysicalMousePosition();
+            hasPublishedVirtualPosition = false;
+        }
 
-        cursorTransform.position = cursorPosition;
+        if (!cursorAllowed || gamepad == null)
+        {
+            if (virtualLeftClickPressed)
+            {
+                virtualLeftClickPressed = false;
+                PublishVirtualPosition(Vector2.zero);
+            }
+
+            return true;
+        }
+
+        Vector2 dpad = gamepad.dpad.ReadValue();
+        Vector2 stick = gamepad.leftStick.ReadValue();
+        Vector2 movement = (dpad * GetDpadSpeed() + stick * GetStickSpeed()) * Time.unscaledDeltaTime;
+        bool clickPressed = IsGamepadClickPressed(gamepad);
+        bool clickChanged = virtualLeftClickPressed != clickPressed;
+        virtualLeftClickPressed = clickPressed;
+
+        if (!hasPublishedVirtualPosition || movement.sqrMagnitude > 0f || clickChanged)
+        {
+            cursorPosition = ClampToScreen(cursorPosition + movement);
+            PublishVirtualPosition(movement);
+            hasPublishedVirtualPosition = true;
+        }
+
+        if (cursorTransform != null)
+        {
+            cursorTransform.position = cursorPosition;
+        }
+
+        return true;
     }
 
     /// <summary>
-    /// ‰¼‘zƒJ[ƒ\ƒ‹ˆÊ’u‚Ì UI ‚É‘Î‚µ‚ÄAA / ~ ‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒg‚ğ‘—M‚·‚éƒƒ\ƒbƒh
+    /// ãƒã‚¦ã‚¹ã®ç§»å‹•ã‚„ãƒœã‚¿ãƒ³æ“ä½œãŒã‚ã£ãŸã‹ã‚’èª¿ã¹ã‚‹
     /// </summary>
-    private void ProcessPrimaryClick(bool isPressed, Vector2 movement)
+    private bool HasPhysicalMouseActivity()
     {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem == null)
+        if (physicalMouse == null || !physicalMouse.added)
         {
-            wasPrimaryPressed = isPressed;
-            return;
+            return false;
         }
 
-        pointerEventData ??= new PointerEventData(eventSystem);
-        pointerEventData.button = PointerEventData.InputButton.Left;
-        pointerEventData.position = cursorPosition;
-        pointerEventData.delta = movement;
-
-        raycastResults.Clear();
-        eventSystem.RaycastAll(pointerEventData, raycastResults);
-        RaycastResult currentRaycast = raycastResults.Count > 0 ? raycastResults[0] : default;
-        GameObject currentObject = currentRaycast.gameObject;
-        pointerEventData.pointerCurrentRaycast = currentRaycast;
-        UpdateHover(currentObject);
-
-        if (isPressed && !wasPrimaryPressed)
-        {
-            pointerEventData.pressPosition = cursorPosition;
-            pointerEventData.pointerPressRaycast = currentRaycast;
-            pointerEventData.eligibleForClick = true;
-            pressedObject = ExecuteEvents.ExecuteHierarchy(
-                currentObject,
-                pointerEventData,
-                ExecuteEvents.pointerDownHandler);
-
-            if (pressedObject == null)
-            {
-                pressedObject = ExecuteEvents.GetEventHandler<IPointerClickHandler>(currentObject);
-            }
-
-            pointerEventData.pointerPress = pressedObject;
-        }
-        else if (!isPressed && wasPrimaryPressed)
-        {
-            if (pressedObject != null)
-            {
-                ExecuteEvents.Execute(pressedObject, pointerEventData, ExecuteEvents.pointerUpHandler);
-            }
-
-            GameObject clickTarget = ExecuteEvents.GetEventHandler<IPointerClickHandler>(currentObject);
-            if (pressedObject != null && pressedObject == clickTarget && pointerEventData.eligibleForClick)
-            {
-                ExecuteEvents.Execute(pressedObject, pointerEventData, ExecuteEvents.pointerClickHandler);
-            }
-
-            pointerEventData.pointerPress = null;
-            pressedObject = null;
-            pointerEventData.eligibleForClick = false;
-        }
-
-        wasPrimaryPressed = isPressed;
+        return physicalMouse.delta.ReadValue().sqrMagnitude > ActivityThreshold
+            || physicalMouse.scroll.ReadValue().sqrMagnitude > ActivityThreshold
+            || WasPressedOrReleased(physicalMouse.leftButton)
+            || WasPressedOrReleased(physicalMouse.rightButton)
+            || WasPressedOrReleased(physicalMouse.middleButton);
     }
 
     /// <summary>
-    /// ‰¼‘zƒJ[ƒ\ƒ‹‰º‚Ì UI ‚Éƒzƒo[ŠJnEI—¹ƒCƒxƒ“ƒg‚ğ‘—M‚·‚éƒƒ\ƒbƒh
+    /// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®æ“ä½œãŒã‚ã£ãŸã‹ã‚’èª¿ã¹ã‚‹
+    /// è»¸ã‚’å€’ã—ç¶šã‘ãŸçŠ¶æ…‹ã ã‘ã§ã¯æ‰€æœ‰æ¨©ã‚’åˆ‡ã‚Šæ›¿ãˆãªã„
     /// </summary>
-    private void UpdateHover(GameObject currentObject)
+    private bool HasGamepadActivity(Gamepad gamepad)
     {
-        if (hoveredObject == currentObject)
+        Vector2 dpad = gamepad.dpad.ReadValue();
+        Vector2 leftStick = gamepad.leftStick.ReadValue();
+        Vector2 rightStick = gamepad.rightStick.ReadValue();
+        float leftTrigger = gamepad.leftTrigger.ReadValue();
+        float rightTrigger = gamepad.rightTrigger.ReadValue();
+
+        bool axisChanged = (dpad - previousDpad).sqrMagnitude > GamepadAxisChangeThreshold
+            || leftStick.sqrMagnitude > 0.0225f
+                && (leftStick - previousLeftStick).sqrMagnitude > GamepadAxisChangeThreshold
+            || rightStick.sqrMagnitude > 0.0225f
+                && (rightStick - previousRightStick).sqrMagnitude > GamepadAxisChangeThreshold
+            || Mathf.Abs(leftTrigger - previousLeftTrigger) > ActivityThreshold
+            || Mathf.Abs(rightTrigger - previousRightTrigger) > ActivityThreshold;
+
+        previousDpad = dpad;
+        previousLeftStick = leftStick;
+        previousRightStick = rightStick;
+        previousLeftTrigger = leftTrigger;
+        previousRightTrigger = rightTrigger;
+
+        return axisChanged
+            || WasPressedOrReleased(gamepad.buttonSouth)
+            || WasPressedOrReleased(gamepad.buttonEast)
+            || WasPressedOrReleased(gamepad.buttonWest)
+            || WasPressedOrReleased(gamepad.buttonNorth)
+            || WasPressedOrReleased(gamepad.leftShoulder)
+            || WasPressedOrReleased(gamepad.rightShoulder)
+            || WasPressedOrReleased(gamepad.leftStickButton)
+            || WasPressedOrReleased(gamepad.rightStickButton)
+            || WasPressedOrReleased(gamepad.startButton)
+            || WasPressedOrReleased(gamepad.selectButton);
+    }
+
+    /// <summary>
+    /// ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‹ã€é›¢ã•ã‚ŒãŸã‹ã‚’èª¿ã¹ã‚‹
+    /// </summary>
+    private static bool WasPressedOrReleased(ButtonControl button)
+    {
+        return button.wasPressedThisFrame || button.wasReleasedThisFrame;
+    }
+
+    /// <summary>
+    /// UIæ±ºå®šãƒœã‚¿ãƒ³ã¨å·¦å³ãƒˆãƒªã‚¬ãƒ¼ã‚’ä»®æƒ³ãƒã‚¦ã‚¹ã®å·¦ã‚¯ãƒªãƒƒã‚¯ã¨ã—ã¦æ‰±ã†
+    /// </summary>
+    private static bool IsGamepadClickPressed(Gamepad gamepad)
+    {
+        return gamepad.buttonEast.isPressed
+            || gamepad.leftTrigger.isPressed
+            || gamepad.rightTrigger.isPressed;
+    }
+
+    /// <summary>
+    /// ç¾åœ¨ã®ç‰©ç†ãƒã‚¦ã‚¹ä½ç½®ã‚’ç”»é¢å†…ã®åº§æ¨™ã«ã™ã‚‹
+    /// </summary>
+    private Vector2 GetPhysicalMousePosition()
+    {
+        Vector2 position = physicalMouse != null && physicalMouse.added
+            ? physicalMouse.position.ReadValue()
+            : new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+
+        return ClampToScreen(position);
+    }
+
+    /// <summary>
+    /// ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’ç”»é¢å†…ã«åã‚ã‚‹
+    /// </summary>
+    private static Vector2 ClampToScreen(Vector2 position)
+    {
+        return new Vector2(
+            Mathf.Clamp(position.x, 0f, Screen.width),
+            Mathf.Clamp(position.y, 0f, Screen.height));
+    }
+
+    /// <summary>
+    /// ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«è¨­å®šãŒãªã„å ´åˆã«ä½¿ã†åå­—ã‚­ãƒ¼é€Ÿåº¦ã‚’è¿”ã™
+    /// </summary>
+    private float GetDpadSpeed()
+    {
+        return settings != null ? settings.DpadSpeed : 480f;
+    }
+
+    /// <summary>
+    /// ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«è¨­å®šãŒãªã„å ´åˆã«ä½¿ã†ã‚¹ãƒ†ã‚£ãƒƒã‚¯é€Ÿåº¦ã‚’è¿”ã™
+    /// </summary>
+    private float GetStickSpeed()
+    {
+        return settings != null ? settings.StickSpeed : 960f;
+    }
+
+    /// <summary>
+    /// ä»®æƒ³ãƒã‚¦ã‚¹ã®ä½ç½®ã‚’ Input System ã«é€šçŸ¥ã™ã‚‹
+    /// </summary>
+    private void PublishVirtualPosition(Vector2 movement)
+    {
+        if (virtualMouse == null || !virtualMouse.added)
         {
             return;
         }
 
-        if (hoveredObject != null)
-        {
-            ExecuteEvents.ExecuteHierarchy(
-                hoveredObject,
-                pointerEventData,
-                ExecuteEvents.pointerExitHandler);
-        }
-
-        hoveredObject = currentObject;
-
-        if (hoveredObject != null)
-        {
-            ExecuteEvents.ExecuteHierarchy(
-                hoveredObject,
-                pointerEventData,
-                ExecuteEvents.pointerEnterHandler);
-        }
-    }
-
-    /// <summary>
-    /// ˆÊ’uAˆÚ“®—ÊAƒ{ƒ^ƒ“ó‘Ô‚ğ‚Ü‚Æ‚ß‚Ä‰¼‘zƒ}ƒEƒX‚Ö”½‰f‚·‚éƒƒ\ƒbƒh
-    /// </summary>
-    private void UpdateVirtualMouseState(Vector2 delta, bool leftPressed, bool rightPressed)
-    {
         MouseState state = new MouseState
         {
             position = cursorPosition,
-            delta = delta
+            delta = movement
         };
-
-        state = state
-            .WithButton(MouseButton.Left, leftPressed)
-            .WithButton(MouseButton.Right, rightPressed);
+        state.WithButton(MouseButton.Left, virtualLeftClickPressed);
 
         InputState.Change(virtualMouse, state);
     }
 
     /// <summary>
-    /// ‰æ–ÊÅ‘O–Ê‚É•\¦‚·‚é‰¼‘zƒJ[ƒ\ƒ‹‚ÌŒ©‚½–Ú‚ğ¶¬‚·‚éƒƒ\ƒbƒh
+    /// ä»®æƒ³ã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’å¿…è¦ãªå ´åˆã ã‘å¤‰æ›´ã™ã‚‹
     /// </summary>
-    private void CreateCursorVisual()
+    private void SetVirtualCursorVisible(bool isVisible)
     {
-        GameObject canvasObject = new("Gamepad Virtual Cursor Canvas");
-        DontDestroyOnLoad(canvasObject);
-
-        Canvas canvas = canvasObject.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = short.MaxValue;
-        canvasObject.AddComponent<CanvasScaler>();
-
-        GameObject imageObject = new("Cursor");
-        imageObject.transform.SetParent(canvasObject.transform, false);
-        Image image = imageObject.AddComponent<Image>();
-        image.sprite = Sprite.Create(
-            Texture2D.whiteTexture,
-            new Rect(0f, 0f, 1f, 1f),
-            new Vector2(0.5f, 0.5f));
-        image.color = Color.white;
-        image.raycastTarget = false;
-
-        cursorTransform = image.rectTransform;
-        cursorTransform.sizeDelta = new Vector2(20f, 20f);
-        cursorTransform.position = cursorPosition;
+        if (cursorTransform != null && cursorTransform.gameObject.activeSelf != isVisible)
+        {
+            cursorTransform.gameObject.SetActive(isVisible);
+        }
     }
 }

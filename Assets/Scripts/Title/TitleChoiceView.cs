@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面の二択ボタンの選択状態を表示する
+/// </summary>
 [RequireComponent(typeof(Button))]
 public class TitleChoiceView : MonoBehaviour
 {
@@ -17,4 +20,5 @@ public class TitleChoiceView : MonoBehaviour
         foreach (var target in colors)
             target.Apply(isOn ? 1f : 0f);
     }
+
 }

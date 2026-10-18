@@ -51,4 +51,5 @@ public class UIHoverScaler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         targetScale = defaultScale;
     }
+
 }

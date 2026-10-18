@@ -3,6 +3,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面のゲームモード選択肢を表示する
+/// </summary>
 public class GameModeOptionView : MonoBehaviour
 {
     [Tooltip("押すとこのモードを選ぶボタン")]

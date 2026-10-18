@@ -794,8 +794,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &69015982
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,8 +987,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &83808288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,6 +1089,8 @@ MonoBehaviour:
   maxSpawnTry: 5
   activeEnemies: []
   maxEnemyCount: 1500
+  relocateDistance: 85
+  fallRelocateDepth: 30
 --- !u!114 &90786721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1454,6 +1452,7 @@ MonoBehaviour:
   buttonText: {fileID: 491112073}
   descriptionText: {fileID: 644052416}
   iconImage: {fileID: 1763201857}
+  hoverScaler: {fileID: 100424966}
 --- !u!114 &100424966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1644,8 +1643,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &116450158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,8 +2129,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &170879959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,7 +2305,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b2b1f0ac74a49f8a64d72ff31f56b6c, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnemyPushZone
 --- !u!136 &180629989
 CapsuleCollider:
@@ -2529,8 +2524,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &197229297
 GameObject:
   m_ObjectHideFlags: 0
@@ -3156,8 +3149,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &240814476
 GameObject:
   m_ObjectHideFlags: 0
@@ -3750,8 +3741,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &253276470
 GameObject:
   m_ObjectHideFlags: 0
@@ -4587,7 +4576,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acd29e46936978a44a4cffad231058d2, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupMagnet
   pullSpeed: 80
   maxHeight: 2
@@ -4859,8 +4848,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &286779754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5034,8 +5021,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &296001861
 GameObject:
   m_ObjectHideFlags: 0
@@ -5645,8 +5630,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &328223104
 GameObject:
   m_ObjectHideFlags: 0
@@ -6375,8 +6358,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &383212502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7261,6 +7242,7 @@ GameObject:
   - component: {fileID: 419950867}
   - component: {fileID: 419950871}
   - component: {fileID: 419950870}
+  - component: {fileID: 419950872}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7282,6 +7264,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   player: {fileID: 275487193}
   playerInput: {fileID: 275487190}
+  gamepadVirtualMouseCursor: {fileID: 419950872}
+  gameplayGraphicRaycaster: {fileID: 879235456}
+  upgradeGraphicRaycaster: {fileID: 902955986}
+  inventoryGraphicRaycaster: {fileID: 1562638432}
+  endGraphicRaycaster: {fileID: 94670762}
   timer: {fileID: 383212504}
   gameEndView: {fileID: 1038115523}
   upgradeManager: {fileID: 1653113031}
@@ -7415,6 +7402,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &419950872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419950866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2382f457e510fae49a500733eca2310d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamepadVirtualMouseCursor
+  settings: {fileID: 11400000, guid: 9e1b28b5bced4ff7be9f14d33d3dcf52, type: 2}
+  cursorTransform: {fileID: 2147000021}
+  cursorImage: {fileID: 2147000023}
 --- !u!1 &430907015
 GameObject:
   m_ObjectHideFlags: 0
@@ -7939,8 +7941,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &454838534
 GameObject:
   m_ObjectHideFlags: 0
@@ -8600,8 +8600,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &491112069
 GameObject:
   m_ObjectHideFlags: 0
@@ -9121,8 +9119,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &512261115
 GameObject:
   m_ObjectHideFlags: 0
@@ -9825,8 +9821,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &553230705
 GameObject:
   m_ObjectHideFlags: 0
@@ -11983,8 +11977,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &754599593
 GameObject:
   m_ObjectHideFlags: 0
@@ -12470,8 +12462,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &824503142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12694,8 +12684,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -13387,8 +13375,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &902955985
 GameObject:
   m_ObjectHideFlags: 0
@@ -14738,8 +14724,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1017971787
 GameObject:
   m_ObjectHideFlags: 0
@@ -14949,6 +14933,8 @@ MonoBehaviour:
   maxSpawnTry: 1
   activeEnemies: []
   maxEnemyCount: 4
+  relocateDistance: 85
+  fallRelocateDepth: 30
 --- !u!1001 &1025497343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15067,8 +15053,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1027326533
 GameObject:
   m_ObjectHideFlags: 0
@@ -15371,17 +15355,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: 5129d6ea170d46a28206170a07c4924f, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
@@ -15684,8 +15668,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1067647110
 GameObject:
   m_ObjectHideFlags: 0
@@ -16559,8 +16541,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1099282832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16679,8 +16659,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1105608998
 GameObject:
   m_ObjectHideFlags: 0
@@ -17253,7 +17231,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59c8cf8610c5219468b522c71f81f7e1, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupRunner
 --- !u!114 &1130347062
 MonoBehaviour:
@@ -17265,7 +17243,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bda0718638c260249bfea7240e15510c, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoostFireCullerRunner
 --- !u!114 &1130347063
 MonoBehaviour:
@@ -17277,7 +17255,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47f2103dd7f04724eaa53d4d1d56c571, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrainRunner
 --- !u!114 &1130347064
 MonoBehaviour:
@@ -17289,7 +17267,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1c29163ab298c49bfdf9e8dbd17794, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifetimeRunner
 --- !u!4 &1130347065
 Transform:
@@ -17476,8 +17454,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1144000008
 GameObject:
   m_ObjectHideFlags: 0
@@ -18087,8 +18063,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1150411207
 GameObject:
   m_ObjectHideFlags: 0
@@ -18510,8 +18484,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1155700518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18630,8 +18602,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1160648192
 GameObject:
   m_ObjectHideFlags: 0
@@ -19323,6 +19293,7 @@ MonoBehaviour:
   buttonText: {fileID: 1841412497}
   descriptionText: {fileID: 2142952036}
   iconImage: {fileID: 138809448}
+  hoverScaler: {fileID: 1185270543}
 --- !u!114 &1185270543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20856,6 +20827,7 @@ MonoBehaviour:
   buttonText: {fileID: 1083508650}
   descriptionText: {fileID: 548533137}
   iconImage: {fileID: 44739988}
+  hoverScaler: {fileID: 1274284095}
 --- !u!114 &1274284095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21394,8 +21366,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1376494706
 GameObject:
   m_ObjectHideFlags: 0
@@ -21802,8 +21772,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1406515094
 GameObject:
   m_ObjectHideFlags: 0
@@ -22052,8 +22020,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1409653945
 GameObject:
   m_ObjectHideFlags: 0
@@ -22373,8 +22339,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1447789687
 GameObject:
   m_ObjectHideFlags: 0
@@ -23607,8 +23571,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1519347401
 GameObject:
   m_ObjectHideFlags: 0
@@ -24403,8 +24365,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1599175176
 GameObject:
   m_ObjectHideFlags: 0
@@ -25719,8 +25679,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1701374483
 GameObject:
   m_ObjectHideFlags: 0
@@ -25976,8 +25934,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1717197981
 GameObject:
   m_ObjectHideFlags: 0
@@ -26223,8 +26179,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1727859574
 GameObject:
   m_ObjectHideFlags: 0
@@ -26588,8 +26542,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1744913923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26759,8 +26711,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &1749464710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26879,8 +26829,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1763201855
 GameObject:
   m_ObjectHideFlags: 0
@@ -27129,8 +27077,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1800776558
 GameObject:
   m_ObjectHideFlags: 0
@@ -28222,8 +28168,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1888381298
 GameObject:
   m_ObjectHideFlags: 0
@@ -28733,8 +28677,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1931748021
 GameObject:
   m_ObjectHideFlags: 0
@@ -29054,8 +28996,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1973173856
 GameObject:
   m_ObjectHideFlags: 0
@@ -29377,8 +29317,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &1992518791
 GameObject:
   m_ObjectHideFlags: 0
@@ -29543,7 +29481,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
   targetSource: {fileID: 275487193}
   targetColliders:
@@ -30440,8 +30378,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2077242146
 GameObject:
   m_ObjectHideFlags: 0
@@ -31125,8 +31061,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2094314867
 GameObject:
   m_ObjectHideFlags: 0
@@ -31802,8 +31736,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1001 &2132145362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31977,8 +31909,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  relocateEnemiesOnWarp: 1
-  enemyRelocationHalfHeight: 50
 --- !u!1 &2139449808
 GameObject:
   m_ObjectHideFlags: 0
@@ -32243,6 +32173,142 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2147000010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147000011}
+  - component: {fileID: 2147000012}
+  m_Layer: 5
+  m_Name: Gamepad Virtual Cursor Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!223 &2147000012
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000010}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 0
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 32767
+  m_TargetDisplay: 0
+--- !u!224 &2147000011
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000010}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2147000021}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2147000020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147000021}
+  - component: {fileID: 2147000022}
+  - component: {fileID: 2147000023}
+  m_Layer: 5
+  m_Name: Gamepad Virtual Cursor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2147000021
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2147000011}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2147000022
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000020}
+  m_CullTransparentMesh: 1
+--- !u!114 &2147000023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -32261,3 +32327,4 @@ SceneRoots:
   - {fileID: 1653113032}
   - {fileID: 467297659}
   - {fileID: 1130347065}
+  - {fileID: 2147000011}
