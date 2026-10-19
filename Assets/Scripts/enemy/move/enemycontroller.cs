@@ -19,6 +19,8 @@ public class EnemyBrain : MonoBehaviour
     public Rigidbody Rb => rb;
     public Transform CachedTransform => cachedTransform;
     public EnemyConfig Config => config;
+    /// <summary>この個体の戦闘開始距離。共有Configは初期値としてのみ使用する</summary>
+    public float EngageDistance { get; private set; }
     public Transform Target => targetProvider?.CurrentTarget;
     public EnemyAttackController Attack => attack;
     public Animator Animator => animator;
@@ -46,6 +48,7 @@ public class EnemyBrain : MonoBehaviour
     private void Awake()
     {
         cachedTransform = transform;
+        ResetEngageDistance();
         canThin = gameObject.layer == LayerMask.NameToLayer("Enemy");
         stateMachine = new StateMachine<IState>();
 
@@ -131,6 +134,7 @@ public class EnemyBrain : MonoBehaviour
 
     public void ResetBrain()
     {
+        ResetEngageDistance();
         if (animator != null)
         {
             animator.enabled = false;
@@ -153,5 +157,17 @@ public class EnemyBrain : MonoBehaviour
     public void ChangeState(IState newState)
     {
         stateMachine.ChangeState(newState);
+    }
+
+    /// <summary>共有Configを書き換えずに、この個体の戦闘開始距離を変更する</summary>
+    public void SetEngageDistance(float distance)
+    {
+        EngageDistance = Mathf.Max(0f, distance);
+    }
+
+    /// <summary>生成時とプールからの再出現時に初期値へ戻す</summary>
+    private void ResetEngageDistance()
+    {
+        SetEngageDistance(config != null ? config.EngageDistance : 0f);
     }
 }

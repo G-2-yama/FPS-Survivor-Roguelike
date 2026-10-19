@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: 'Gatling_00[ex]'
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  MaxHp: 5
+  MaxHp: 25
   damagelange: 1
   knockbackResistance: 0
   knockbackDuration: 0.2
   engagedistance: 5
-  chaseMovedata: {fileID: 0}
-  combatMovedata: {fileID: 0}
-  AttackPower: 1
-  AttackInterval: 3
-  AttackPattern: {fileID: 0}
+  chaseMovedata: {fileID: 11400000, guid: 0bf8519adddb9074f90c4e2dc81530da, type: 2}
+  combatMovedata: {fileID: 11400000, guid: bd15d52bb6033f04196f6fa0882f4e26, type: 2}
+  AttackPower: 10
+  AttackInterval: 4
+  AttackPattern: {fileID: 11400000, guid: 3563debca73b9394f9ed4207761931b2, type: 2}

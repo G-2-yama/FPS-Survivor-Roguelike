@@ -8,7 +8,6 @@ namespace BalanceSim.Editor
     {
         public const string PickupRangeKey = "PickupRadius";
 
-        private readonly HashSet<EnemyConfig> _initializedConfigs;
         private readonly ProjectileReader _projectiles;
         private readonly List<string> _warnings;
         private readonly float _pickupRadius;
@@ -19,9 +18,8 @@ namespace BalanceSim.Editor
         public List<SimEnemyDef> Enemies { get; } = new();
         public List<SimPickupDef> Pickups { get; } = new();
 
-        public PrefabReader(HashSet<EnemyConfig> initializedConfigs, ProjectileReader projectiles, List<string> warnings, float pickupRadius, PickupMagnet pickupMagnet)
+        public PrefabReader(ProjectileReader projectiles, List<string> warnings, float pickupRadius, PickupMagnet pickupMagnet)
         {
-            _initializedConfigs = initializedConfigs;
             _projectiles = projectiles;
             _warnings = warnings;
             _pickupRadius = pickupRadius;
@@ -321,7 +319,7 @@ namespace BalanceSim.Editor
 
         private float EngageDistance(EnemyConfig config)
         {
-            return _initializedConfigs.Contains(config) ? SerializedReader.Float(config, "engagedistance") : 0f;
+            return config.EngageDistance;
         }
 
         private SimMovementDef ReadMovement(MovementPattern pattern)
