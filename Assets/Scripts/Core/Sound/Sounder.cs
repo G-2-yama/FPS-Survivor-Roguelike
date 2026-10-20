@@ -12,11 +12,28 @@ public class Sounder : MonoBehaviour
 
     private Dictionary<(SoundCategory, int), SoundData> soundDictionary;
     private Dictionary<SoundCategory, List<SoundData>> categoryCandidates;
+    private SoundData loopingData;
     /// <summary>初回生成時に必要な参照と状態を初期化する</summary>
 
     private void Awake()
     {
         InitializeDictionary();
+    }
+
+    private void OnEnable()
+    {
+        GameSettings.Changed += ApplyLoopingVolume;
+    }
+
+    private void OnDisable()
+    {
+        GameSettings.Changed -= ApplyLoopingVolume;
+    }
+
+    private void ApplyLoopingVolume()
+    {
+        if (loopingData != null)
+            audioSource.volume = loopingData.volume * GameSettings.VolumeScale(loopingData.playType);
     }
     /// <summary>効果音設定をカテゴリと番号で参照できるよう準備する</summary>
 
@@ -119,6 +136,7 @@ public class Sounder : MonoBehaviour
                 audioSource.clip = data.clip;
                 audioSource.loop = true;
                 audioSource.Play();
+                loopingData = data;
 
                 break;
         }
@@ -128,6 +146,7 @@ public class Sounder : MonoBehaviour
     public void Stop()
     {
         audioSource.Stop();
+        loopingData = null;
     }
 
     /// <summary>
@@ -136,7 +155,7 @@ public class Sounder : MonoBehaviour
     /// <param name="data">適用するSoundData</param>
     private void ApplySetting(SoundData data)
     {
-        audioSource.volume = data.volume;
+        audioSource.volume = data.volume * GameSettings.VolumeScale(data.playType);
 
         audioSource.pitch = data.pitch;
 

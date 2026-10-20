@@ -12,6 +12,7 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
 {
     private const float ActivityThreshold = 0.01f;
     private const float GamepadAxisChangeThreshold = 0.0001f;
+    private static readonly Vector2 ParkedPosition = new Vector2(-10000f, -10000f);
 
     [Tooltip("カーソル速度と見た目を管理する設定")]
     [SerializeField] private GameUICursorSettings settings;
@@ -34,6 +35,9 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
     private bool hasPublishedVirtualPosition;
     private bool virtualCursorActive;
     private bool virtualLeftClickPressed;
+    private bool virtualPointerParked;
+
+    public bool SuppressVirtualCursor { get; set; }
 
     /// <summary>
     /// 現在のカーソル位置を画面座標で返す
@@ -135,7 +139,7 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
         }
 
         bool isGamepadOwner = pointerOwner == PointerOwner.Gamepad;
-        bool showVirtualCursor = isGamepadOwner && cursorAllowed;
+        bool showVirtualCursor = isGamepadOwner && cursorAllowed && !SuppressVirtualCursor;
         virtualCursorActive = showVirtualCursor;
         SetVirtualCursorVisible(showVirtualCursor);
 
@@ -164,6 +168,19 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
             {
                 virtualLeftClickPressed = false;
                 PublishVirtualPosition(Vector2.zero);
+            }
+
+            return true;
+        }
+
+        if (SuppressVirtualCursor)
+        {
+            if (!virtualPointerParked)
+            {
+                virtualLeftClickPressed = false;
+                PublishVirtualState(ParkedPosition, Vector2.zero);
+                virtualPointerParked = true;
+                hasPublishedVirtualPosition = false;
             }
 
             return true;
@@ -308,6 +325,12 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
     /// </summary>
     private void PublishVirtualPosition(Vector2 movement)
     {
+        virtualPointerParked = false;
+        PublishVirtualState(cursorPosition, movement);
+    }
+
+    private void PublishVirtualState(Vector2 position, Vector2 movement)
+    {
         if (virtualMouse == null || !virtualMouse.added)
         {
             return;
@@ -315,7 +338,7 @@ public sealed class GamepadVirtualMouseCursor : MonoBehaviour
 
         MouseState state = new MouseState
         {
-            position = cursorPosition,
+            position = position,
             delta = movement
         };
         state.WithButton(MouseButton.Left, virtualLeftClickPressed);

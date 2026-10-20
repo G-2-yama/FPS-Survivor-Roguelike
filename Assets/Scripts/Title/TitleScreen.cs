@@ -18,9 +18,15 @@ public class TitleScreen : MonoBehaviour
     [Tooltip("初期武器とシンクロを選ぶパネル")]
     [SerializeField] private GameObject loadoutPanel;
 
+    [Tooltip("音量と視点感度を変えるパネル")]
+    [SerializeField] private GameObject settingsPanel;
+
     [Header("タイトル")]
     [Tooltip("押すとモード選択へ進むボタン")]
     [SerializeField] private Button gameStartButton;
+
+    [Tooltip("押すと設定へ進むボタン")]
+    [SerializeField] private Button settingsButton;
 
     [Tooltip("押すとゲームを終了するボタン")]
     [SerializeField] private Button quitButton;
@@ -38,6 +44,10 @@ public class TitleScreen : MonoBehaviour
     [Header("アイテム選択")]
     [Tooltip("押すとモード選択へ戻るボタン")]
     [SerializeField] private Button loadoutBackButton;
+
+    [Header("設定")]
+    [Tooltip("戻る操作でタイトルへ戻ります")]
+    [SerializeField] private SettingsMenu settingsMenu;
 
     [Header("演出")]
     [Tooltip("左のキービジュアル")]
@@ -66,10 +76,12 @@ public class TitleScreen : MonoBehaviour
         quitButton.gameObject.SetActive(showQuitButton);
 
         gameStartButton.onClick.AddListener(() => ShowPanel(modeSelectPanel));
+        settingsButton.onClick.AddListener(() => ShowPanel(settingsPanel));
         quitButton.onClick.AddListener(Quit);
         modeSelectMenu.OnModeSelected += () => ShowPanel(loadoutPanel);
         modeSelectBackButton.onClick.AddListener(() => ShowPanel(titlePanel));
         loadoutBackButton.onClick.AddListener(() => ShowPanel(modeSelectPanel));
+        settingsMenu.BackRequested += () => ShowPanel(titlePanel);
 
         keyVisual.SetTitleMode(true, true);
         ActivatePanel(titlePanel);
@@ -82,6 +94,9 @@ public class TitleScreen : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (gamepadVirtualMouseCursor != null)
+            gamepadVirtualMouseCursor.SuppressVirtualCursor = currentPanel == settingsPanel;
+
         bool gamepadOwnsPointer = gamepadVirtualMouseCursor != null
             && gamepadVirtualMouseCursor.UpdatePointer(true);
 
@@ -117,6 +132,7 @@ public class TitleScreen : MonoBehaviour
         titlePanel.SetActive(panel == titlePanel);
         modeSelectPanel.SetActive(panel == modeSelectPanel);
         loadoutPanel.SetActive(panel == loadoutPanel);
+        settingsPanel.SetActive(panel == settingsPanel);
     }
 
     private static void Quit()
