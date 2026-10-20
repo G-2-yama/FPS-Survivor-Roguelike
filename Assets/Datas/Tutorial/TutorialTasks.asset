@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62b789661956ff498aca25af1a8d655, type: 3}
+  m_Name: TutorialTasks
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialTaskList
+  tasks:
+  - template: "{Move} で移動する"
+    goal: 0
+    amount: 8
+    slot: 0
+    equips: []
+  - template: "{Look} で周りを見回す"
+    goal: 1
+    amount: 360
+    slot: 0
+    equips: []
+  - template: "{Jump} でジャンプ\n空中でもう一度押すと2段ジャンプ"
+    goal: 2
+    amount: 1
+    slot: 0
+    equips: []
+  - template: "移動しながら {Sprint} でダッシュ\n押し続けると走る"
+    goal: 3
+    amount: 3
+    slot: 0
+    equips: []
+  - template: "{Crouch} でスライディング"
+    goal: 4
+    amount: 3
+    slot: 0
+    equips: []
+  - template: "ジャンプして、空中で {Crouch}
+      で急降下"
+    goal: 5
+    amount: 1
+    slot: 0
+    equips: []
+  - template: "{LeftFire} で左手の武器を撃ち、的に当てる"
+    goal: 6
+    amount: 5
+    slot: 0
+    equips:
+    - slot: 0
+      weapon: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  - template: "{LeftReload} でリロード\n弾が切れると自動でもリロードする"
+    goal: 7
+    amount: 1
+    slot: 0
+    equips: []
+  - template: "{RightFire} で右手の武器を撃ち、的に当てる"
+    goal: 6
+    amount: 5
+    slot: 1
+    equips:
+    - slot: 1
+      weapon: {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
+  - template: "{RightReload} でリロード"
+    goal: 7
+    amount: 1
+    slot: 1
+    equips: []
+  - template: "{LeftAbility} でアビリティを使い、的に当てる\n使うと溜まるまで使えない"
+    goal: 6
+    amount: 1
+    slot: 2
+    equips:
+    - slot: 2
+      weapon: {fileID: 11400000, guid: 281d7ac504ed3ed439f6984723262ed9, type: 2}
+  - template: "オート武器は近くの敵を自動で攻撃する\n的に近づく"
+    goal: 6
+    amount: 25
+    slot: 4
+    equips:
+    - slot: 4
+      weapon: {fileID: 11400000, guid: d24713427b67b904c8167c9587e9d017, type: 2}
+  - template: "体力。0 になるとゲームオーバー"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Character/HealthBar
+  - template: "経験値とレベル。敵が落とす経験値を拾うとたまる"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Character/ExpBar
+    - Character/LevelText
+  - template: "経過時間"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - TimerText
+  - template: "ミニマップ。周りの敵の位置が分かる"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Minimap
+  - template: "左右の武器と残りの弾数"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - leftWeaponUI
+    - RightWeaponUI
+  - template: "アビリティ。使うと溜まるまで使えない"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - LeftAbility
+    - RightAbility
+  - template: "オート武器。近くの敵を自動で攻撃する"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - LeftAutoAttack
+    - RightAutoAttack
+  finishedText: "課題は以上です。ここからは練習場で自由に試せる"

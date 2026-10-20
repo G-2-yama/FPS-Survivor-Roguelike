@@ -173,6 +173,13 @@ public static class PlayerSettingsValidation
             first.AddExp(200);
             Assert(first.Level == 4 && first.PendingLevelUps == 3 && second.Level == 1, "成長状態が分離されていません");
             Record("共有SOからの状態分離、最大HP、成長状態、選択待ち回数");
+            second.DisableExpGain();
+            second.MakeInvincible();
+            second.AddExp(200);
+            second.TakeDamage(17, 0f);
+            Assert(second.Level == 1 && second.PendingLevelUps == 0 && second.Health.CurrentHP == 1000,
+                "経験値の停止か無敵が効いていません");
+            Record("経験値の停止と無敵");
             TestMovement(second);
             contactStartHP = first.Health.CurrentHP;
             var enemy = new GameObject("検証接触対象");

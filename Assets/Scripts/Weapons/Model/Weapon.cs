@@ -4,6 +4,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public static event System.Action OnAnyFired;
+    public event System.Action<Weapon> Fired;
 
     [SerializeField] private Player weaponOwner;
     public Player WeaponOwner => weaponOwner;
@@ -24,7 +25,9 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmo = 0;
     public int CurrentAmmo => currentAmmo;
-    
+
+    public bool ConsumesAmmo { get; set; } = true;
+
     private WeaponStateMachine stateMachine;
     public WeaponStateMachine StateMachine => stateMachine;
 
@@ -97,10 +100,14 @@ public class Weapon : MonoBehaviour
             return false;
         }
 
-        currentAmmo--;
-        weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
+        if (ConsumesAmmo)
+        {
+            currentAmmo--;
+            weaponView.UpdateAmmo(currentAmmo, weaponData.MagazineSize);
+        }
         weaponData.FireModeData.Fire(this, weaponOwner);
         OnAnyFired?.Invoke();
+        Fired?.Invoke(this);
 
         return true;
     }

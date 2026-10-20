@@ -26,6 +26,8 @@ public class PlayerStateCoordinator
     /// </summary>
     public PlayerBodyStateId CurrentBodyStateId => bodyStateMachine.CurrentStateId;
 
+    public PlayerActionState CurrentActionState => actionStateMachine.CurrentActionState;
+
     /// <summary>
     /// 2種類のプレイヤーステートマシンを初期化する
     /// </summary>

@@ -21,6 +21,8 @@ public class PlayerRuntime
     /// </summary>
     public bool IsDead => stateCoordinator.CurrentBodyStateId == PlayerBodyStateId.Dead;
 
+    public PlayerActionState CurrentActionState => stateCoordinator.CurrentActionState;
+
     /// <summary>
     /// ランタイムを初期化する
     /// </summary>
