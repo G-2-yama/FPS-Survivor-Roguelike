@@ -13,23 +13,73 @@ MonoBehaviour:
   m_Name: TutorialTasks
   m_EditorClassIdentifier: Assembly-CSharp::TutorialTaskList
   tasks:
-  - template: "{Move} \u3067\u79FB\u52D5\u3059\u308B"
+  - template: "{Move} で移動する"
     goal: 0
     amount: 8
-  - template: "{Look} \u3067\u5468\u308A\u3092\u898B\u56DE\u3059"
+    slot: 0
+    equips: []
+  - template: "{Look} で周りを見回す"
     goal: 1
     amount: 360
-  - template: "{Jump} \u3067\u30B8\u30E3\u30F3\u30D7\n\u7A7A\u4E2D\u3067\u3082\u3046\u4E00\u5EA6\u62BC\u3059\u30682\u6BB5\u30B8\u30E3\u30F3\u30D7"
+    slot: 0
+    equips: []
+  - template: "{Jump} でジャンプ\n空中でもう一度押すと2段ジャンプ"
     goal: 2
     amount: 1
-  - template: "\u79FB\u52D5\u3057\u306A\u304C\u3089 {Sprint} \u3067\u30C0\u30C3\u30B7\u30E5\n\u62BC\u3057\u7D9A\u3051\u308B\u3068\u8D70\u308B"
+    slot: 0
+    equips: []
+  - template: "移動しながら {Sprint} でダッシュ\n押し続けると走る"
     goal: 3
     amount: 3
-  - template: "{Crouch} \u3067\u30B9\u30E9\u30A4\u30C7\u30A3\u30F3\u30B0"
+    slot: 0
+    equips: []
+  - template: "{Crouch} でスライディング"
     goal: 4
     amount: 3
-  - template: "\u30B8\u30E3\u30F3\u30D7\u3057\u3066\u3001\u7A7A\u4E2D\u3067 {Crouch}
-      \u3067\u6025\u964D\u4E0B"
+    slot: 0
+    equips: []
+  - template: "ジャンプして、空中で {Crouch}
+      で急降下"
     goal: 5
     amount: 1
-  finishedText: "\u57FA\u672C\u64CD\u4F5C\u306F\u4EE5\u4E0A\u3067\u3059"
+    slot: 0
+    equips: []
+  - template: "{LeftFire} で左手の武器を撃ち、的に当てる"
+    goal: 6
+    amount: 5
+    slot: 0
+    equips:
+    - slot: 0
+      weapon: {fileID: 11400000, guid: 1a9cbc5f235271a498859bcfae9c5448, type: 2}
+  - template: "{LeftReload} でリロード\n弾が切れると自動でもリロードする"
+    goal: 7
+    amount: 1
+    slot: 0
+    equips: []
+  - template: "{RightFire} で右手の武器を撃ち、的に当てる"
+    goal: 6
+    amount: 5
+    slot: 1
+    equips:
+    - slot: 1
+      weapon: {fileID: 11400000, guid: 9d6d712d209c5164b934f78802c2918d, type: 2}
+  - template: "{RightReload} でリロード"
+    goal: 7
+    amount: 1
+    slot: 1
+    equips: []
+  - template: "{LeftAbility} でアビリティを使い、的に当てる\n使うと溜まるまで使えない"
+    goal: 6
+    amount: 1
+    slot: 2
+    equips:
+    - slot: 2
+      weapon: {fileID: 11400000, guid: 281d7ac504ed3ed439f6984723262ed9, type: 2}
+  - template: "オート武器は近くの敵を自動で攻撃する\n的に近づく"
+    goal: 6
+    amount: 25
+    slot: 4
+    equips:
+    - slot: 4
+      weapon: {fileID: 11400000, guid: d24713427b67b904c8167c9587e9d017, type: 2}
+  finishedText: "課題は以上です"

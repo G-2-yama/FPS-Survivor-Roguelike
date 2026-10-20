@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 [RequireComponent(typeof(DamageTargetBinding))]
 public class TrainingDummy : MonoBehaviour, IDamageable
 {
+    public static event Action OnAnyDamaged;
+
     [Tooltip("体力の最大値")]
     [SerializeField] private int initialHP = 100;
 
@@ -62,6 +64,7 @@ public class TrainingDummy : MonoBehaviour, IDamageable
 
         DamageEffectManager.Instance?.ShowDamage(damage, transform.position);
         Health.TakeDamage(damage);
+        OnAnyDamaged?.Invoke();
     }
 
     /// <summary>

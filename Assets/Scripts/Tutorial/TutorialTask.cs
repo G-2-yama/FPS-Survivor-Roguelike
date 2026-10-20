@@ -9,6 +9,21 @@ public enum TutorialGoal
     Dash,
     Slide,
     FastFall,
+    WeaponHit,
+    Reload,
+}
+
+[Serializable]
+public class TutorialEquip
+{
+    [Tooltip("持たせるスロット")]
+    [SerializeField] private SlotType slot;
+
+    [Tooltip("持たせる武器")]
+    [SerializeField] private WeaponData weapon;
+
+    public SlotType Slot => slot;
+    public WeaponData Weapon => weapon;
 }
 
 [Serializable]
@@ -25,7 +40,15 @@ public class TutorialTask
     [Min(0.01f)]
     [SerializeField] private float amount = 1f;
 
+    [Tooltip("命中・リロードの判定で見る武器のスロット。命中はこのスロットの武器が撃つまで数えない。リロードはこのスロットのリロード操作を押した回数（LeftMain・RightMain のみ）")]
+    [SerializeField] private SlotType slot;
+
+    [Tooltip("課題を始めるときに持たせる武器")]
+    [SerializeField] private TutorialEquip[] equips = Array.Empty<TutorialEquip>();
+
     public string Template => template;
     public TutorialGoal Goal => goal;
     public float Amount => amount;
+    public SlotType Slot => slot;
+    public TutorialEquip[] Equips => equips;
 }
