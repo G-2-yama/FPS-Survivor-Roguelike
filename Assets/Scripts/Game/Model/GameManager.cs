@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Timer timer;
     public Timer Timer => timer;
 
+    [Tooltip("チュートリアル中に敵の自動出現を止める EnemyGenerator")]
+    [SerializeField] private EnemyGenerator enemyGenerator;
+
     [SerializeField] private GameEndView gameEndView;
     public GameEndView GameEndView => gameEndView;
 
@@ -61,6 +64,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         gameStats = new GameStats();
+
+        if (GameStartSettings.IsTutorial)
+            enemyGenerator.DisableAutoSpawn();
     }
 
     /// <summary>
@@ -144,6 +150,9 @@ public class GameManager : MonoBehaviour
     {
         if (GameStartSettings.Mode != null)
             timer.SetTimeLimit(GameStartSettings.Mode.TimeLimitSeconds);
+
+        if (GameStartSettings.IsTutorial)
+            timer.SetTimeLimit(-1f);
 
         if (GameStartSettings.StartingWeapon != null)
             player.Inventory.EquipWeapon(SlotType.LeftMain, GameStartSettings.StartingWeapon);

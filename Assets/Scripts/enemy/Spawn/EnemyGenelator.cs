@@ -32,6 +32,9 @@ public class EnemyGenerator : MonoBehaviour
     public float RelocateDistance => relocateDistance;
     public float FallRelocateDepth => fallRelocateDepth;
 
+    private Coroutine spawnRoutine;
+    private bool autoSpawnDisabled;
+
     private void Start()
     {
         phases.Sort((a, b) => a.StartTime.CompareTo(b.StartTime));
@@ -39,7 +42,19 @@ public class EnemyGenerator : MonoBehaviour
         currentPhaseIndex = 0;
         currentPhase = phases[0];
 
-        StartCoroutine(SpawnRoutine());
+        if (!autoSpawnDisabled)
+            spawnRoutine = StartCoroutine(SpawnRoutine());
+    }
+
+    public void DisableAutoSpawn()
+    {
+        autoSpawnDisabled = true;
+
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
     }
     /// <summary>保持済みの参照を使って個体の状態を更新する</summary>
 
