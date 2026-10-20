@@ -66,7 +66,11 @@ public class GameManager : MonoBehaviour
         gameStats = new GameStats();
 
         if (GameStartSettings.IsTutorial)
+        {
             enemyGenerator.DisableAutoSpawn();
+            player.DisableExpGain();
+            player.MakeInvincible();
+        }
     }
 
     /// <summary>
