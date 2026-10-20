@@ -29,6 +29,8 @@ public class TrainingDummy : MonoBehaviour, IDamageable
 
     private float reviveTimer;
 
+    public event Action<TrainingDummy> Reviving;
+
     public TeamType TeamType => TeamType.Enemy;
 
     /// <summary>
@@ -85,6 +87,7 @@ public class TrainingDummy : MonoBehaviour, IDamageable
     private void Revive()
     {
         ResetHealth();
+        Reviving?.Invoke(this);
         SetBodyActive(true);
     }
 

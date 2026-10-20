@@ -13,6 +13,12 @@ public class TutorialToggleRow : SettingsMenuItem
     [Tooltip("ON / OFF を出すテキスト")]
     [SerializeField] private TMP_Text valueText;
 
+    [Tooltip("ON のときに出す文字")]
+    [SerializeField] private string onText = "ON";
+
+    [Tooltip("OFF のときに出す文字")]
+    [SerializeField] private string offText = "OFF";
+
     [Tooltip("値を切り替えるボタン（左）")]
     [SerializeField] private Button decreaseButton;
 
@@ -100,7 +106,7 @@ public class TutorialToggleRow : SettingsMenuItem
 
     private void Refresh()
     {
-        valueText.text = value ? "ON" : "OFF";
+        valueText.text = value ? onText : offText;
         valueText.color = value ? onColor : offColor;
     }
 

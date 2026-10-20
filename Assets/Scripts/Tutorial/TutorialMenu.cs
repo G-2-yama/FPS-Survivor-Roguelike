@@ -18,6 +18,9 @@ public class TutorialMenu : MonoBehaviour
     [Tooltip("メイン武器の弾薬が減らないようにする行 最初の値を開始時に反映します")]
     [SerializeField] private TutorialToggleRow infiniteAmmoRow;
 
+    [Tooltip("的を固定とランダムで切り替える行 ON がランダム 最初の値を開始時に反映します")]
+    [SerializeField] private TutorialToggleRow targetModeRow;
+
     [Header("武器の付け替え")]
     [Tooltip("付け替えの候補にする武器 各行はスロットと同じ種類のものだけを使います")]
     [SerializeField] private List<WeaponData> weapons = new List<WeaponData>();
@@ -33,6 +36,7 @@ public class TutorialMenu : MonoBehaviour
 
     private GameManager gameManager;
     private TutorialTaskRunner taskRunner;
+    private TutorialTargetPlacer targetPlacer;
     private GamepadVirtualMouseCursor virtualCursor;
     private TutorialMenuState menuState;
     private PlayerInventory inventory;
@@ -50,6 +54,7 @@ public class TutorialMenu : MonoBehaviour
         menu.BackRequested += Close;
         practiceButton.onClick.AddListener(GoToPractice);
         infiniteAmmoRow.Changed += SetInfiniteAmmo;
+        targetModeRow.Changed += SetRandomTargets;
     }
 
     private void Start()
@@ -57,7 +62,9 @@ public class TutorialMenu : MonoBehaviour
         gameManager = FindFirstObjectByType<GameManager>();
         virtualCursor = FindFirstObjectByType<GamepadVirtualMouseCursor>();
         taskRunner = FindFirstObjectByType<TutorialTaskRunner>();
+        targetPlacer = FindFirstObjectByType<TutorialTargetPlacer>();
         SetInfiniteAmmo(infiniteAmmoRow.Value);
+        SetRandomTargets(targetModeRow.Value);
 
         if (gameManager == null)
         {
@@ -127,6 +134,17 @@ public class TutorialMenu : MonoBehaviour
             if (pair.Key.GetGroup() == WeaponSlotGroup.Main && pair.Value != null)
                 pair.Value.ConsumesAmmo = !infinite;
         }
+    }
+
+    private void SetRandomTargets(bool random)
+    {
+        if (targetPlacer == null)
+        {
+            Debug.LogWarning("TutorialTargetPlacer が見つからないため、的を切り替えられません", this);
+            return;
+        }
+
+        targetPlacer.SetRandom(random);
     }
 
     private PlayerInventory FindInventory()
