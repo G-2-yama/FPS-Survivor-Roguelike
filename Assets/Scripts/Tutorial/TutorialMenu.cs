@@ -15,6 +15,9 @@ public class TutorialMenu : MonoBehaviour
     [Tooltip("残りの課題を飛ばして練習場へ進むボタン 押すとメニューを閉じます")]
     [SerializeField] private Button practiceButton;
 
+    [Tooltip("メイン武器の弾薬が減らないようにする行 最初の値を開始時に反映します")]
+    [SerializeField] private TutorialToggleRow infiniteAmmoRow;
+
     [Header("武器の付け替え")]
     [Tooltip("付け替えの候補にする武器 各行はスロットと同じ種類のものだけを使います")]
     [SerializeField] private List<WeaponData> weapons = new List<WeaponData>();
@@ -33,6 +36,7 @@ public class TutorialMenu : MonoBehaviour
     private GamepadVirtualMouseCursor virtualCursor;
     private TutorialMenuState menuState;
     private PlayerInventory inventory;
+    private bool weaponRowsBound;
 
     // 最後に開閉したフレーム。SettingsMenu.Update も同じ Esc で BackRequested を出すので、
     // 同じフレームの2回目の開閉は無視する。外すと開いた直後に閉じることがある。
@@ -45,6 +49,7 @@ public class TutorialMenu : MonoBehaviour
         panel.SetActive(false);
         menu.BackRequested += Close;
         practiceButton.onClick.AddListener(GoToPractice);
+        infiniteAmmoRow.Changed += SetInfiniteAmmo;
     }
 
     private void Start()
@@ -52,6 +57,7 @@ public class TutorialMenu : MonoBehaviour
         gameManager = FindFirstObjectByType<GameManager>();
         virtualCursor = FindFirstObjectByType<GamepadVirtualMouseCursor>();
         taskRunner = FindFirstObjectByType<TutorialTaskRunner>();
+        SetInfiniteAmmo(infiniteAmmoRow.Value);
 
         if (gameManager == null)
         {
@@ -94,12 +100,10 @@ public class TutorialMenu : MonoBehaviour
         bool practicing = taskRunner == null || taskRunner.IsPracticing;
         weaponGroup.SetActive(practicing);
         weaponLockedNotice.SetActive(!practicing);
-        if (!practicing || inventory != null)
+        if (!practicing || weaponRowsBound)
             return;
 
-        Player player = FindFirstObjectByType<Player>();
-        inventory = player != null ? player.Inventory : null;
-        if (inventory == null)
+        if (FindInventory() == null)
         {
             Debug.LogWarning("Player の PlayerInventory が見つからないため、武器を付け替えられません", this);
             return;
@@ -107,6 +111,32 @@ public class TutorialMenu : MonoBehaviour
 
         foreach (var row in weaponRows)
             row.Bind(inventory, weapons);
+        weaponRowsBound = true;
+    }
+
+    private void SetInfiniteAmmo(bool infinite)
+    {
+        if (FindInventory() == null)
+        {
+            Debug.LogWarning("Player の PlayerInventory が見つからないため、弾薬が減らない設定を反映できません", this);
+            return;
+        }
+
+        foreach (var pair in inventory.WeaponSlots)
+        {
+            if (pair.Key.GetGroup() == WeaponSlotGroup.Main && pair.Value != null)
+                pair.Value.ConsumesAmmo = !infinite;
+        }
+    }
+
+    private PlayerInventory FindInventory()
+    {
+        if (inventory == null)
+        {
+            Player player = FindFirstObjectByType<Player>();
+            inventory = player != null ? player.Inventory : null;
+        }
+        return inventory;
     }
 
     private void Close()

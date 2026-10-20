@@ -37,6 +37,8 @@ public class TutorialTaskRunner : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float clearDisplaySeconds = 1f;
 
+    private Canvas canvas;
+    private GameManager gameManager;
     private PlayerController playerController;
     private CharacterController characterController;
     private PlayerInventory inventory;
@@ -52,7 +54,6 @@ public class TutorialTaskRunner : MonoBehaviour
     private Vector3 lastPosition;
     private Quaternion lastLookRotation;
     private PlayerActionState lastActionState;
-    private int lastAmmo;
     private bool targetFired;
 
     private TutorialTask CurrentTask =>
@@ -60,6 +61,8 @@ public class TutorialTaskRunner : MonoBehaviour
 
     private void Start()
     {
+        canvas = GetComponent<Canvas>();
+        gameManager = FindFirstObjectByType<GameManager>();
         clearLabel.SetActive(false);
         confirmHint.SetActive(false);
         if (taskList == null)
@@ -75,6 +78,14 @@ public class TutorialTaskRunner : MonoBehaviour
     private void OnDestroy()
     {
         TrainingDummy.OnAnyDamaged -= OnDummyDamaged;
+        if (inventory != null)
+        {
+            foreach (Weapon weapon in inventory.WeaponSlots.Values)
+            {
+                if (weapon != null)
+                    weapon.Fired -= OnWeaponFired;
+            }
+        }
         if (jumpAction != null)
             jumpAction.performed -= OnJumpPerformed;
         if (leftReloadAction != null)
@@ -97,6 +108,8 @@ public class TutorialTaskRunner : MonoBehaviour
 
     private void Update()
     {
+        UpdateVisibility();
+
         if (playerController == null && !TryBindPlayer())
             return;
 
@@ -121,6 +134,13 @@ public class TutorialTaskRunner : MonoBehaviour
             Clear();
     }
 
+    private void UpdateVisibility()
+    {
+        GameStateMachine stateMachine = gameManager != null ? gameManager.GameStateMachine : null;
+        if (canvas != null && stateMachine != null)
+            canvas.enabled = stateMachine.CurrentState == stateMachine.PlayingState;
+    }
+
     private bool TryBindPlayer()
     {
         playerController = FindFirstObjectByType<PlayerController>();
@@ -132,6 +152,14 @@ public class TutorialTaskRunner : MonoBehaviour
         inventory = player != null ? player.Inventory : null;
         if (inventory == null)
             Debug.LogWarning("プレイヤーの武器が見つからないため、攻撃の課題で武器を持たせられず達成もできません", this);
+        else
+        {
+            foreach (Weapon weapon in inventory.WeaponSlots.Values)
+            {
+                if (weapon != null)
+                    weapon.Fired += OnWeaponFired;
+            }
+        }
         Camera mainCamera = Camera.main;
         lookTransform = mainCamera != null ? mainCamera.transform : playerController.transform;
 
@@ -204,16 +232,7 @@ public class TutorialTaskRunner : MonoBehaviour
         lastPosition = playerController.transform.position;
         lastLookRotation = lookTransform.rotation;
         lastActionState = playerController.CurrentActionState;
-        lastAmmo = GetAmmo(CurrentTask);
         targetFired = false;
-    }
-
-    private int GetAmmo(TutorialTask task)
-    {
-        if (task == null || inventory == null || !inventory.WeaponSlots.TryGetValue(task.Slot, out Weapon weapon))
-            return 0;
-
-        return weapon.CurrentAmmo;
     }
 
     private void Measure(TutorialTask task)
@@ -221,7 +240,6 @@ public class TutorialTaskRunner : MonoBehaviour
         Vector3 position = playerController.transform.position;
         Quaternion lookRotation = lookTransform.rotation;
         PlayerActionState actionState = playerController.CurrentActionState;
-        int ammo = GetAmmo(task);
 
         switch (task.Goal)
         {
@@ -242,16 +260,11 @@ public class TutorialTaskRunner : MonoBehaviour
             case TutorialGoal.FastFall:
                 CountEntered<PlayerFastFallActionState>(actionState);
                 break;
-            case TutorialGoal.WeaponHit:
-                if (ammo < lastAmmo)
-                    targetFired = true;
-                break;
         }
 
         lastPosition = position;
         lastLookRotation = lookRotation;
         lastActionState = actionState;
-        lastAmmo = ammo;
     }
 
     private void CountEntered<T>(PlayerActionState actionState) where T : PlayerActionState
@@ -293,6 +306,16 @@ public class TutorialTaskRunner : MonoBehaviour
             return;
 
         achieved += 1f;
+    }
+
+    private void OnWeaponFired(Weapon weapon)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.WeaponHit || clearTimer > 0f)
+            return;
+
+        if (inventory.WeaponSlots.TryGetValue(task.Slot, out Weapon taskWeapon) && taskWeapon == weapon)
+            targetFired = true;
     }
 
     private void OnDummyDamaged()
