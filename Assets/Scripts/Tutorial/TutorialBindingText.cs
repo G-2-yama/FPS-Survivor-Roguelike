@@ -13,6 +13,7 @@ public class TutorialBindingText : MonoBehaviour
     private const string KeyboardMouseGroup = "Keyboard&Mouse";
 
     private const string HoldPrefix = "長押し ";
+    private const string MenuPlaceholder = "Menu";
 
     private static readonly Regex Placeholder = new Regex(@"\{(\w+)\}");
 
@@ -27,7 +28,7 @@ public class TutorialBindingText : MonoBehaviour
     [Tooltip("キー名・ボタン名を差し込むテキスト")]
     [SerializeField] private TMP_Text text;
 
-    [Tooltip("{アクション名} の部分を、最後に触った機器のキー名・ボタン名に置き換える。例: {Move} で移動、{Jump} でジャンプ")]
+    [Tooltip("{アクション名} の部分を、最後に触った機器のキー名・ボタン名に置き換える。例: {Move} で移動、{Jump} でジャンプ。{Menu} はチュートリアルのメニューを開くキー・ボタン")]
     [TextArea(2, 6)]
     [SerializeField] private string template;
 
@@ -83,6 +84,9 @@ public class TutorialBindingText : MonoBehaviour
     private string ToDisplayString(Match match, string group)
     {
         string actionName = match.Groups[1].Value;
+        if (actionName == MenuPlaceholder)
+            return TutorialMenu.ToggleDisplayName(group == GamepadGroup);
+
         InputAction action = playerInput.actions.FindAction(actionName);
         if (action == null)
         {

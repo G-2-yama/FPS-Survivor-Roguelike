@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class TutorialMenu : MonoBehaviour
 {
@@ -88,11 +89,24 @@ public class TutorialMenu : MonoBehaviour
             virtualCursor.SuppressVirtualCursor = suppressed;
     }
 
+    public static string ToggleDisplayName(bool gamepad)
+    {
+        ButtonControl control = gamepad ? GamepadToggle() : KeyboardToggle();
+        if (control != null)
+            return control.displayName;
+
+        return gamepad ? "Select" : "Esc";
+    }
+
     private static bool WasTogglePressed()
     {
-        var keyboard = Keyboard.current;
-        var gamepad = Gamepad.current;
-        return keyboard != null && keyboard.escapeKey.wasPressedThisFrame
-            || gamepad != null && gamepad.selectButton.wasPressedThisFrame;
+        ButtonControl keyboardToggle = KeyboardToggle();
+        ButtonControl gamepadToggle = GamepadToggle();
+        return keyboardToggle != null && keyboardToggle.wasPressedThisFrame
+            || gamepadToggle != null && gamepadToggle.wasPressedThisFrame;
     }
+
+    private static ButtonControl KeyboardToggle() => Keyboard.current?.escapeKey;
+
+    private static ButtonControl GamepadToggle() => Gamepad.current?.selectButton;
 }
