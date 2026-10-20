@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.UI;
 
 public class TutorialMenu : MonoBehaviour
 {
@@ -10,7 +11,11 @@ public class TutorialMenu : MonoBehaviour
     [Tooltip("メニューの項目を上下左右で操作する SettingsMenu 戻る操作でメニューを閉じます")]
     [SerializeField] private SettingsMenu menu;
 
+    [Tooltip("残りの課題を飛ばして練習場へ進むボタン 押すとメニューを閉じます")]
+    [SerializeField] private Button practiceButton;
+
     private GameManager gameManager;
+    private TutorialTaskRunner taskRunner;
     private GamepadVirtualMouseCursor virtualCursor;
     private TutorialMenuState menuState;
 
@@ -24,12 +29,14 @@ public class TutorialMenu : MonoBehaviour
     {
         panel.SetActive(false);
         menu.BackRequested += Close;
+        practiceButton.onClick.AddListener(GoToPractice);
     }
 
     private void Start()
     {
         gameManager = FindFirstObjectByType<GameManager>();
         virtualCursor = FindFirstObjectByType<GamepadVirtualMouseCursor>();
+        taskRunner = FindFirstObjectByType<TutorialTaskRunner>();
 
         if (gameManager == null)
         {
@@ -75,6 +82,16 @@ public class TutorialMenu : MonoBehaviour
         toggledFrame = Time.frameCount;
         Hide();
         stateMachine.ChangePlayingState();
+    }
+
+    private void GoToPractice()
+    {
+        if (taskRunner != null)
+            taskRunner.SkipToPractice();
+        else
+            Debug.LogWarning("TutorialTaskRunner が見つからないため、練習場へ進めません", this);
+
+        Close();
     }
 
     private void Hide()

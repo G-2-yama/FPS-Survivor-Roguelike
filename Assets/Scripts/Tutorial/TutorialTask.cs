@@ -11,6 +11,7 @@ public enum TutorialGoal
     FastFall,
     WeaponHit,
     Reload,
+    Confirm,
 }
 
 [Serializable]
@@ -33,7 +34,7 @@ public class TutorialTask
     [TextArea(2, 4)]
     [SerializeField] private string template;
 
-    [Tooltip("達成の判定に使う動き")]
+    [Tooltip("達成の判定に使う動き。Confirm は Interact を押すと次へ進む")]
     [SerializeField] private TutorialGoal goal;
 
     [Tooltip("達成に必要な量。移動は m、視点は角度（度）、それ以外は回数")]
@@ -46,9 +47,13 @@ public class TutorialTask
     [Tooltip("課題を始めるときに持たせる武器")]
     [SerializeField] private TutorialEquip[] equips = Array.Empty<TutorialEquip>();
 
+    [Tooltip("枠で指し示す HUD。GameScene の UICanvas からの階層パス（例: Character/HealthBar）。複数あるときは全部を囲む")]
+    [SerializeField] private string[] highlightPaths = Array.Empty<string>();
+
     public string Template => template;
     public TutorialGoal Goal => goal;
     public float Amount => amount;
     public SlotType Slot => slot;
     public TutorialEquip[] Equips => equips;
+    public string[] HighlightPaths => highlightPaths;
 }

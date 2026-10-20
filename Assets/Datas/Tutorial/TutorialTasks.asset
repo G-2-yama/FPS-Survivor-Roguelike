@@ -82,4 +82,57 @@ MonoBehaviour:
     equips:
     - slot: 4
       weapon: {fileID: 11400000, guid: d24713427b67b904c8167c9587e9d017, type: 2}
-  finishedText: "課題は以上です"
+  - template: "体力。0 になるとゲームオーバー"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Character/HealthBar
+  - template: "経験値とレベル。敵が落とす経験値を拾うとたまる"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Character/ExpBar
+    - Character/LevelText
+  - template: "経過時間"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - TimerText
+  - template: "ミニマップ。周りの敵の位置が分かる"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - Minimap
+  - template: "左右の武器と残りの弾数"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - leftWeaponUI
+    - RightWeaponUI
+  - template: "アビリティ。使うと溜まるまで使えない"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - LeftAbility
+    - RightAbility
+  - template: "オート武器。近くの敵を自動で攻撃する"
+    goal: 8
+    amount: 1
+    slot: 0
+    equips: []
+    highlightPaths:
+    - LeftAutoAttack
+    - RightAutoAttack
+  finishedText: "課題は以上です。ここからは練習場で自由に試せる"

@@ -7,6 +7,7 @@ public class TutorialTaskRunner : MonoBehaviour
     private const string JumpActionName = "Jump";
     private const string LeftReloadActionName = "LeftReload";
     private const string RightReloadActionName = "RightReload";
+    private const string ConfirmActionName = "Interact";
 
     [Tooltip("上から順に出す課題の一覧")]
     [SerializeField] private TutorialTaskList taskList;
@@ -26,6 +27,12 @@ public class TutorialTaskRunner : MonoBehaviour
     [Tooltip("課題を達成したときに出す表示")]
     [SerializeField] private GameObject clearLabel;
 
+    [Tooltip("Confirm の課題のときだけ出す、次へ進む操作の表示")]
+    [SerializeField] private GameObject confirmHint;
+
+    [Tooltip("課題の HUD を枠で指し示す部品")]
+    [SerializeField] private TutorialHudHighlight highlight;
+
     [Tooltip("達成の表示を出してから次の課題へ進むまでの秒数")]
     [Min(0f)]
     [SerializeField] private float clearDisplaySeconds = 1f;
@@ -36,6 +43,7 @@ public class TutorialTaskRunner : MonoBehaviour
     private InputAction jumpAction;
     private InputAction leftReloadAction;
     private InputAction rightReloadAction;
+    private InputAction confirmAction;
     private Transform lookTransform;
 
     private int taskIndex = -1;
@@ -53,6 +61,7 @@ public class TutorialTaskRunner : MonoBehaviour
     private void Start()
     {
         clearLabel.SetActive(false);
+        confirmHint.SetActive(false);
         if (taskList == null)
         {
             Debug.LogError("課題の一覧が設定されていないため、チュートリアルの課題を出せません", this);
@@ -72,6 +81,16 @@ public class TutorialTaskRunner : MonoBehaviour
             leftReloadAction.performed -= OnReloadPerformed;
         if (rightReloadAction != null)
             rightReloadAction.performed -= OnReloadPerformed;
+        if (confirmAction != null)
+            confirmAction.performed -= OnConfirmPerformed;
+    }
+
+    public void SkipToPractice()
+    {
+        if (taskList == null || playerController == null && !TryBindPlayer())
+            return;
+
+        StartTask(taskList.Tasks.Count);
     }
 
     private void Update()
@@ -124,6 +143,12 @@ public class TutorialTaskRunner : MonoBehaviour
         leftReloadAction = BindReloadAction(playerInput, LeftReloadActionName);
         rightReloadAction = BindReloadAction(playerInput, RightReloadActionName);
 
+        confirmAction = playerInput != null ? playerInput.actions.FindAction(ConfirmActionName) : null;
+        if (confirmAction != null)
+            confirmAction.performed += OnConfirmPerformed;
+        else
+            Debug.LogWarning($"アクション {ConfirmActionName} が見つからないため、画面の見方の課題を先へ進められません", this);
+
         return true;
     }
 
@@ -147,7 +172,10 @@ public class TutorialTaskRunner : MonoBehaviour
         ResetMeasurement();
 
         TutorialTask task = CurrentTask;
-        progressBar.SetActive(task != null);
+        bool confirm = task != null && task.Goal == TutorialGoal.Confirm;
+        progressBar.SetActive(task != null && !confirm);
+        confirmHint.SetActive(confirm);
+        highlight.Show(task?.HighlightPaths);
         if (task == null)
         {
             instruction.Template = taskList.FinishedText;
@@ -256,6 +284,15 @@ public class TutorialTaskRunner : MonoBehaviour
             achieved += 1f;
     }
 
+    private void OnConfirmPerformed(InputAction.CallbackContext context)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.Confirm || clearTimer > 0f)
+            return;
+
+        achieved += 1f;
+    }
+
     private void OnDummyDamaged()
     {
         TutorialTask task = CurrentTask;
@@ -273,6 +310,12 @@ public class TutorialTaskRunner : MonoBehaviour
 
     private void Clear()
     {
+        if (CurrentTask.Goal == TutorialGoal.Confirm)
+        {
+            StartTask(taskIndex + 1);
+            return;
+        }
+
         SetFill(1f);
         clearLabel.SetActive(true);
         clearTimer = Mathf.Max(clearDisplaySeconds, Mathf.Epsilon);
