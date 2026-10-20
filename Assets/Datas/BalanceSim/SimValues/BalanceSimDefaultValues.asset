@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 801f570380b74da44801f154bd163c09, type: 3}
   m_Name: BalanceSimDefaultValues
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.SimValueSet
-  overrides: []
+  overrides:
+  - targetId: GlobalObjectId_V1-3-9d6d712d209c5164b934f78802c2918d-11400000-0
+    targetLabel: AR_00
+    propertyPath: damage.damage
+    propertyLabel: Damage > Damage
+    value: 10

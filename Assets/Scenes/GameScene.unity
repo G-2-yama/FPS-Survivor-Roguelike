@@ -1076,6 +1076,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ea90d5a0f093be84dbb9c117d8accacc, type: 2}
   - {fileID: 11400000, guid: d747e206242fe2548ab058076adda3a6, type: 2}
   - {fileID: 11400000, guid: 5566db088f292cb41b3755bd7ab6a35a, type: 2}
+  - {fileID: 11400000, guid: 172d2b990ce67d24d92a853944c69762, type: 2}
+  - {fileID: 11400000, guid: 0dfb784ce071d684188a18f72b7d7fce, type: 2}
+  - {fileID: 11400000, guid: 57c5c951d9daf1440bd0b4ca0564058d, type: 2}
+  - {fileID: 11400000, guid: a067369b55bc6e74893c5b03dd8e82d1, type: 2}
+  - {fileID: 11400000, guid: 285f494743466bd4197ec097de95d1e1, type: 2}
+  - {fileID: 11400000, guid: f56300181b654927aad13fa2ef99eb2d, type: 2}
+  - {fileID: 11400000, guid: a0e695f0d7f24a489f6415d978918320, type: 2}
+  - {fileID: 11400000, guid: c72685f7457f41a99f54a6cc76c55fe8, type: 2}
+  - {fileID: 11400000, guid: 95e03d1abeed470ea7a9747bdf28ecfa, type: 2}
+  - {fileID: 11400000, guid: 5148abc53a2743a785d206ab57296152, type: 2}
+  - {fileID: 11400000, guid: 2b993b6e5b6a41ef95f78817ee006787, type: 2}
+  - {fileID: 11400000, guid: 11658f4f53a54e2f90e469c0f9240893, type: 2}
   spawnRadius: 80
   spawnDirections:
   - angle: 90
