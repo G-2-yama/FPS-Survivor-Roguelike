@@ -89,14 +89,15 @@ public class Enemy : PoolableObject, IDamageable
         finalDamage = config.Damagelange * damage;
 
         // ノックバック処理
+        if (isDead)
+            return;
+
         Target = enemyBrain.Target;
         if (Target != null)
         {
             Vector3 dir = transform.position - Target.position;
 
-            enemyBrain.KnockbackState.SetKnockback(dir, knockbackForce);
-
-            enemyBrain.ChangeState(enemyBrain.KnockbackState);
+            enemyBrain.KnockbackState.TryEnter(dir, knockbackForce);
         }
     }
 

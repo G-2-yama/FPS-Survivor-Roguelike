@@ -79,6 +79,7 @@ namespace BalanceSim.Editor
                 def.damageRange = config.Damagelange;
                 def.knockbackResistance = config.KnockbackResistance;
                 def.knockbackDuration = config.KnockbackDuration;
+                def.knockbackCooldown = config.KnockbackCooldown;
                 def.engageDistance = EngageDistance(config);
                 def.chase = ReadMovement(config.chaseMovedata);
                 def.combat = ReadMovement(config.combatMovedata);

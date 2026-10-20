@@ -16,6 +16,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private SpawnDirectionData[] spawnDirections;
     [SerializeField] private Timer timer;
     [SerializeField] private int maxSpawnTry = 5;
+    [Tooltip("箱型Prefabの底面を地面に合わせ、本体全体が壁と重ならない位置に生成・再配置する")]
+    [SerializeField] private bool groundedSpawns;
     [SerializeField]private List<GameObject> activeEnemies = new List<GameObject>();
     public IReadOnlyList<GameObject> ActiveEnemies => activeEnemies;
 
@@ -101,6 +103,9 @@ public class EnemyGenerator : MonoBehaviour
             // Playerの向いている方向を基準にスポーン方向を決定
             Vector3 spawnPosition = GetSpawnPosition();
 
+            if (!TryResolveSpawnPosition(enemyData.Prefab, spawnPosition, out spawnPosition))
+                continue;
+
             // 敵の最大数を超えたら最も遠い敵を削除
             if (activeEnemies.Count >= maxEnemyCount)
             {
@@ -116,39 +121,50 @@ public class EnemyGenerator : MonoBehaviour
                 }
             }
 
-            if (IsSpawnable(spawnPosition))
+            PooledInstance spawned = PoolManager.Instance.Rent(enemyData.Prefab);
+            GameObject enemy = spawned.GameObject;
+
+            if (groundedSpawns)
             {
-                PooledInstance spawned = PoolManager.Instance.Rent(enemyData.Prefab);
-                GameObject enemy = spawned.GameObject;
-
-                enemy.transform.position = spawnPosition;
-
-                activeEnemies.Add(enemy);
-
-                Enemy enemyComponent = spawned.Enemy;
-                enemyplojectileobject projectile = spawned.EnemyProjectile;
-                if (enemyComponent != null)
+                enemy.transform.SetPositionAndRotation(spawnPosition, enemyData.Prefab.transform.rotation);
+                if (enemy.TryGetComponent(out Rigidbody body))
                 {
-                    enemyComponent.SetSpawner(this);
+                    body.position = spawnPosition;
+                    body.rotation = enemyData.Prefab.transform.rotation;
+                    body.linearVelocity = Vector3.zero;
+                    body.angularVelocity = Vector3.zero;
                 }
-                else if (projectile != null)
-                {
-                    projectile.SetSpawner(this);
-                }
-
-                return;
             }
+            else
+            {
+                enemy.transform.position = spawnPosition;
+            }
+
+            activeEnemies.Add(enemy);
+
+            Enemy enemyComponent = spawned.Enemy;
+            enemyplojectileobject projectile = spawned.EnemyProjectile;
+            if (enemyComponent != null)
+            {
+                enemyComponent.SetSpawner(this);
+            }
+            else if (projectile != null)
+            {
+                projectile.SetSpawner(this);
+            }
+
+            return;
         }
     }
     /// <summary>生成位置が他の物体と重ならないか確認する</summary>
 
-    public bool TryGetRelocatePosition(out Vector3 position)
+    public bool TryGetRelocatePosition(GameObject source, out Vector3 position)
     {
         for (int i = 0; i < maxSpawnTry; i++)
         {
             position = GetSpawnPosition();
 
-            if (IsSpawnable(position))
+            if (TryResolveSpawnPosition(source, position, out position))
                 return true;
         }
 
@@ -164,6 +180,15 @@ public class EnemyGenerator : MonoBehaviour
     private bool IsSpawnable(Vector3 position)
     {
         return !Physics.CheckSphere(position, 0.5f, Physics.AllLayers);
+    }
+
+    private bool TryResolveSpawnPosition(GameObject source, Vector3 candidate, out Vector3 position)
+    {
+        if (groundedSpawns)
+            return GroundedSpawnPlacement.TryGetPosition(source, candidate, out position);
+
+        position = candidate;
+        return IsSpawnable(position);
     }
 
     /// <summary>

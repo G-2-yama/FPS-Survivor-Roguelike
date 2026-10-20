@@ -33,6 +33,7 @@ namespace BalanceSim
         public bool IsThreat;
         public bool InKnockback;
         public float KnockbackRemaining;
+        public float NextKnockbackTime = float.NegativeInfinity;
         public Vec2 KnockbackVelocity;
         public int FinalDamage;
     }

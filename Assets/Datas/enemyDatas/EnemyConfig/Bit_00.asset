@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
   m_Name: Bit_00
   m_EditorClassIdentifier: Assembly-CSharp::enemyDatas
-  MaxHp: 50
+  MaxHp: 17
   damagelange: 1
   knockbackResistance: 0
   knockbackDuration: 0.2
+  knockbackCooldown: 2.5
   engagedistance: 9
   chaseMovedata: {fileID: 11400000, guid: ed4faa8ed0dadf840a5d3777f55cbd6f, type: 2}
   combatMovedata: {fileID: 11400000, guid: ed4faa8ed0dadf840a5d3777f55cbd6f, type: 2}

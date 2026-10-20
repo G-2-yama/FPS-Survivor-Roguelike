@@ -107,7 +107,7 @@ public class EnemyBrain : MonoBehaviour
         if (!isTooFar && !hasFallen)
             return false;
 
-        if (!spawner.TryGetRelocatePosition(out Vector3 destination))
+        if (!spawner.TryGetRelocatePosition(gameObject, out Vector3 destination))
             return false;
 
         if (rb != null)
@@ -152,6 +152,7 @@ public class EnemyBrain : MonoBehaviour
         }
 
         stateMachine.ChangeState(chaseState);
+        knockbackState.ResetCooldown();
     }
 
     public void ChangeState(IState newState)

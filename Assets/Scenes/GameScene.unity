@@ -14898,9 +14898,10 @@ MonoBehaviour:
   - angle: 180
     weight: 1
   timer: {fileID: 383212504}
-  maxSpawnTry: 1
+  maxSpawnTry: 20
+  groundedSpawns: 1
   activeEnemies: []
-  maxEnemyCount: 4
+  maxEnemyCount: 6
   relocateDistance: 85
   fallRelocateDepth: 30
 --- !u!1001 &1025497343

@@ -9,9 +9,12 @@ public class EnemyConfig : ScriptableObject
     [SerializeField] private int damagelange = 1;
     [SerializeField][Range(0f, 1f)] private float knockbackResistance = 0f;
     [SerializeField] private float knockbackDuration = 0.2f;
+    [SerializeField, Min(0f), Tooltip("ノックバック終了後、再びノックバックを受けるまでの秒数。ダメージは通常どおり受ける")]
+    private float knockbackCooldown = 1f;
     public int Damagelange => damagelange;
     public float KnockbackResistance => knockbackResistance;
     public float KnockbackDuration => knockbackDuration;
+    public float KnockbackCooldown => Mathf.Max(0f, knockbackCooldown);
 
 
 

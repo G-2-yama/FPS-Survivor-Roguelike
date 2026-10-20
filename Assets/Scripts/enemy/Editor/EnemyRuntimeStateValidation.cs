@@ -64,7 +64,8 @@ public static class EnemyRuntimeStateValidation
                 "取得範囲アップは対象プレイヤーだけに適用し共有SOを変更しない");
             firstStats.AddPickupRadius(-5f);
             Assert(firstStats.PickupRadius == initialRadius, "取得範囲アップを解除できる");
-            Debug.Log("EnemyRuntimeStateValidation: PASS (10 checks)");
+            ValidateKnockback(first, second, config);
+            Debug.Log("EnemyRuntimeStateValidation: PASS (distance, pickup range, knockback cooldown)");
         }
         finally
         {
@@ -102,6 +103,40 @@ public static class EnemyRuntimeStateValidation
         typeof(EnemyBrain).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(brain, null);
         brain.ResetBrain();
         return brain;
+    }
+
+    private static void ValidateKnockback(EnemyBrain first, EnemyBrain second, EnemyConfig config)
+    {
+        SetField(config, "knockbackCooldown", 1f);
+        SetField(second, "config", config);
+        first.ResetBrain();
+        second.ResetBrain();
+
+        Assert(!first.KnockbackState.TryEnter(Vector3.back, 0f),
+            "ノックバック力0では状態を切り替えない");
+        SetField(config, "knockbackResistance", 1f);
+        Assert(!first.KnockbackState.TryEnter(Vector3.back, 5f),
+            "耐性100%では状態を切り替えない");
+        SetField(config, "knockbackResistance", 0f);
+        Assert(first.KnockbackState.TryEnter(Vector3.back, 5f), "初回のノックバックを受け付ける");
+        Assert(!first.KnockbackState.TryEnter(Vector3.back, 10f), "硬直中の追加被弾で硬直を延長しない");
+
+        first.ChangeState(first.ChaseState);
+        first.ChaseState.Update();
+        Assert(first.StateMachine.CurrentState == first.CombatState, "ノックバック後に戦闘へ復帰できる");
+        Assert(!first.KnockbackState.TryEnter(Vector3.back, 5f)
+            && first.StateMachine.CurrentState == first.CombatState,
+            "終了後の耐性中は戦闘状態を中断しない");
+        Assert(second.KnockbackState.TryEnter(Vector3.back, 5f), "耐性時間は別個体に波及しない");
+
+        SetField(first.KnockbackState, "nextKnockbackTime", Time.time - 0.01f);
+        Assert(first.KnockbackState.TryEnter(Vector3.back, 5f), "耐性時間を過ぎると再び受け付ける");
+        first.ResetBrain();
+        Assert(first.KnockbackState.TryEnter(Vector3.back, 5f), "再出現時に耐性時間をリセットする");
+
+        SetField(config, "knockbackCooldown", 0f);
+        first.ChangeState(first.ChaseState);
+        Assert(first.KnockbackState.TryEnter(Vector3.back, 5f), "クールタイム0なら終了後すぐに受け付ける");
     }
 
     private static void SetField(object owner, string name, object value)

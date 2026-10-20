@@ -548,6 +548,7 @@ namespace BalanceSim
                 if (enemy.KnockbackRemaining <= 0f)
                 {
                     enemy.InKnockback = false;
+                    enemy.NextKnockbackTime = time + Math.Max(0f, def.knockbackCooldown);
                 }
             }
             else if (!enemy.InCombat)
@@ -912,8 +913,14 @@ namespace BalanceSim
             }
 
             enemy.FinalDamage = applied;
+            float knockbackForce = knockback * (1f - enemy.Def.knockbackResistance);
+            if (enemy.DeathTime >= 0f || enemy.InKnockback || time < enemy.NextKnockbackTime || knockbackForce <= 0f)
+            {
+                return;
+            }
+
             Vec2 away = (enemy.Position - _player.Position).Normalized;
-            enemy.KnockbackVelocity = away * (knockback * (1f - enemy.Def.knockbackResistance));
+            enemy.KnockbackVelocity = away * knockbackForce;
             enemy.KnockbackRemaining = enemy.Def.knockbackDuration;
             enemy.InKnockback = true;
             enemy.InCombat = false;

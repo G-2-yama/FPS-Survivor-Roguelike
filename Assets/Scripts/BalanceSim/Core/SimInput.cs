@@ -146,6 +146,7 @@ namespace BalanceSim
         public int damageRange;
         public float knockbackResistance;
         public float knockbackDuration;
+        public float knockbackCooldown = 1f;
         public float engageDistance;
         public SimMovementDef chase = new();
         public SimMovementDef combat = new();
