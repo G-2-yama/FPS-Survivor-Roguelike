@@ -103,7 +103,7 @@ public class PooledSoundPlayer : PoolableObject
 
     private void ApplySetting(SoundData data)
     {
-        audioSource.volume = data.volume;
+        audioSource.volume = data.volume * GameSettings.VolumeScale(data.playType);
         audioSource.pitch = data.pitch;
 
         audioSource.spatialBlend =
