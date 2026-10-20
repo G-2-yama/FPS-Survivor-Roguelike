@@ -85,6 +85,8 @@ public class TutorialTaskRunner : MonoBehaviour
             confirmAction.performed -= OnConfirmPerformed;
     }
 
+    public bool IsPracticing => taskList == null || taskIndex >= taskList.Tasks.Count;
+
     public void SkipToPractice()
     {
         if (taskList == null || playerController == null && !TryBindPlayer())

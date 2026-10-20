@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -14,10 +15,24 @@ public class TutorialMenu : MonoBehaviour
     [Tooltip("残りの課題を飛ばして練習場へ進むボタン 押すとメニューを閉じます")]
     [SerializeField] private Button practiceButton;
 
+    [Header("武器の付け替え")]
+    [Tooltip("付け替えの候補にする武器 各行はスロットと同じ種類のものだけを使います")]
+    [SerializeField] private List<WeaponData> weapons = new List<WeaponData>();
+
+    [Tooltip("武器を付け替える行")]
+    [SerializeField] private List<TutorialWeaponRow> weaponRows = new List<TutorialWeaponRow>();
+
+    [Tooltip("武器の行をまとめた親 練習場に入るまで隠します")]
+    [SerializeField] private GameObject weaponGroup;
+
+    [Tooltip("練習場に入るまで武器の行の代わりに出す案内")]
+    [SerializeField] private GameObject weaponLockedNotice;
+
     private GameManager gameManager;
     private TutorialTaskRunner taskRunner;
     private GamepadVirtualMouseCursor virtualCursor;
     private TutorialMenuState menuState;
+    private PlayerInventory inventory;
 
     // 最後に開閉したフレーム。SettingsMenu.Update も同じ Esc で BackRequested を出すので、
     // 同じフレームの2回目の開閉は無視する。外すと開いた直後に閉じることがある。
@@ -70,7 +85,28 @@ public class TutorialMenu : MonoBehaviour
         toggledFrame = Time.frameCount;
         StateMachine.ChangeState(menuState);
         SetVirtualCursorSuppressed(true);
+        PrepareWeaponRows();
         panel.SetActive(true);
+    }
+
+    private void PrepareWeaponRows()
+    {
+        bool practicing = taskRunner == null || taskRunner.IsPracticing;
+        weaponGroup.SetActive(practicing);
+        weaponLockedNotice.SetActive(!practicing);
+        if (!practicing || inventory != null)
+            return;
+
+        Player player = FindFirstObjectByType<Player>();
+        inventory = player != null ? player.Inventory : null;
+        if (inventory == null)
+        {
+            Debug.LogWarning("Player の PlayerInventory が見つからないため、武器を付け替えられません", this);
+            return;
+        }
+
+        foreach (var row in weaponRows)
+            row.Bind(inventory, weapons);
     }
 
     private void Close()
