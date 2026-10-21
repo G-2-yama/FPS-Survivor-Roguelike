@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Sprites;
@@ -48,10 +49,19 @@ public class MinimapIconMesh : MaskableGraphic
     }
 
 
-    public NativeArray<Vector3> PrepareVertices(int count)
+    public NativeArray<Vector3> PrepareVertices(int count, IReadOnlyList<Color32> iconColors = null)
     {
         iconCount = Mathf.Min(count, MaxIcons);
         EnsureCapacity(iconCount);
+        for (int i = 0; i < iconCount; i++)
+        {
+            Color32 iconColor = iconColors != null ? iconColors[i] : (Color32)color;
+            int v = i * 4;
+            colors[v] = iconColor;
+            colors[v + 1] = iconColor;
+            colors[v + 2] = iconColor;
+            colors[v + 3] = iconColor;
+        }
         return vertices;
     }
 

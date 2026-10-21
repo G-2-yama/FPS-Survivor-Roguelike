@@ -14,11 +14,11 @@ public class ProjectileLauncher : MonoBehaviour
             return;
 
         PooledInstance bullet = bulletData.SpawnInstance(shotPoint, direction);
-        enemyplojectileobject projectile = bullet.EnemyProjectile;
+       
 
-        if (projectile!=null)
+        if (bullet!=null)
         {
-            projectile.Initialize(
+            bullet.GameObject.GetComponent<IInitialize>()?.Initialize(
            damage,
            0f
            );

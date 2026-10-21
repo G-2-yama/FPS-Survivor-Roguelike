@@ -101,25 +101,12 @@ namespace BalanceSim.Editor
             var weapons = new WeaponCollector(input.weapons, projectiles, warnings);
             ReadPlayer(scene, player, input, weapons, warnings);
 
-            var initializedConfigs = new HashSet<EnemyConfig>();
-            foreach (scriptableinitiarised initializer in FindActive<scriptableinitiarised>(scene))
-            {
-                SerializedProperty list = SerializedReader.Prop(initializer, "enemylist");
-                for (int i = 0; i < list.arraySize; i++)
-                {
-                    if (list.GetArrayElementAtIndex(i).objectReferenceValue is EnemyConfig config)
-                    {
-                        initializedConfigs.Add(config);
-                    }
-                }
-            }
-
             var pickupMagnet = player.GetComponent<PickupMagnet>();
             if (pickupMagnet == null)
             {
                 warnings.Add("プレイヤーに PickupMagnet がありません。アイテムは引き寄せられないものとして扱います");
             }
-            var prefabs = new PrefabReader(initializedConfigs, projectiles, warnings, player.Config.Stats.PickupRadius, pickupMagnet);
+            var prefabs = new PrefabReader(projectiles, warnings, player.Config.Stats.PickupRadius, pickupMagnet);
             foreach (EnemyGenerator generator in FindActive<EnemyGenerator>(scene))
             {
                 input.generators.Add(ReadGenerator(generator, player, prefabs, warnings));
@@ -244,6 +231,10 @@ namespace BalanceSim.Editor
                 startTime = phase.StartTime,
                 minSpawnCount = phase.MinSpawnCount,
                 spawnInterval = phase.SpawnInterval,
+                isExPhase = phase.IsExPhase,
+                referenceDps = phase.ReferenceDps,
+                minHpMultiplier = phase.MinHpMultiplier,
+                maxHpMultiplier = phase.MaxHpMultiplier,
             };
 
             if (phase.Enemies == null)

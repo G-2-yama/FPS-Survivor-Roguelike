@@ -2,7 +2,7 @@ using UnityEngine;
 /// <summary>攻撃個体のダメージと体力と寿命を管理する</summary>
 
 [RequireComponent(typeof(DamageTargetBinding))]
-public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner
+public abstract class DamageBase : PoolableObject, IDamageable, ILifetimeOwner, IInitialize
 {
     [SerializeField] protected TeamType myTeam;
     public TeamType MyTeam => myTeam;

@@ -42,7 +42,7 @@ public class ChaseState : IState
             enemy.CachedTransform.position,
             targetPosition);
 
-        if (distance <= enemy.Config.EngageDistance)
+        if (distance <= enemy.EngageDistance)
         {
             stateMachine.ChangeState(
                 enemy.CombatState);

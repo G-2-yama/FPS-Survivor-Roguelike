@@ -7,6 +7,7 @@ public class KnockbackState : IState
 
     private Vector3 knockbackVelocity;
     private float timer;
+    private float nextKnockbackTime = float.NegativeInfinity;
 
     public KnockbackState(EnemyBrain enemy, StateMachine<IState> stateMachine)
     {
@@ -14,11 +15,22 @@ public class KnockbackState : IState
         this.stateMachine = stateMachine;
     }
 
-    public void SetKnockback(Vector3 direction, float force)
+    /// <summary>硬直中と終了後の耐性中は追加のノックバックを受け付けない</summary>
+    public bool TryEnter(Vector3 direction, float force)
     {
         float finalForce = force * (1f - enemy.Config.KnockbackResistance);
+        if (stateMachine.CurrentState == this || Time.time < nextKnockbackTime || finalForce <= 0f)
+            return false;
 
         knockbackVelocity = direction.normalized * finalForce;
+        stateMachine.ChangeState(this);
+        return true;
+    }
+
+    /// <summary>プールから再出現した個体の耐性時間を初期化する</summary>
+    public void ResetCooldown()
+    {
+        nextKnockbackTime = float.NegativeInfinity;
     }
 
     public void Enter()
@@ -42,5 +54,6 @@ public class KnockbackState : IState
 
     public void Exit()
     {
+        nextKnockbackTime = Time.time + enemy.Config.KnockbackCooldown;
     }
 }

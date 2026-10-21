@@ -17,6 +17,7 @@ public class ballprojectile : enemyplojectileobject
             }
             hasHit = true;
             GameObject area = PoolManager.Instance.Get(prefab);
+            area.GetComponent<IInitialize>()?.Initialize(config.AttackPower, 0);
             area.transform.position = transform.position;
             Sounder?.Play(SoundCategory.Enemy);
             Release();

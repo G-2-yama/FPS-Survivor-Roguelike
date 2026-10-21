@@ -44,7 +44,7 @@ public class CombatState : IState
             targetPosition);
 
         if (distance >
-            enemy.Config.EngageDistance + 1f)
+            enemy.EngageDistance + 1f)
         {
             stateMachine.ChangeState(
                 enemy.ChaseState);

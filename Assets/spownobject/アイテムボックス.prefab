@@ -178,10 +178,8 @@ MonoBehaviour:
   dropList:
   - prefab: {fileID: 2603205645147408396, guid: 072f6eb1803a3754682e7dbbc37e889f, type: 3}
     weight: 60
-  - prefab: {fileID: 163772318673162832, guid: 0938af6bce06aa74fa46dd22d13a670e, type: 3}
-    weight: 40
   - prefab: {fileID: 2347276547269274607, guid: 413dad27dca89824b9dc780ac6568b5b, type: 3}
-    weight: 20
+    weight: 40
   sounder: {fileID: 661444327848213338}
   DestroyDamagePrefab: {fileID: 0}
   contactTarget: {fileID: 7463715144363059389}
@@ -355,7 +353,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c0933d90835400296352eee541f6aab, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerObstacle
   targetColliders:
   - {fileID: 6378269355364915030}
@@ -369,7 +367,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
   targetSource: {fileID: 4122991606844656850}
   targetColliders:
@@ -384,7 +382,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
   body: {fileID: 0}
   damageSource: {fileID: 0}

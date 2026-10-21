@@ -164,7 +164,7 @@ MonoBehaviour:
   maxTilt: 15
   minSink: 0
   maxSink: 0
-  upspeedrate: 10
+  upspeedrate: 5.5
   duration: 2.5
 --- !u!54 &2361475402351978197
 Rigidbody:

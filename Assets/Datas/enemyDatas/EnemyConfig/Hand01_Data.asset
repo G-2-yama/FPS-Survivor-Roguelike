@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
+  m_Name: Hand01_Data
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
+  MaxHp: 200
+  damagelange: 1
+  knockbackResistance: 0.5
+  knockbackDuration: 0
+  knockbackCooldown: 1.5
+  engagedistance: 4
+  chaseMovedata: {fileID: 11400000, guid: 7ced4c79d461c5c4e8feec1b5f8e526b, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 50b5ad7bbb6238e42886497e2c7d6346, type: 2}
+  AttackPower: 15
+  AttackInterval: 1
+  AttackPattern: {fileID: 11400000, guid: ccdb850d9d494970b41b97134b935101, type: 2}
+  isExEnemy: 0

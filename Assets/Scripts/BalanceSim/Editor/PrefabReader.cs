@@ -8,7 +8,6 @@ namespace BalanceSim.Editor
     {
         public const string PickupRangeKey = "PickupRadius";
 
-        private readonly HashSet<EnemyConfig> _initializedConfigs;
         private readonly ProjectileReader _projectiles;
         private readonly List<string> _warnings;
         private readonly float _pickupRadius;
@@ -19,9 +18,8 @@ namespace BalanceSim.Editor
         public List<SimEnemyDef> Enemies { get; } = new();
         public List<SimPickupDef> Pickups { get; } = new();
 
-        public PrefabReader(HashSet<EnemyConfig> initializedConfigs, ProjectileReader projectiles, List<string> warnings, float pickupRadius, PickupMagnet pickupMagnet)
+        public PrefabReader(ProjectileReader projectiles, List<string> warnings, float pickupRadius, PickupMagnet pickupMagnet)
         {
-            _initializedConfigs = initializedConfigs;
             _projectiles = projectiles;
             _warnings = warnings;
             _pickupRadius = pickupRadius;
@@ -66,6 +64,8 @@ namespace BalanceSim.Editor
             {
                 name = prefab.name,
                 hasEnemyComponent = enemy != null,
+                isExEnemy = config != null && config.IsExEnemy,
+                isPlayerObstacle = prefab.GetComponent<PlayerObstacle>() != null,
                 radius = SerializedReader.HorizontalRadius(prefab, _ => true),
             };
 
@@ -81,6 +81,7 @@ namespace BalanceSim.Editor
                 def.damageRange = config.Damagelange;
                 def.knockbackResistance = config.KnockbackResistance;
                 def.knockbackDuration = config.KnockbackDuration;
+                def.knockbackCooldown = config.KnockbackCooldown;
                 def.engageDistance = EngageDistance(config);
                 def.chase = ReadMovement(config.chaseMovedata);
                 def.combat = ReadMovement(config.combatMovedata);
@@ -321,7 +322,7 @@ namespace BalanceSim.Editor
 
         private float EngageDistance(EnemyConfig config)
         {
-            return _initializedConfigs.Contains(config) ? SerializedReader.Float(config, "engagedistance") : 0f;
+            return config.EngageDistance;
         }
 
         private SimMovementDef ReadMovement(MovementPattern pattern)
