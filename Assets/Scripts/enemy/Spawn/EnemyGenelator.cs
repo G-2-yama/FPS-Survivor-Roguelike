@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using EnemyBalance;
 /// <summary>フェーズ設定に従って敵の生成数と活動期間を管理する</summary>
 
 public class EnemyGenerator : MonoBehaviour
@@ -9,6 +10,9 @@ public class EnemyGenerator : MonoBehaviour
 
     private int currentPhaseIndex;
     private PhaseData currentPhase;
+    private readonly PhaseDpsTracker phaseDps = new PhaseDpsTracker();
+    public float CurrentHpMultiplier { get; private set; } = 1f;
+    public double PreviousNormalDps => phaseDps.PreviousNormalDps;
 
     [SerializeField] private float spawnRadius = 15f;
 
@@ -40,6 +44,8 @@ public class EnemyGenerator : MonoBehaviour
 
         currentPhaseIndex = 0;
         currentPhase = phases[0];
+        phaseDps.BeginPhase(currentPhase.IsExPhase, currentPhase.StartTime);
+        UpdateHpMultiplier();
 
         StartCoroutine(SpawnRoutine());
     }
@@ -47,17 +53,35 @@ public class EnemyGenerator : MonoBehaviour
 
     public void Update()
     {
-        if (currentPhaseIndex + 1 >= phases.Count)
-            return;
+        AdvancePhase(timer.ElapsedTime);
+    }
 
-        PhaseData nextPhase = phases[currentPhaseIndex + 1];
-
-        if (timer.ElapsedTime >= nextPhase.StartTime)
+    private void AdvancePhase(float elapsedTime)
+    {
+        while (currentPhaseIndex + 1 < phases.Count && elapsedTime >= phases[currentPhaseIndex + 1].StartTime)
         {
             Debug.Log("フェーズ: " + currentPhaseIndex + " -> " + (currentPhaseIndex + 1));
             currentPhaseIndex++;
             currentPhase = phases[currentPhaseIndex];
+            phaseDps.BeginPhase(currentPhase.IsExPhase, currentPhase.StartTime);
+            UpdateHpMultiplier();
         }
+    }
+
+    private void UpdateHpMultiplier()
+    {
+        CurrentHpMultiplier = currentPhase.IsExPhase
+            ? (float)phaseDps.GetHpMultiplier(currentPhase.ReferenceDps, currentPhase.MinHpMultiplier, currentPhase.MaxHpMultiplier)
+            : 1f;
+    }
+
+    public void RecordPhaseDamage(int actualDamage)
+    {
+        // Updateより先に被弾した場合も、Phase境界に従って計測する。
+        if (currentPhase == null || timer == null)
+            return;
+        AdvancePhase(timer.ElapsedTime);
+        phaseDps.RecordDamage(actualDamage);
     }
     /// <summary>フェーズの間隔と上限に従って敵の生成を繰り返す</summary>
 
@@ -65,6 +89,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         while (true)
         {
+            AdvancePhase(timer.ElapsedTime);
             // 最低スポーン数を満たすように生成
             if (activeEnemies.Count < currentPhase.MinSpawnCount)
             {
@@ -146,11 +171,11 @@ public class EnemyGenerator : MonoBehaviour
             enemyplojectileobject projectile = spawned.EnemyProjectile;
             if (enemyComponent != null)
             {
-                enemyComponent.SetSpawner(this);
+                enemyComponent.SetSpawner(this, phase.IsExPhase, CurrentHpMultiplier);
             }
             else if (projectile != null)
             {
-                projectile.SetSpawner(this);
+                projectile.SetSpawner(this, phase.IsExPhase, CurrentHpMultiplier);
             }
 
             return;

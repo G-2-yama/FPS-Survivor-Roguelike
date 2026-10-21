@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using EnemyBalance;
 
 
 
@@ -44,6 +45,7 @@ public class Enemy : PoolableObject, IDamageable
 
     private bool isDead = false;
     private EnemyGenerator generator;
+    private bool countsForPhaseDps;
     private int finalDamage = 0;
     [SerializeField, Tooltip("敵Prefabに事前配置したプレイヤー接触判定の対象")]
     private PlayerContactTarget contactTarget;
@@ -57,10 +59,13 @@ public class Enemy : PoolableObject, IDamageable
 
     /// <summary>敵の活動期間を管理する生成器を設定する</summary>
     /// <param name="generator">この敵を生成したジェネレーター</param>
-    public void SetSpawner(EnemyGenerator generator)
+    public void SetSpawner(EnemyGenerator generator, bool isExPhase = false, float hpMultiplier = 1f)
     {
         this.generator = generator;
         enemyBrain.SetSpawner(generator);
+        countsForPhaseDps = !isExPhase && !config.IsExEnemy && playerObstacle == null;
+        int spawnHp = PhaseDpsTracker.ScaleHp(config.MaxHp, isExPhase ? hpMultiplier : 1f);
+        Health.IncreaseHP(spawnHp - Health.MaxHP);
     }
 
     
@@ -104,6 +109,8 @@ public class Enemy : PoolableObject, IDamageable
     /// <summary>プールから取得されたとき敵の状態を戻し、体力を再生成する</summary>
     public override void OnGet()
     {
+        generator = null;
+        countsForPhaseDps = false;
         AssignEnemyLayerToColliders();
         damageEffectManager = DamageEffectManager.Instance;
         enemyBrain.ResetBrain();
@@ -144,6 +151,8 @@ public class Enemy : PoolableObject, IDamageable
     /// <summary>プールへ戻す前に攻撃を停止し、体力イベントの購読を解除する</summary>
     public override void OnRelease()
     {
+        generator = null;
+        countsForPhaseDps = false;
         contactTarget?.Invalidate();
         attackController?.CancelAttack();
 
@@ -161,6 +170,8 @@ public class Enemy : PoolableObject, IDamageable
     /// <param name="maxHP">敵の最大体力</param>
     private void HandleDamaged(int appliedDamage, int currentHP, int maxHP)
     {
+        if (countsForPhaseDps)
+            generator?.RecordPhaseDamage(appliedDamage);
         OnAnyDamaged?.Invoke(appliedDamage);
     }
 

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\Assets\Scripts\BalanceSim\Core\**\*.cs" />
+    <Compile Include="..\..\..\Assets\Scripts\Core\EnemyBalance\*.cs" />
   </ItemGroup>
 
 </Project>

@@ -64,6 +64,8 @@ namespace BalanceSim.Editor
             {
                 name = prefab.name,
                 hasEnemyComponent = enemy != null,
+                isExEnemy = config != null && config.IsExEnemy,
+                isPlayerObstacle = prefab.GetComponent<PlayerObstacle>() != null,
                 radius = SerializedReader.HorizontalRadius(prefab, _ => true),
             };
 

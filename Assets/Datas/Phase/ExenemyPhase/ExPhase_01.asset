@@ -17,4 +17,8 @@ MonoBehaviour:
   spawnInterval: 0.8
   enemies:
   - prefab: {fileID: 3800979161538342785, guid: a767826b16d188447ba2f93706dc4664, type: 3}
-    spawnWeight: 9
+    spawnWeight: 10
+  isExPhase: 1
+  referenceDps: 100
+  minHpMultiplier: 1
+  maxHpMultiplier: 1.3

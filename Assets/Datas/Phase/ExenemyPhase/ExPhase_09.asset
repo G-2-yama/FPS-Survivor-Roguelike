@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
   m_Name: ExPhase_09
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
-  startTime: 238
+  startTime: 198
   minSpawnCount: 3
-  spawnInterval: 0.8
+  spawnInterval: 0.5
   enemies:
-  - prefab: {fileID: 2161741713641023694, guid: 834be85721712544cb2a1c599324e48a, type: 3}
-    spawnWeight: 2
   - prefab: {fileID: 3800979161538342785, guid: a767826b16d188447ba2f93706dc4664, type: 3}
-    spawnWeight: 1
+    spawnWeight: 2
+  - prefab: {fileID: 2161741713641023694, guid: 834be85721712544cb2a1c599324e48a, type: 3}
+    spawnWeight: 6
+  - prefab: {fileID: 6627700967361368669, guid: 1e6e7b52f19fb7049b798a73fd8108ad, type: 3}
+    spawnWeight: 2
+  isExPhase: 1
+  referenceDps: 100
+  minHpMultiplier: 1
+  maxHpMultiplier: 1.3

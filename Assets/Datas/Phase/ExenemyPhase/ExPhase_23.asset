@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
+  m_Name: ExPhase_23
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
+  startTime: 478
+  minSpawnCount: 5
+  spawnInterval: 0.8
+  enemies:
+  - prefab: {fileID: 6627700967361368669, guid: 1e6e7b52f19fb7049b798a73fd8108ad, type: 3}
+    spawnWeight: 2
+  - prefab: {fileID: 400521930760165144, guid: 93ded64be8c63cd419986ce32d387e4e, type: 3}
+    spawnWeight: 8
+  isExPhase: 1
+  referenceDps: 100
+  minHpMultiplier: 1
+  maxHpMultiplier: 1.3

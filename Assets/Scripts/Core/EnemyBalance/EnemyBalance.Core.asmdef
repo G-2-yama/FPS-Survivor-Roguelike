@@ -1,0 +1,6 @@
+{
+    "name": "EnemyBalance.Core",
+    "rootNamespace": "EnemyBalance",
+    "autoReferenced": true,
+    "noEngineReferences": true
+}

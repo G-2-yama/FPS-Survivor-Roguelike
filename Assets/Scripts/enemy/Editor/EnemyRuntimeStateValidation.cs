@@ -65,7 +65,8 @@ public static class EnemyRuntimeStateValidation
             firstStats.AddPickupRadius(-5f);
             Assert(firstStats.PickupRadius == initialRadius, "取得範囲アップを解除できる");
             ValidateKnockback(first, second, config);
-            Debug.Log("EnemyRuntimeStateValidation: PASS (distance, pickup range, knockback cooldown)");
+            ValidatePhaseHp(first, second, config);
+            Debug.Log("EnemyRuntimeStateValidation: PASS (distance, pickup range, knockback cooldown, phase DPS and pooled HP)");
         }
         finally
         {
@@ -137,6 +138,75 @@ public static class EnemyRuntimeStateValidation
         SetField(config, "knockbackCooldown", 0f);
         first.ChangeState(first.ChaseState);
         Assert(first.KnockbackState.TryEnter(Vector3.back, 5f), "クールタイム0なら終了後すぐに受け付ける");
+    }
+
+    private static void ValidatePhaseHp(EnemyBrain first, EnemyBrain second, EnemyConfig config)
+    {
+        var generatorObject = new GameObject("Phase HP validation generator");
+        var normalPhase = ScriptableObject.CreateInstance<PhaseData>();
+        var exPhase = ScriptableObject.CreateInstance<PhaseData>();
+        var generator = generatorObject.AddComponent<EnemyGenerator>();
+        var timer = generatorObject.AddComponent<Timer>();
+        config.MaxHp = 100;
+        string original = JsonUtility.ToJson(config);
+        Enemy firstEnemy = CreateEnemy(first, config);
+        Enemy secondEnemy = CreateEnemy(second, config);
+        try
+        {
+            SetField(exPhase, "startTime", 10f);
+            SetField(exPhase, "isExPhase", true);
+            SetField(exPhase, "referenceDps", 0.5f);
+            SetField(generator, "phases", new System.Collections.Generic.List<PhaseData> { normalPhase, exPhase });
+            SetField(generator, "currentPhase", normalPhase);
+            SetField(generator, "timer", timer);
+            var tracker = (EnemyBalance.PhaseDpsTracker)typeof(EnemyGenerator)
+                .GetField("phaseDps", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(generator);
+            tracker.BeginPhase(false, 0);
+
+            firstEnemy.OnGet();
+            firstEnemy.SetSpawner(generator, true, 1.3f);
+            secondEnemy.OnGet();
+            secondEnemy.SetSpawner(generator, true, 1f);
+            Assert(firstEnemy.Health.MaxHP == 130 && secondEnemy.Health.MaxHP == 100,
+                "共有Configから個体ごとに別のHPを作れる");
+            firstEnemy.Health.TakeDamage(20);
+            Assert(firstEnemy.Health.CurrentHP == 110 && secondEnemy.Health.CurrentHP == 100,
+                "HPと被ダメージは別個体へ波及しない");
+
+            firstEnemy.OnRelease();
+            firstEnemy.OnGet();
+            firstEnemy.SetSpawner(generator, false, 0.5f);
+            Assert(firstEnemy.Health.CurrentHP == 100 && firstEnemy.Health.MaxHP == 100,
+                "再出現時に前回倍率を残さず、通常Phaseでは基礎HPに戻る");
+
+            SetField(timer, "<ElapsedTime>k__BackingField", 5f);
+            firstEnemy.Health.TakeDamage(20);
+            SetField(timer, "<ElapsedTime>k__BackingField", 10f);
+            generator.Update();
+            Assert(generator.PreviousNormalDps == 2 && Mathf.Abs(generator.CurrentHpMultiplier - 1.3f) < 0.0001f,
+                "通常Phaseの実ダメージを集計しEx開始時に上限内の倍率へ確定する");
+            firstEnemy.Health.TakeDamage(10);
+            Assert(generator.PreviousNormalDps == 2 && secondEnemy.Health.MaxHP == 100,
+                "Ex開始後の追加ダメージやPhase切替で既存の倍率と個体HPを再計算しない");
+            Assert(JsonUtility.ToJson(config) == original, "敵の共有SOの基礎値を変更しない");
+        }
+        finally
+        {
+            firstEnemy.OnRelease();
+            secondEnemy.OnRelease();
+            Object.DestroyImmediate(generatorObject);
+            Object.DestroyImmediate(normalPhase);
+            Object.DestroyImmediate(exPhase);
+        }
+    }
+
+    private static Enemy CreateEnemy(EnemyBrain brain, EnemyConfig config)
+    {
+        Enemy enemy = brain.gameObject.AddComponent<Enemy>();
+        SetField(enemy, "config", config);
+        SetField(enemy, "enemyBrain", brain);
+        SetField(enemy, "contactTarget", brain.gameObject.AddComponent<PlayerContactTarget>());
+        return enemy;
     }
 
     private static void SetField(object owner, string name, object value)

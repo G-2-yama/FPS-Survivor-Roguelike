@@ -24,6 +24,7 @@ namespace BalanceSim
         public GeneratorState Generator;
         public Presence Presence = Presence.Active;
         public int Hp;
+        public bool CountsForPhaseDps;
         public bool InContact;
         public float DeathTime = -1f;
         public float NextAttackTime;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using EnemyBalance;
 /// <summary>敵の攻撃個体の体力と命中とドロップを管理する</summary>
 
 
@@ -33,14 +34,18 @@ public class enemyplojectileobject : PoolableObject, IDamageable, IInitialize
     protected int damage;
     protected float knockbackForce;
     private EnemyGenerator generator;
+    private bool countsForPhaseDps;
     [SerializeField] private GameObject DestroyDamagePrefab;
     int finalDamage = 0;
     [SerializeField] private float destroyDamageDamping = 0.7f;
     /// <summary>個体を生成した敵生成器を関連付ける</summary>
 
-    public void SetSpawner(EnemyGenerator generator)
+    public void SetSpawner(EnemyGenerator generator, bool isExPhase = false, float hpMultiplier = 1f)
     {
         this.generator = generator;
+        countsForPhaseDps = !isExPhase && !config.IsExEnemy;
+        int spawnHp = PhaseDpsTracker.ScaleHp(config.MaxHp, isExPhase ? hpMultiplier : 1f);
+        health.IncreaseHP(spawnHp - health.MaxHP);
         if (enemyBrain != null)
         {
             enemyBrain.SetSpawner(generator);
@@ -88,11 +93,14 @@ public class enemyplojectileobject : PoolableObject, IDamageable, IInitialize
 
     public override void OnGet()
     {
+        generator = null;
+        countsForPhaseDps = false;
         damageEffectManager=DamageEffectManager.Instance;
         hasHit = false;
         deathType= DeathType.Normal;
        
         health = new Health(config.MaxHp);
+        health.OnDamaged += HandlePhaseDamage;
         health.OnDeath += HandleDeath;
         if (enemyBrain != null)
         {
@@ -104,10 +112,12 @@ public class enemyplojectileobject : PoolableObject, IDamageable, IInitialize
     
     public override void OnRelease()
     {
+        countsForPhaseDps = false;
         hasHit = true;
 
         if (health != null)
         {
+            health.OnDamaged -= HandlePhaseDamage;
             health.OnDeath -= HandleDeath;
             health = null;
         }
@@ -117,6 +127,11 @@ public class enemyplojectileobject : PoolableObject, IDamageable, IInitialize
             generator.RemoveActiveEnemy(gameObject);
             generator = null;
         }
+    }
+    private void HandlePhaseDamage(int appliedDamage, int currentHP, int maxHP)
+    {
+        if (countsForPhaseDps && deathType == DeathType.Normal)
+            generator?.RecordPhaseDamage(appliedDamage);
     }
     /// <summary>死亡した個体の通知と返却処理を開始する</summary>
 
