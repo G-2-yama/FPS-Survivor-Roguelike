@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EnemyBalance;
 
 namespace BalanceSim
 {
@@ -10,6 +11,8 @@ namespace BalanceSim
         public int PhaseIndex;
         public float NextSpawnTime;
         public readonly List<EnemyAgent> ActiveEnemies = new();
+        public readonly PhaseDpsTracker PhaseDps = new();
+        public float HpMultiplier = 1f;
 
         public SimPhase CurrentPhase => Phases[PhaseIndex];
     }
@@ -132,7 +135,13 @@ namespace BalanceSim
             {
                 var phases = new List<SimPhase>(def.phases);
                 phases.Sort((a, b) => a.startTime.CompareTo(b.startTime));
-                _generators.Add(new GeneratorState { Def = def, Phases = phases });
+                var generator = new GeneratorState { Def = def, Phases = phases };
+                if (phases.Count > 0)
+                {
+                    generator.PhaseDps.BeginPhase(phases[0].isExPhase, phases[0].startTime);
+                    SetHpMultiplier(generator);
+                }
+                _generators.Add(generator);
             }
 
             for (int i = 0; i < EscapeDirections; i++)
@@ -234,11 +243,7 @@ namespace BalanceSim
                 return;
             }
 
-            if (generator.PhaseIndex + 1 < generator.Phases.Count
-                && time >= generator.Phases[generator.PhaseIndex + 1].startTime)
-            {
-                generator.PhaseIndex++;
-            }
+            AdvanceGeneratorPhase(generator, time);
 
             if (time < generator.NextSpawnTime)
             {
@@ -260,6 +265,25 @@ namespace BalanceSim
             }
 
             generator.NextSpawnTime = time + generator.CurrentPhase.spawnInterval;
+        }
+
+        private static void AdvanceGeneratorPhase(GeneratorState generator, float time)
+        {
+            while (generator.PhaseIndex + 1 < generator.Phases.Count
+                && time >= generator.Phases[generator.PhaseIndex + 1].startTime)
+            {
+                generator.PhaseIndex++;
+                generator.PhaseDps.BeginPhase(generator.CurrentPhase.isExPhase, generator.CurrentPhase.startTime);
+                SetHpMultiplier(generator);
+            }
+        }
+
+        private static void SetHpMultiplier(GeneratorState generator)
+        {
+            SimPhase phase = generator.CurrentPhase;
+            generator.HpMultiplier = phase.isExPhase
+                ? (float)generator.PhaseDps.GetHpMultiplier(phase.referenceDps, phase.minHpMultiplier, phase.maxHpMultiplier)
+                : 1f;
         }
 
         private void SpawnEnemy(GeneratorState generator, SimPhase phase)
@@ -292,7 +316,8 @@ namespace BalanceSim
                         Def = def,
                         Generator = generator,
                         Position = position,
-                        Hp = def.maxHp,
+                        Hp = PhaseDpsTracker.ScaleHp(def.maxHp, generator.HpMultiplier),
+                        CountsForPhaseDps = !phase.isExPhase && !def.isExEnemy && !def.isPlayerObstacle,
                         IsThreat = def.touchDamage > 0 || def.attack.shotCount > 0 || def.contactArea.enabled,
                     };
                     generator.ActiveEnemies.Add(enemy);
@@ -548,6 +573,7 @@ namespace BalanceSim
                 if (enemy.KnockbackRemaining <= 0f)
                 {
                     enemy.InKnockback = false;
+                    enemy.NextKnockbackTime = time + Math.Max(0f, def.knockbackCooldown);
                 }
             }
             else if (!enemy.InCombat)
@@ -895,6 +921,12 @@ namespace BalanceSim
             int applied = enemy.Def.damageRange * damage;
             if (applied > 0)
             {
+                int actualDamage = Math.Min(enemy.Hp, applied);
+                if (enemy.CountsForPhaseDps && enemy.Generator != null)
+                {
+                    AdvanceGeneratorPhase(enemy.Generator, time);
+                    enemy.Generator.PhaseDps.RecordDamage(actualDamage);
+                }
                 enemy.Hp = Math.Max(enemy.Hp - applied, 0);
                 if (enemy.Hp == 0)
                 {
@@ -912,8 +944,14 @@ namespace BalanceSim
             }
 
             enemy.FinalDamage = applied;
+            float knockbackForce = knockback * (1f - enemy.Def.knockbackResistance);
+            if (enemy.DeathTime >= 0f || enemy.InKnockback || time < enemy.NextKnockbackTime || knockbackForce <= 0f)
+            {
+                return;
+            }
+
             Vec2 away = (enemy.Position - _player.Position).Normalized;
-            enemy.KnockbackVelocity = away * (knockback * (1f - enemy.Def.knockbackResistance));
+            enemy.KnockbackVelocity = away * knockbackForce;
             enemy.KnockbackRemaining = enemy.Def.knockbackDuration;
             enemy.InKnockback = true;
             enemy.InCombat = false;

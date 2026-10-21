@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using EnemyBalance;
 /// <summary>フェーズ設定に従って敵の生成数と活動期間を管理する</summary>
 
 public class EnemyGenerator : MonoBehaviour
@@ -9,6 +10,9 @@ public class EnemyGenerator : MonoBehaviour
 
     private int currentPhaseIndex;
     private PhaseData currentPhase;
+    private readonly PhaseDpsTracker phaseDps = new PhaseDpsTracker();
+    public float CurrentHpMultiplier { get; private set; } = 1f;
+    public double PreviousNormalDps => phaseDps.PreviousNormalDps;
 
     [SerializeField] private float spawnRadius = 15f;
 
@@ -16,6 +20,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private SpawnDirectionData[] spawnDirections;
     [SerializeField] private Timer timer;
     [SerializeField] private int maxSpawnTry = 5;
+    [Tooltip("箱型Prefabの底面を地面に合わせ、本体全体が壁と重ならない位置に生成・再配置する")]
+    [SerializeField] private bool groundedSpawns;
     [SerializeField]private List<GameObject> activeEnemies = new List<GameObject>();
     public IReadOnlyList<GameObject> ActiveEnemies => activeEnemies;
 
@@ -41,6 +47,8 @@ public class EnemyGenerator : MonoBehaviour
 
         currentPhaseIndex = 0;
         currentPhase = phases[0];
+        phaseDps.BeginPhase(currentPhase.IsExPhase, currentPhase.StartTime);
+        UpdateHpMultiplier();
 
         if (!autoSpawnDisabled)
             spawnRoutine = StartCoroutine(SpawnRoutine());
@@ -60,17 +68,35 @@ public class EnemyGenerator : MonoBehaviour
 
     public void Update()
     {
-        if (currentPhaseIndex + 1 >= phases.Count)
-            return;
+        AdvancePhase(timer.ElapsedTime);
+    }
 
-        PhaseData nextPhase = phases[currentPhaseIndex + 1];
-
-        if (timer.ElapsedTime >= nextPhase.StartTime)
+    private void AdvancePhase(float elapsedTime)
+    {
+        while (currentPhaseIndex + 1 < phases.Count && elapsedTime >= phases[currentPhaseIndex + 1].StartTime)
         {
             Debug.Log("フェーズ: " + currentPhaseIndex + " -> " + (currentPhaseIndex + 1));
             currentPhaseIndex++;
             currentPhase = phases[currentPhaseIndex];
+            phaseDps.BeginPhase(currentPhase.IsExPhase, currentPhase.StartTime);
+            UpdateHpMultiplier();
         }
+    }
+
+    private void UpdateHpMultiplier()
+    {
+        CurrentHpMultiplier = currentPhase.IsExPhase
+            ? (float)phaseDps.GetHpMultiplier(currentPhase.ReferenceDps, currentPhase.MinHpMultiplier, currentPhase.MaxHpMultiplier)
+            : 1f;
+    }
+
+    public void RecordPhaseDamage(int actualDamage)
+    {
+        // Updateより先に被弾した場合も、Phase境界に従って計測する。
+        if (currentPhase == null || timer == null)
+            return;
+        AdvancePhase(timer.ElapsedTime);
+        phaseDps.RecordDamage(actualDamage);
     }
     /// <summary>フェーズの間隔と上限に従って敵の生成を繰り返す</summary>
 
@@ -78,6 +104,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         while (true)
         {
+            AdvancePhase(timer.ElapsedTime);
             // 最低スポーン数を満たすように生成
             if (activeEnemies.Count < currentPhase.MinSpawnCount)
             {
@@ -116,6 +143,9 @@ public class EnemyGenerator : MonoBehaviour
             // Playerの向いている方向を基準にスポーン方向を決定
             Vector3 spawnPosition = GetSpawnPosition();
 
+            if (!TryResolveSpawnPosition(enemyData.Prefab, spawnPosition, out spawnPosition))
+                continue;
+
             // 敵の最大数を超えたら最も遠い敵を削除
             if (activeEnemies.Count >= maxEnemyCount)
             {
@@ -131,39 +161,50 @@ public class EnemyGenerator : MonoBehaviour
                 }
             }
 
-            if (IsSpawnable(spawnPosition))
+            PooledInstance spawned = PoolManager.Instance.Rent(enemyData.Prefab);
+            GameObject enemy = spawned.GameObject;
+
+            if (groundedSpawns)
             {
-                PooledInstance spawned = PoolManager.Instance.Rent(enemyData.Prefab);
-                GameObject enemy = spawned.GameObject;
-
-                enemy.transform.position = spawnPosition;
-
-                activeEnemies.Add(enemy);
-
-                Enemy enemyComponent = spawned.Enemy;
-                enemyplojectileobject projectile = spawned.EnemyProjectile;
-                if (enemyComponent != null)
+                enemy.transform.SetPositionAndRotation(spawnPosition, enemyData.Prefab.transform.rotation);
+                if (enemy.TryGetComponent(out Rigidbody body))
                 {
-                    enemyComponent.SetSpawner(this);
+                    body.position = spawnPosition;
+                    body.rotation = enemyData.Prefab.transform.rotation;
+                    body.linearVelocity = Vector3.zero;
+                    body.angularVelocity = Vector3.zero;
                 }
-                else if (projectile != null)
-                {
-                    projectile.SetSpawner(this);
-                }
-
-                return;
             }
+            else
+            {
+                enemy.transform.position = spawnPosition;
+            }
+
+            activeEnemies.Add(enemy);
+
+            Enemy enemyComponent = spawned.Enemy;
+            enemyplojectileobject projectile = spawned.EnemyProjectile;
+            if (enemyComponent != null)
+            {
+                enemyComponent.SetSpawner(this, phase.IsExPhase, CurrentHpMultiplier);
+            }
+            else if (projectile != null)
+            {
+                projectile.SetSpawner(this, phase.IsExPhase, CurrentHpMultiplier);
+            }
+
+            return;
         }
     }
     /// <summary>生成位置が他の物体と重ならないか確認する</summary>
 
-    public bool TryGetRelocatePosition(out Vector3 position)
+    public bool TryGetRelocatePosition(GameObject source, out Vector3 position)
     {
         for (int i = 0; i < maxSpawnTry; i++)
         {
             position = GetSpawnPosition();
 
-            if (IsSpawnable(position))
+            if (TryResolveSpawnPosition(source, position, out position))
                 return true;
         }
 
@@ -179,6 +220,15 @@ public class EnemyGenerator : MonoBehaviour
     private bool IsSpawnable(Vector3 position)
     {
         return !Physics.CheckSphere(position, 0.5f, Physics.AllLayers);
+    }
+
+    private bool TryResolveSpawnPosition(GameObject source, Vector3 candidate, out Vector3 position)
+    {
+        if (groundedSpawns)
+            return GroundedSpawnPlacement.TryGetPosition(source, candidate, out position);
+
+        position = candidate;
+        return IsSpawnable(position);
     }
 
     /// <summary>

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ecb5ac5017fd44fa58fe74e6207a5f, type: 3}
+  m_Name: 'MissileBox_01[ex]'
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
+  MaxHp: 600
+  damagelange: 1
+  knockbackResistance: 0
+  knockbackDuration: 0.2
+  knockbackCooldown: 3.5
+  engagedistance: 8
+  chaseMovedata: {fileID: 11400000, guid: 65b7c512d7204bc2918acff94b777f3d, type: 2}
+  combatMovedata: {fileID: 11400000, guid: 4c8458045d34dff45b1b1e60dcda4f49, type: 2}
+  AttackPower: 15
+  AttackInterval: 3
+  AttackPattern: {fileID: 11400000, guid: 7029c73fe1d07324dbeefe3ed84978e0, type: 2}
+  isExEnemy: 1

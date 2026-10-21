@@ -12,56 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce709226fdb59a4686e3d70b7b2732b, type: 3}
   m_Name: BalanceSimSweep
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.SimSweep
-  fixedValues: {fileID: 0}
+  fixedValues: {fileID: 11400000, guid: de72cfba313aa734082ae3465ec529f8, type: 2}
   axes:
-  - targetId: GlobalObjectId_V1-3-1a9cbc5f235271a498859bcfae9c5448-11400000-0
-    targetLabel: HG_00
+  - targetId: GlobalObjectId_V1-3-84b9664e77a22404ea31f018d4fbf0fc-11400000-0
+    targetLabel: Sword_00
     propertyPath: damage.damage
     propertyLabel: Damage > Damage
     min: 5
     max: 15
-    step: 3
-  - targetId: GlobalObjectId_V1-3-b6f9eee65bdd9ab4b85d74107f87f3ff-11400000-0
-    targetLabel: HG_01
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 10
-    max: 17
-    step: 3
-  - targetId: GlobalObjectId_V1-3-c6d879d31275a754b8fbb135575fba7e-11400000-0
-    targetLabel: HG_02
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 20
-    max: 25
-    step: 3
-  - targetId: GlobalObjectId_V1-3-84986b671f66f744a81320ba6ec12ca1-11400000-0
-    targetLabel: HG_03
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 20
-    max: 25
-    step: 3
-  - targetId: GlobalObjectId_V1-3-febd3c96077964b4c8dcf6886301f8bf-11400000-0
-    targetLabel: HG_04
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 20
-    max: 30
-    step: 3
-  - targetId: GlobalObjectId_V1-3-9991d3441f516b8449690fa0edef1f15-11400000-0
-    targetLabel: HG_05
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 30
-    max: 40
-    step: 3
-  - targetId: GlobalObjectId_V1-3-8074cbe9ea56c334ca3b8e83d50b2c6d-11400000-0
-    targetLabel: HG_Evo
-    propertyPath: damage.damage
-    propertyLabel: Damage > Damage
-    min: 40
-    max: 50
     step: 3
   groups: []
   generator:

@@ -103,6 +103,10 @@ namespace BalanceSim
         public float startTime;
         public int minSpawnCount;
         public float spawnInterval;
+        public bool isExPhase;
+        public float referenceDps = 100f;
+        public float minHpMultiplier = 1f;
+        public float maxHpMultiplier = 1.3f;
         public List<SimSpawnEntry> enemies = new();
     }
 
@@ -142,10 +146,13 @@ namespace BalanceSim
     {
         public string name;
         public bool hasEnemyComponent;
+        public bool isExEnemy;
+        public bool isPlayerObstacle;
         public int maxHp;
         public int damageRange;
         public float knockbackResistance;
         public float knockbackDuration;
+        public float knockbackCooldown = 1f;
         public float engageDistance;
         public SimMovementDef chase = new();
         public SimMovementDef combat = new();

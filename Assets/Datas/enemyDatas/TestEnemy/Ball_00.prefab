@@ -210,6 +210,7 @@ MonoBehaviour:
   attack: {fileID: 0}
   animator: {fileID: 0}
   uniqueAnimation: {fileID: 0}
+  poseSwitcher: {fileID: 0}
 --- !u!114 &645649402808023166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +295,8 @@ MonoBehaviour:
   deathDelay: 0.1
   enemyBrain: {fileID: 8605327344671441158}
   sounder: {fileID: 2046484930153894469}
-  damageEffectManager: {fileID: 0}
+  DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
+  destroyDamageDamping: 0.7
   prefab: {fileID: 8228827548750103137, guid: b343a9bada77b34458ba3e75379c729f, type: 3}
 --- !u!114 &1146902704468627000
 MonoBehaviour:
@@ -433,7 +435,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
   targetSource: {fileID: 446570625007560332}
   targetColliders:
