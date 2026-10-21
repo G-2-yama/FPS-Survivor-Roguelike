@@ -24799,6 +24799,9 @@ MonoBehaviour:
     m_Bits: 1
   groundProbeHeight: 100
   teleportInset: 5
+  doorHangHeight: 25
+  doorLowerSeconds: 3
+  doorRaiseSeconds: 2
   debugCloseDuration: 20
 --- !u!1 &1629099110
 GameObject:

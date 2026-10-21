@@ -1,3 +1,4 @@
+using System;
 using InfiniteTileWorld;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class LockdownController : MonoBehaviour
         Idle,
         Warning,
         Closed,
+        Opening,
     }
 
     private static readonly Vector3[] ExitDirections =
@@ -47,21 +49,39 @@ public class LockdownController : MonoBehaviour
     [Tooltip("道にいたプレイヤーを、出口から何m内側へ移すか")]
     [SerializeField, Min(0f)] private float teleportInset = 5f;
 
+    [Header("扉の動き")]
+    [Tooltip("警告の間、扉を閉じた位置より何m上に吊っておくか")]
+    [SerializeField, Min(0f)] private float doorHangHeight = 25f;
+
+    [Tooltip("閉まる何秒前から扉を下ろし始めるか")]
+    [SerializeField, Min(0.01f)] private float doorLowerSeconds = 3f;
+
+    [Tooltip("開くときに扉を上げきるまでの秒数")]
+    [SerializeField, Min(0.01f)] private float doorRaiseSeconds = 2f;
+
     [Header("デバッグ")]
     [Tooltip("デバッグ画面から閉じたときに閉じている長さ（秒）")]
     [SerializeField, Min(0f)] private float debugCloseDuration = 20f;
 
-    private readonly GameObject[] doors = new GameObject[4];
+    private readonly BoxCollider[] doors = new BoxCollider[4];
+    private readonly Vector3[] doorClosedPositions = new Vector3[4];
     private CharacterController playerBody;
     private Vector3 plazaOrigin;
     private float plazaPeriod;
     private float plazaHalfExtent;
     private float doorThickness;
     private int nextEntryIndex;
+    private float closeTime;
     private float openTime;
+    private float raiseStartTime;
 
     public LockdownState State { get; private set; }
     public Vector3 PlazaCenter { get; private set; }
+    public float SecondsUntilClose => State == LockdownState.Warning ? Mathf.Max(0f, closeTime - timer.ElapsedTime) : 0f;
+    public float SecondsUntilOpen => State == LockdownState.Closed ? Mathf.Max(0f, openTime - timer.ElapsedTime) : 0f;
+    public bool IsPlayerInside => IsInsidePlaza(playerBody.transform.position);
+
+    public event Action<LockdownState> StateChanged;
 
     private void Start()
     {
@@ -82,8 +102,8 @@ public class LockdownController : MonoBehaviour
 
         for (int i = 0; i < doors.Length; i++)
         {
-            doors[i] = Instantiate(doorPrefab, transform).gameObject;
-            doors[i].SetActive(false);
+            doors[i] = Instantiate(doorPrefab, transform);
+            doors[i].gameObject.SetActive(false);
         }
     }
 
@@ -91,10 +111,17 @@ public class LockdownController : MonoBehaviour
     {
         float now = timer.ElapsedTime;
 
-        if (State == LockdownState.Closed)
+        switch (State)
         {
-            if (now >= openTime) Open();
-            return;
+            case LockdownState.Closed:
+                if (now >= openTime) BeginOpening();
+                return;
+
+            case LockdownState.Opening:
+                float raised = Mathf.Clamp01((now - raiseStartTime) / doorRaiseSeconds);
+                SetDoorHeight(raised * doorHangHeight);
+                if (raised >= 1f) FinishOpening();
+                return;
         }
 
         var entries = schedule.Entries;
@@ -104,27 +131,56 @@ public class LockdownController : MonoBehaviour
         if (now >= entry.CloseTime)
         {
             nextEntryIndex++;
+            if (State != LockdownState.Warning) PrepareDoors();
             Close(entry.OpenTime);
         }
         else if (now >= entry.WarningStartTime)
         {
-            State = LockdownState.Warning;
+            if (State != LockdownState.Warning)
+            {
+                PrepareDoors();
+                closeTime = entry.CloseTime;
+                ChangeState(LockdownState.Warning);
+            }
+
+            float remaining = Mathf.Clamp01((closeTime - now) / doorLowerSeconds);
+            SetDoorHeight(remaining * doorHangHeight);
         }
+    }
+
+    private void ChangeState(LockdownState next)
+    {
+        State = next;
+        StateChanged?.Invoke(next);
+    }
+
+    private void PrepareDoors()
+    {
+        PlazaCenter = NearestPlazaCenter(playerBody.transform.position);
+        PlaceDoors(PlazaCenter);
+        SetDoorHeight(doorHangHeight);
     }
 
     private void Close(float openAt)
     {
-        PlazaCenter = NearestPlazaCenter(playerBody.transform.position);
-        PlaceDoors(PlazaCenter);
+        SetDoorHeight(0f);
         MovePlayerInside(PlazaCenter);
+        foreach (BoxCollider door in doors) door.enabled = true;
         openTime = openAt;
-        State = LockdownState.Closed;
+        ChangeState(LockdownState.Closed);
     }
 
-    private void Open()
+    private void BeginOpening()
     {
-        foreach (GameObject door in doors) door.SetActive(false);
-        State = LockdownState.Idle;
+        foreach (BoxCollider door in doors) door.enabled = false;
+        raiseStartTime = timer.ElapsedTime;
+        ChangeState(LockdownState.Opening);
+    }
+
+    private void FinishOpening()
+    {
+        foreach (BoxCollider door in doors) door.gameObject.SetActive(false);
+        ChangeState(LockdownState.Idle);
 
         var entries = schedule.Entries;
         float now = timer.ElapsedTime;
@@ -154,20 +210,35 @@ public class LockdownController : MonoBehaviour
 
             Vector3 position = edge + direction * (doorThickness * 0.5f);
             position.y = Mathf.Min(insideGround, outsideGround);
+            doorClosedPositions[i] = position;
 
+            doors[i].enabled = false;
             doors[i].transform.SetPositionAndRotation(position, Quaternion.LookRotation(direction));
-            doors[i].SetActive(true);
+            doors[i].gameObject.SetActive(true);
         }
+    }
+
+    private void SetDoorHeight(float height)
+    {
+        for (int i = 0; i < doors.Length; i++)
+        {
+            doors[i].transform.position = doorClosedPositions[i] + Vector3.up * height;
+        }
+    }
+
+    private bool IsInsidePlaza(Vector3 position)
+    {
+        float limit = plazaHalfExtent - playerBody.radius;
+        return Mathf.Abs(position.x - PlazaCenter.x) <= limit && Mathf.Abs(position.z - PlazaCenter.z) <= limit;
     }
 
     private void MovePlayerInside(Vector3 center)
     {
         Vector3 position = playerBody.transform.position;
+        if (IsInsidePlaza(position)) return;
+
         float offsetX = position.x - center.x;
         float offsetZ = position.z - center.z;
-        float limit = plazaHalfExtent - playerBody.radius;
-        if (Mathf.Abs(offsetX) <= limit && Mathf.Abs(offsetZ) <= limit) return;
-
         Vector3 exitDirection = Mathf.Abs(offsetX) >= Mathf.Abs(offsetZ)
             ? new Vector3(Mathf.Sign(offsetX), 0f, 0f)
             : new Vector3(0f, 0f, Mathf.Sign(offsetZ));
@@ -195,14 +266,15 @@ public class LockdownController : MonoBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     public void DebugClose()
     {
-        if (!enabled || State == LockdownState.Closed) return;
+        if (!enabled || State == LockdownState.Closed || State == LockdownState.Opening) return;
+        if (State != LockdownState.Warning) PrepareDoors();
         Close(timer.ElapsedTime + debugCloseDuration);
     }
 
     public void DebugOpen()
     {
         if (!enabled || State != LockdownState.Closed) return;
-        Open();
+        BeginOpening();
     }
 #endif
 }
