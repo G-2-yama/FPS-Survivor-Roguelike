@@ -3,6 +3,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面の初期武器選択肢を表示する
+/// </summary>
 public class StartWeaponOptionView : MonoBehaviour
 {
     [Tooltip("選択状態を切り替えるトグル")]

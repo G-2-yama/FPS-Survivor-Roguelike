@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトル画面のボタンにホバー演出を適用する
+/// </summary>
 public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Serializable]
@@ -72,6 +75,7 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private Vector2 bodyHome;
     private bool isHovered;
+    private bool isFocused;
     private float enteredAt;
     private float hoverProgress;
     private float colorProgress;
@@ -83,31 +87,51 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         Apply();
     }
 
+    /// <summary>
+    /// ホバーしたボタンをゲームパッド決定の対象にする
+    /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (isHovered)
-            return;
-
-        isHovered = true;
-        enteredAt = Time.unscaledTime;
-        foreach (var rgbText in rgbTexts)
-            rgbText.Play();
+        SetActiveState(true, isFocused);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!isHovered)
+        SetActiveState(false, isFocused);
+    }
+
+    public bool Focused
+    {
+        get => isFocused;
+        set => SetActiveState(isHovered, value);
+    }
+
+    private bool IsActive => isHovered || isFocused;
+
+    private void SetActiveState(bool hovered, bool focused)
+    {
+        bool wasActive = IsActive;
+        isHovered = hovered;
+        isFocused = focused;
+        if (IsActive == wasActive)
             return;
 
-        isHovered = false;
-        foreach (var rgbText in rgbTexts)
-            rgbText.Stop();
+        if (IsActive)
+        {
+            enteredAt = Time.unscaledTime;
+            foreach (var rgbText in rgbTexts)
+                rgbText.Play();
+        }
+        else
+        {
+            foreach (var rgbText in rgbTexts)
+                rgbText.Stop();
+        }
     }
 
     private void OnDisable()
     {
-        if (isHovered)
-            OnPointerExit(null);
+        SetActiveState(false, false);
 
         hoverProgress = 0f;
         colorProgress = Highlighted ? 1f : 0f;
@@ -117,8 +141,8 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private void Update()
     {
         float step = Time.unscaledDeltaTime / duration;
-        hoverProgress = Mathf.MoveTowards(hoverProgress, isHovered ? 1f : 0f, step);
-        colorProgress = Mathf.MoveTowards(colorProgress, isHovered || Highlighted ? 1f : 0f, step);
+        hoverProgress = Mathf.MoveTowards(hoverProgress, IsActive ? 1f : 0f, step);
+        colorProgress = Mathf.MoveTowards(colorProgress, IsActive || Highlighted ? 1f : 0f, step);
         Apply();
     }
 
@@ -136,7 +160,7 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         foreach (var target in colors)
             target.Apply(color);
 
-        float elapsed = isHovered ? Time.unscaledTime - enteredAt : float.NegativeInfinity;
+        float elapsed = IsActive ? Time.unscaledTime - enteredAt : float.NegativeInfinity;
         foreach (var flashBar in flashBars)
             flashBar.Apply(elapsed, flashDuration);
     }

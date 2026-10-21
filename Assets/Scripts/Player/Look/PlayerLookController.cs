@@ -54,12 +54,12 @@ public class PlayerLookController
     /// <param name="lookInput">視点操作入力</param>
     private void ApplyLook(Vector2 lookInput, bool isGamepadLookInput, float deltaTime)
     {
-        float sensitivity = settings.LookSensitivity;
+        float sensitivity = settings.LookSensitivity * GameSettings.MouseLookScale;
 
         if (isGamepadLookInput)
         {
             lookInput = ApplyDeadzone(lookInput, settings.GamepadLookDeadzone);
-            sensitivity = settings.GamepadLookSensitivity * deltaTime;
+            sensitivity = settings.GamepadLookSensitivity * GameSettings.GamepadLookScale * deltaTime;
         }
 
         float yawDelta = lookInput.x * sensitivity;

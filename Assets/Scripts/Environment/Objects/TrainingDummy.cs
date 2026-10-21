@@ -6,7 +6,31 @@ using Unity.VisualScripting;
 [RequireComponent(typeof(DamageTargetBinding))]
 public class TrainingDummy : MonoBehaviour, IDamageable
 {
+    public static event Action OnAnyDamaged;
+
+    [Tooltip("体力の最大値")]
     [SerializeField] private int initialHP = 100;
+
+    [Tooltip("体力が尽きたときに倒れるか 倒れない的はその場で満タンに戻る")]
+    [SerializeField] private bool fallsOnDeath;
+
+    [Tooltip("倒れてから戻るまでの秒数")]
+    [Min(0f)]
+    [SerializeField] private float reviveSeconds = 3f;
+
+    [Tooltip("倒れている間に登録を外すダメージ対象")]
+    [SerializeField] private DamageTargetBinding binding;
+
+    [Tooltip("倒れている間に切る当たり判定")]
+    [SerializeField] private Collider[] bodyColliders;
+
+    [Tooltip("倒れている間に隠す見た目")]
+    [SerializeField] private Renderer[] bodyRenderers;
+
+    private float reviveTimer;
+
+    public event Action<TrainingDummy> Reviving;
+
     public TeamType TeamType => TeamType.Enemy;
 
     /// <summary>
@@ -17,8 +41,17 @@ public class TrainingDummy : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        Health = new Health(initialHP);
-        Health.OnDeath += HandleDeath;
+        ResetHealth();
+    }
+
+    private void Update()
+    {
+        if (reviveTimer <= 0f)
+            return;
+
+        reviveTimer -= Time.deltaTime;
+        if (reviveTimer <= 0f)
+            Revive();
     }
 
     /// <summary>
@@ -28,7 +61,12 @@ public class TrainingDummy : MonoBehaviour, IDamageable
     /// <param name="knockbackForce">受けるノックバック力</param>
     public void TakeDamage(int damage, float knockbackForce)
     {
+        if (Health.IsDead)
+            return;
+
+        DamageEffectManager.Instance?.ShowDamage(damage, transform.position);
         Health.TakeDamage(damage);
+        OnAnyDamaged?.Invoke();
     }
 
     /// <summary>
@@ -36,6 +74,39 @@ public class TrainingDummy : MonoBehaviour, IDamageable
     /// </summary>
     private void HandleDeath()
     {
-        Destroy(this.gameObject);
+        if (!fallsOnDeath)
+        {
+            ResetHealth();
+            return;
+        }
+
+        SetBodyActive(false);
+        reviveTimer = Mathf.Max(reviveSeconds, Mathf.Epsilon);
+    }
+
+    private void Revive()
+    {
+        ResetHealth();
+        Reviving?.Invoke(this);
+        SetBodyActive(true);
+    }
+
+    private void ResetHealth()
+    {
+        Health = new Health(initialHP);
+        Health.OnDeath += HandleDeath;
+    }
+
+    private void SetBodyActive(bool active)
+    {
+        foreach (Collider bodyCollider in bodyColliders)
+            bodyCollider.enabled = active;
+        foreach (Renderer bodyRenderer in bodyRenderers)
+            bodyRenderer.enabled = active;
+
+        if (active)
+            binding.Register();
+        else
+            binding.Unregister();
     }
 }

@@ -1,0 +1,353 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class TutorialTaskRunner : MonoBehaviour
+{
+    private const string JumpActionName = "Jump";
+    private const string LeftReloadActionName = "LeftReload";
+    private const string RightReloadActionName = "RightReload";
+    private const string ConfirmActionName = "Interact";
+
+    [Tooltip("上から順に出す課題の一覧")]
+    [SerializeField] private TutorialTaskList taskList;
+
+    [Tooltip("課題の文を出すテキスト")]
+    [SerializeField] private TutorialBindingText instruction;
+
+    [Tooltip("何番目の課題かを出すテキスト")]
+    [SerializeField] private TMP_Text counter;
+
+    [Tooltip("進み具合のバー 横方向のアンカーで長さを変える")]
+    [SerializeField] private RectTransform progressFill;
+
+    [Tooltip("進み具合のバー全体 すべての課題を終えたら隠す")]
+    [SerializeField] private GameObject progressBar;
+
+    [Tooltip("課題を達成したときに出す表示")]
+    [SerializeField] private GameObject clearLabel;
+
+    [Tooltip("Confirm の課題のときだけ出す、次へ進む操作の表示")]
+    [SerializeField] private GameObject confirmHint;
+
+    [Tooltip("課題の HUD を枠で指し示す部品")]
+    [SerializeField] private TutorialHudHighlight highlight;
+
+    [Tooltip("達成の表示を出してから次の課題へ進むまでの秒数")]
+    [Min(0f)]
+    [SerializeField] private float clearDisplaySeconds = 1f;
+
+    private Canvas canvas;
+    private GameManager gameManager;
+    private PlayerController playerController;
+    private CharacterController characterController;
+    private PlayerInventory inventory;
+    private InputAction jumpAction;
+    private InputAction leftReloadAction;
+    private InputAction rightReloadAction;
+    private InputAction confirmAction;
+    private Transform lookTransform;
+
+    private int taskIndex = -1;
+    private float achieved;
+    private float clearTimer;
+    private Vector3 lastPosition;
+    private Quaternion lastLookRotation;
+    private PlayerActionState lastActionState;
+    private bool targetFired;
+
+    private TutorialTask CurrentTask =>
+        taskList != null && taskIndex >= 0 && taskIndex < taskList.Tasks.Count ? taskList.Tasks[taskIndex] : null;
+
+    private void Start()
+    {
+        canvas = GetComponent<Canvas>();
+        gameManager = FindFirstObjectByType<GameManager>();
+        clearLabel.SetActive(false);
+        confirmHint.SetActive(false);
+        if (taskList == null)
+        {
+            Debug.LogError("課題の一覧が設定されていないため、チュートリアルの課題を出せません", this);
+            enabled = false;
+            return;
+        }
+
+        TrainingDummy.OnAnyDamaged += OnDummyDamaged;
+    }
+
+    private void OnDestroy()
+    {
+        TrainingDummy.OnAnyDamaged -= OnDummyDamaged;
+        if (inventory != null)
+        {
+            foreach (Weapon weapon in inventory.WeaponSlots.Values)
+            {
+                if (weapon != null)
+                    weapon.Fired -= OnWeaponFired;
+            }
+        }
+        if (jumpAction != null)
+            jumpAction.performed -= OnJumpPerformed;
+        if (leftReloadAction != null)
+            leftReloadAction.performed -= OnReloadPerformed;
+        if (rightReloadAction != null)
+            rightReloadAction.performed -= OnReloadPerformed;
+        if (confirmAction != null)
+            confirmAction.performed -= OnConfirmPerformed;
+    }
+
+    public bool IsPracticing => taskList == null || taskIndex >= taskList.Tasks.Count;
+
+    public void SkipToPractice()
+    {
+        if (taskList == null || playerController == null && !TryBindPlayer())
+            return;
+
+        StartTask(taskList.Tasks.Count);
+    }
+
+    private void Update()
+    {
+        UpdateVisibility();
+
+        if (playerController == null && !TryBindPlayer())
+            return;
+
+        if (taskIndex < 0)
+            StartTask(0);
+
+        TutorialTask task = CurrentTask;
+        if (task == null)
+            return;
+
+        if (clearTimer > 0f)
+        {
+            clearTimer -= Time.deltaTime;
+            if (clearTimer <= 0f)
+                StartTask(taskIndex + 1);
+            return;
+        }
+
+        Measure(task);
+        UpdateProgress(task);
+        if (achieved >= task.Amount)
+            Clear();
+    }
+
+    private void UpdateVisibility()
+    {
+        GameStateMachine stateMachine = gameManager != null ? gameManager.GameStateMachine : null;
+        if (canvas != null && stateMachine != null)
+            canvas.enabled = stateMachine.CurrentState == stateMachine.PlayingState;
+    }
+
+    private bool TryBindPlayer()
+    {
+        playerController = FindFirstObjectByType<PlayerController>();
+        if (playerController == null)
+            return false;
+
+        characterController = playerController.GetComponent<CharacterController>();
+        Player player = FindFirstObjectByType<Player>();
+        inventory = player != null ? player.Inventory : null;
+        if (inventory == null)
+            Debug.LogWarning("プレイヤーの武器が見つからないため、攻撃の課題で武器を持たせられず達成もできません", this);
+        else
+        {
+            foreach (Weapon weapon in inventory.WeaponSlots.Values)
+            {
+                if (weapon != null)
+                    weapon.Fired += OnWeaponFired;
+            }
+        }
+        Camera mainCamera = Camera.main;
+        lookTransform = mainCamera != null ? mainCamera.transform : playerController.transform;
+
+        PlayerInput playerInput = FindFirstObjectByType<PlayerInput>();
+        jumpAction = playerInput != null ? playerInput.actions.FindAction(JumpActionName) : null;
+        if (jumpAction != null)
+            jumpAction.performed += OnJumpPerformed;
+        else
+            Debug.LogWarning($"アクション {JumpActionName} が見つからないため、2段ジャンプの課題を達成できません", this);
+
+        leftReloadAction = BindReloadAction(playerInput, LeftReloadActionName);
+        rightReloadAction = BindReloadAction(playerInput, RightReloadActionName);
+
+        confirmAction = playerInput != null ? playerInput.actions.FindAction(ConfirmActionName) : null;
+        if (confirmAction != null)
+            confirmAction.performed += OnConfirmPerformed;
+        else
+            Debug.LogWarning($"アクション {ConfirmActionName} が見つからないため、画面の見方の課題を先へ進められません", this);
+
+        return true;
+    }
+
+    private InputAction BindReloadAction(PlayerInput playerInput, string actionName)
+    {
+        InputAction action = playerInput != null ? playerInput.actions.FindAction(actionName) : null;
+        if (action != null)
+            action.performed += OnReloadPerformed;
+        else
+            Debug.LogWarning($"アクション {actionName} が見つからないため、リロードの課題を達成できません", this);
+        return action;
+    }
+
+    private void StartTask(int index)
+    {
+        taskIndex = index;
+        achieved = 0f;
+        clearTimer = 0f;
+        clearLabel.SetActive(false);
+        Equip(CurrentTask);
+        ResetMeasurement();
+
+        TutorialTask task = CurrentTask;
+        bool confirm = task != null && task.Goal == TutorialGoal.Confirm;
+        progressBar.SetActive(task != null && !confirm);
+        confirmHint.SetActive(confirm);
+        highlight.Show(task?.HighlightPaths);
+        if (task == null)
+        {
+            instruction.Template = taskList.FinishedText;
+            counter.text = string.Empty;
+            return;
+        }
+
+        instruction.Template = task.Template;
+        counter.text = $"{taskIndex + 1} / {taskList.Tasks.Count}";
+        SetFill(0f);
+    }
+
+    private void Equip(TutorialTask task)
+    {
+        if (task == null || inventory == null)
+            return;
+
+        foreach (TutorialEquip equip in task.Equips)
+            inventory.EquipWeapon(equip.Slot, equip.Weapon);
+    }
+
+    private void ResetMeasurement()
+    {
+        lastPosition = playerController.transform.position;
+        lastLookRotation = lookTransform.rotation;
+        lastActionState = playerController.CurrentActionState;
+        targetFired = false;
+    }
+
+    private void Measure(TutorialTask task)
+    {
+        Vector3 position = playerController.transform.position;
+        Quaternion lookRotation = lookTransform.rotation;
+        PlayerActionState actionState = playerController.CurrentActionState;
+
+        switch (task.Goal)
+        {
+            case TutorialGoal.MoveDistance:
+                Vector3 moved = position - lastPosition;
+                moved.y = 0f;
+                achieved += moved.magnitude;
+                break;
+            case TutorialGoal.LookAngle:
+                achieved += Quaternion.Angle(lastLookRotation, lookRotation);
+                break;
+            case TutorialGoal.Dash:
+                CountEntered<PlayerDashActionState>(actionState);
+                break;
+            case TutorialGoal.Slide:
+                CountEntered<PlayerSlideActionState>(actionState);
+                break;
+            case TutorialGoal.FastFall:
+                CountEntered<PlayerFastFallActionState>(actionState);
+                break;
+        }
+
+        lastPosition = position;
+        lastLookRotation = lookRotation;
+        lastActionState = actionState;
+    }
+
+    private void CountEntered<T>(PlayerActionState actionState) where T : PlayerActionState
+    {
+        if (actionState is T && !(lastActionState is T))
+            achieved += 1f;
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.AirJump || clearTimer > 0f)
+            return;
+
+        if (characterController != null && !characterController.isGrounded)
+            achieved += 1f;
+    }
+
+    private void OnReloadPerformed(InputAction.CallbackContext context)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.Reload || clearTimer > 0f)
+            return;
+
+        InputAction expected = task.Slot switch
+        {
+            SlotType.LeftMain => leftReloadAction,
+            SlotType.RightMain => rightReloadAction,
+            _ => null,
+        };
+        if (context.action == expected)
+            achieved += 1f;
+    }
+
+    private void OnConfirmPerformed(InputAction.CallbackContext context)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.Confirm || clearTimer > 0f)
+            return;
+
+        achieved += 1f;
+    }
+
+    private void OnWeaponFired(Weapon weapon)
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.WeaponHit || clearTimer > 0f)
+            return;
+
+        if (inventory.WeaponSlots.TryGetValue(task.Slot, out Weapon taskWeapon) && taskWeapon == weapon)
+            targetFired = true;
+    }
+
+    private void OnDummyDamaged()
+    {
+        TutorialTask task = CurrentTask;
+        if (task == null || task.Goal != TutorialGoal.WeaponHit || clearTimer > 0f)
+            return;
+
+        if (targetFired)
+            achieved += 1f;
+    }
+
+    private void UpdateProgress(TutorialTask task)
+    {
+        SetFill(Mathf.Clamp01(achieved / task.Amount));
+    }
+
+    private void Clear()
+    {
+        if (CurrentTask.Goal == TutorialGoal.Confirm)
+        {
+            StartTask(taskIndex + 1);
+            return;
+        }
+
+        SetFill(1f);
+        clearLabel.SetActive(true);
+        clearTimer = Mathf.Max(clearDisplaySeconds, Mathf.Epsilon);
+    }
+
+    private void SetFill(float ratio)
+    {
+        progressFill.anchorMax = new Vector2(ratio, progressFill.anchorMax.y);
+    }
+}

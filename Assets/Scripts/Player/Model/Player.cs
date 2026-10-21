@@ -21,6 +21,8 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerProgression progression;
     private int pendingLevelUps;
     private bool isWeaponSyncEnabled;
+    private bool expGainDisabled;
+    private bool invincible;
     private CharacterController bodyController;
 
     public PlayerConfig Config => config;
@@ -53,6 +55,10 @@ public class Player : MonoBehaviour, IDamageable
 
     /// <summary>装備中の武器状態を同期するか設定する</summary>
     public void SetWeaponSync(bool enabled) => isWeaponSyncEnabled = enabled;
+
+    public void DisableExpGain() => expGainDisabled = true;
+
+    public void MakeInvincible() => invincible = true;
 
     /// <summary>衝突初期化時に本体参照を関連付け、攻撃ごとのコンポーネント検索を避ける</summary>
     internal void SetBodyController(CharacterController controller) => bodyController = controller;
@@ -99,12 +105,16 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     /// <summary>プレイヤーの体力にダメージを適用する</summary>
-    public void TakeDamage(int damage, float knockbackForce) => Health?.TakeDamage(damage);
+    public void TakeDamage(int damage, float knockbackForce)
+    {
+        if (invincible) return;
+        Health?.TakeDamage(damage);
+    }
 
     /// <summary>経験値と全レベルアップを確定してからUIへ通知する</summary>
     public void AddExp(float amount)
     {
-        if (progression == null || amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount)) return;
+        if (expGainDisabled || progression == null || amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount)) return;
         int gainedLevels = progression.AddExperience(amount);
         pendingLevelUps += gainedLevels;
         for (int i = 0; i < gainedLevels; i++) OnLevelUp?.Invoke();

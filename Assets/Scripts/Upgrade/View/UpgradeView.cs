@@ -119,6 +119,7 @@ public class UpgradeView : MonoBehaviour
             {
                 buttonView.SetRevealInteractable(true);
             }
+
         }
         catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
         {

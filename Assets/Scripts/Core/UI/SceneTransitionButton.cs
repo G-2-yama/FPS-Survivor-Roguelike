@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ボタン選択時に指定シーンへ遷移する
+/// </summary>
 [RequireComponent(typeof(Button))]
 public class SceneTransitionButton : MonoBehaviour
 {
@@ -35,4 +38,5 @@ public class SceneTransitionButton : MonoBehaviour
 
         SceneLoader.Load(targetScenePath);
     }
+
 }

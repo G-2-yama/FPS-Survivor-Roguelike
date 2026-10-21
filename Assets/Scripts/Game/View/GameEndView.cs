@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// クリア画面とゲームオーバー画面の表示と初期選択を管理する
+/// </summary>
 public class GameEndView : MonoBehaviour
 {
     [Header("プレイ中")]
@@ -56,6 +59,7 @@ public class GameEndView : MonoBehaviour
         SetText(hitsPerFireText, stats.HitsPerFire.ToString("0.00"));
 
         gameEndCanvas.gameObject.SetActive(true);
+
     }
 
     private static void SetText(TMP_Text target, string value)

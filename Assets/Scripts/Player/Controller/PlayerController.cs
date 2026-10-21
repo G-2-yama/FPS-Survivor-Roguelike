@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private PlayerRuntime runtime;
 
+    public PlayerActionState CurrentActionState => runtime?.CurrentActionState;
+
     /// <summary>
     /// 必要な参照とランタイムを初期化する
     /// </summary>
