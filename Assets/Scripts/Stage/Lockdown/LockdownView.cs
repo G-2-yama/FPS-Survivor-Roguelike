@@ -19,6 +19,13 @@ public class LockdownView : MonoBehaviour
     [Tooltip("矢印の向きの基準にする視点 未設定ならメインカメラ")]
     [SerializeField] private Transform viewpoint;
 
+    [Tooltip("閉じている間、地形の光る模様を赤くする色の制御")]
+    [SerializeField] private PhaseWallColor wallColor;
+
+    [Header("地形の色")]
+    [Tooltip("閉じている間の赤への寄せ具合 0 で元の色、1 で真っ赤")]
+    [SerializeField, Range(0f, 1f)] private float closedRedness = 1f;
+
     [Header("文言")]
     [Tooltip("警告中に広場の中にいるときの文言 {0} は閉まるまでの秒数")]
     [SerializeField] private string warningFormat = "まもなく広場が封鎖されます　{0}";
@@ -35,6 +42,16 @@ public class LockdownView : MonoBehaviour
     private LockdownController.LockdownState shownState;
     private int shownSeconds = -1;
     private bool shownInside;
+
+    private void OnEnable()
+    {
+        controller.StateChanged += OnStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        controller.StateChanged -= OnStateChanged;
+    }
 
     private void Start()
     {
@@ -78,6 +95,19 @@ public class LockdownView : MonoBehaviour
         }
 
         if (!inside) PointArrow();
+    }
+
+    private void OnStateChanged(LockdownController.LockdownState state)
+    {
+        switch (state)
+        {
+            case LockdownController.LockdownState.Closed:
+                wallColor.SetOverride(closedRedness);
+                break;
+            case LockdownController.LockdownState.Opening:
+                wallColor.ClearOverride();
+                break;
+        }
     }
 
     private void PointArrow()

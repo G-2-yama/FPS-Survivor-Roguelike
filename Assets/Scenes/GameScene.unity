@@ -29350,6 +29350,8 @@ MonoBehaviour:
   messageText: {fileID: 366425354}
   arrow: {fileID: 1448117148}
   viewpoint: {fileID: 0}
+  wallColor: {fileID: 1700000003}
+  closedRedness: 1
   warningFormat: "\u307E\u3082\u306A\u304F\u5E83\u5834\u304C\u5C01\u9396\u3055\u308C\u307E\u3059\u3000{0}"
   outsideFormat: "\u5E83\u5834\u3078\u623B\u308C\u3000\u5C01\u9396\u307E\u3067 {0}"
   closedFormat: "\u5C01\u9396\u4E2D\u3000\u6B8B\u308A {0}"
