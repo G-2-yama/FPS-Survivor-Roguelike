@@ -34,6 +34,11 @@ public class EnemyConfig : ScriptableObject
     [Min(0.01f)] public float AttackInterval = 3f;
     public AttackPattern AttackPattern;
 
+    [Header("Minimap")]
+    [SerializeField, Tooltip("有効にするとミニマップにEx敵用の色で表示する")]
+    private bool isExEnemy;
+    public bool IsExEnemy => isExEnemy;
+
 
     
 

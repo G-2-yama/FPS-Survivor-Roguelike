@@ -20640,6 +20640,7 @@ MonoBehaviour:
   playerIcon: {fileID: 1088341490}
   displayRange: 70
   minimapRadius: 40
+  exEnemyIconColor: {r: 1, g: 0.65, b: 0.05, a: 1}
 --- !u!1 &1274284089
 GameObject:
   m_ObjectHideFlags: 0

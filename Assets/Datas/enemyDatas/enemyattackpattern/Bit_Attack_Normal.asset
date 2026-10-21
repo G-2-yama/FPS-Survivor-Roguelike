@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 441a14227bfdde1418d3c28223f1b123, type: 3}
-  m_Name: missilebox shotpattern
-  m_EditorClassIdentifier: Assembly-CSharp::BurstShotPattern
-  shotCount: 4
-  interval: 1
-  firstshotintervalrate: 1
+  m_Name: Bit_Attack_Normal
+  m_EditorClassIdentifier: Assembly-CSharp::BurstShotLogic
+  shotCount: 5
+  interval: 0.4
+  firstshotintervalrate: 4

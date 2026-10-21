@@ -23,3 +23,4 @@ MonoBehaviour:
   AttackPower: 15
   AttackInterval: 3
   AttackPattern: {fileID: 11400000, guid: 7029c73fe1d07324dbeefe3ed84978e0, type: 2}
+  isExEnemy: 1

@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp-Editor::BalanceSim.Editor.SimSweep
   fixedValues: {fileID: 11400000, guid: de72cfba313aa734082ae3465ec529f8, type: 2}
   axes:
-  - targetId: GlobalObjectId_V1-3-8074cbe9ea56c334ca3b8e83d50b2c6d-11400000-0
-    targetLabel: HG_Evo
+  - targetId: GlobalObjectId_V1-3-84b9664e77a22404ea31f018d4fbf0fc-11400000-0
+    targetLabel: Sword_00
     propertyPath: damage.damage
     propertyLabel: Damage > Damage
-    min: 40
-    max: 50
+    min: 10
+    max: 15
     step: 3
   groups: []
   generator:

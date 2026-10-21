@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 441a14227bfdde1418d3c28223f1b123, type: 3}
-  m_Name: gatling attackpattern
+  m_Name: MissileBox_Attack_Ex
   m_EditorClassIdentifier: Assembly-CSharp::BurstShotPattern
-  shotCount: 12
-  interval: 0.05
-  firstshotintervalrate: 30
+  shotCount: 4
+  interval: 1
+  firstshotintervalrate: 1

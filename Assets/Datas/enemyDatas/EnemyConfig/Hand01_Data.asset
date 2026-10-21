@@ -20,6 +20,7 @@ MonoBehaviour:
   engagedistance: 4
   chaseMovedata: {fileID: 11400000, guid: 7ced4c79d461c5c4e8feec1b5f8e526b, type: 2}
   combatMovedata: {fileID: 11400000, guid: 50b5ad7bbb6238e42886497e2c7d6346, type: 2}
-  AttackPower: 10
+  AttackPower: 15
   AttackInterval: 1
-  AttackPattern: {fileID: 11400000, guid: 58e57a83cebf8af4dbb786662069611e, type: 2}
+  AttackPattern: {fileID: 11400000, guid: ccdb850d9d494970b41b97134b935101, type: 2}
+  isExEnemy: 0

@@ -22,6 +22,7 @@ public class MinimapManager : MonoBehaviour
         public TransformAccessArray transforms;
         public readonly List<GameObject> targets = new();
         public readonly List<int> seenStamps = new();
+        public readonly List<Color32> iconColors = new();
         public readonly Dictionary<GameObject, int> indices = new();
     }
 
@@ -33,6 +34,7 @@ public class MinimapManager : MonoBehaviour
 
     [SerializeField] private float displayRange = 20f;
     [SerializeField] private float minimapRadius = 100f;
+    [SerializeField] private Color exEnemyIconColor = new Color(1f, 0.65f, 0.05f, 1f);
 
 
     private SourceIcons[] sourceIcons;
@@ -110,7 +112,7 @@ public class MinimapManager : MonoBehaviour
                 cornerMin = iconMesh.CornerMin,
                 cornerMax = iconMesh.CornerMax,
                 maxIcons = MinimapIconMesh.MaxIcons,
-                vertices = iconMesh.PrepareVertices(icons.transforms.length)
+                vertices = iconMesh.PrepareVertices(icons.transforms.length, icons.iconColors)
             };
 
             job.ScheduleReadOnly(icons.transforms, 64).Complete();
@@ -147,6 +149,9 @@ public class MinimapManager : MonoBehaviour
             icons.indices.Add(target, icons.targets.Count);
             icons.targets.Add(target);
             icons.seenStamps.Add(currentStamp);
+            bool isExEnemy = target.TryGetComponent(out EnemyBrain brain)
+                && brain.Config != null && brain.Config.IsExEnemy;
+            icons.iconColors.Add(isExEnemy ? (Color32)exEnemyIconColor : (Color32)icons.iconMesh.color);
             icons.transforms.Add(target.transform);
         }
     }
@@ -170,11 +175,13 @@ public class MinimapManager : MonoBehaviour
             {
                 icons.targets[i] = icons.targets[last];
                 icons.seenStamps[i] = icons.seenStamps[last];
+                icons.iconColors[i] = icons.iconColors[last];
                 icons.indices[icons.targets[i]] = i;
             }
 
             icons.targets.RemoveAt(last);
             icons.seenStamps.RemoveAt(last);
+            icons.iconColors.RemoveAt(last);
         }
     }
 

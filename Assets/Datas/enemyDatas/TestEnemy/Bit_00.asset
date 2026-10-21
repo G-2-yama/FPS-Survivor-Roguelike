@@ -22,4 +22,4 @@ MonoBehaviour:
   combatMovedata: {fileID: 11400000, guid: 879d1aa649ac795458925da908da2a64, type: 2}
   AttackPower: 2
   AttackInterval: 3
-  AttackPattern: {fileID: 11400000, guid: 2ff7f9945009f96429b76e843ccf5219, type: 2}
+  AttackPattern: {fileID: 11400000, guid: 199567707c884c4cb6c0fb98e1832e6e, type: 2}

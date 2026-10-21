@@ -163,7 +163,7 @@ MonoBehaviour:
   destroyDamageDamping: 0.4
   dropList:
   - prefab: {fileID: 5595374004766735193, guid: 83c1566705591c542865367d8c9a994b, type: 3}
-    weight: 80
+    weight: 1
   sounder: {fileID: 6530965958764650272}
   DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
   contactTarget: {fileID: 1608892798077603834}
