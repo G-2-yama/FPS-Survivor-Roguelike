@@ -76,6 +76,7 @@ public static class PlayerSettingsValidation
             Assert(player.GetComponent<TimedBuffManager>() != null, "強化管理コンポーネントの移行に失敗しています");
             Record("GameSceneの移行値、設定参照、Missing Script");
             TestEnemyPushConfiguration();
+            TestLockdownLayerConfiguration();
             TestBalanceSimulator();
             TestProgression(player.Config.Progression);
             TestPushMath();
@@ -104,6 +105,43 @@ public static class PlayerSettingsValidation
         Assert(serializedEnemy != null && serializedEnemy.FindProperty("config").objectReferenceValue == itemBoxConfig,
             "アイテムボックスPrefabが専用の敵設定を参照していません");
         Record("敵設定、プレイヤー遮蔽物レイヤー、アイテムボックスの例外設定");
+    }
+
+    private static void TestLockdownLayerConfiguration()
+    {
+        int wallLayer = LayerMask.NameToLayer("LockdownWall");
+        int enemyAttackLayer = LayerMask.NameToLayer("EnemyAttack");
+        Assert(wallLayer >= 0 && enemyAttackLayer >= 0, "閉じ込め用のレイヤーが登録されていません");
+
+        foreach (string name in new[] { "Enemy", "EnemyAttack", "Pickup", "PlayerPushZone" })
+            Assert(Physics.GetIgnoreLayerCollision(wallLayer, LayerMask.NameToLayer(name)), "扉と" + name + "の物理衝突が無効になっていません");
+        foreach (string name in new[] { "Default", "PlayerBody" })
+            Assert(!Physics.GetIgnoreLayerCollision(wallLayer, LayerMask.NameToLayer(name)), "扉と" + name + "の物理衝突が無効になっています");
+
+        int defaultLayer = LayerMask.NameToLayer("Default");
+        for (int layer = 0; layer < 32; layer++)
+        {
+            if (layer == wallLayer) continue;
+            Assert(Physics.GetIgnoreLayerCollision(enemyAttackLayer, layer) == Physics.GetIgnoreLayerCollision(defaultLayer, layer),
+                "敵の攻撃とレイヤー" + layer + "の物理衝突がDefaultと異なります");
+        }
+
+        foreach (string path in new[]
+        {
+            "Assets/enemy/enemybullet/basicammo(enemy).prefab",
+            "Assets/enemy/enemybullet/ビーム .prefab",
+            "Assets/enemy/enemybullet/micromissile 1.prefab",
+        })
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            Assert(prefab != null && prefab.layer == enemyAttackLayer, path + "が敵の攻撃レイヤーにありません");
+        }
+
+        GameObject door = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prehab/Lockdown/LockdownDoor.prefab");
+        Assert(door != null && door.layer == wallLayer, "扉Prefabが扉レイヤーにありません");
+        Assert(door != null && door.TryGetComponent(out Rigidbody body) && body.isKinematic, "扉PrefabにKinematicのRigidbodyがありません");
+        Assert(door != null && door.GetComponent<DamageTargetBinding>() == null, "扉Prefabにダメージ判定があります");
+        Record("閉じ込めの扉と敵の攻撃のレイヤー設定");
     }
 
     /// <summary>既存のバランス検証ツールが新しいSOから開始値を読み取れることを確認する</summary>

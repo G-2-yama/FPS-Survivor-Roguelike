@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7230288229655442003}
   - component: {fileID: 1379895741735624799}
   - component: {fileID: 7247719217040763537}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4851,7 +4851,7 @@ GameObject:
   - component: {fileID: 3790727184624878098}
   - component: {fileID: 7620459501794860617}
   - component: {fileID: 2000020000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: "\u30D3\u30FC\u30E0 "
   m_TagString: Untagged
   m_Icon: {fileID: 0}

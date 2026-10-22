@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8496615387957828556}
   - component: {fileID: 5145504960374110724}
   - component: {fileID: 2000020000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: micromissile 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

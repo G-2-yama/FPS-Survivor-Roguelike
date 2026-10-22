@@ -131,19 +131,27 @@ namespace InfiniteTileWorld
         {
             var outdated = new HashSet<StagePanel>();
 
-            // 移動方向に応じて、グリッドの端にあるパネルをワープ候補にする
-            if (dx > 0)      for (int z = 0; z < gridSize; z++) AddIfNotNull(outdated, GetPanel(0, z));
-            else if (dx < 0) for (int z = 0; z < gridSize; z++) AddIfNotNull(outdated, GetPanel(gridSize - 1, z));
+            int stepX = dx > 0 ? 1 : -1;
+            int stepZ = dz > 0 ? 1 : -1;
 
-            if (dz > 0)      for (int x = 0; x < gridSize; x++) AddIfNotNull(outdated, GetPanel(x, 0));
-            else if (dz < 0) for (int x = 0; x < gridSize; x++) AddIfNotNull(outdated, GetPanel(x, gridSize - 1));
+            // 1マスずつ、移動方向に応じてグリッドの端にあるパネルをワープ候補にし、
+            // オフセットを更新して論理的なグリッド位置を回転させる
+            for (int i = 0; i < Mathf.Abs(dx); i++)
+            {
+                int edgeX = stepX > 0 ? 0 : gridSize - 1;
+                for (int z = 0; z < gridSize; z++) AddIfNotNull(outdated, GetPanel(edgeX, z));
+                _gridOffsetX = ((_gridOffsetX + stepX) % gridSize + gridSize) % gridSize;
+            }
+
+            for (int i = 0; i < Mathf.Abs(dz); i++)
+            {
+                int edgeZ = stepZ > 0 ? 0 : gridSize - 1;
+                for (int x = 0; x < gridSize; x++) AddIfNotNull(outdated, GetPanel(x, edgeZ));
+                _gridOffsetZ = ((_gridOffsetZ + stepZ) % gridSize + gridSize) % gridSize;
+            }
 
             foreach (var panel in outdated)
                 if (!_warpQueue.ContainsKey(panel)) _warpQueue[panel] = 0;
-
-            // オフセットを更新して論理的なグリッド位置を回転させる
-            _gridOffsetX = ((_gridOffsetX + dx) % gridSize + gridSize) % gridSize;
-            _gridOffsetZ = ((_gridOffsetZ + dz) % gridSize + gridSize) % gridSize;
         }
 
         private static void AddIfNotNull(HashSet<StagePanel> set, StagePanel panel)
