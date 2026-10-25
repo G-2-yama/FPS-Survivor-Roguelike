@@ -73,6 +73,20 @@ public class TitleHoverFx : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public bool Highlighted { get; set; }
 
+    /// <summary>
+    /// 指定した描画対象の通常色とホバー色を切り替える。
+    /// </summary>
+    public void SetGraphicColors(Graphic graphic, Color normal, Color active)
+    {
+        foreach (TitleColorTarget target in colors)
+        {
+            if (target.TrySetColors(graphic, normal, active))
+                break;
+        }
+
+        Apply();
+    }
+
     private Vector2 bodyHome;
     private bool isHovered;
     private bool isFocused;

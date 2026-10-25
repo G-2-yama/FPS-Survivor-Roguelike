@@ -45,6 +45,20 @@ public class GameEndView : MonoBehaviour
     [Tooltip("ゲームオーバー見出しの文字色")]
     [SerializeField] private Color gameOverColor = new Color(1f, 0.2f, 0.2f);
 
+    [Header("ボタン背景（Title・Retry共通）")]
+    [SerializeField] private ResultButtonColors buttonColors = new ResultButtonColors();
+    [SerializeField] private TitleHoverFx retryButtonHoverFx;
+    [SerializeField] private Graphic retryButtonBackground;
+    [SerializeField] private TitleHoverFx titleButtonHoverFx;
+    [SerializeField] private Graphic titleButtonBackground;
+
+    [Header("終了時フェード・リザルト背景色")]
+    [SerializeField] private Image resultBackgroundDim;
+    [Tooltip("RGBはフェード色、Aはリザルト表示中の背景の暗さ（0で透明、1で不透明）")]
+    [SerializeField] private Color clearFadeColor = new Color(0f, 0f, 0f, 0.55f);
+    [Tooltip("RGBはフェード色、Aはリザルト表示中の背景の暗さ（0で透明、1で不透明）")]
+    [SerializeField] private Color gameOverFadeColor = new Color(0.45f, 0.015f, 0.035f, 0.65f);
+
     [Tooltip("経過時間の表示形式")]
     [SerializeField] private TimeDisplayFormat elapsedTimeDisplayFormat = TimeDisplayFormat.MinutesSeconds;
 
@@ -65,6 +79,29 @@ public class GameEndView : MonoBehaviour
     private RevealTarget[] scoreRevealTargets;
     private Coroutine revealCoroutine;
     private CanvasGroup blackFadeGroup;
+    private Image transitionFadeImage;
+
+    [System.Serializable]
+    private sealed class ResultButtonColors
+    {
+        [Header("クリア時")]
+        [SerializeField] private Color clearNormal = new Color(0.96f, 0.96f, 0.97f);
+        [SerializeField] private Color clearHover = new Color(0.36f, 0.78f, 1f);
+        [Header("敗北時")]
+        [SerializeField] private Color gameOverNormal = new Color(0.96f, 0.86f, 0.86f);
+        [SerializeField] private Color gameOverHover = new Color(1f, 0.25f, 0.3f);
+
+        public void Apply(GameResult result, TitleHoverFx hoverFx, Graphic background)
+        {
+            if (hoverFx == null || background == null)
+                return;
+
+            bool isClear = result == GameResult.Clear;
+            hoverFx.SetGraphicColors(background,
+                isClear ? clearNormal : gameOverNormal,
+                isClear ? clearHover : gameOverHover);
+        }
+    }
 
     private void Start()
     {
@@ -76,6 +113,17 @@ public class GameEndView : MonoBehaviour
         StopReveal();
         InitializeRevealTargets();
         hudCanvas.enabled = false;
+        buttonColors.Apply(result, retryButtonHoverFx, retryButtonBackground);
+        buttonColors.Apply(result, titleButtonHoverFx, titleButtonBackground);
+
+        // 遷移用の全画面フェードが消えた後も、背景だけに結果別の色と暗さを残す。
+        if (resultBackgroundDim != null)
+        {
+            resultBackgroundDim.color = result == GameResult.Clear ? clearFadeColor : gameOverFadeColor;
+            resultBackgroundDim.enabled = true;
+            resultBackgroundDim.gameObject.SetActive(true);
+            resultBackgroundDim.transform.SetAsLastSibling();
+        }
 
         SetText(resultText, result == GameResult.Clear ? clearLabel : gameOverLabel);
         if (resultText != null)
@@ -94,7 +142,7 @@ public class GameEndView : MonoBehaviour
             target?.Apply(0f, scoreSlideDistance, 1f);
 
         gameEndCanvas.gameObject.SetActive(false);
-        revealCoroutine = StartCoroutine(RevealSequence());
+        revealCoroutine = StartCoroutine(RevealSequence(result));
     }
 
     private void InitializeRevealTargets()
@@ -119,9 +167,9 @@ public class GameEndView : MonoBehaviour
         return text != null ? new RevealTarget(text) : null;
     }
 
-    private IEnumerator RevealSequence()
+    private IEnumerator RevealSequence(GameResult result)
     {
-        yield return FadeToBlack();
+        yield return FadeToResult(result == GameResult.Clear ? clearFadeColor : gameOverFadeColor);
         if (blackHoldDuration > 0f)
             yield return new WaitForSecondsRealtime(blackHoldDuration);
 
@@ -151,12 +199,12 @@ public class GameEndView : MonoBehaviour
         revealCoroutine = null;
     }
 
-    private IEnumerator FadeToBlack()
+    private IEnumerator FadeToResult(Color fadeColor)
     {
         if (blackFadeGroup == null)
         {
             // 終了画面を隠したまま、全画面と入力を覆う専用Canvasで暗転する。
-            var overlay = new GameObject("GameEndBlackFade", typeof(RectTransform),
+            var overlay = new GameObject("GameEndTransitionFade", typeof(RectTransform),
                 typeof(Canvas), typeof(CanvasGroup), typeof(GraphicRaycaster));
             overlay.transform.SetParent(gameEndCanvas.transform.parent, false);
             Canvas canvas = overlay.GetComponent<Canvas>();
@@ -165,16 +213,19 @@ public class GameEndView : MonoBehaviour
             canvas.targetDisplay = gameEndCanvas.targetDisplay;
             blackFadeGroup = overlay.GetComponent<CanvasGroup>();
 
-            var background = new GameObject("Black", typeof(RectTransform), typeof(Image));
+            var background = new GameObject("FadeColor", typeof(RectTransform), typeof(Image));
             background.transform.SetParent(overlay.transform, false);
             RectTransform rect = background.GetComponent<RectTransform>();
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
-            background.GetComponent<Image>().color = Color.black;
+            transitionFadeImage = background.GetComponent<Image>();
         }
 
+        // 透明度はCanvasGroupで制御し、設定色に関係なく画面全体を覆う。
+        fadeColor.a = 1f;
+        transitionFadeImage.color = fadeColor;
         blackFadeGroup.alpha = 0f;
         blackFadeGroup.gameObject.SetActive(true);
         float elapsed = 0f;
