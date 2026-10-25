@@ -39,12 +39,19 @@ public class GameEndView : MonoBehaviour
     [Tooltip("死亡したときの表記")]
     [SerializeField] private string gameOverLabel = "GAME OVER";
 
+    [Tooltip("クリア見出しの文字色")]
+    [SerializeField] private Color clearColor = new Color(0.36f, 0.78f, 1f);
+
+    [Tooltip("ゲームオーバー見出しの文字色")]
+    [SerializeField] private Color gameOverColor = new Color(1f, 0.2f, 0.2f);
+
     [Tooltip("経過時間の表示形式")]
     [SerializeField] private TimeDisplayFormat elapsedTimeDisplayFormat = TimeDisplayFormat.MinutesSeconds;
 
     [Header("表示演出（秒・ゲーム停止中も再生）")]
     [SerializeField, Min(0f)] private float fadeToBlackDuration = 0.8f;
     [SerializeField, Min(0f)] private float blackHoldDuration = 0.15f;
+    [SerializeField, Min(0f)] private float resultBackgroundFadeDuration = 0.4f;
     [SerializeField, Min(0f)] private float resultRevealDuration = 0.55f;
     [SerializeField, Min(0f)] private float scoreStartDelay = 0.25f;
     [SerializeField, Min(0f)] private float scoreRevealDuration = 0.28f;
@@ -71,6 +78,8 @@ public class GameEndView : MonoBehaviour
         hudCanvas.enabled = false;
 
         SetText(resultText, result == GameResult.Clear ? clearLabel : gameOverLabel);
+        if (resultText != null)
+            resultText.color = result == GameResult.Clear ? clearColor : gameOverColor;
 
         SetText(elapsedTimeText, TimeFormatter.Format(elapsedSeconds, elapsedTimeDisplayFormat));
 
@@ -117,6 +126,13 @@ public class GameEndView : MonoBehaviour
             yield return new WaitForSecondsRealtime(blackHoldDuration);
 
         gameEndCanvas.gameObject.SetActive(true);
+        float backgroundElapsed = 0f;
+        while (backgroundElapsed < resultBackgroundFadeDuration)
+        {
+            blackFadeGroup.alpha = 1f - Mathf.SmoothStep(0f, 1f, backgroundElapsed / resultBackgroundFadeDuration);
+            yield return null;
+            backgroundElapsed += Time.unscaledDeltaTime;
+        }
         blackFadeGroup.gameObject.SetActive(false);
         yield return Reveal(resultRevealTarget, resultRevealDuration, 0f, resultStartScale);
         if (scoreStartDelay > 0f)
