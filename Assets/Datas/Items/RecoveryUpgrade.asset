@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: RecoveryUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::RecoveryUpgrade
   displayName: "HP\u56DE\u5FA9"
-  description: "\u6700\u5927HP\u306E30\uFF05\u3092\u56DE\u5FA9\u3059\u308B"
+  description: "HP\u309250\u56DE\u5FA9\u3059\u308B"
   icon: {fileID: 21300000, guid: 4eef58d5fc45691449bc5ee8ee731118, type: 3}
   rarity: 0
   weight: 100
-  recoveryMode: 1
-  healAmount: 300
-  maxHealthPercentage: 30
+  recoveryMode: 0
+  healAmount: 50
+  maxHealthPercentage: 1
   normalUpgrades:
   - {fileID: 11400000, guid: 876ec18f36f9dff4ea999a53ee71e108, type: 2}
   - {fileID: 11400000, guid: c6b9d6453f580264a84206e29f4a781e, type: 2}
