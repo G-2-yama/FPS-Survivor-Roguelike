@@ -15,11 +15,12 @@ MonoBehaviour:
   identity:
     weaponId: weapon_default
     displayName: "\u30B9\u30FC\u30D1\u30FC\u30B7\u30E7\u30C3\u30C8"
-    description: "\u73FE\u5728\u306E\u30EC\u30D9\u30EB\u306E\u6B66\u5668\u306E\u8AAC\u660E\u6587\u304C\u5165\u308A\u307E\u3059"
-    icon: {fileID: -844295045, guid: 7b2f7d1833bb04b48bca0276377f5dc5, type: 3}
+    description: "\u524D\u65B9\u306B75\u767A\u306E\u5F3E\u3092\u9023\u5C04\u3059\u308B"
+    icon: {fileID: 21300000, guid: 66b46d3a3854e7c44a5c931aeddfa778, type: 3}
+    artwork: {fileID: 0}
   visual:
     weaponModelPrefab: {fileID: 0}
-  soundDB: {fileID: 11400000, guid: e90d3d0dbc641e54f8bb463f16978c5e, type: 2}
+  soundDB: {fileID: 11400000, guid: 2a9e0bd5d7a1473693fe6fd984fa8592, type: 2}
   classification:
     weaponType: 1
     fireModeData: {fileID: 11400000, guid: 45ccd7ba6ad258049a1b09fdc4854768, type: 2}
@@ -28,7 +29,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 15
+    damage: 6
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:
@@ -46,4 +47,4 @@ MonoBehaviour:
   ammo:
     magazineSize: 75
     reloadTime: 10
-  nextLevelData: {fileID: 11400000, guid: 723b44eb40a1151438420a60c1004a1a, type: 2}
+  nextLevelData: {fileID: 11400000, guid: b26d33629b814f9285fbe54ffa449ae7, type: 2}
