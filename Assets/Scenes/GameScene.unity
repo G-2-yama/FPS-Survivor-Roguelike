@@ -6266,7 +6266,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 0.35, b: 0.3, a: 1}
+  m_fontColor: {r: 1, g: 0.07262569, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15385,17 +15385,17 @@ MonoBehaviour:
   clearColor: {r: 0.36, g: 0.78, b: 1, a: 1}
   gameOverColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   buttonColors:
-    clearNormal: {r: 0.96, g: 0.96, b: 0.97, a: 1}
+    clearNormal: {r: 0.008660595, g: 0.008660595, b: 0.29331034, a: 0.5254902}
     clearHover: {r: 0.36, g: 0.78, b: 1, a: 1}
-    gameOverNormal: {r: 0.96, g: 0.86, b: 0.86, a: 1}
+    gameOverNormal: {r: 0.19921571, g: 0.011740099, b: 0.011740099, a: 0.50980395}
     gameOverHover: {r: 1, g: 0.25, b: 0.3, a: 1}
   retryButtonHoverFx: {fileID: 2100000100}
   retryButtonBackground: {fileID: 2110000005}
   titleButtonHoverFx: {fileID: 2100000101}
   titleButtonBackground: {fileID: 2110001005}
   resultBackgroundDim: {fileID: 2120000013}
-  clearFadeColor: {r: 0, g: 0, b: 0, a: 0.55}
-  gameOverFadeColor: {r: 0.45, g: 0.015, b: 0.035, a: 0.65}
+  clearFadeColor: {r: 0.086778134, g: 0.083023615, b: 0.19333488, a: 0.8509804}
+  gameOverFadeColor: {r: 0.45, g: 0.015, b: 0.035, a: 0.8627451}
   elapsedTimeDisplayFormat: 0
   fadeToBlackDuration: 0.8
   blackHoldDuration: 0.15
@@ -34479,7 +34479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.55}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9372549}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
