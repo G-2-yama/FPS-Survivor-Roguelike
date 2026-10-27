@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 
 public class GameStateMachine : StateMachine<GameState>
 {
+    private readonly RecoveryUpgradeAutoRecovery autoRecovery;
     private GameState playingState;
     public GameState PlayingState => playingState;
 
@@ -20,6 +21,9 @@ public class GameStateMachine : StateMachine<GameState>
         endState = new EndState(controller);
         upgradeState = new UpgradeState(controller);
         inventoryState = new InventoryState(controller);
+
+        autoRecovery = controller.gameManager.UpgradeManager.GetComponent<RecoveryUpgradeAutoRecovery>();
+        autoRecovery?.Initialize(controller, this);
 
         controller.Player.OnDeath += OnPlayerDeath;
 
@@ -45,6 +49,9 @@ public class GameStateMachine : StateMachine<GameState>
 
     public void ChangeUpgradeState()
     {
+        if (autoRecovery != null && autoRecovery.TryApplyPendingRecovery())
+            return;
+
         ChangeState(upgradeState);
     }
 

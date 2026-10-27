@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea5e4e800cd4d4eb328d521bbb15d25, type: 3}
+  m_Name: RecoveryUpgrade
+  m_EditorClassIdentifier: Assembly-CSharp::RecoveryUpgrade
+  displayName: "HP\u56DE\u5FA9"
+  description: "\u6700\u5927HP\u306E30\uFF05\u3092\u56DE\u5FA9\u3059\u308B"
+  icon: {fileID: 21300000, guid: 4eef58d5fc45691449bc5ee8ee731118, type: 3}
+  rarity: 0
+  weight: 100
+  recoveryMode: 1
+  healAmount: 300
+  maxHealthPercentage: 30
+  normalUpgrades:
+  - {fileID: 11400000, guid: 876ec18f36f9dff4ea999a53ee71e108, type: 2}
+  - {fileID: 11400000, guid: c6b9d6453f580264a84206e29f4a781e, type: 2}
+  - {fileID: 11400000, guid: c9e1d0609f3285f41bc5dc557cf3b718, type: 2}
+  - {fileID: 11400000, guid: cbd6ce94c7b8f374e886e4ade79f973e, type: 2}
+  - {fileID: 11400000, guid: 5882be3937d7c564b82e2e14b6baf176, type: 2}
+  - {fileID: 11400000, guid: ee3c9daf186c62a49a7236d421d4c260, type: 2}
+  - {fileID: 11400000, guid: 9e8b40d7c4fac5a4587f57920ad7f867, type: 2}
+  - {fileID: 11400000, guid: 3b4ec4c1b1e78634d8c945ec11a6a9bd, type: 2}
+  - {fileID: 11400000, guid: 4ebfaad9b81ee7f4eabbccd3c2b641bd, type: 2}
+  - {fileID: 11400000, guid: 1e0a1d9d45198444a8472a9df55869ea, type: 2}
+  - {fileID: 11400000, guid: d97b5c63a4d2dc14088c1ef3be783e47, type: 2}
+  - {fileID: 11400000, guid: 86a24bfaa62145045aabffcba7751500, type: 2}
+  - {fileID: 11400000, guid: f40aeaab92ff107499a57b0f63bf5000, type: 2}
+  - {fileID: 11400000, guid: f8eb99bcc2b8da046977d8891e5a3719, type: 2}
+  - {fileID: 11400000, guid: 47dfd4dae1f72b94e9f8eb7667f5dd9e, type: 2}
+  - {fileID: 11400000, guid: 0b7db8d042450f041ab9ecf2f001b8cf, type: 2}
+  - {fileID: 11400000, guid: 6d7f871b15fe66d4dbc1f6462eee50d9, type: 2}
+  - {fileID: 11400000, guid: 61cc132a12003804cadef73b935d2920, type: 2}
+  - {fileID: 11400000, guid: 60f26d1061a80c648a479b0b5513ffa1, type: 2}
+  - {fileID: 11400000, guid: 4916f05d8d8b98e4785cb073dd4e4b73, type: 2}
+  - {fileID: 11400000, guid: 695c9f52f9834d547a5e5267b6d79203, type: 2}
+  - {fileID: 11400000, guid: ef6f18089774b3049ad2771a79722044, type: 2}
+  - {fileID: 11400000, guid: eff52e0076a33df40855fa97fa085211, type: 2}
+  - {fileID: 11400000, guid: a826a1f27d5b438459c2cd82fff725ef, type: 2}
+  - {fileID: 11400000, guid: c2419c75472805b409cb598b777504be, type: 2}
+  - {fileID: 11400000, guid: 23f90326a2e62bb43b29b1349a3d18ad, type: 2}
+  - {fileID: 11400000, guid: 6a223b387fb77bf4b83c9ca571896dda, type: 2}
+  - {fileID: 11400000, guid: efbe7b561c1337a4babad18a763bbe71, type: 2}
+  - {fileID: 11400000, guid: 497d5ec25c0bab34b97c4e5d854152ec, type: 2}
+  - {fileID: 11400000, guid: 0c971f2b7baaa2c43be79ebaacc0a18e, type: 2}
+  - {fileID: 11400000, guid: b1da45d32b0f0da4182b5be499431210, type: 2}
+  - {fileID: 11400000, guid: 57c35fd5a80650741b96c446602928f8, type: 2}
+  - {fileID: 11400000, guid: d9c1cdb30895494409f046a2c87497e4, type: 2}

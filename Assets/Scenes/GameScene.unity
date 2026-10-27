@@ -25296,6 +25296,7 @@ GameObject:
   - component: {fileID: 1653113032}
   - component: {fileID: 1653113031}
   - component: {fileID: 1653113033}
+  - component: {fileID: 1653113034}
   m_Layer: 0
   m_Name: UpgradeManager
   m_TagString: Untagged
@@ -25350,6 +25351,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b1da45d32b0f0da4182b5be499431210, type: 2}
   - {fileID: 11400000, guid: 57c35fd5a80650741b96c446602928f8, type: 2}
   - {fileID: 11400000, guid: d9c1cdb30895494409f046a2c87497e4, type: 2}
+  - {fileID: 11400000, guid: fa3a0eafe7f548f29af0e14d2d3ec81f, type: 2}
 --- !u!4 &1653113032
 Transform:
   m_ObjectHideFlags: 0
@@ -25386,6 +25388,25 @@ MonoBehaviour:
   cardFadeDuration: 0.25
   cardFadeInterval: 0.1
   cardSlideDistance: 60
+--- !u!114 &1653113034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653113030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1aa96c7a8b48bbbeac7fd35bee4cb9, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::RecoveryUpgradeAutoRecovery
+  recoveryUpgrade: {fileID: 11400000, guid: fa3a0eafe7f548f29af0e14d2d3ec81f, type: 2}
+  upgradeCanvas: {fileID: 902955989}
+  promptFont: {fileID: 11400000, guid: f4963ae1b6114e244aef6d6b208dc820, type: 2}
+  promptText: "\u4ECA\u5F8C\u30A2\u30C3\u30D7\u30B0\u30EC\u30FC\u30C9\u753B\u9762\u3092\u8868\u793A\u3057\u306A\u3044\n\uFF08\u30EC\u30D9\u30EB\u30A2\u30C3\u30D7\u6642\u306B\u81EA\u52D5\u56DE\u5FA9\u3057\u307E\u3059\uFF09"
+  promptPosition: {x: 0, y: 85}
+  promptSize: {x: 1450, y: 96}
+  promptFontSize: 26
 --- !u!1 &1654631599
 GameObject:
   m_ObjectHideFlags: 0
