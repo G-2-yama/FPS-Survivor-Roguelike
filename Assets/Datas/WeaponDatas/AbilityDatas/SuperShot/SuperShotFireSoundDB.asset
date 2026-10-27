@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61837da7b5b7d5842a18cfca55bfcdee, type: 3}
   m_Name: SuperShotFireSoundDB
   m_EditorClassIdentifier: Assembly-CSharp::SoundDB
-  playFireSoundPerShot: 1
+  playFireSoundPerShot: 0
   sounds:
   - category: 1
     index: 0
-    clip: {fileID: 8300000, guid: e65804ba859197749b98d4b5ddb71d04, type: 3}
+    clip: {fileID: 8300000, guid: 53c6515e9d76449dbdcfcf2d652c7683, type: 3}
     volume: 0.225
-    pitch: 1.15
+    pitch: 1
     playType: 0
     is3D: 0
     spatialBlend: 0
