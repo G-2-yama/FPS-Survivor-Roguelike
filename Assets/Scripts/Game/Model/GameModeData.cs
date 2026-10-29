@@ -9,6 +9,10 @@ public class GameModeData : ScriptableObject
     [Tooltip("制限時間（分） 負の値（-1など）でエンドレス")]
     [SerializeField] private float timeLimitMinutes = 10f;
 
+    [Tooltip("予定表の時刻に広場の出口を塞ぐ閉じ込めを起こすか")]
+    [SerializeField] private bool lockdownEnabled = true;
+
     public string DisplayName => displayName;
     public float TimeLimitSeconds => timeLimitMinutes * 60f;
+    public bool LockdownEnabled => lockdownEnabled;
 }

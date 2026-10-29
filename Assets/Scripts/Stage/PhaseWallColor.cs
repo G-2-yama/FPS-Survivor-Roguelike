@@ -51,6 +51,21 @@ public class PhaseWallColor : MonoBehaviour
     private float currentRedness;
     private float jumpElapsed;
     private bool isJumping;
+    private bool hasOverride;
+    private float overrideRedness;
+
+    public void SetOverride(float redness)
+    {
+        hasOverride = true;
+        overrideRedness = redness;
+        BeginJump();
+    }
+
+    public void ClearOverride()
+    {
+        hasOverride = false;
+        BeginJump();
+    }
 
     private void Start()
     {
@@ -71,12 +86,10 @@ public class PhaseWallColor : MonoBehaviour
         if (phaseIndex != currentPhaseIndex)
         {
             currentPhaseIndex = phaseIndex;
-            fromRedness = currentRedness;
-            jumpElapsed = 0f;
-            isJumping = true;
+            if (!hasOverride) BeginJump();
         }
 
-        float redness = GetPhaseRedness(phaseIndex);
+        float redness = hasOverride ? overrideRedness : GetPhaseRedness(phaseIndex);
         if (isJumping)
         {
             jumpElapsed += Time.deltaTime;
@@ -90,6 +103,13 @@ public class PhaseWallColor : MonoBehaviour
 
         currentRedness = redness;
         Apply(currentRedness);
+    }
+
+    private void BeginJump()
+    {
+        fromRedness = currentRedness;
+        jumpElapsed = 0f;
+        isJumping = true;
     }
 
     private void OnDestroy()

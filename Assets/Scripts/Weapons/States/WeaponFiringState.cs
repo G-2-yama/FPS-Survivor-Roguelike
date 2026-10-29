@@ -37,8 +37,8 @@ public class WeaponFiringState : WeaponState
             float animationDuration = burstRemaining > 1 ? interval : _weapon.WeaponData.FireInterval;
             _weapon.WeaponView.PlayFireAnimation(animationDuration);
 
-            // 発射音は従来どおりバースト開始時に再生する。
-            if (!hasFired)
+            // 指定したSoundDBのみ毎弾再生し、それ以外はバースト開始時に再生する。
+            if (!hasFired || (_weapon.WeaponData.SoundDB != null && _weapon.WeaponData.SoundDB.playFireSoundPerShot))
             {
                 _weapon.Sounder.Play(SoundCategory.Fire);
                 hasFired = true;

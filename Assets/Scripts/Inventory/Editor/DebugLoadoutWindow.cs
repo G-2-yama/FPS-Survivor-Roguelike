@@ -13,6 +13,7 @@ public class DebugLoadoutWindow : EditorWindow
 
     private Player player;
     private GameManager gameManager;
+    private LockdownController lockdown;
     private Vector2 scroll;
     private Action pendingChange;
 
@@ -126,6 +127,29 @@ public class DebugLoadoutWindow : EditorWindow
             if (GUILayout.Button("ゲームオーバー"))
             {
                 gameManager.DebugGameOver();
+            }
+        }
+
+        if (Application.isPlaying && lockdown == null)
+        {
+            lockdown = FindAnyObjectByType<LockdownController>();
+        }
+
+        bool lockdownAvailable = Application.isPlaying && lockdown != null && lockdown.enabled;
+        using (new EditorGUI.DisabledScope(!lockdownAvailable))
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            string state = lockdownAvailable ? lockdown.State.ToString() : "なし";
+            EditorGUILayout.LabelField($"閉じ込め（{state}）", GUILayout.Width(140f));
+
+            if (GUILayout.Button("閉じる"))
+            {
+                lockdown.DebugClose();
+            }
+
+            if (GUILayout.Button("開ける"))
+            {
+                lockdown.DebugOpen();
             }
         }
     }

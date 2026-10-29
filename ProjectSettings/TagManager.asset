@@ -16,8 +16,8 @@ TagManager:
   - PlayerBody
   - PlayerPushZone
   - PlayerObstacle
-  - 
-  - 
+  - LockdownWall
+  - EnemyAttack
   - 
   - 
   - 

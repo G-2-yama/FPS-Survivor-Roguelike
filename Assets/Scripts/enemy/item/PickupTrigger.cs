@@ -34,7 +34,7 @@ public abstract class PickupTriggerItem : PoolableObject
         renderers = GetComponentsInChildren<Renderer>();
 
         if (groundMask == 0)
-            groundMask = ~LayerMask.GetMask("Enemy", "Pickup");
+            groundMask = ~LayerMask.GetMask("Enemy", "Pickup", "LockdownWall");
     }
     /// <summary>取得アイテムを地面の位置と傾きに合わせて配置する</summary>
 
