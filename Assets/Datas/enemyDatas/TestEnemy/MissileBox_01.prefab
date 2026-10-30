@@ -311,9 +311,9 @@ MonoBehaviour:
   destroyDamageDamping: 0.5
   dropList:
   - prefab: {fileID: 6767262910079970781, guid: 66e8451ceed22f6479bdfa9f067815ad, type: 3}
-    weight: 80
-  - prefab: {fileID: 0}
-    weight: 20
+    weight: 40
+  - prefab: {fileID: 163772318673162832, guid: 0938af6bce06aa74fa46dd22d13a670e, type: 3}
+    weight: 60
   sounder: {fileID: 4342199728072193920}
   DestroyDamagePrefab: {fileID: 1951962115055829092, guid: 7e3eaf13bef526c418d7f88123aa0ac6, type: 3}
   contactTarget: {fileID: 361513389016071114}
@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99d6471e1f424ff19e7b9625856d43ea, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPoseSwitcher
   parts:
   - target: {fileID: 4808483191403146367}
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a129d6c8a178c9994e059e94edf28b83, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageTargetBinding
   targetSource: {fileID: 7088480410294519869}
   targetColliders:
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d82a00fc37568b45966c2f1cc7f721b, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerContactTarget
   body: {fileID: 0}
   damageSource: {fileID: 0}

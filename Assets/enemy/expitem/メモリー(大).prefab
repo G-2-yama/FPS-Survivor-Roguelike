@@ -159,4 +159,4 @@ MonoBehaviour:
   maxTilt: 15
   minSink: 0.1
   maxSink: 0.3
-  expAmount: 150
+  expAmount: 500
