@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameSceneProgressionSettings
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgressionSettings
   initialLevel: 1
-  levelUpRequiredExp: 90
-  levelUpRate: 1.2
+  levelUpRequiredExp: 80
+  levelUpRate: 1.1

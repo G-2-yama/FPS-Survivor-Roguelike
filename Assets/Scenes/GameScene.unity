@@ -25350,7 +25350,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 497d5ec25c0bab34b97c4e5d854152ec, type: 2}
   - {fileID: 11400000, guid: 0c971f2b7baaa2c43be79ebaacc0a18e, type: 2}
   - {fileID: 11400000, guid: b1da45d32b0f0da4182b5be499431210, type: 2}
-  - {fileID: 11400000, guid: 57c35fd5a80650741b96c446602928f8, type: 2}
   - {fileID: 11400000, guid: d9c1cdb30895494409f046a2c87497e4, type: 2}
   - {fileID: 11400000, guid: fa3a0eafe7f548f29af0e14d2d3ec81f, type: 2}
 --- !u!4 &1653113032

@@ -17,6 +17,7 @@ MonoBehaviour:
     displayName: "Evo\u30AA\u30FC\u30E9"
     description: "\u30AA\u30FC\u30E9\u306E\u7BC4\u56F2\u304C\u5E83\u304C\u308A, \u30C0\u30E1\u30FC\u30B8\u9593\u9694\u304C\u77ED\u304F\u306A\u308A\u307E\u3059"
     icon: {fileID: 21300000, guid: f5ccbbcc4ddf8834991e35997aad81d0, type: 3}
+    artwork: {fileID: 0}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
@@ -28,8 +29,8 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 5
-    knockbackForce: 5
+    damage: 10
+    knockbackForce: 50
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0
@@ -45,5 +46,5 @@ MonoBehaviour:
     maxPitch: 0
   ammo:
     magazineSize: 1
-    reloadTime: 10
+    reloadTime: 5
   nextLevelData: {fileID: 0}

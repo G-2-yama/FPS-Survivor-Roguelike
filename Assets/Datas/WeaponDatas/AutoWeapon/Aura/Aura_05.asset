@@ -17,6 +17,7 @@ MonoBehaviour:
     displayName: "\u30AA\u30FC\u30E9"
     description: "\u30C0\u30E1\u30FC\u30B85->10"
     icon: {fileID: 21300000, guid: f5ccbbcc4ddf8834991e35997aad81d0, type: 3}
+    artwork: {fileID: 0}
   visual:
     weaponModelPrefab: {fileID: 0}
   soundDB: {fileID: 0}
@@ -28,8 +29,8 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 1
   damage:
-    damage: 10
-    knockbackForce: 20
+    damage: 5
+    knockbackForce: 40
     spreadAngle: 0
   fireRhythm:
     fireInterval: 0

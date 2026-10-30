@@ -29,7 +29,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 0
   damage:
-    damage: 10
+    damage: 25
     knockbackForce: 30
     spreadAngle: 0
   fireRhythm:
