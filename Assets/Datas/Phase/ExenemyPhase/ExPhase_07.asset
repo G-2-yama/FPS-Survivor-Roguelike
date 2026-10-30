@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
   m_Name: ExPhase_07
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
-  startTime: 158
-  minSpawnCount: 3
-  spawnInterval: 0.5
+  startTime: 156
+  minSpawnCount: 40
+  spawnInterval: 0.4
   enemies:
   - prefab: {fileID: 3800979161538342785, guid: a767826b16d188447ba2f93706dc4664, type: 3}
     spawnWeight: 4
