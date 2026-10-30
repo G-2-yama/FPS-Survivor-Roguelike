@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Phase_01
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   startTime: 30
-  minSpawnCount: 130
-  spawnInterval: 0.5
+  minSpawnCount: 200
+  spawnInterval: 0.4
   enemies:
   - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
     spawnWeight: 9
+  isExPhase: 0
+  referenceDps: 100
+  minHpMultiplier: 1
+  maxHpMultiplier: 1.3

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,17 +5,10 @@ using UnityEngine.UI;
 public class RecoveryUpgradeAutoRecovery : MonoBehaviour
 {
     [SerializeField] private RecoveryUpgrade recoveryUpgrade;
-    [SerializeField] private RectTransform upgradeCanvas;
-    [SerializeField] private TMP_FontAsset promptFont;
-    [SerializeField, TextArea] private string promptText =
-        "今後アップグレード画面を表示しない\n（レベルアップ時に自動回復します）";
-    [SerializeField] private Vector2 promptPosition = new Vector2(0f, 85f);
-    [SerializeField] private Vector2 promptSize = new Vector2(1450f, 96f);
-    [SerializeField, Min(1f)] private float promptFontSize = 26f;
+    [SerializeField] private Button promptButton;
 
     private GameController controller;
     private GameStateMachine stateMachine;
-    private Button promptButton;
     private bool autoRecoveryEnabled;
 
     public void Initialize(GameController gameController, GameStateMachine gameStateMachine)
@@ -27,7 +19,11 @@ public class RecoveryUpgradeAutoRecovery : MonoBehaviour
         controller = gameController;
         stateMachine = gameStateMachine;
         autoRecoveryEnabled = false;
-        CreatePrompt();
+        if (promptButton != null)
+        {
+            promptButton.onClick.RemoveListener(EnableAutoRecovery);
+            promptButton.onClick.AddListener(EnableAutoRecovery);
+        }
         SetPromptVisible(false);
         stateMachine.OnStateChanged += HandleStateChanged;
     }
@@ -72,36 +68,6 @@ public class RecoveryUpgradeAutoRecovery : MonoBehaviour
         SetPromptVisible(false);
         TryApplyPendingRecovery();
         stateMachine.ChangePlayingState();
-    }
-
-    private void CreatePrompt()
-    {
-        if (promptButton != null || upgradeCanvas == null)
-            return;
-
-        var prompt = new GameObject("AutoRecoveryPrompt", typeof(RectTransform),
-            typeof(CanvasRenderer), typeof(TextMeshProUGUI), typeof(Button));
-        prompt.layer = upgradeCanvas.gameObject.layer;
-        var rect = prompt.GetComponent<RectTransform>();
-        rect.SetParent(upgradeCanvas, false);
-        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = promptPosition;
-        rect.sizeDelta = promptSize;
-
-        var label = prompt.GetComponent<TextMeshProUGUI>();
-        if (promptFont != null)
-            label.font = promptFont;
-        label.text = promptText;
-        label.fontSize = promptFontSize;
-        label.alignment = TextAlignmentOptions.Center;
-        label.fontStyle = FontStyles.Underline;
-        label.color = Color.white;
-        label.raycastTarget = true;
-
-        promptButton = prompt.GetComponent<Button>();
-        promptButton.targetGraphic = label;
-        promptButton.onClick.AddListener(EnableAutoRecovery);
     }
 
     private void SetPromptVisible(bool visible)
