@@ -45,6 +45,9 @@ public sealed class GamePauseMenu : MonoBehaviour
             stateMachine.OnStateChanged += HandleStateChanged;
         }
 
+        if (GameStartSettings.IsTutorial)
+            return;
+
         if (toggledFrame == Time.frameCount || !WasTogglePressed())
             return;
 

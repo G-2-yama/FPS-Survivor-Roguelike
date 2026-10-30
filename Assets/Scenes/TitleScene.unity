@@ -1277,7 +1277,7 @@ MonoBehaviour:
   - {fileID: 1249891746}
   - {fileID: 1836152796}
   - {fileID: 530249385}
-  gamepadVirtualMouseCursor: {fileID: 0}
+  gamepadVirtualMouseCursor: {fileID: 2147000001}
   panelSwapDelay: 0.12
 --- !u!114 &109571329
 MonoBehaviour:
@@ -20468,6 +20468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2147000011}
   - component: {fileID: 2147000012}
+  - component: {fileID: 2147000001}
   m_Layer: 5
   m_Name: Gamepad Virtual Cursor Canvas
   m_TagString: Untagged
@@ -20518,6 +20519,21 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 32767
   m_TargetDisplay: 0
+--- !u!114 &2147000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2382f457e510fae49a500733eca2310d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::GamepadVirtualMouseCursor
+  settings: {fileID: 11400000, guid: 9e1b28b5bced4ff7be9f14d33d3dcf52, type: 2}
+  cursorTransform: {fileID: 2147000021}
+  cursorImage: {fileID: 2147000023}
 --- !u!1 &2147000020
 GameObject:
   m_ObjectHideFlags: 0
