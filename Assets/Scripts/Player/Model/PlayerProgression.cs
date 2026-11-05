@@ -4,6 +4,8 @@ using System;
 public sealed class PlayerProgression
 {
     private readonly double rate;
+    private readonly float[] requirements;
+    private readonly int initialLevel;
     private double experience;
     private double requiredExperience;
     public float Experience => (float)experience;
@@ -16,6 +18,8 @@ public sealed class PlayerProgression
         Level = settings.InitialLevel;
         requiredExperience = settings.LevelUpRequiredExp;
         rate = settings.LevelUpRate;
+        requirements = settings.CopyLevelRequirements();
+        initialLevel = settings.InitialLevel;
     }
 
     /// <summary>経験値を加算し、複数レベル分をまとめて処理して上昇数を返す</summary>
@@ -25,6 +29,7 @@ public sealed class PlayerProgression
         experience += amount;
         int capacity = int.MaxValue - Level;
         if (experience < requiredExperience || capacity == 0) return 0;
+        if (requirements != null && requirements.Length > 0) return AddTableExperience();
 
         // 倍率1でも大量の経験値を1レベルずつ処理せず、等比数列の合計から上昇数を求める
         double estimate = rate == 1d
@@ -40,6 +45,29 @@ public sealed class PlayerProgression
         requiredExperience *= Math.Pow(rate, count);
         Level += count;
         return count;
+    }
+
+    /// <summary>個別設定されたレベルを消費し、一定の末尾区間はまとめて進める</summary>
+    private int AddTableExperience()
+    {
+        int previousLevel = Level;
+        while (Level < int.MaxValue && (long)Level - initialLevel < requirements.Length
+            && experience >= requiredExperience)
+        {
+            experience -= requiredExperience;
+            Level++;
+            requiredExperience = BalanceSim.ExperienceRequirements.At(initialLevel, 0f, 1f, requirements, Level);
+        }
+        int capacity = int.MaxValue - Level;
+        if (capacity > 0 && experience >= requiredExperience)
+        {
+            int count = (int)Math.Min(capacity, Math.Floor(experience / requiredExperience));
+            while (count > 0 && requiredExperience * count > experience) count--;
+            while (count < capacity && requiredExperience * (count + 1d) <= experience) count++;
+            experience = Math.Max(0d, experience - requiredExperience * count);
+            Level += count;
+        }
+        return Level - previousLevel;
     }
 
     /// <summary>現在のレベルから指定回数のレベルアップに必要な経験値合計を求める</summary>

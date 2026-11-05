@@ -169,6 +169,8 @@ namespace BalanceSim.Editor
                 runSpeed = config.Stats.RunSpeed,
                 levelUpRequiredExp = config.Progression.LevelUpRequiredExp,
                 levelUpRate = config.Progression.LevelUpRate,
+                initialLevel = config.Progression.InitialLevel,
+                requiredExpByLevel = config.Progression.CopyLevelRequirements(),
                 eyeHeight = eyeHeight,
                 pivotHeight = position.y - footY,
             };
@@ -225,6 +227,10 @@ namespace BalanceSim.Editor
         /// <summary>敵の生成フェーズを設定済みPrefabの参照とともに変換する</summary>
         private static SimPhase ToSimPhase(PhaseData phase, PrefabReader prefabs, List<string> warnings)
         {
+            // 中ボスと区間別設定を持つ新敵Phaseを旧来の単一区間として誤って計算しない。
+            if (phase is EnemyCyclePhase)
+                throw new System.NotSupportedException($"{phase.name}: EnemyCyclePhaseは現在BalanceSim未対応です。"
+                    + "通常雑魚だけの結果を返さないため、実行を停止しました。旧PhaseDataは従来どおり使用できます。");
             var simPhase = new SimPhase
             {
                 name = phase.name,

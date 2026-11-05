@@ -31,6 +31,17 @@ public class PhaseData : ScriptableObject
     public float ReferenceDps => Mathf.Max(0.01f, referenceDps);
     public float MinHpMultiplier => Mathf.Max(1f, minHpMultiplier);
     public float MaxHpMultiplier => Mathf.Max(MinHpMultiplier, maxHpMultiplier);
+
+    /// <summary>新しい敵Phaseだけが使う実行時の出現設定。旧Phaseと共有アセットの値は変更しない</summary>
+    internal PhaseData CreateSpawnVariant(int minimum, float interval, List<EnemySpawnData> enemyOverride = null)
+    {
+        PhaseData variant = Instantiate(this);
+        variant.hideFlags = HideFlags.HideAndDontSave;
+        variant.minSpawnCount = minimum;
+        variant.spawnInterval = interval;
+        if (enemyOverride != null && enemyOverride.Count > 0) variant.enemies = new List<EnemySpawnData>(enemyOverride);
+        return variant;
+    }
 }
 
 [System.Serializable]

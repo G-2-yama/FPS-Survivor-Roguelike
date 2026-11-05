@@ -35,7 +35,8 @@ namespace BalanceSim
             _player = player;
             _policy = policy;
             _random = random;
-            RequiredExp = input.player.levelUpRequiredExp;
+            Level = input.player.initialLevel;
+            RequiredExp = RequirementAt(Level);
 
             foreach (SimWeaponDef weapon in input.weapons)
             {
@@ -94,21 +95,25 @@ namespace BalanceSim
 
         public void AddExp(float amount, float time)
         {
+            if (amount < 0f || float.IsNaN(amount) || float.IsInfinity(amount)) return;
+            bool usesLevelRequirements = _input.player.requiredExpByLevel != null && _input.player.requiredExpByLevel.Length > 0;
             Exp += amount;
-            if (Exp >= RequiredExp)
+            while (Level < int.MaxValue && Exp >= RequiredExp)
             {
                 Exp -= RequiredExp;
                 Level++;
                 PendingLevelUps++;
-                RequiredExp *= _input.player.levelUpRate;
-            }
-
-            while (PendingLevelUps > 0)
-            {
+                RequiredExp = usesLevelRequirements ? RequirementAt(Level) : RequiredExp * _input.player.levelUpRate;
                 ResolveLevelUp(time);
                 PendingLevelUps--;
+                // 旧形式のシミュレーションは既存の「1取得につき1回」を維持する。
+                if (!usesLevelRequirements) break;
             }
         }
+
+        private float RequirementAt(int level) => (float)Math.Min(float.MaxValue,
+            ExperienceRequirements.At(_input.player.initialLevel, _input.player.levelUpRequiredExp,
+                _input.player.levelUpRate, _input.player.requiredExpByLevel, level));
 
         private void ResolveLevelUp(float time)
         {
