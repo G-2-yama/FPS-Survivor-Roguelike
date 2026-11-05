@@ -25,18 +25,16 @@ MonoBehaviour:
   isExPhase: 0
   referenceDps: 100
   minHpMultiplier: 1
-  maxHpMultiplier: 1.3
+  maxHpMultiplier: 3
   normalDuration: 30
   bossInterval: 10
-  bossSpawnCount: 1
+  bossSpawnCount: 40
   bossPrefab: {fileID: 0}
   bossCandidates:
-  - prefab: {fileID: 3800979161538342785, guid: a767826b16d188447ba2f93706dc4664, type: 3}
+  - prefab: {fileID: 400521930760165144, guid: 93ded64be8c63cd419986ce32d387e4e, type: 3}
     spawnWeight: 3
   - prefab: {fileID: 2161741713641023694, guid: 834be85721712544cb2a1c599324e48a, type: 3}
     spawnWeight: 6
-  - prefab: {fileID: 6627700967361368669, guid: 1e6e7b52f19fb7049b798a73fd8108ad, type: 3}
-    spawnWeight: 1
   bossSpawnRateMultiplier: 0.4
   bossMinimumMultiplier: 0.4
   rushDuration: 25
