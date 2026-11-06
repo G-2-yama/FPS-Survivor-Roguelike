@@ -15,8 +15,9 @@ MonoBehaviour:
   identity:
     weaponId: weapon_default
     displayName: "\u30E9\u30A4\u30C8\u30CB\u30F3\u30B0\u30AC\u30F3"
-    description: "\u30C0\u30E1\u30FC\u30B810->15"
+    description: "\u30c0\u30e1\u30fc\u30b828->38"
     icon: {fileID: 21300000, guid: a2bba3d0f0df53d4c9842cc23184e75d, type: 3}
+    artwork: {fileID: 0}
   visual:
     weaponModelPrefab: {fileID: 125668353827341869, guid: d5fdc6cbe8c2ad04cb571cdc4b193d3a, type: 3}
   soundDB: {fileID: 11400000, guid: 1572c3a9362f1524bbfb907554094945, type: 2}
@@ -28,7 +29,7 @@ MonoBehaviour:
     autoReload: 1
     triggerType: 0
   damage:
-    damage: 15
+    damage: 38
     knockbackForce: 1
     spreadAngle: 0
   fireRhythm:

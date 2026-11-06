@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Phase_09
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCyclePhase
   startTime: 585
-  minSpawnCount: 250
+  minSpawnCount: 150
   spawnInterval: 0.4
   enemies:
   - prefab: {fileID: 3601273489759220852, guid: b049b5001385a9c4ea99d94588fda0c3, type: 3}
@@ -36,8 +36,8 @@ MonoBehaviour:
   bossSpawnRateMultiplier: 0.4
   bossMinimumMultiplier: 0.4
   rushDuration: 25
-  rushSpawnRateMultiplier: 3
-  rushMinimumMultiplier: 3
+  rushSpawnRateMultiplier: 1.5
+  rushMinimumMultiplier: 1.5
   rushEnemies:
   - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
     spawnWeight: 2

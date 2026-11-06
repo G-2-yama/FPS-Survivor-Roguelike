@@ -26,7 +26,7 @@ MonoBehaviour:
   maxHpMultiplier: 2
   normalDuration: 30
   bossInterval: 10
-  bossSpawnCount: 6
+  bossSpawnCount: 20
   bossPrefab: {fileID: 0}
   bossCandidates:
   - prefab: {fileID: 6627700967361368669, guid: 1e6e7b52f19fb7049b798a73fd8108ad, type: 3}

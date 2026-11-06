@@ -38,6 +38,7 @@ Phaseの開始時刻を終了時刻に揃えることで、`PhaseWallColor` の�
 ## GameSceneへの移行
 
 `Phase_00`〜`Phase_09` を使用し、開始時刻を0〜585秒の65秒刻みに設定した。保持したPhaseのGUID・通常の雑魚構成・中ボス候補は維持する。
+2:10〜4:20の中だるみ対策として、Phase_02・Phase_03はそれぞれ32.5秒に分割し、Phase_02_B・Phase_03_Bを追加した。この4区間は通常15秒・中ボス区間5秒・大群12.5秒。開始時刻は130・162.5・195・227.5秒で、次のPhase_04は260秒のまま。中ボス総数は4体・6体をそれぞれ2+2体・3+3体に振り分けて維持する。GameSceneの敵Generatorは合計12Phaseとなる。
 大群の `Rush Enemies` はBit・Ball中心とし、進行に応じてMissileBox・Gatlingを少量混ぜる。硬いHandやEX個体は大群に入れない。
 600秒以降に始まる `Phase_10`〜`Phase_26` はScene・演出の参照を整理して削除した。最後のPhaseへ演出の終端の赤さを引き継ぐ。
 旧EXPhase_01〜26はGeneratorの参照から外して削除済み。アイテム用・TestPhase・作業用の空Phaseは旧形式のまま残す。

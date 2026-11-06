@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9ed40b232eadd458a2054cbf59c6ca, type: 3}
+  m_Name: Phase_02_B
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCyclePhase
+  startTime: 162.5
+  minSpawnCount: 200
+  spawnInterval: 0.4
+  enemies:
+  - prefab: {fileID: 4262321851066489838, guid: a1ce2a00c56b60c488bf19f03ad13892, type: 3}
+    spawnWeight: 9
+  - prefab: {fileID: 3601273489759220852, guid: b049b5001385a9c4ea99d94588fda0c3, type: 3}
+    spawnWeight: 4
+  isExPhase: 0
+  referenceDps: 100
+  minHpMultiplier: 1
+  maxHpMultiplier: 1.3
+  normalDuration: 15
+  bossInterval: 5
+  bossSpawnCount: 20
+  bossPrefab: {fileID: 0}
+  bossCandidates:
+  - prefab: {fileID: 3264956460053762192, guid: d55893581ad27b84ebc1a1008cc1dd50, type: 3}
+    spawnWeight: 8
+  - prefab: {fileID: 2161741713641023694, guid: 834be85721712544cb2a1c599324e48a, type: 3}
+    spawnWeight: 2
+  - prefab: {fileID: 2161741713641023694, guid: 834be85721712544cb2a1c599324e48a, type: 3}
+    spawnWeight: 2
+  bossSpawnRateMultiplier: 0.4
+  bossMinimumMultiplier: 0.4
+  rushDuration: 12.5
+  rushSpawnRateMultiplier: 3
+  rushMinimumMultiplier: 3
+  rushEnemies:
+  - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
+    spawnWeight: 8
+  - prefab: {fileID: 8411297557696040895, guid: 8f6625c999332bd4187da886d0734666, type: 3}
+    spawnWeight: 2
+  - prefab: {fileID: 4262321851066489838, guid: a1ce2a00c56b60c488bf19f03ad13892, type: 3}
+    spawnWeight: 2
