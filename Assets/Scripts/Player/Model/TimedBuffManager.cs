@@ -1,34 +1,52 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-/// <summary>プレイヤーに属する時間制限付き強化を更新する</summary>
+/// <summary>プレイヤー専用の時間付き効果を管理し、表示側へ変更を通知する。</summary>
 [DisallowMultipleComponent]
 public class TimedBuffManager : MonoBehaviour
 {
-    private readonly List<TimedBuff> activeBuffs
-        = new List<TimedBuff>();
+    private readonly List<TimedBuff> activeBuffs = new List<TimedBuff>();
+    public IReadOnlyList<TimedBuff> ActiveBuffs => activeBuffs;
+    public event Action BuffsChanged;
 
-    /// <summary>強化の残り時間を進め、終了した効果を解除する</summary>
-    private void Update()
+    private void Update() => Tick(Time.deltaTime);
+
+    public void Tick(float deltaTime)
     {
+        bool changed = false;
         for (int i = activeBuffs.Count - 1; i >= 0; i--)
         {
             TimedBuff buff = activeBuffs[i];
-
-            buff.Update(Time.deltaTime);
-
-            if (buff.IsFinished)
-            {
-                buff.Remove();
-                activeBuffs.RemoveAt(i);
-            }
+            buff.Update(deltaTime);
+            if (!buff.IsFinished) continue;
+            buff.Remove();
+            activeBuffs.RemoveAt(i);
+            changed = true;
         }
+        if (changed) BuffsChanged?.Invoke();
     }
 
-    /// <summary>強化を適用して期限管理の対象に追加する</summary>
     public void AddBuff(TimedBuff buff)
     {
+        if (buff == null) throw new ArgumentNullException(nameof(buff));
+        foreach (TimedBuff activeBuff in activeBuffs)
+        {
+            if (!activeBuff.TryMerge(buff)) continue;
+            BuffsChanged?.Invoke();
+            return;
+        }
         buff.Apply();
         activeBuffs.Add(buff);
+        BuffsChanged?.Invoke();
     }
+
+    public void ClearBuffs()
+    {
+        foreach (var buff in activeBuffs) buff.Remove();
+        activeBuffs.Clear();
+        BuffsChanged?.Invoke();
+    }
+
+    private void OnDestroy() => ClearBuffs();
 }

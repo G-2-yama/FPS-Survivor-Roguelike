@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LockdownSchedule
   m_EditorClassIdentifier: Assembly-CSharp::LockdownSchedule
   entries:
-  - closeTime: 120
+  - closeTime: 20
     duration: 30
     warningSeconds: 10
   - closeTime: 240

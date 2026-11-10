@@ -159,4 +159,4 @@ MonoBehaviour:
   maxTilt: 15
   minSink: 0.1
   maxSink: 0.3
-  expAmount: 500
+  effectDefinition: {fileID: 11400000, guid: 2eb5e33a4a014d05b619b1168c50f36d, type: 2}

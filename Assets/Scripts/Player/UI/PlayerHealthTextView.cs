@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
@@ -26,6 +26,9 @@ public class PlayerHealthTextView : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        var buffIcons = GetComponent<BuffIconPresenter>();
+        if (buffIcons == null) buffIcons = gameObject.AddComponent<BuffIconPresenter>();
+        buffIcons.Initialize(player.TimedBuffManager, currentHealthBar.rectTransform);
         player.Health.OnHealthChanged += UpdateHealthText;
         UpdateHealthText(player.Health.CurrentHP, player.Health.MaxHP);
     }
