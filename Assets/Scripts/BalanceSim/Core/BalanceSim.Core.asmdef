@@ -1,7 +1,7 @@
 {
     "name": "BalanceSim.Core",
     "rootNamespace": "BalanceSim",
-    "references": ["EnemyBalance.Core"],
+    "references": ["EnemyBalance.Core", "PlayerProgression.Core"],
     "includePlatforms": [
         "Editor"
     ],

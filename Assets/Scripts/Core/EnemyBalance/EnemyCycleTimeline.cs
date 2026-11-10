@@ -14,6 +14,7 @@ namespace EnemyBalance
         public EnemyCycleStage Stage { get; private set; }
         public bool HasStarted { get; private set; }
         public bool IsComplete => Stage == EnemyCycleStage.Complete;
+        public double EndsAt => startsAt + normalDuration + bossInterval + rushDuration;
 
         public EnemyCycleTimeline(double startsAt, double normalDuration, double rushDuration, double bossInterval = 10d)
         {

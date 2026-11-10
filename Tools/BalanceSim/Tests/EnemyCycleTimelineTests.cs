@@ -64,6 +64,29 @@ public class EnemyCycleTimelineTests
     }
 
     [Theory]
+    [InlineData(650)]
+    [InlineData(715)]
+    [InlineData(780)]
+    public void FinalPhaseCanRepeatFromItsEndWithoutImmediatelyCompleting(double boundary)
+    {
+        var previous = new EnemyCycleTimeline(boundary - 65, 30, 25, 10);
+        previous.Advance(boundary, false);
+        Assert.True(previous.IsComplete);
+        Assert.Equal(boundary, previous.EndsAt);
+
+        var repeated = new EnemyCycleTimeline(previous.EndsAt, 30, 25, 10);
+        repeated.Advance(boundary + 0.016, false);
+        Assert.True(repeated.HasStarted);
+        Assert.Equal(EnemyCycleStage.Normal, repeated.Stage);
+        repeated.Advance(boundary + 30, false);
+        Assert.Equal(EnemyCycleStage.Boss, repeated.Stage);
+        repeated.Advance(boundary + 40, false);
+        Assert.Equal(EnemyCycleStage.Rush, repeated.Stage);
+        repeated.Advance(boundary + 65, false);
+        Assert.True(repeated.IsComplete);
+    }
+
+    [Theory]
     [InlineData(-1, 1, 1)]
     [InlineData(0, -1, 1)]
     [InlineData(0, 1, -1)]

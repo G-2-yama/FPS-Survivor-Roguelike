@@ -30,6 +30,7 @@ internal sealed class EnemyCycleRuntime : IDisposable
 
     public EnemyCycleStage Stage => timeline.Stage;
     public bool IsComplete => timeline.IsComplete;
+    public double EndsAt => timeline.EndsAt;
     public PhaseData SpawnPhase => Stage == EnemyCycleStage.Boss ? bossAdds : Stage == EnemyCycleStage.Rush ? rush : settings;
     public bool CanSpawnAdds => timeline.HasStarted && !IsComplete
         && (Stage != EnemyCycleStage.Boss || settings.BossSpawnRateMultiplier > 0f)
@@ -46,7 +47,7 @@ internal sealed class EnemyCycleRuntime : IDisposable
     public double NormalDps => normalDps.PreviousNormalDps;
     public float BossHpMultiplier { get; private set; } = 1f;
 
-    public EnemyCycleRuntime(EnemyCyclePhase source, float enteredAt, Func<GameObject, PhaseData, GameObject> spawnBoss,
+    public EnemyCycleRuntime(EnemyCyclePhase source, double startsAt, Func<GameObject, PhaseData, GameObject> spawnBoss,
         Action<GameObject> forgetBoss = null)
     {
         settings = Object.Instantiate(source);
@@ -54,7 +55,6 @@ internal sealed class EnemyCycleRuntime : IDisposable
         bossAdds = settings.CreateBossAdds();
         rush = settings.CreateRush();
         // 固定スケジュールの境界をフレームごとの遅延でずらさない。
-        double startsAt = settings.StartTime;
         timeline = new EnemyCycleTimeline(startsAt, settings.NormalDuration, settings.RushDuration, settings.BossInterval);
         normalEndsAt = startsAt + settings.NormalDuration;
         normalDps.BeginPhase(false, startsAt);

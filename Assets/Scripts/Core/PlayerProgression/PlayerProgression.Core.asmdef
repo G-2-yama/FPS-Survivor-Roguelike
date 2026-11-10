@@ -1,0 +1,6 @@
+{
+    "name": "PlayerProgression.Core",
+    "rootNamespace": "BalanceSim",
+    "autoReferenced": true,
+    "noEngineReferences": true
+}

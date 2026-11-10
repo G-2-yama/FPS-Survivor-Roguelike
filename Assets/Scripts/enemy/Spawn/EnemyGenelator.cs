@@ -96,6 +96,19 @@ public class EnemyGenerator : MonoBehaviour
         {
             cycleRuntime.Tick(elapsedTime, !autoSpawnDisabled);
             if (!cycleRuntime.IsComplete) return;
+            if (timer.IsUnlimited && currentPhaseIndex == phases.Count - 1)
+            {
+                // 最終Phaseはエンドレス時だけ繰り返す。遅延しても固定の区間境界を維持する。
+                var cycle = (EnemyCyclePhase)currentPhase;
+                double startsAt = cycleRuntime.EndsAt;
+                startsAt += System.Math.Floor((elapsedTime - startsAt) / cycle.TotalDuration) * cycle.TotalDuration;
+                cycleRuntime.Dispose();
+                cycleRuntime = null;
+                phaseDps.BeginPhase(currentPhase.IsExPhase, startsAt);
+                UpdateHpMultiplier();
+                BeginEnemyCycle(elapsedTime, startsAt);
+                return;
+            }
         }
         while (currentPhaseIndex + 1 < phases.Count && elapsedTime >= phases[currentPhaseIndex + 1].StartTime)
         {
@@ -114,10 +127,10 @@ public class EnemyGenerator : MonoBehaviour
     }
 
     // 新Phaseの状態と生成個体はGeneratorごとに保持し、共有SOに進行状態を書き込まない。
-    private void BeginEnemyCycle(float elapsedTime)
+    private void BeginEnemyCycle(float elapsedTime, double? startsAt = null)
     {
         if (!(currentPhase is EnemyCyclePhase cycle)) return;
-        cycleRuntime = new EnemyCycleRuntime(cycle, elapsedTime, (prefab, phase) => SpawnEnemy(phase, prefab), RemoveActiveEnemy);
+        cycleRuntime = new EnemyCycleRuntime(cycle, startsAt ?? cycle.StartTime, (prefab, phase) => SpawnEnemy(phase, prefab), RemoveActiveEnemy);
         cycleRuntime.Tick(elapsedTime, !autoSpawnDisabled);
     }
 
