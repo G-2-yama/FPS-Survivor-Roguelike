@@ -1065,17 +1065,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGenerator
   phases:
   - {fileID: 11400000, guid: d3e9a4761afe0f2449a0087b7dd6083b, type: 2}
+  - {fileID: 11400000, guid: fe84bf88c2c140068cb156e833476e2f, type: 2}
+  - {fileID: 11400000, guid: 544eff7c57434ea485130b92ff589298, type: 2}
   - {fileID: 11400000, guid: 68c77356379df1d46943f112385276de, type: 2}
+  - {fileID: 11400000, guid: b16fc554b5c6472382df4f568af6decb, type: 2}
+  - {fileID: 11400000, guid: 2140a6d1a41c4845ba5d780d74c67942, type: 2}
   - {fileID: 11400000, guid: 5437f81187cee004fad372df71c37ff8, type: 2}
+  - {fileID: 11400000, guid: 24754d8e978645b0bcf4ab6a1d9ddcbe, type: 2}
+  - {fileID: 11400000, guid: 995db8cdf55c477680dba0b74f5f241c, type: 2}
   - {fileID: 11400000, guid: 59a8e21f307442379d40d4faa87eb987, type: 2}
+  - {fileID: 11400000, guid: efd1334619474b809794615cc1515d4a, type: 2}
+  - {fileID: 11400000, guid: f208fb28720a46ff8c41a1271a7824a6, type: 2}
   - {fileID: 11400000, guid: b827a3e6fce343edb522125b4b0a95bf, type: 2}
+  - {fileID: 11400000, guid: 92ac2303f65f4bdc95440ea3ea4ecaba, type: 2}
+  - {fileID: 11400000, guid: 800d2f7b4e084aadb61779f3544ccd23, type: 2}
   - {fileID: 11400000, guid: 35d93158e56b4ab58813e8f44061b658, type: 2}
+  - {fileID: 11400000, guid: 1420d35cce2e41d5a6534d1052dcd41a, type: 2}
+  - {fileID: 11400000, guid: 88828c66ddad494ea5492be003b8f7e5, type: 2}
   - {fileID: 11400000, guid: 2e7315f5f15c22945ba226882b746baa, type: 2}
+  - {fileID: 11400000, guid: cd44e63507954b2f88453153788d6f5f, type: 2}
+  - {fileID: 11400000, guid: b570dddbd4664faeb7acf94271a75d12, type: 2}
   - {fileID: 11400000, guid: 5a39a264df2f4e6e967658ad8752f178, type: 2}
+  - {fileID: 11400000, guid: a183c6dc7f1b4944a08988d7d3fa5afd, type: 2}
+  - {fileID: 11400000, guid: 1b51db04baf5498c8fd150816fb4d7ad, type: 2}
   - {fileID: 11400000, guid: 95b8b811f871409cb649f4694248f76f, type: 2}
+  - {fileID: 11400000, guid: b7e0d5eb905c424db61938e49fd768ab, type: 2}
+  - {fileID: 11400000, guid: 0b12dc4a6a224be8b88072f3f15b1445, type: 2}
   - {fileID: 11400000, guid: ffc75f795dbc41ff88400cd6696432a3, type: 2}
+  - {fileID: 11400000, guid: c4b1b2f7c6cc4a2b961e7aa2675ba68b, type: 2}
+  - {fileID: 11400000, guid: 359c0fb0b77846418127a9a712ef973e, type: 2}
   - {fileID: 11400000, guid: 9faf13c056fa4f346aeb23969fd7ab1d, type: 2}
+  - {fileID: 11400000, guid: cd82b5037bd44ebcac456bc061c2b488, type: 2}
+  - {fileID: 11400000, guid: 629106b4c254497db4e207fdc34de18d, type: 2}
   - {fileID: 11400000, guid: 59429eaf220f4cb5ade497e3da764c91, type: 2}
+  - {fileID: 11400000, guid: 9acb84e00722416b98206f2c0270574e, type: 2}
+  - {fileID: 11400000, guid: ec39d78032304c188000dee9361ba8d4, type: 2}
   spawnRadius: 80
   spawnDirections:
   - angle: 90

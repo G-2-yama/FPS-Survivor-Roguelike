@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f9ed40b232eadd458a2054cbf59c6ca, type: 3}
+  m_Script: {fileID: 11500000, guid: a6e91b89dfeca2f46b06bb2ed5b0b175, type: 3}
   m_Name: Phase_06
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyCyclePhase
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   startTime: 390
   minSpawnCount: 200
   spawnInterval: 0.4
@@ -24,26 +24,3 @@ MonoBehaviour:
   referenceDps: 100
   minHpMultiplier: 1
   maxHpMultiplier: 2
-  normalDuration: 30
-  bossInterval: 10
-  bossSpawnCount: 30
-  bossPrefab: {fileID: 0}
-  bossCandidates:
-  - prefab: {fileID: 3800979161538342785, guid: a767826b16d188447ba2f93706dc4664, type: 3}
-    spawnWeight: 4
-  - prefab: {fileID: 6627700967361368669, guid: 1e6e7b52f19fb7049b798a73fd8108ad, type: 3}
-    spawnWeight: 6
-  bossSpawnRateMultiplier: 0.4
-  bossMinimumMultiplier: 0.4
-  rushDuration: 25
-  rushSpawnRateMultiplier: 3
-  rushMinimumMultiplier: 3
-  rushEnemies:
-  - prefab: {fileID: 6874736543859849084, guid: 94ddb9fc55dbbd940ae65109ecc5e739, type: 3}
-    spawnWeight: 6
-  - prefab: {fileID: 8411297557696040895, guid: 8f6625c999332bd4187da886d0734666, type: 3}
-    spawnWeight: 5
-  - prefab: {fileID: 4262321851066489838, guid: a1ce2a00c56b60c488bf19f03ad13892, type: 3}
-    spawnWeight: 2
-  - prefab: {fileID: 3601273489759220852, guid: b049b5001385a9c4ea99d94588fda0c3, type: 3}
-    spawnWeight: 2
