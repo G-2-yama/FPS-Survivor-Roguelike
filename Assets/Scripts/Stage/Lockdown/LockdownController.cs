@@ -163,6 +163,9 @@ public class LockdownController : MonoBehaviour
 
     private void Close(float openAt)
     {
+        // 閉鎖時の現在地から選び直し、警告中の床再配置に追従する。
+        PlazaCenter = NearestPlazaCenter(playerBody.transform.position);
+        PlaceDoors(PlazaCenter);
         SetDoorHeight(0f);
         MovePlayerInside(PlazaCenter);
         foreach (BoxCollider door in doors) door.enabled = true;
@@ -235,7 +238,11 @@ public class LockdownController : MonoBehaviour
     private void MovePlayerInside(Vector3 center)
     {
         Vector3 position = playerBody.transform.position;
-        if (IsInsidePlaza(position)) return;
+        if (IsInsidePlaza(position))
+        {
+            Debug.Log($"[Lockdown] Teleport skipped: already inside plaza. frame={Time.frameCount}, position={position.ToString("F3")}, center={center.ToString("F3")}", this);
+            return;
+        }
 
         float offsetX = position.x - center.x;
         float offsetZ = position.z - center.z;
@@ -245,20 +252,31 @@ public class LockdownController : MonoBehaviour
         Vector3 target = center + exitDirection * (plazaHalfExtent - teleportInset);
 
         float footOffset = position.y - player.FootPosition.y;
-        target.y = FindGroundY(target, position.y - footOffset) + footOffset + playerBody.skinWidth;
+        float groundY = FindGroundY(target, position.y - footOffset, true);
+        target.y = groundY + footOffset + playerBody.skinWidth;
+        Debug.Log($"[Lockdown] Before teleport: frame={Time.frameCount}, position={position.ToString("F3")}, foot={player.FootPosition.ToString("F3")}, target={target.ToString("F3")}, groundY={groundY:F3}, footOffset={footOffset:F3}, skinWidth={playerBody.skinWidth:F3}, controllerEnabled={playerBody.enabled}, grounded={playerBody.isGrounded}, height={playerBody.height:F3}, controllerCenter={playerBody.center.ToString("F3")}, scale={playerBody.transform.lossyScale.ToString("F3")}", this);
 
         playerBody.enabled = false;
         playerBody.transform.position = target;
         playerBody.enabled = true;
         Physics.SyncTransforms();
+        Debug.Log($"[Lockdown] After teleport: frame={Time.frameCount}, position={playerBody.transform.position.ToString("F3")}, foot={player.FootPosition.ToString("F3")}, boundsMin={playerBody.bounds.min.ToString("F3")}, footClearance={player.FootPosition.y - groundY:F3}, grounded={playerBody.isGrounded}", this);
     }
 
-    private float FindGroundY(Vector3 point, float fallback)
+    private float FindGroundY(Vector3 point, float fallback, bool logProbe = false)
     {
         Vector3 origin = new Vector3(point.x, plazaOrigin.y + groundProbeHeight, point.z);
         if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, groundProbeHeight * 2f, groundMask, QueryTriggerInteraction.Ignore))
         {
+            if (logProbe)
+            {
+                Debug.Log($"[Lockdown] Ground probe HIT: frame={Time.frameCount}, origin={origin.ToString("F3")}, distance={groundProbeHeight * 2f:F3}, mask={groundMask.value}, collider={hit.collider.name}, colliderId={hit.collider.GetInstanceID()}, layer={LayerMask.LayerToName(hit.collider.gameObject.layer)}({hit.collider.gameObject.layer}), point={hit.point.ToString("F3")}, normal={hit.normal.ToString("F3")}, colliderPosition={hit.collider.transform.position.ToString("F3")}", hit.collider);
+            }
             return hit.point.y;
+        }
+        if (logProbe)
+        {
+            Debug.LogWarning($"[Lockdown] Ground probe MISS: frame={Time.frameCount}, origin={origin.ToString("F3")}, distance={groundProbeHeight * 2f:F3}, mask={groundMask.value}, fallbackY={fallback:F3}. Teleport will use the previous foot height.", this);
         }
         return fallback;
     }

@@ -301,8 +301,8 @@ namespace BalanceSim.Editor
                     break;
                 case speedupitem speed:
                     def.kind = SimPickupKind.SpeedUp;
-                    def.amount = SerializedReader.Float(speed, "upspeedrate");
-                    def.duration = SerializedReader.Float(speed, "duration");
+                    def.amount = speed.SpeedAmount;
+                    def.duration = speed.Duration;
                     break;
                 default:
                     _warnings.Add($"ドロップ {prefab.name} の種類 {item.GetType().Name} は未対応です。何も落とさないものとして扱います");
